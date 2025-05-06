@@ -1,0 +1,80 @@
+// prisma/schema.prisma
+generator client {
+  provider = "prisma-client-js"
+  binaryTargets = ["native", "linux-musl-openssl-3.0.x"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  password  String
+  name      String
+  role      Role     @default(STUDENT)
+  createdAt DateTime @default(now())
+
+  enrollments Enrollment[]
+  courses     Course[] @relation("InstructorCourses")
+  feedbacks   Feedback[]
+}
+
+model Course {
+  id          String       @id @default(uuid())
+  title       String
+  description String
+  thumbnail   String
+  price       Float
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+
+  instructor   User        @relation("InstructorCourses", fields: [instructorId], references: [id])
+  instructorId String
+
+  lessons      Lesson[]
+  enrollments  Enrollment[]
+  feedbacks    Feedback[]
+}
+
+model Lesson {
+  id        String   @id @default(uuid())
+  title     String
+  content   String   // Markdown or HTML
+  thumbnail String?
+  videoUrl  String?
+  order     Int
+
+  course     Course  @relation(fields: [courseId], references: [id])
+  courseId   String
+}
+
+model Enrollment {
+  id        String   @id @default(uuid())
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+  course    Course   @relation(fields: [courseId], references: [id])
+  courseId  String
+  enrolledAt DateTime @default(now())
+}
+
+model Feedback {
+  id        String   @id @default(uuid())
+  rating    Int      // 1 - 5
+  comment   String?
+  createdAt DateTime @default(now())
+
+  user     User   @relation(fields: [userId], references: [id])
+  userId   String
+
+  course   Course @relation(fields: [courseId], references: [id])
+  courseId String
+}
+
+enum Role {
+  STUDENT
+  INSTRUCTOR
+  ADMIN
+}

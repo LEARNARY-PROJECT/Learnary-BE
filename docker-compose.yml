@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:latest
+    container_name: learning_platform_db
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: learning_platform
+    ports:
+      - "5433:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  app:
+    build: .
+    container_name: learning_platform_api
+    restart: always
+    ports:
+      - "4000:4000" 
+    environment:
+      NODE_ENV: production
+      DATABASE_URL: postgresql://postgres:postgres@db:5432/learning_platform?schema=public
+      JWT_SECRET: 12736571242634823984126348239841
+    depends_on:
+      - db
+    command: sh -c "npx prisma migrate deploy && node dist/app.js"
+    # deploy migration rồi chạy app
+
+volumes:
+  pgdata:
