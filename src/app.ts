@@ -34,7 +34,7 @@ app.use("/api", enrollmentRoutes);
 app.use("/api", feedbackRoutes);
 //test Routes
 app.get("/", (req, res) => {
-  res.send("Hello World!");
+  res.send("Backend đang chạy rất bình tĩnh và bình thường");
 });
 
 // Khởi tạo user mặc định nếu không có ít nhất 1 user có role ADMIN

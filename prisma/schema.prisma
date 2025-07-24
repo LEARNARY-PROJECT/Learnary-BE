@@ -1,80 +1,395 @@
 // prisma/schema.prisma
 generator client {
-  provider = "prisma-client-js"
+  provider      = "prisma-client-js"
   binaryTargets = ["native", "linux-musl-openssl-3.0.x"]
 }
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
-}
-
-model User {
-  id        String   @id @default(uuid())
-  email     String   @unique
-  password  String
-  name      String
-  role      Role     @default(STUDENT)
-  createdAt DateTime @default(now())
-
-  enrollments Enrollment[]
-  courses     Course[] @relation("InstructorCourses")
-  feedbacks   Feedback[]
-}
-
-model Course {
-  id          String       @id @default(uuid())
-  title       String
-  description String
-  thumbnail   String
-  price       Float
-  createdAt   DateTime     @default(now())
-  updatedAt   DateTime     @updatedAt
-
-  instructor   User        @relation("InstructorCourses", fields: [instructorId], references: [id])
-  instructorId String
-
-  lessons      Lesson[]
-  enrollments  Enrollment[]
-  feedbacks    Feedback[]
-}
-
-model Lesson {
-  id        String   @id @default(uuid())
-  title     String
-  content   String   // Markdown or HTML
-  thumbnail String?
-  videoUrl  String?
-  order     Int
-
-  course     Course  @relation(fields: [courseId], references: [id])
-  courseId   String
-}
-
-model Enrollment {
-  id        String   @id @default(uuid())
-  user      User     @relation(fields: [userId], references: [id])
-  userId    String
-  course    Course   @relation(fields: [courseId], references: [id])
-  courseId  String
-  enrolledAt DateTime @default(now())
-}
-
-model Feedback {
-  id        String   @id @default(uuid())
-  rating    Int      // 1 - 5
-  comment   String?
-  createdAt DateTime @default(now())
-
-  user     User   @relation(fields: [userId], references: [id])
-  userId   String
-
-  course   Course @relation(fields: [courseId], references: [id])
-  courseId String
+  url      = env("DATABASE_URL_LOCAL")
 }
 
 enum Role {
-  STUDENT
+  LEARNER
   INSTRUCTOR
   ADMIN
+}
+
+enum Status {
+  Active
+  Inactive
+  Suspended
+}
+
+enum ApprovalStatus {
+  Pending
+  Approved
+  Rejected
+}
+
+enum QualificationType {
+  Degree
+  Certificate
+}
+
+enum CourseEnrollmentStatus {
+  Enrolled
+  Completed
+  Cancelled
+}
+
+enum CourseStatus {
+  Draft
+  Pubished
+  Archived
+}
+enum LanguageOptions {
+  English
+  Vietnamese
+}
+model User {
+  user_id     String    @id @db.VarChar(50) @default(uuid())
+  email       String    @unique
+  phone       String?   @unique
+  avatar      String?
+  dateOfBirth DateTime?
+  address     String?
+  city        String?
+  country     String?
+  nation      String?
+  bio         String?
+  last_login  DateTime?
+  isActive    Boolean   @default(true)
+  password    String
+  fullName    String
+  role        Role      @default(LEARNER)
+  gender      String    @default("OTHER")
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  courses           Courses[]        @relation("LecturerCourses")
+  feedbacks         Feedback[]
+  learner           Learner?
+  instructor        Instructor?
+  admin             Admin?
+  accountSecurities AccountSecurity?
+
+  @@index([email], name: "idx_user_email")
+  @@map("users")
+}
+
+model Learner {
+  learner_id String   @id @db.VarChar(50) @default(uuid())
+  user_id    String   @unique
+  enrolledAt DateTime @default(now())
+
+  updatedAt DateTime @updatedAt
+  createAt  DateTime @default(now())
+
+  user            User             @relation(fields: [user_id], references: [user_id])
+  learner_courses LeanrerCourses[]
+
+  @@map("learners")
+}
+
+model Instructor {
+  instructor_id String  @id @db.VarChar(50) @default(uuid())
+  user_id       String  @unique
+  isVerified    Boolean @default(false)
+  status        Status  @default(Inactive)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user                      User                       @relation(fields: [user_id], references: [user_id])
+  instructorSpecialization  InstructorSpecializations?
+  citizen_id_confirms       CitizenIdsConfirm[]
+  instructor_qualifications InstructorQualifications[]
+  wallet                    Wallet?
+  courses Courses[]
+  @@map("instructors")
+}
+
+model InstructorSpecializations {
+  instructor_specialization_id String @id @db.VarChar(50) @default(uuid())
+  instructor_id                String @unique
+  specialization_id            String @unique
+  admin_id                     String @unique
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  specialization Specialization @relation(fields: [specialization_id], references: [specialization_id])
+  instructor     Instructor     @relation(fields: [instructor_id], references: [instructor_id])
+  admin          Admin          @relation(fields: [admin_id], references: [admin_id])
+
+  @@map("instructor_specializations")
+}
+
+model Specialization {
+  specialization_id   String  @id @db.VarChar(50) @default(uuid())
+  instructor_id       String  @unique
+  specialization_name String
+  isVerified          Boolean @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  specialization           InstructorSpecializations?
+  instructorQualifications InstructorQualifications[]
+
+  @@map("specializations")
+}
+
+model CitizenIdsConfirm {
+  citizen_id     String         @id @db.VarChar(50) @default(uuid())
+  instructor_id  String         @unique
+  citizen_number String         @unique
+  date_of_birth  DateTime
+  place_of_birth DateTime
+  issued_place   DateTime
+  status         ApprovalStatus @default(Pending)
+  isVerified     Boolean        @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  instructor Instructor @relation(fields: [instructor_id], references: [instructor_id])
+
+  @@map("citizen_ids_confirms")
+}
+
+model InstructorQualifications {
+  instructor_qualification_id String            @id @default(uuid()) @db.VarChar(50)
+  instructor_id               String            @db.VarChar(50)
+  specialization_id           String            @db.VarChar(50)
+  type                        QualificationType @default(Certificate)
+  title                       String            @db.VarChar(255)
+  issue_date                  DateTime
+  expire_date                 DateTime
+  status                      ApprovalStatus    @default(Pending)
+  isVerified                  Boolean           @default(false)
+
+  createdAt DateTime @default(now())
+  updateAt  DateTime @updatedAt
+
+  instructor     Instructor     @relation(fields: [instructor_id], references: [instructor_id])
+  specialization Specialization @relation(fields: [specialization_id], references: [specialization_id])
+
+  @@unique([instructor_id, specialization_id])
+  @@map("instructor_qualifications")
+}
+
+model Wallet {
+  wallet_id     String  @id @default(uuid()) @db.VarChar(50)
+  instructor_id String  @unique
+  balance       Decimal @db.Decimal(10, 2)
+
+  createAt DateTime @default(now())
+  updateAt DateTime @updatedAt
+
+  instructor         Instructor                    @relation(fields: [instructor_id], references: [instructor_id])
+  wallet_transaction InstructorCourseTransaction[]
+
+  @@map("wallets")
+}
+
+model InstructorCourseTransaction {
+  instructor_course_transaction_id String         @id @db.VarChar(50) @default(uuid())
+  course_id                        String         @db.VarChar(50)
+  wallet_id                        String         @db.VarChar(50)
+  amount                           Decimal        @db.Decimal(10, 2)
+  commision_rate                   Decimal        @db.Decimal(5, 2)
+  status                           ApprovalStatus @default(Pending)
+
+  createAt DateTime @default(now())
+  updateAt DateTime @updatedAt
+
+  belong_wallet Wallet @relation(fields: [wallet_id], references: [wallet_id])
+
+  @@map("instructor_course_transactions")
+}
+
+model Admin {
+  admin_id      String   @id @db.VarChar(50) @default(uuid())
+  user_id       String   @unique
+  admin_role_id String
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  user                      User                       @relation(fields: [user_id], references: [user_id])
+  adminRole                 AdminRole                  @relation(fields: [admin_role_id], references: [admin_role_id])
+  instructorSpecializations InstructorSpecializations?
+
+  @@map("admins")
+}
+
+model AdminRole {
+  admin_role_id String   @id @db.VarChar(50) @default(uuid())
+  role_name     String
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  admins      Admin[]
+  permissions AdminRolePermission[] @relation("RoleToPermission")
+
+  @@map("admin_roles")
+}
+
+model Permission {
+  permission_id   String   @id @db.VarChar(50) @default(uuid())
+  permission_name String
+  description     String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  adminRoles AdminRolePermission[] @relation("PermissionToAdminRole")
+
+  @@map("permissions")
+}
+
+model AdminRolePermission {
+  permission_id String   @default(uuid())
+  admin_role_id String 
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  permission       Permission @relation("PermissionToAdminRole", fields: [permission_id], references: [permission_id])
+  roleToPermission AdminRole? @relation("RoleToPermission", fields: [admin_role_id], references: [admin_role_id])
+
+  @@id([permission_id, admin_role_id])
+  @@map("admin_role_permissions")
+}
+
+model AccountSecurity {
+  account_security_id   String   @id  @db.VarChar(50) @default(uuid())
+  user_id               String   @unique
+  failed_login_attempts Int
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+
+  user User @relation(fields: [user_id], references: [user_id])
+
+  @@map("account_securities")
+}
+
+model Courses {
+  course_id   String   @id @db.VarChar(50) @default(uuid())
+  category_id String @db.VarChar(50)
+  level_id String @db.VarChar(50)
+  instructor_id String @db.VarChar(50)
+  status CourseStatus @default(Draft)
+  title String @db.VarChar(255)
+  slug String @db.VarChar(255)
+  description String @db.VarChar(255)
+  thumbnail String @db.VarChar(255)
+  price Decimal @db.Decimal(10,2)
+  sale_off Boolean @default(false)
+  hot Boolean @default(false)
+  tag Boolean @default(false)
+  available_language LanguageOptions @default(Vietnamese)
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  lecturer   User   @relation("LecturerCourses", fields: [lecturerId], references: [user_id])
+  lecturerId String
+
+  feedbacks   Feedback[]
+  course      LeanrerCourses[]
+  chapter Chapter[]
+  category Categories @relation(fields: [category_id],references: [category_id])
+  instructor Instructor @relation(fields: [instructor_id],references: [instructor_id])
+  @@map("courses")
+}
+model Categories {
+  category_id String @id @db.VarChar(50) @default(uuid()) 
+  category_name String @db.VarChar(255) 
+  slug String @db.VarChar(255)
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  courses Courses[]
+  @@map("categories")
+}
+/* model Level {
+  level_id String @id @default(uuid()) @db.VarChar(50)
+  level_name String @db.VarChar(255)
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  course Courses @relation(fields: [])
+  @@map("levels")
+} */
+model LeanrerCourses {
+  learner_course_id String                 @id @db.VarChar(50) @default(uuid())
+  learner_id        String                 @unique
+  course_id         String                 @unique
+  status            CourseEnrollmentStatus @default(Enrolled)
+  progress          Decimal                @db.Decimal(5, 2)
+  rating            Int
+  feedback          String                 @db.VarChar(255)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  learner Learner @relation(fields: [learner_id], references: [learner_id])
+  course Courses @relation(fields: [course_id],references: [course_id])
+  @@map("learner_courses")
+}
+model Chapter {
+  chapter_id String @id @db.VarChar(50) @default(uuid())
+  course_id String @db.VarChar(50)
+  chapter_title String @db.VarChar(255)
+
+  createAt  DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  belongCourse Courses @relation(fields: [course_id],references: [course_id])
+  @@map("chapters")
+  lessons Lesson[]
+}
+model Lesson {
+  lesson_id String  @id @default(uuid())
+  chapter_id String @unique
+  isCompleted Boolean @default(false)
+  duration String @db.VarChar(100)
+
+  createAt  DateTime @default(now())
+  updatedAt DateTime @updatedAt
+ 
+  belongChapter Chapter @relation(fields: [chapter_id],references: [chapter_id])
+  notes Note[]
+  @@map("lessons")
+}
+model Note {
+  note_id String @id @db.VarChar(50) @default(uuid())
+  lesson_id String  
+  user_id String 
+  time Int 
+  content String @db.VarChar(255)
+
+  createAt  DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  belongLesson Lesson @relation(fields: [lesson_id], references: [lesson_id])
+  @@map("notes")
+}
+
+model Feedback {
+  id      String  @id @default(uuid()) @db.VarChar(50)
+  courseId String
+  rating  Int 
+  comment String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user     User    @relation(fields: [userId], references: [user_id])
+  userId   String
+  course   Courses @relation(fields: [courseId], references: [course_id])
+  
+  @@map("feedbacks")
 }
