@@ -1,0 +1,24 @@
+name: CD Backend
+
+on:
+  workflow_run:
+    workflows: ["CI Pipeline"]
+    types:
+      - completed
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: SSH into EC2 and deploy backend
+        uses: appleboy/ssh-action@v0.1.4
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USERNAME }}
+          key: ${{ secrets.EC2_PRIVATE_KEY }}
+          script: |
+            docker pull ${{ secrets.DOCKER_USERNAME }}/learnary-backend:latest
+            docker stop learnary_backend || true
+            docker rm learnary_backend || true
+            docker run -d --name learnary_backend -p 4000:4000 ${{ secrets.DOCKER_USERNAME }}/learnary-backend:latest

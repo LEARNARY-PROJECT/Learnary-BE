@@ -18,7 +18,7 @@ export const createDefaultUserIfNoneExists = async () => {
             data: {
                 email: 'admin@example.com',
                 password: hashedPassword,
-                name: 'Admin User',
+                fullName: 'Admin User',
                 role: 'ADMIN',
             },
         });
@@ -27,12 +27,12 @@ export const createDefaultUserIfNoneExists = async () => {
     }
 };
 
-export const createUser = async (email: string, password: string, name: string) => {
+export const createUser = async (email: string, password: string, fullName: string) => {
     const user = await prisma.user.create({
         data: {
             email,
             password,
-            name,
+            fullName,
         },
     });
     return user;
