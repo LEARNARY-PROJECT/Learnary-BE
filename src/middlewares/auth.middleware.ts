@@ -23,7 +23,7 @@ export function authenticate(req: Request, res: Response, next: NextFunction): v
     const authHeader = req.headers.authorization;
 
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
-        res.status(401).json({ message: 'Unauthorized' });
+        res.status(401).json({ message: 'Unauthorized Header' });
         return;
     }
 
@@ -44,12 +44,10 @@ export function authenticate(req: Request, res: Response, next: NextFunction): v
 export function authorizeRoles(...allowedRoles: JwtPayload['role'][]) {
     return (req: Request, res: Response, next: NextFunction): void => {
         const user = req.user;
-
         if (!user || !allowedRoles.includes(user.role)) {
-            res.status(403).json({ message: 'Forbidden: Insufficient role' });
+            res.status(403).json({ message: 'Sorry: You are not allow with this role' });
             return;
         }
-
         next();
     };
 }

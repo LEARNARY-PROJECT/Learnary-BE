@@ -67,7 +67,6 @@ model User {
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
 
-  courses           Courses[]        @relation("LecturerCourses")
   feedbacks         Feedback[]
   learner           Learner?
   instructor        Instructor?
@@ -276,11 +275,11 @@ model AccountSecurity {
 model Courses {
   course_id   String   @id @db.VarChar(50) @default(uuid())
   category_id String @db.VarChar(50)
-  level_id String @db.VarChar(50)
+  level_id String @db.VarChar(50) @unique
   instructor_id String @db.VarChar(50)
   status CourseStatus @default(Draft)
   title String @db.VarChar(255)
-  slug String @db.VarChar(255)
+  slug String? @db.VarChar(255)
   description String @db.VarChar(255)
   thumbnail String @db.VarChar(255)
   price Decimal @db.Decimal(10,2)
@@ -292,12 +291,10 @@ model Courses {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
-  lecturer   User   @relation("LecturerCourses", fields: [lecturerId], references: [user_id])
-  lecturerId String
-
   feedbacks   Feedback[]
   course      LeanrerCourses[]
   chapter Chapter[]
+  level Level @relation(fields: [level_id], references: [level_id])
   category Categories @relation(fields: [category_id],references: [category_id])
   instructor Instructor @relation(fields: [instructor_id],references: [instructor_id])
   @@map("courses")
@@ -313,16 +310,17 @@ model Categories {
   courses Courses[]
   @@map("categories")
 }
-/* model Level {
+model Level {
   level_id String @id @default(uuid()) @db.VarChar(50)
   level_name String @db.VarChar(255)
+  course_id String @unique
 
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
-  course Courses @relation(fields: [])
+  course Courses? @relation()
   @@map("levels")
-} */
+}
 model LeanrerCourses {
   learner_course_id String                 @id @db.VarChar(50) @default(uuid())
   learner_id        String                 @unique
@@ -380,16 +378,16 @@ model Note {
 
 model Feedback {
   id      String  @id @default(uuid()) @db.VarChar(50)
-  courseId String
+  course_id String
+  user_id   String
   rating  Int 
   comment String?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  user     User    @relation(fields: [userId], references: [user_id])
-  userId   String
-  course   Courses @relation(fields: [courseId], references: [course_id])
+  user     User    @relation(fields: [user_id], references: [user_id])
+  course   Courses @relation(fields: [course_id], references: [course_id])
   
   @@map("feedbacks")
 }

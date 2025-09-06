@@ -2,13 +2,13 @@ import prisma from '../lib/client';
 import bcryptjs from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 
-export const registerUser = async (email: string, password: string, name: string) => {
+export const registerUser = async (email: string, password: string, fullName: string) => {
   const hashedPassword = await bcryptjs.hash(password, 10);
   const user = await prisma.user.create({
     data: {
       email,
       password: hashedPassword,
-      name,
+      fullName,
     },
   });
   return user;
@@ -27,6 +27,6 @@ export const loginUser = async (email: string, password: string) => {
   if (!process.env.JWT_SECRET) {
     throw new Error('JWT_SECRET is not defined');
   }
-  const token = jwt.sign({ id: user.id, email: user.email, role: user.role }, process.env.JWT_SECRET, { expiresIn: '1h' });
+  const token = jwt.sign({ id: user.user_id, email: user.email, role: user.role }, process.env.JWT_SECRET, { expiresIn: '1h' });
   return token;
 };
