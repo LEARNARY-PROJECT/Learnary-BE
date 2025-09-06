@@ -1,0 +1,1 @@
+- Trong hàm create của mỗi service dùng Omit (trích các kiểu dữ liệu của T (param1) và loại bỏ những Key dữ liệu không cần thiết (param2) trong T để tạo ra 1 type mới) để khi code không bắt buộc phải điền vào các trường đó vì các trường đó là các trường tự sinh ra.
