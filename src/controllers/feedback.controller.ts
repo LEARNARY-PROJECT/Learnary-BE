@@ -3,14 +3,11 @@ import { createFeedback as create, getFeedbackByCourse as byCourse } from '../se
 
 export const createFeedback = async (req: Request, res: Response): Promise<Response | any> => {
     try {
-        const userId = req.user!.id;
-        const { courseId, rating, comment } = req.body;
-
-        if (!courseId || rating == null || !comment) {
-            return res.status(400).json({ message: 'courseId, rating, and comment are required' });
+        const { course_id, rating, comment, user_id } = req.body;
+        if (!course_id || !rating|| !comment) {
+            return res.status(400).json({ message: 'Missing field required in controller!' });
         }
-
-        const feedback = await create({ userId, courseId, rating, comment });
+        const feedback = await create({ user_id, course_id, rating, comment });
         res.status(201).json(feedback);
     } catch (error) {
         res.status(500).json({ message: 'Feedback submission failed' });

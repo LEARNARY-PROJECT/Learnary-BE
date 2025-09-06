@@ -1,22 +1,39 @@
+
 import prisma from "../lib/client";
 
 export const createCourse = async (data: {
-    title: string;
-    description: string;
-    thumbnail: string;
-    price: number;
-    instructorId: string;
+  instructor_id: string;
+  category_id: string;
+  level_id: string;
+  title: string;
+  description: string;
+  thumbnail: string;
+  price: number;
 }) => {
-    return await prisma.course.create({
-        data,
-    });
+  return await prisma.courses.create({
+    data: {
+      instructor_id: data.instructor_id,
+      category_id: data.category_id,
+      level_id: data.level_id,
+      title: data.title,
+      description: data.description,
+      thumbnail: data.thumbnail,
+      price: data.price,
+      slug: data.title.toLowerCase().replace(/\s+/g, "-"),
+    },
+  });
 };
-export const getAllCourses = () => prisma.course.findMany({ include: { lessons: true, feedbacks: true } });
+export const getAllCourses = () =>
+  prisma.courses.findMany({ include: { chapter: true, feedbacks: true } });
 
-export const getCourseById = (id: string) =>
-    prisma.course.findUnique({ where: { id }, include: { lessons: true, feedbacks: true } });
+export const getCourseById = (course_id: string) =>
+  prisma.courses.findUnique({
+    where: { course_id },
+    include: { chapter: true, feedbacks: true },
+  });
 
-export const updateCourse = (id: string, data: any) =>
-    prisma.course.update({ where: { id }, data });
+export const updateCourse = (course_id: string, data: any) =>
+  prisma.courses.update({ where: { course_id }, data });
 
-export const deleteCourse = (id: string) => prisma.course.delete({ where: { id } });
+export const deleteCourse = (course_id: string) =>
+  prisma.courses.delete({ where: { course_id } });

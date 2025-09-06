@@ -15,7 +15,7 @@ const options: swaggerJsdoc.Options = {
     },
     servers: [
       {
-        // Dùng cổng đúng khi chạy trong Docker hoặc localhost
+        //Nhớ dùng cổng đúng khi chạy trong Docker hoặc localhost
         url: `${process.env.BASE_URL || "http://localhost:4000"}`,
         description: "Development server",
       },

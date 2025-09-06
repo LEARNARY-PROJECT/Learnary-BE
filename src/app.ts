@@ -1,13 +1,11 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
-import authRoutes from "./routes/auth.routes";
-import userRoutes from "./routes/user.routes";
 import { setupSwagger } from "./docs/swagger";
 import { createDefaultUserIfNoneExists } from "./services/user.service";
+import authRoutes from "./routes/auth.routes";
+import userRoutes from "./routes/user.routes";
 import courseRoutes from "./routes/course.routes";
-import lessonRoutes from "./routes/lesson.routes";
-import enrollmentRoutes from "./routes/enrollment.routes";
 import feedbackRoutes from "./routes/feedback.routes";
 
 dotenv.config();
@@ -29,15 +27,12 @@ app.use(express.json());
 app.use("/api/auth", authRoutes);
 app.use("/api", userRoutes);
 app.use("/api", courseRoutes);
-app.use("/api", lessonRoutes);
-app.use("/api", enrollmentRoutes);
 app.use("/api", feedbackRoutes);
-//test Routes
+//test routes
 app.get("/", (req, res) => {
   res.send("Backend đang chạy rất bình tĩnh và bình thường");
 });
 
-// Khởi tạo user mặc định nếu không có ít nhất 1 user có role ADMIN
 createDefaultUserIfNoneExists()
   .then(() => {
     console.log(
