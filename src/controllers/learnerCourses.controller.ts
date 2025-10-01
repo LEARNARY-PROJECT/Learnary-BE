@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import * as LeanrerCoursesService from "../services/leanrerCourses.service";
+import * as LeanrerCoursesService from "../services/learnerCourses.service";
 import { success, failure } from "../utils/response";
 
 export const create = async (req: Request, res: Response) => {

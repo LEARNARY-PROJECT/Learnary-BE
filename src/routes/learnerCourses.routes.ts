@@ -1,6 +1,6 @@
 import express from "express";
 import { authenticate, authorizeRoles } from "../middlewares/auth.middleware";
-import { create, getAll, getById, update, remove } from "../controllers/leanrerCourses.controller";
+import { create, getAll, getById, update, remove } from "../controllers/learnerCourses.controller";
 
 const router = express.Router();
 

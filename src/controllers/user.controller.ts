@@ -14,7 +14,7 @@ export const create = async (req: Request, res: Response) => {
     }
 };
 
-export const getAll = async (res: Response) => {
+export const getAll = async (_req: Request, res: Response) => {
     try {
         const users = await getAllUsers();
         res.status(200).json(users);
