@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import { createCourse, deleteCourse, getAllCourses, getCourseById, updateCourse } from '../services/course.service';
 
 export const create = async (req: Request, res: Response): Promise<Response | any> => {
-    const { title, description, thumbnail, price, instructor_id,category_id,level_id } = req.body;
+    const { title, description, thumbnail, price, instructor_id,category_id,level_id, requirement } = req.body;
     const instructorId = req.user?.id;   
     if (!instructorId) {
         return res.status(400).json({ message: 'Instructor ID is missing' });
@@ -16,6 +16,7 @@ export const create = async (req: Request, res: Response): Promise<Response | an
             instructor_id,  
             category_id,
             level_id,
+            requirement,
         });
         return res.status(201).json(newCourse);
     } catch (error) {

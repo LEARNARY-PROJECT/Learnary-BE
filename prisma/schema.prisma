@@ -280,6 +280,7 @@ model Courses {
   status CourseStatus @default(Draft)
   title String @db.VarChar(255)
   slug String? @db.VarChar(255)
+  requirement String? @db.VarChar(255)
   description String @db.VarChar(255)
   thumbnail String @db.VarChar(255)
   price Decimal @db.Decimal(10,2)
@@ -352,6 +353,7 @@ model Chapter {
 model Lesson {
   lesson_id String  @id @default(uuid())
   chapter_id String @unique
+  video_url String? @unique
   isCompleted Boolean @default(false)
   duration String @db.VarChar(100)
 

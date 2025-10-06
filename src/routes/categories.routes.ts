@@ -26,7 +26,7 @@ const router = express.Router();
  *       401:
  *         description: Unauthorized
  */
-router.post("/categories", authenticate, authorizeRoles("ADMIN"), create);
+router.post("/categories/create", authenticate, authorizeRoles("ADMIN"), create);
 
 /**
  * @openapi
@@ -120,6 +120,6 @@ router.put("/categories/:id", authenticate, authorizeRoles("ADMIN"), update);
  *       401:
  *         description: Unauthorized
  */
-router.delete("/categories/:id", authenticate, authorizeRoles("ADMIN"), remove);
+router.delete("/categories/delete/:id", authenticate, authorizeRoles("ADMIN"), remove);
 
 export default router;

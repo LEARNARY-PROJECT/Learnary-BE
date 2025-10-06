@@ -245,6 +245,7 @@ const options: swaggerJsdoc.Options = {
           properties: {
             lesson_id: { type: "string" },
             chapter_id: { type: "string" },
+            video_url: {type:"string"},
             isCompleted: { type: "boolean" },
             duration: { type: "string" },
             createAt: { type: "string", format: "date-time" },
@@ -260,6 +261,36 @@ const options: swaggerJsdoc.Options = {
             time: { type: "integer" },
             content: { type: "string" },
             createAt: { type: "string", format: "date-time" },
+            updatedAt: { type: "string", format: "date-time" },
+          },
+        },
+        Course: {
+          type: "object",
+          properties: {
+            course_id: { type: "string" },
+            category_id: { type: "string" },
+            level_id: { type: "string" },
+            instructor_id: { type: "string" },
+            status: { 
+              type: "string", 
+              enum: ["Draft", "Pubished", "Archived"],
+              example: "Draft"
+            },
+            title: { type: "string" },
+            slug: { type: "string" },
+            requirement: { type: "string" },
+            description: { type: "string" },
+            thumbnail: { type: "string" },
+            price: { type: "number", format: "decimal" },
+            sale_off: { type: "boolean", default: false },
+            hot: { type: "boolean", default: false },
+            tag: { type: "boolean", default: false },
+            available_language: { 
+              type: "string", 
+              enum: ["English", "Vietnamese"],
+              example: "Vietnamese"
+            },
+            createdAt: { type: "string", format: "date-time" },
             updatedAt: { type: "string", format: "date-time" },
           },
         },

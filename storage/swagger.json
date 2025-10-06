@@ -564,6 +564,9 @@
           "chapter_id": {
             "type": "string"
           },
+          "video_url": {
+            "type": "string"
+          },
           "isCompleted": {
             "type": "boolean"
           },
@@ -608,6 +611,91 @@
           }
         }
       },
+      "Course": {
+        "type": "object",
+        "properties": {
+          "course_id": {
+            "type": "string"
+          },
+          "category_id": {
+            "type": "string"
+          },
+          "level_id": {
+            "type": "string"
+          },
+          "instructor_id": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "Draft",
+              "Pubished",
+              "Archived"
+            ],
+            "example": "Draft"
+          },
+          "title": {
+            "type": "string",
+            "example": "Introduction to AI"
+          },
+          "slug": {
+            "type": "string"
+          },
+          "requirement": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string",
+            "example": "A beginner's course on Artificial Intelligence."
+          },
+          "thumbnail": {
+            "type": "string",
+            "example": "https://example.com/image.jpg"
+          },
+          "price": {
+            "type": "number",
+            "format": "decimal",
+            "example": 49.99
+          },
+          "sale_off": {
+            "type": "boolean",
+            "default": false
+          },
+          "hot": {
+            "type": "boolean",
+            "default": false
+          },
+          "tag": {
+            "type": "boolean",
+            "default": false
+          },
+          "available_language": {
+            "type": "string",
+            "enum": [
+              "English",
+              "Vietnamese"
+            ],
+            "example": "Vietnamese"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "id": {
+            "type": "string",
+            "example": "d1f3a488-3c9e-4fa2-9c01-187f304edf5d"
+          },
+          "instructorId": {
+            "type": "string",
+            "example": "8c58f8f5-f91a-4bd6-9d34-4567867ecf89"
+          }
+        }
+      },
       "Feedback": {
         "type": "object",
         "properties": {
@@ -625,43 +713,6 @@
           },
           "comment": {
             "type": "string"
-          },
-          "createdAt": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "updatedAt": {
-            "type": "string",
-            "format": "date-time"
-          }
-        }
-      },
-      "Course": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string",
-            "example": "d1f3a488-3c9e-4fa2-9c01-187f304edf5d"
-          },
-          "title": {
-            "type": "string",
-            "example": "Introduction to AI"
-          },
-          "description": {
-            "type": "string",
-            "example": "A beginner's course on Artificial Intelligence."
-          },
-          "thumbnail": {
-            "type": "string",
-            "example": "https://example.com/image.jpg"
-          },
-          "price": {
-            "type": "number",
-            "example": 49.99
-          },
-          "instructorId": {
-            "type": "string",
-            "example": "8c58f8f5-f91a-4bd6-9d34-4567867ecf89"
           },
           "createdAt": {
             "type": "string",

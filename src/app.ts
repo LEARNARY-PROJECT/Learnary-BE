@@ -37,10 +37,11 @@ app.use(
   cors({
     origin: process.env.CORS_ORIGIN || "http://localhost:3000",
     methods: ["GET", "POST", "PUT", "DELETE"],
-    allowedHeaders: ["Content-Type", "Authorization"],
+    allowedHeaders: ["Content-Type", "Authorization","BearerToken"],
   })
 );
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 //Routes
 app.use("/api/auth", authRoutes);
