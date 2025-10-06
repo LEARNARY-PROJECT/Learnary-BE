@@ -2,6 +2,16 @@ import prisma from "../lib/client";
 import { Categories } from "@prisma/client";
 
 export const createCategory = async (data: Omit<Categories, 'category_id' | 'createdAt' | 'updatedAt'>) => {
+  // Validation
+  if (!data.category_name || !data.slug) {
+    throw new Error("category_name and slug are required");
+  }
+  if (data.category_name.length < 2 || data.category_name.length > 255) {
+    throw new Error("category_name must be between 2 and 255 characters");
+  }
+  if (data.slug.length < 2 || data.slug.length > 255) {
+    throw new Error("slug must be between 2 and 255 characters");
+  }
   return prisma.categories.create({ data });
 };
 

@@ -6,6 +6,7 @@ export const createCourse = async (data: {
   category_id: string;
   level_id: string;
   title: string;
+  requirement:string;
   description: string;
   thumbnail: string;
   price: number;
@@ -16,6 +17,7 @@ export const createCourse = async (data: {
       category_id: data.category_id,
       level_id: data.level_id,
       title: data.title,
+      requirement:data.requirement,
       description: data.description,
       thumbnail: data.thumbnail,
       price: data.price,
