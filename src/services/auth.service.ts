@@ -19,6 +19,7 @@ export const loginUser = async (email: string, password: string) => {
     where: { email },
   });
 
+  
   if (!user) throw new Error('User not found');
 
   const isValidPassword = await bcryptjs.compare(password, user.password);

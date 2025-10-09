@@ -31,7 +31,6 @@ export function authenticate(req: Request, res: Response, next: NextFunction): v
 
     try {
         const decoded = jwt.verify(token, JWT_SECRET) as JwtPayload;
-        console.log('Decoded JWT:', decoded);  // Log thông tin đã giải mã
         req.user = decoded;  // Lưu thông tin người dùng vào req.user
         next();
     } catch (error) {

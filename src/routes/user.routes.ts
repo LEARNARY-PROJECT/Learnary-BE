@@ -32,7 +32,7 @@ const router = express.Router();
  *       400:
  *         description: Invalid input
  */
-router.post('/users', authenticate, authorizeRoles('ADMIN'), create);
+router.post('/users/create', authenticate, authorizeRoles('ADMIN'), create);
 
 /**
  * @openapi
