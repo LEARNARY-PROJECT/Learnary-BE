@@ -1,7 +1,6 @@
 import { Request, RequestHandler, Response } from 'express';
 import { createUser, getAllUsers, getUserById, deleteUser } from '../services/user.service';
 import { JwtPayload } from '../middlewares/auth.middleware';
-import { User } from '@prisma/client';
 
 export const create = async (req: Request, res: Response) => {
     try {
@@ -26,7 +25,7 @@ export const getAll = async (_req: Request, res: Response) => {
 
 export const getById: RequestHandler = async (req,res) => {
     const userId = req.params.id;
-    // Check role của user hiện tại 
+    // Check role 
     const requestUser: JwtPayload = req.user!;
     if (requestUser.role !== 'ADMIN' && requestUser.id !== userId) {
         res.status(403).json({ message: 'Forbidden: You cannot access this user data' });
