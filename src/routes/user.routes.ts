@@ -1,5 +1,5 @@
 import express from 'express';
-import { create, getAll, getById, deleteUserByID } from '../controllers/user.controller';
+import { create, getAll, getById, deleteUserByID,updateUserRole } from '../controllers/user.controller';
 import { authenticate, authorizeRoles } from '../middlewares/auth.middleware';
 
 const router = express.Router();
@@ -33,7 +33,7 @@ const router = express.Router();
  *         description: Invalid input
  */
 router.post('/users/create', authenticate, authorizeRoles('ADMIN'), create);
-
+router.patch('/users/update-role/:id', authenticate, authorizeRoles('ADMIN'), updateUserRole);
 /**
  * @openapi
  * /api/users:
@@ -58,7 +58,26 @@ router.post('/users/create', authenticate, authorizeRoles('ADMIN'), create);
  *                     type: string
  */
 router.get('/users', authenticate, authorizeRoles('ADMIN', 'INSTRUCTOR'), getAll);
-
+/**
+ * @openapi
+ * /api/users/{id}:
+ *   delete:
+ *     summary: Delete user by ID
+ *     tags: [User]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: The user ID
+ *     responses:
+ *       200:
+ *         description: User deleted successfully
+ *       404:
+ *         description: User not found
+ */
+router.delete('/users/:id',authenticate,authorizeRoles('ADMIN'),deleteUserByID);
 /**
  * @openapi
  * /api/users/{id}:
@@ -92,30 +111,8 @@ router.get('/users', authenticate, authorizeRoles('ADMIN', 'INSTRUCTOR'), getAll
 router.get(
     '/users/:id',
     authenticate,
-    authorizeRoles('ADMIN', 'INSTRUCTOR'), // Phân quyền cho role ADMIN và INSTRUCTOR
+    authorizeRoles('ADMIN', 'INSTRUCTOR'), 
     getById
 );
-
-
-/**
- * @openapi
- * /api/users/{id}:
- *   delete:
- *     summary: Delete user by ID
- *     tags: [User]
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         schema:
- *           type: string
- *         description: The user ID
- *     responses:
- *       200:
- *         description: User deleted successfully
- *       404:
- *         description: User not found
- */
-router.delete('/users/:id', deleteUserByID);
 
 export default router;

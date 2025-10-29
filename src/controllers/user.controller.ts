@@ -1,5 +1,5 @@
 import { Request, RequestHandler, Response } from 'express';
-import { createUser, getAllUsers, getUserById, deleteUser } from '../services/user.service';
+import { createUser, getAllUsers, getUserById, deleteUser, updateUserRoleService } from '../services/user.service';
 import { JwtPayload } from '../middlewares/auth.middleware';
 
 export const create = async (req: Request, res: Response) => {
@@ -23,7 +23,7 @@ export const getAll = async (_req: Request, res: Response) => {
     }
 };
 
-export const getById: RequestHandler = async (req,res) => {
+export const getById: RequestHandler = async (req, res) => {
     const userId = req.params.id;
     // Check role 
     const requestUser: JwtPayload = req.user!;
@@ -37,20 +37,38 @@ export const getById: RequestHandler = async (req,res) => {
             res.status(404).json({ error: 'User not found.' });
             return
         }
-         res.status(200).json(user);
+        res.status(200).json(user);
     } catch (err) {
         console.error("Get user by id error", err);
-         res.status(500).json({ error: 'Failed to fetch user.' });
+        res.status(500).json({ error: 'Failed to fetch user.' });
     }
 };
 
 export const deleteUserByID = async (req: Request, res: Response) => {
     const userId = req.params.id;
     try {
+        if(!userId) {
+            res.status(400).json({ error: 'User ID is required.' });
+            return;
+        } 
         const deletedUser = await deleteUser(userId);
         res.status(200).json(deletedUser);
     } catch (err) {
         console.error("Get user by id error", err);
         res.status(500).json({ error: 'Failed to delete user.' });
+    }
+}
+export const updateUserRole = async (req: Request, res: Response) => {
+    const userId = req.params.id;
+    const { role } = req.body;
+    try {
+        if (role !== 'ADMIN' && role !== 'INSTRUCTOR' && role !== 'LEARNER') {
+            res.status(400).json({ error: 'Invalid role specified.' });
+        }
+        const updatedUser = await updateUserRoleService(userId, role);
+         res.status(200).json({ updatedUser });
+    } catch (err) {
+        console.error("Update user role error", err);
+        res.status(500).json({ error: 'Failed to update user role.' });
     }
 }
