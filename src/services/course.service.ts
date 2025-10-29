@@ -11,7 +11,7 @@ export const createCourse = async (data: {
   thumbnail: string;
   price: number;
 }) => {
-  return await prisma.courses.create({
+  return await prisma.course.create({
     data: {
       instructor_id: data.instructor_id,
       category_id: data.category_id,
@@ -26,16 +26,16 @@ export const createCourse = async (data: {
   });
 };
 export const getAllCourses = () =>
-  prisma.courses.findMany({ include: { chapter: true, feedbacks: true } });
+  prisma.course.findMany({ include: { chapter: true, feedbacks: true } });
 
 export const getCourseById = (course_id: string) =>
-  prisma.courses.findUnique({
+  prisma.course.findUnique({
     where: { course_id },
     include: { chapter: true, feedbacks: true },
   });
 
 export const updateCourse = (course_id: string, data: any) =>
-  prisma.courses.update({ where: { course_id }, data });
+  prisma.course.update({ where: { course_id }, data });
 
 export const deleteCourse = (course_id: string) =>
-  prisma.courses.delete({ where: { course_id } });
+  prisma.course.delete({ where: { course_id } });

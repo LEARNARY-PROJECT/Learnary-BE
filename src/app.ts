@@ -19,13 +19,17 @@ import specializationRoutes from "./routes/specialization.routes";
 import citizenIdsConfirmRoutes from "./routes/citizenIdsConfirm.routes";
 import instructorQualificationsRoutes from "./routes/instructorQualifications.routes";
 import walletRoutes from "./routes/wallet.routes";
-import instructorCourseTransactionRoutes from "./routes/instructorCourseTransaction.routes";
 import categoriesRoutes from "./routes/categories.routes";
 import levelRoutes from "./routes/level.routes";
 import learnerCoursesRoutes from "./routes/learnerCourses.routes";
 import chapterRoutes from "./routes/chapter.routes";
 import lessonRoutes from "./routes/lesson.routes";
 import noteRoutes from "./routes/note.routes";
+import quizRoutes from "./routes/quiz.routes";
+import questionRoutes from "./routes/question.routes";
+import optionsRoutes from "./routes/options.routes";
+import answerRoutes from "./routes/answer.routes";
+import submissionRoutes from "./routes/submission.routes";
 
 dotenv.config();
 
@@ -36,7 +40,7 @@ const port = process.env.PORT || 4000;
 app.use(
   cors({
     origin: process.env.CORS_ORIGIN || "http://localhost:3000",
-    methods: ["GET", "POST", "PUT", "DELETE"],
+    methods: ["GET", "POST", "PUT", "DELETE","PATCH"],
     allowedHeaders: ["Content-Type", "Authorization","BearerToken"],
   })
 );
@@ -60,13 +64,17 @@ app.use("/api", specializationRoutes);
 app.use("/api", citizenIdsConfirmRoutes);
 app.use("/api", instructorQualificationsRoutes);
 app.use("/api", walletRoutes);
-app.use("/api", instructorCourseTransactionRoutes);
 app.use("/api", categoriesRoutes);
 app.use("/api", levelRoutes);
 app.use("/api", learnerCoursesRoutes);
 app.use("/api", chapterRoutes);
 app.use("/api", lessonRoutes);
 app.use("/api", noteRoutes);
+app.use("/api", quizRoutes);
+app.use("/api", questionRoutes);
+app.use("/api", optionsRoutes);
+app.use("/api", answerRoutes);
+app.use("/api", submissionRoutes);
 
 //test routes
 app.get("/", (req, res) => {

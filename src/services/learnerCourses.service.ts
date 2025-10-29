@@ -1,22 +1,22 @@
 import prisma from "../lib/client";
-import { LeanrerCourses } from "@prisma/client";
+import { LearnerCourses } from "@prisma/client";
 
-export const createLeanrerCourse = async (data: Omit<LeanrerCourses, 'learner_course_id' | 'createdAt' | 'updatedAt'>) => {
-  return prisma.leanrerCourses.create({ data });
+export const createLearnerCourse = async (data: Omit<LearnerCourses, 'createdAt' | 'updatedAt'>) => {
+  return prisma.learnerCourses.create({ data });
 };
 
-export const getLeanrerCourseById = async (learner_course_id: string) => {
-  return prisma.leanrerCourses.findUnique({ where: { learner_course_id } });
+export const getLearnerCourseById = async (learner_id: string, course_id:string) => {
+  return prisma.learnerCourses.findUnique({ where: { learner_id, course_id } });
 };
 
-export const getAllLeanrerCourses = async () => {
-  return prisma.leanrerCourses.findMany();
+export const getAllLearnerCourses = async () => {
+  return prisma.learnerCourses.findMany();
 };
 
-export const updateLeanrerCourse = async (learner_course_id: string, data: Partial<LeanrerCourses>) => {
-  return prisma.leanrerCourses.update({ where: { learner_course_id }, data });
+export const updateLearnerCourse = async (learner_id: string, course_id:string, data: Partial<LearnerCourses>) => {
+  return prisma.learnerCourses.update({ where: { learner_id, course_id }, data });
 };
 
-export const deleteLeanrerCourse = async (learner_course_id: string) => {
-  return prisma.leanrerCourses.delete({ where: { learner_course_id } });
+export const deleteLearnerCourse = async (learner_id: string, course_id:string) => {
+  return prisma.learnerCourses.delete({ where: { learner_id, course_id } });
 };

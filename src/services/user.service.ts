@@ -1,6 +1,9 @@
 import bcryptjs from "bcryptjs";
 import prisma from "../lib/client";
 import { User, Learner } from "@prisma/client";
+import type { Role } from "@prisma/client";
+
+
 export const createDefaultUserIfNoneExists = async () => {
   const userCount = await prisma.user.count();
   const adminCount = await prisma.user.count({
@@ -70,3 +73,12 @@ export const deleteUser = async (id: string):Promise<User> => {
   });
   return user;
 };
+
+
+export const updateUserRoleService = async (id: string, role: Role): Promise<User> => {
+  const updatedUser = await prisma.user.update({
+    where: {user_id:id},
+    data: {role: role},
+  });
+  return updatedUser;
+}

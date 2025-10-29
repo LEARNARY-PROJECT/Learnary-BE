@@ -31,13 +31,12 @@ export function authenticate(req: Request, res: Response, next: NextFunction): v
 
     try {
         const decoded = jwt.verify(token, JWT_SECRET) as JwtPayload;
-        req.user = decoded;  // Lưu thông tin người dùng vào req.user
+        req.user = decoded; 
         next();
     } catch (error) {
         res.status(401).json({ message: 'Invalid token' });
     }
 }
-
 
 // Middleware phân quyền dựa vào role
 export function authorizeRoles(...allowedRoles: JwtPayload['role'][]) {
