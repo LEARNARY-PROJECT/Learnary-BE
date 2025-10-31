@@ -14,7 +14,7 @@ declare global {
             user?: JwtPayload;
         }
     }
-}
+} 
 
 const JWT_SECRET = process.env.JWT_SECRET || "12736571242634823984126348239841";
 

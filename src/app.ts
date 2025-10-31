@@ -30,6 +30,8 @@ import questionRoutes from "./routes/question.routes";
 import optionsRoutes from "./routes/options.routes";
 import answerRoutes from "./routes/answer.routes";
 import submissionRoutes from "./routes/submission.routes";
+import passport from "passport";
+import "./lib/passport";
 
 dotenv.config();
 
@@ -46,6 +48,7 @@ app.use(
 );
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(passport.initialize());
 
 //Routes
 app.use("/api/auth", authRoutes);

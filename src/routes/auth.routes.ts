@@ -1,6 +1,7 @@
 // src/routes/auth.route.ts
 import express from 'express';
-import { register, login } from '../controllers/auth.controller';
+import passport from 'passport';
+import { register, login, handleGoogleCallback } from '../controllers/auth.controller';
 
 const router = express.Router();
 
@@ -68,4 +69,43 @@ router.post('/register', register);
  */
 router.post('/login', login);
 
+/**
+ * @openapi
+ * /api/auth/google:
+ * get:
+ * summary: Start Google OAuth flow
+ * tags: [Auth]
+ * description: Redirects the user to Google's authentication page.
+ * responses:
+ * 302:
+ * description: Redirecting to Google.
+ */
+router.get(
+  '/google',
+  passport.authenticate('google', {
+    scope: ['profile', 'email'],
+    session: false,
+  })
+);
+
+/**
+ * @openapi
+ * /api/auth/google/callback:
+ * get:
+ * summary: Google OAuth callback
+ * tags: [Auth]
+ * description: Google redirects back to this endpoint after authentication.
+ * responses:
+ * 302:
+ * description: Redirecting to Frontend with token (on success) or to login page (on failure).
+ */
+router.get(
+  '/google/callback',
+  passport.authenticate('google', {
+    failureRedirect: `${process.env.FRONTEND_URL}/login?error=google_failed`,
+    session: false,
+  }),
+  // Nếu thành công, gọi controller
+  handleGoogleCallback 
+);
 export default router;
