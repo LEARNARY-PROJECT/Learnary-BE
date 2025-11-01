@@ -1,0 +1,10 @@
+# BASE_URL=
+# CORS_ORIGIN=
+FRONTEND_URL=http://localhost:3000
+BACKEND_URL=http://localhost:4000
+DATABASE_URL=postgresql://postgres:12345@db:5433/learning_platform
+DATABASE_URL_LOCAL=postgresql://postgres:12345@localhost:5433/learning_platform
+JWT_SECRET=12736571242634823984126348239841
+PORT=4000
+GOOGLE_CLIENT_ID=634527843331-r24jv8faeshgq1rlbvbljogm0o9ee7cu.apps.googleusercontent.com
+GOOGLE_CLIENT_SECRET=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
