@@ -1646,6 +1646,34 @@
         }
       }
     },
+    "/api/auth/google": {
+      "get": {
+        "summary": "Start Google OAuth flow",
+        "tags": [
+          "Auth"
+        ],
+        "description": "Redirects the user to Google's authentication page.",
+        "responses": {
+          "302": {
+            "description": "Redirecting to Google."
+          }
+        }
+      }
+    },
+    "/api/auth/google/callback": {
+      "get": {
+        "summary": "Google OAuth callback",
+        "tags": [
+          "Auth"
+        ],
+        "description": "Google redirects back to this endpoint after authentication.",
+        "responses": {
+          "302": {
+            "description": "Redirecting to Frontend with token (on success) or to login page (on failure)."
+          }
+        }
+      }
+    },
     "/api/categories": {
       "post": {
         "summary": "Create a new category",

@@ -72,13 +72,13 @@ router.post('/login', login);
 /**
  * @openapi
  * /api/auth/google:
- * get:
- * summary: Start Google OAuth flow
- * tags: [Auth]
- * description: Redirects the user to Google's authentication page.
- * responses:
- * 302:
- * description: Redirecting to Google.
+ *   get:
+ *     summary: Start Google OAuth flow
+ *     tags: [Auth]
+ *     description: Redirects the user to Google's authentication page.
+ *     responses:
+ *       302:
+ *         description: Redirecting to Google.
  */
 router.get(
   '/google',
@@ -91,13 +91,13 @@ router.get(
 /**
  * @openapi
  * /api/auth/google/callback:
- * get:
- * summary: Google OAuth callback
- * tags: [Auth]
- * description: Google redirects back to this endpoint after authentication.
- * responses:
- * 302:
- * description: Redirecting to Frontend with token (on success) or to login page (on failure).
+ *   get:
+ *     summary: Google OAuth callback
+ *     tags: [Auth]
+ *     description: Google redirects back to this endpoint after authentication.
+ *     responses:
+ *       302:
+ *         description: Redirecting to Frontend with token (on success) or to login page (on failure).
  */
 router.get(
   '/google/callback',

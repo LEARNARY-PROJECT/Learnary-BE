@@ -2,7 +2,6 @@ import passport from "passport";
 import { Strategy as GoogleStrategy, Profile } from "passport-google-oauth20";
 import { findOrCreateGoogleUser} from "../services/auth.service";
 
-// Kiểm tra các biến môi trường
 if (!process.env.GOOGLE_CLIENT_ID || !process.env.GOOGLE_CLIENT_SECRET) {
   throw new Error('Google OAuth Client ID hoặc Secret chưa được cài đặt trong .env');
 }
