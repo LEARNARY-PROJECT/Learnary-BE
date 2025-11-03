@@ -1,7 +1,7 @@
 // src/routes/auth.route.ts
 import express from 'express';
 import passport from 'passport';
-import { register, login, handleGoogleCallback } from '../controllers/auth.controller';
+import { register, login, handleGoogleCallback,handleRefreshToken, handleLogout } from '../controllers/auth.controller';
 
 const router = express.Router();
 
@@ -108,4 +108,37 @@ router.get(
   // Nếu thành công, gọi controller
   handleGoogleCallback 
 );
+
+
+
+/**
+ * @openapi
+ * /api/auth/refresh:
+ * post:
+ * summary: Refresh the access token
+ * tags: [Auth]
+ * description: Uses the HttpOnly refresh_token cookie to get a new access token.
+ * responses:
+ * 200:
+ * description: A new access token.
+ * 401:
+ * description: No refresh token provided.
+ * 403:
+ * description: Invalid or expired refresh token.
+ */
+router.post('/refresh', handleRefreshToken);
+
+/**
+ * @openapi
+ * /api/auth/logout:
+ * post:
+ * summary: Logout the user
+ * tags: [Auth]
+ * description: Clears the HttpOnly refresh_token cookie.
+ * responses:
+ * 200:
+ * description: Logged out successfully.
+ */
+router.post('/logout', handleLogout); // 👈 THÊM ROUTE NÀY
+
 export default router;

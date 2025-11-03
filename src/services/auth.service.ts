@@ -5,21 +5,25 @@ import jwt from 'jsonwebtoken';
 import { profile } from 'node:console';
 import { Profile } from 'passport-google-oauth20';
 
-export const generateJwtToken = (user: User): string => {
-  const secret = process.env.JWT_SECRET;
-  if (!secret) {
-    throw new Error('JWT_SECRET is not defined'); 
+const JWT_SECRET = process.env.JWT_SECRET;
+const REFRESH_SECRET = process.env.REFRESH_SECRET;
+
+export const generateAccessToken = (user: User): string => {
+  if (!JWT_SECRET) {
+    throw new Error('JWT_SECRET is not defined');
   }
-  
   const payload = {
-    id: user.user_id,
-    email: user.email,
-    role: user.role,
-    fullName: user.fullName,
+    id: user.user_id, email: user.email, role: user.role, fullName: user.fullName,
   };
-  
-  const token = jwt.sign(payload, secret, { expiresIn: '1h' });
-  return token;
+  return jwt.sign(payload, JWT_SECRET, { expiresIn: '15m' }); 
+};
+
+export const generateRefreshToken = (user: User): string => {
+  if (!REFRESH_SECRET) {
+    throw new Error('REFRESH_SECRET is not defined');
+  }
+  const payload = { id: user.user_id, role: user.role }; 
+  return jwt.sign(payload, REFRESH_SECRET, { expiresIn: '1h' });
 };
 
 export const registerUser = async (email: string, password: string, fullName: string) => {
@@ -42,7 +46,7 @@ export const loginUser = async (email: string, password: string) => {
   if (!user.password) throw new Error('Tài khoản này được đăng ký qua Google. Vui lòng đăng nhập bằng Google.');
   const isValidPassword = await bcryptjs.compare(password, user.password);
   if (!isValidPassword) throw new Error('Mật khẩu không hợp lệ.');
-  return generateJwtToken(user);
+  return user;
 };  
 
 export const findOrCreateGoogleUser = async (profile: Profile): Promise<User> => {

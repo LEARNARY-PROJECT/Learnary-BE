@@ -32,6 +32,7 @@ import answerRoutes from "./routes/answer.routes";
 import submissionRoutes from "./routes/submission.routes";
 import passport from "passport";
 import "./lib/passport";
+import cookieParser from "cookie-parser";
 
 dotenv.config();
 
@@ -44,10 +45,12 @@ app.use(
     origin: process.env.CORS_ORIGIN || "http://localhost:3000",
     methods: ["GET", "POST", "PUT", "DELETE","PATCH"],
     allowedHeaders: ["Content-Type", "Authorization","BearerToken"],
+    credentials: true,
   })
 );
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
 app.use(passport.initialize());
 
 //Routes
