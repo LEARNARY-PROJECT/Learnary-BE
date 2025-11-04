@@ -46,7 +46,18 @@ export const loginUser = async (email: string, password: string) => {
   if (!user.password) throw new Error('Tài khoản này được đăng ký qua Google. Vui lòng đăng nhập bằng Google.');
   const isValidPassword = await bcryptjs.compare(password, user.password);
   if (!isValidPassword) throw new Error('Mật khẩu không hợp lệ.');
+
+  await updateLastLogin(user.user_id);
+  
   return user;
+};
+
+
+export const updateLastLogin = async (userId: string): Promise<void> => {
+  await prisma.user.update({
+    where: { user_id: userId },
+    data: { last_login: new Date() },
+  });
 };  
 
 export const findOrCreateGoogleUser = async (profile: Profile): Promise<User> => {
@@ -62,6 +73,7 @@ export const findOrCreateGoogleUser = async (profile: Profile): Promise<User> =>
     where: { googleId },
   });
   if(user) {
+    await updateLastLogin(user.user_id);
     return user;
   }
   user = await prisma.user.findUnique({
@@ -70,7 +82,11 @@ export const findOrCreateGoogleUser = async (profile: Profile): Promise<User> =>
   if(user) {
     user = await prisma.user.update({
       where: { email: user.email },
-      data: { googleId, avatar: user.avatar || avatar },
+      data: { 
+        googleId, 
+        avatar: user.avatar || avatar,
+        last_login: new Date() 
+      },
     });
     return user;
   }
@@ -82,6 +98,7 @@ export const findOrCreateGoogleUser = async (profile: Profile): Promise<User> =>
       googleId,
       password: null,
       role: 'LEARNER',
+      last_login: new Date() 
     },
   });
   return user;
