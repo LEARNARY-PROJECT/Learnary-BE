@@ -1,24 +1,21 @@
 import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 
-// Khai báo Payload của JWT
-export interface JwtPayload {
+export interface JwtPayLoad {
     id: string;
     role: 'ADMIN' | 'INSTRUCTOR' | 'STUDENT';
 }
 
-// Mở rộng interface của Express Request
 declare global {
     namespace Express {
         interface Request {
-            user?: JwtPayload;
+            jwtPayload?: JwtPayLoad;
         }
     }
-} 
+}
 
 const JWT_SECRET = process.env.JWT_SECRET || "12736571242634823984126348239841";
 
-// Middleware xác thực JWT
 export function authenticate(req: Request, res: Response, next: NextFunction): void {
     const authHeader = req.headers.authorization;
 
@@ -30,19 +27,19 @@ export function authenticate(req: Request, res: Response, next: NextFunction): v
     const token = authHeader.split(' ')[1];
 
     try {
-        const decoded = jwt.verify(token, JWT_SECRET) as JwtPayload;
-        req.user = decoded; 
+        const decoded = jwt.verify(token, JWT_SECRET) as JwtPayLoad;
+        req.jwtPayload = decoded; 
         next();
     } catch (error) {
         res.status(401).json({ message: 'Invalid token' });
+        return;
     }
 }
 
-// Middleware phân quyền dựa vào role
-export function authorizeRoles(...allowedRoles: JwtPayload['role'][]) {
+export function authorizeRoles(...allowedRoles: JwtPayLoad['role'][]) {
     return (req: Request, res: Response, next: NextFunction): void => {
-        const user = req.user;
-        if (!user || !allowedRoles.includes(user.role)) {
+        const jwtPayload = req.jwtPayload;
+        if (!jwtPayload || !allowedRoles.includes(jwtPayload.role)) {
             res.status(403).json({ message: 'Sorry: You are not allow with this role' });
             return;
         }

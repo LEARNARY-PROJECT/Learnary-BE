@@ -1,5 +1,15 @@
 import express from 'express';
-import { create, getAll, getById, deleteUserByID,updateUserRole } from '../controllers/user.controller';
+import { 
+    create, 
+    getAll, 
+    getById, 
+    deleteUserByID,
+    updateUserRole,
+    getMyProfile,
+    updateUserInformation,
+    getRecentlyActive,
+    getInactive 
+} from '../controllers/user.controller';
 import { authenticate, authorizeRoles } from '../middlewares/auth.middleware';
 
 const router = express.Router();
@@ -34,6 +44,58 @@ const router = express.Router();
  */
 router.post('/users/create', authenticate, authorizeRoles('ADMIN'), create);
 router.patch('/users/update-role/:id', authenticate, authorizeRoles('ADMIN'), updateUserRole);
+
+/**
+ * @openapi
+ * /api/users/{id}:
+ *   put:
+ *     summary: Update user information
+ *     tags: [User]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: The user ID
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               fullName:
+ *                 type: string
+ *                 example: Nguyen Van A
+ *               phone:
+ *                 type: string
+ *                 example: "0123456789"
+ *               address:
+ *                 type: string
+ *                 example: "123 Main St, Hanoi"
+ *               avatar:
+ *                 type: string
+ *                 example: "https://example.com/avatar.jpg"
+ *               bio:
+ *                 type: string
+ *                 example: "Software developer"
+ *               dateOfBirth:
+ *                 type: string
+ *                 format: date
+ *                 example: "1990-01-01"
+ *     responses:
+ *       200:
+ *         description: User information updated successfully
+ *       403:
+ *         description: Forbidden - can only update own information
+ *       404:
+ *         description: User not found
+ */
+router.patch('/users/update-info/:id', authenticate, updateUserInformation);
+
 /**
  * @openapi
  * /api/users:
@@ -58,6 +120,57 @@ router.patch('/users/update-role/:id', authenticate, authorizeRoles('ADMIN'), up
  *                     type: string
  */
 router.get('/users', authenticate, authorizeRoles('ADMIN', 'INSTRUCTOR'), getAll);
+
+/**
+ * @openapi
+ * /api/users/recently-active:
+ *   get:
+ *     summary: Get recently active users
+ *     tags: [User]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: query
+ *         name: days
+ *         schema:
+ *           type: integer
+ *           default: 7
+ *         description: Number of days to look back
+ *     responses:
+ *       200:
+ *         description: List of recently active users
+ *       401:
+ *         description: Unauthorized
+ *       403:
+ *         description: Forbidden - Admin only
+ */
+router.get('/users/recently-active', authenticate, authorizeRoles('ADMIN'), getRecentlyActive);
+
+/**
+ * @openapi
+ * /api/users/inactive:
+ *   get:
+ *     summary: Get inactive users
+ *     tags: [User]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: query
+ *         name: days
+ *         schema:
+ *           type: integer
+ *           default: 30
+ *         description: Minimum days of inactivity
+ *     responses:
+ *       200:
+ *         description: List of inactive users
+ *       401:
+ *         description: Unauthorized
+ *       403:
+ *         description: Forbidden - Admin only
+ */
+router.get('/users/inactive', authenticate, authorizeRoles('ADMIN'), getInactive);
+
 /**
  * @openapi
  * /api/users/{id}:
@@ -78,6 +191,7 @@ router.get('/users', authenticate, authorizeRoles('ADMIN', 'INSTRUCTOR'), getAll
  *         description: User not found
  */
 router.delete('/users/:id',authenticate,authorizeRoles('ADMIN'),deleteUserByID);
+router.get('/users/getMyProfile/:id', authenticate, getMyProfile); 
 /**
  * @openapi
  * /api/users/{id}:
