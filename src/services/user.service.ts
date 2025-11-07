@@ -2,7 +2,10 @@ import bcryptjs from "bcryptjs";
 import prisma from "../lib/client";
 import { User, Learner } from "@prisma/client";
 import type { Role } from "@prisma/client";
-
+import { S3_BUCKET_NAME, s3Client } from '../config/s3.config';
+import { PutObjectCommand } from '@aws-sdk/client-s3';
+import path from 'path';
+import { sliceHalfUserId } from "../utils/commons";
 
 export const createDefaultUserIfNoneExists = async () => {
   const userCount = await prisma.user.count();
@@ -124,7 +127,61 @@ export const editUserInformation = async (id: string, data: UpdateUserData): Pro
   return updatedUser;
 };
 
+export const updateAvatar = async (userId: string, url: string): Promise<User> => {
+  if (typeof userId !== "string" || typeof url !== "string") {
+    throw new Error("Error: User Id and Url must be strings.");
+  }
+  
+  const user = await getUserById(userId);
+  if (!user) {
+    throw new Error("Error: This user does not exist!");
+  }
+  
+  const updatedUser = await prisma.user.update({
+    where: { user_id: userId },
+    data: { avatar: url }
+  });
+  
+  return updatedUser;
+};
 
+export const uploadAvatarToS3 = async (userId: string, file: Express.Multer.File): Promise<User> => {
+  if (!userId) {
+    throw new Error("User ID is required")
+  }
+  if (!file) {
+    throw new Error("File is required")
+  }
+  const user = await getUserById(userId)
+  if (!user) {
+    throw new Error("User not found")
+  }
+  const halfUserId = sliceHalfUserId(userId)
+  // 1 user = 1 link url avatar 
+  const fileExtension = path.extname(file.originalname)
+  const fileName = `${halfUserId}${fileExtension}`
+  const s3Key = `avatar/${fileName}`
+
+  const uploadParams = {
+    Bucket: S3_BUCKET_NAME,
+    Key: s3Key,
+    Body: file.buffer,
+    ContentType: file.mimetype,
+  };
+
+  try {
+    //  ghi đè vào link url cũ, không tạo thêm
+    await s3Client.send(new PutObjectCommand(uploadParams))
+    const avatarUrl = `https://${S3_BUCKET_NAME}.s3.amazonaws.com/${s3Key}`
+    console.log('Upload S3 successful:', avatarUrl)
+    
+    const updatedUser = await updateAvatar(userId, avatarUrl)
+    return updatedUser
+  } catch (error) {
+    console.error('Error uploading to S3:', error)
+    throw new Error('Failed to upload avatar to S3')
+  }
+};
 export const getRecentlyActiveUsers = async (daysAgo: number = 7): Promise<User[]> => {
   const dateThreshold = new Date();
   dateThreshold.setDate(dateThreshold.getDate() - daysAgo);

@@ -1,14 +1,16 @@
 import { Request, RequestHandler, Response } from 'express';
-import { 
-    createUser, 
-    getAllUsers, 
-    getUserById, 
-    deleteUser, 
+import {
+    createUser,
+    getAllUsers,
+    getUserById,
+    deleteUser,
     updateUserRoleService,
     editUserInformation,
     UpdateUserData,
     getRecentlyActiveUsers,
-    getInactiveUsers 
+    getInactiveUsers,
+    updateAvatar,
+    uploadAvatarToS3,
 } from '../services/user.service';
 import { JwtPayLoad } from '../middlewares/auth.middleware';
 
@@ -104,7 +106,7 @@ export const updateUserRole = async (req: Request, res: Response) => {
 export const updateUserInformation: RequestHandler = async (req, res) => {
     try {
         const userId = req.params.id.trim();
-        const jwtPayload: JwtPayLoad = req.jwtPayload!; 
+        const jwtPayload: JwtPayLoad = req.jwtPayload!;
         const jwtId = jwtPayload.id.trim();
         if (jwtId !== userId) {
             res.status(403).json({ error: 'Forbidden: You can only update your own information' });
@@ -121,9 +123,9 @@ export const updateUserInformation: RequestHandler = async (req, res) => {
             dateOfBirth: req.body.dateOfBirth,
         };
         const updatedUser = await editUserInformation(userId, updateData);
-        res.status(200).json({ 
+        res.status(200).json({
             message: 'User information updated successfully',
-            user: updatedUser 
+            user: updatedUser
         });
     } catch (err: any) {
         console.error("Update user information error:", err);
@@ -134,19 +136,47 @@ export const updateUserInformation: RequestHandler = async (req, res) => {
         res.status(500).json({ error: 'Failed to update user information' });
     }
 };
-
+export const uploadAvatar: RequestHandler = async (req, res) => {
+    try {
+        if (!req.file) {
+            res.status(400).json({ error: "No file selected" });
+            return;
+        }
+        const userId = req.params.userId;
+        if (!userId) {
+            res.status(400).json({ error: "User ID is required" });
+            return;
+        }
+        const updatedUser = await uploadAvatarToS3(userId, req.file);
+        res.status(200).json({
+            message: 'Avatar uploaded successfully',
+            avatarUrl: updatedUser.avatar,
+            user: updatedUser,
+        });
+    } catch (error: any) {
+        console.error('Upload avatar error:', error);
+        if (error.message === 'User not found') {
+            res.status(404).json({ error: 'User not found' });
+            return;
+        }
+        res.status(500).json({ 
+            error: 'Server error during upload',
+            details: error.message 
+        });
+    }
+};
 export const getRecentlyActive: RequestHandler = async (req, res) => {
     try {
         const days = parseInt(req.query.days as string) || 7; //nếu không truyền ngày thì mặc định sẽ là 7 ngày vừa qua
         const users = await getRecentlyActiveUsers(days);
-        
+
         res.status(200).json({
             message: `Users who logged in within the last ${days} days`,
             count: users.length,
             users,
         });
-    } catch (err: any) {
-        console.error("Get recently active users error:", err);
+    } catch (error: any) {
+        console.error("Get recently active users error:", error);
         res.status(500).json({ error: 'Failed to fetch recently active users' });
     }
 };
@@ -156,7 +186,7 @@ export const getInactive: RequestHandler = async (req, res) => {
     try {
         const days = parseInt(req.query.days as string) || 30;
         const users = await getInactiveUsers(days);
-        
+
         res.status(200).json({
             message: `Users who haven't logged in for ${days} days or more`,
             count: users.length,
