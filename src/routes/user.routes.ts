@@ -8,10 +8,11 @@ import {
     getMyProfile,
     updateUserInformation,
     getRecentlyActive,
-    getInactive 
+    getInactive,
+    uploadAvatar
 } from '../controllers/user.controller';
 import { authenticate, authorizeRoles } from '../middlewares/auth.middleware';
-
+import upload from "../config/multer.config"
 const router = express.Router();
 
 /**
@@ -44,6 +45,39 @@ const router = express.Router();
  */
 router.post('/users/create', authenticate, authorizeRoles('ADMIN'), create);
 router.patch('/users/update-role/:id', authenticate, authorizeRoles('ADMIN'), updateUserRole);
+
+/**
+ * @openapi
+ * /api/users/upload-avatar/{userId}:
+ *   post:
+ *     summary: Upload user avatar
+ *     tags: [User]
+ *     parameters:
+ *       - in: path
+ *         name: userId
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: The user ID
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         multipart/form-data:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               avatar:
+ *                 type: string
+ *                 format: binary
+ *     responses:
+ *       200:
+ *         description: Avatar uploaded successfully
+ *       400:
+ *         description: No file selected or invalid user ID
+ *       404:
+ *         description: User not found
+ */
+router.post('/users/upload-avatar/:userId', upload.single('avatar'), uploadAvatar);
 
 /**
  * @openapi
@@ -120,6 +154,7 @@ router.patch('/users/update-info/:id', authenticate, updateUserInformation);
  *                     type: string
  */
 router.get('/users', authenticate, authorizeRoles('ADMIN', 'INSTRUCTOR'), getAll);
+
 
 /**
  * @openapi

@@ -90,7 +90,7 @@ app.get("/", (req, res) => {
 createDefaultUserIfNoneExists()
   .then(() => {
     console.log(
-      "App initialized with default admin user if no user with ADMIN role existed"
+      "Backend Sevice is ready!"
     );
   })
   .catch((err) => {
