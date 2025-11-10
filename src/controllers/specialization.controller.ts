@@ -24,9 +24,15 @@ export const getById = async (req: Request, res: Response) => {
   }
 };
 
-export const getAll = async (_: Request, res: Response) => {
+export const getAll = async (req: Request, res: Response) => {
   try {
-    const specializations = await SpecializationService.getAllSpecializations();
+    const { is_verified } = req.query;
+    const filters: { isVerified?: boolean } = {};
+    if (is_verified !== undefined) {
+      filters.isVerified = is_verified === 'true';
+    }
+    
+    const specializations = await SpecializationService.getAllSpecializations(filters);
     res.json(success(specializations, "All specializations fetched successfully"));
   } catch (err: any) {
     res.status(500).json(failure("Failed to fetch specializations", err.message));
@@ -48,5 +54,23 @@ export const remove = async (req: Request, res: Response) => {
     res.json(success(null, "Specialization deleted successfully"));
   } catch (err: any) {
     res.status(500).json(failure("Failed to delete specialization", err.message));
+  }
+};
+
+export const verify = async (req: Request, res: Response) => {
+  try {
+    const verified = await SpecializationService.verifySpecialization(req.params.id);
+    res.json(success(verified, "Specialization verified successfully"));
+  } catch (err: any) {
+    res.status(500).json(failure("Failed to verify specialization", err.message));
+  }
+};
+
+export const getByInstructor = async (req: Request, res: Response) => {
+  try {
+    const specializations = await SpecializationService.getSpecializationsByInstructor(req.params.instructorId);
+    res.json(success(specializations, "Specializations fetched successfully"));
+  } catch (err: any) {
+    res.status(500).json(failure("Failed to fetch specializations", err.message));
   }
 };

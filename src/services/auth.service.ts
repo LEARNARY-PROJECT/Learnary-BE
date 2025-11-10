@@ -1,5 +1,6 @@
 import prisma from '../lib/client';
 import { User } from '@prisma/client';
+import {createUser} from "../services/user.service"
 import bcryptjs from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { profile } from 'node:console';
@@ -15,26 +16,35 @@ export const generateAccessToken = (user: User): string => {
   const payload = {
     id: user.user_id, email: user.email, role: user.role, fullName: user.fullName,
   };
-  return jwt.sign(payload, JWT_SECRET, { expiresIn: '15m' }); 
+  return jwt.sign(payload, JWT_SECRET, { expiresIn: '15m' });
 };
 
 export const generateRefreshToken = (user: User): string => {
   if (!REFRESH_SECRET) {
     throw new Error('REFRESH_SECRET is not defined');
   }
-  const payload = { id: user.user_id, role: user.role }; 
+  const payload = { id: user.user_id, role: user.role };
   return jwt.sign(payload, REFRESH_SECRET, { expiresIn: '1h' });
 };
 
 export const registerUser = async (email: string, password: string, fullName: string) => {
-  const hashedPassword = await bcryptjs.hash(password, 10);
-  const user = await prisma.user.create({
-    data: {
-      email,
-      password: hashedPassword,
-      fullName,
-    },
+  if (!email || !password || !fullName) {
+    throw new Error('Email, password, and full name are required');
+  }
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(email)) {
+    throw new Error('Invalid email format');
+  }
+  if (password.length < 6) {
+    throw new Error('Password must be at least 6 characters long');
+  }
+  const existingUser = await prisma.user.findUnique({
+    where: { email }
   });
+  if (existingUser) {
+    throw new Error('Email already registered');
+  }
+  const user = await createUser(email, password, fullName);
   return user;
 };
 
@@ -48,7 +58,7 @@ export const loginUser = async (email: string, password: string) => {
   if (!isValidPassword) throw new Error('Mật khẩu không hợp lệ.');
 
   await updateLastLogin(user.user_id);
-  
+
   return user;
 };
 
@@ -58,7 +68,7 @@ export const updateLastLogin = async (userId: string): Promise<void> => {
     where: { user_id: userId },
     data: { last_login: new Date() },
   });
-};  
+};
 
 export const findOrCreateGoogleUser = async (profile: Profile): Promise<User> => {
   const googleId = profile.id;
@@ -66,26 +76,26 @@ export const findOrCreateGoogleUser = async (profile: Profile): Promise<User> =>
   const fullName = profile.displayName;
   const avatar = profile.photos?.[0].value;
 
-  if(!email) {
+  if (!email) {
     throw new Error('Không thể lấy email từ hồ sơ Google.');
   }
   let user = await prisma.user.findUnique({
     where: { googleId },
   });
-  if(user) {
+  if (user) {
     await updateLastLogin(user.user_id);
     return user;
   }
   user = await prisma.user.findUnique({
     where: { email },
   });
-  if(user) {
+  if (user) {
     user = await prisma.user.update({
       where: { email: user.email },
-      data: { 
-        googleId, 
+      data: {
+        googleId,
         avatar: user.avatar || avatar,
-        last_login: new Date() 
+        last_login: new Date()
       },
     });
     return user;
@@ -98,7 +108,7 @@ export const findOrCreateGoogleUser = async (profile: Profile): Promise<User> =>
       googleId,
       password: null,
       role: 'LEARNER',
-      last_login: new Date() 
+      last_login: new Date()
     },
   });
   return user;

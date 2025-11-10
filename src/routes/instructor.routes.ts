@@ -1,6 +1,6 @@
 import express from "express";
 import { authenticate, authorizeRoles } from "../middlewares/auth.middleware";
-import { create, getAll, getById, update, remove } from "../controllers/instructor.controller";
+import { create, getAll, getById, update, remove, verify, getByUserId } from "../controllers/instructor.controller";
 
 const router = express.Router();
 
@@ -121,5 +121,53 @@ router.put("/instructors/:id", authenticate, authorizeRoles("ADMIN"), update);
  *         description: Unauthorized
  */
 router.delete("/instructors/:id", authenticate, authorizeRoles("ADMIN"), remove);
+
+/**
+ * @openapi
+ * /api/instructors/{id}/verify:
+ *   patch:
+ *     summary: Verify instructor
+ *     tags: [Instructor]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Instructor verified successfully
+ *       404:
+ *         description: Instructor not found
+ *       401:
+ *         description: Unauthorized
+ */
+router.patch("/instructors/:id/verify", authenticate, authorizeRoles("ADMIN"), verify);
+
+/**
+ * @openapi
+ * /api/instructors/user/{userId}:
+ *   get:
+ *     summary: Get instructor by user ID
+ *     tags: [Instructor]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: userId
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Instructor found
+ *       404:
+ *         description: Instructor not found
+ *       401:
+ *         description: Unauthorized
+ */
+router.get("/instructors/user/:userId", authenticate, authorizeRoles("ADMIN", "INSTRUCTOR"), getByUserId);
 
 export default router;

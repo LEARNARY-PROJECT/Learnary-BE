@@ -1,12 +1,11 @@
 import bcryptjs from "bcryptjs";
 import prisma from "../lib/client";
 import { User, Learner } from "@prisma/client";
-import type { Role } from "@prisma/client";
+import type { Role, Wallet } from "@prisma/client";
 import { S3_BUCKET_NAME, s3Client } from '../config/s3.config';
 import { PutObjectCommand } from '@aws-sdk/client-s3';
 import path from 'path';
 import { sliceHalfUserId } from "../utils/commons";
-
 export const createDefaultUserIfNoneExists = async () => {
   const userCount = await prisma.user.count();
   const adminCount = await prisma.user.count({
@@ -33,7 +32,7 @@ export const createUser = async (
   email: string,
   password: string,
   fullName: string
-): Promise<User & { learner: Learner }> => {
+): Promise<User & { learner: Learner } & { wallet: Wallet}> => {
   const hashedPassword = await bcryptjs.hash(password, 10);
   return await prisma.$transaction(async (tx) => {
     //2 query chạy trong cùng 1 transaction, hoặc là cả 2 thành công, hoặc là cả 2 đều không thành công và sẽ được rollback, tx là biến đại diện của 1 cụm chứa 2 query này. Vì vậy ngay bên dưới khai báo tx.table là đại diện cho các query có ở cùng 1 transaction
@@ -47,10 +46,17 @@ export const createUser = async (
     });
     const learner = await tx.learner.create({
       data: {
+        
         user_id: user.user_id,
       }
     })
-    return { ...user, learner }
+    const wallet = await tx.wallet.create({
+      data: {
+        user_id: user.user_id,
+        balance: 0
+      }
+    })
+    return { ...user, learner, wallet }
   });
 };
 
@@ -76,7 +82,6 @@ export const deleteUser = async (id: string): Promise<User> => {
   });
   return user;
 };
-
 
 export const updateUserRoleService = async (id: string, role: Role): Promise<User> => {
   const updatedUser = await prisma.user.update({

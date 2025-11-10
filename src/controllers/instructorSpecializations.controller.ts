@@ -50,3 +50,12 @@ export const remove = async (req: Request, res: Response) => {
     res.status(500).json(failure("Failed to delete instructorSpecializations", err.message));
   }
 };
+
+export const getByInstructor = async (req: Request, res: Response) => {
+  try {
+    const specializations = await InstructorSpecializationsService.getSpecializationsByInstructor(req.params.instructorId);
+    res.json(success(specializations, "Specializations fetched successfully"));
+  } catch (err: any) {
+    res.status(500).json(failure("Failed to fetch specializations", err.message));
+  }
+};
