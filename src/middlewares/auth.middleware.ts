@@ -3,7 +3,7 @@ import jwt from 'jsonwebtoken';
 
 export interface JwtPayLoad {
     id: string;
-    role: 'ADMIN' | 'INSTRUCTOR' | 'STUDENT';
+    role: 'ADMIN' | 'INSTRUCTOR' | 'LEARNER';
 }
 
 declare global {

@@ -21,11 +21,36 @@ const setRefreshTokenCookie = (res: Response, token: string):void => {
 export const register = async (req: Request, res: Response): Promise<void> => {
   try {
     const { email, password, fullName } = req.body; 
+
     const user = await registerUser(email, password, fullName);
     
-     res.status(201).json({ id: user.user_id, email: user.email });
+    res.status(201).json({ id: user.user_id, email: user.email });
   } catch (err) {
-     res.status(409).json({ error: 'Email này đã được sử dụng.' });
+    const error = err as Error;
+    console.error('Register error:', error.message); // 🔍 LOG ĐỂ DEBUG
+    
+    // Phân biệt các loại lỗi
+    if (error.message === 'Email already registered') {
+      res.status(409).json({ error: 'Email này đã được sử dụng.' });
+      return;
+    }
+    
+    if (error.message === 'Invalid email format') {
+      res.status(400).json({ error: 'Email không hợp lệ.' });
+      return;
+    }
+    
+    if (error.message === 'Password must be at least 6 characters long') {
+      res.status(400).json({ error: 'Mật khẩu phải có ít nhất 6 ký tự.' });
+      return;
+    }
+    
+    if (error.message === 'Email, password, and full name are required') {
+      res.status(400).json({ error: 'Vui lòng điền đầy đủ thông tin.' });
+      return;
+    }
+
+    res.status(500).json({ error: 'Đã xảy ra lỗi khi đăng ký. Vui lòng thử lại.' });
   }
 };
 

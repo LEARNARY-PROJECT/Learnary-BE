@@ -9,7 +9,6 @@ import {
     UpdateUserData,
     getRecentlyActiveUsers,
     getInactiveUsers,
-    updateAvatar,
     uploadAvatarToS3,
 } from '../services/user.service';
 import { JwtPayLoad } from '../middlewares/auth.middleware';
@@ -20,7 +19,7 @@ export const create = async (req: Request, res: Response) => {
         const newUser = await createUser(email, password, fullname);
         res.status(201).json(newUser);
     } catch (err) {
-        console.error("Get user by id error", err);
+        console.error("Fail to create user", err);
         res.status(500).json({ error: 'Failed to create user.' });
     }
 };

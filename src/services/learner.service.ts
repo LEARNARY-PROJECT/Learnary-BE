@@ -4,10 +4,7 @@ import { Learner, User } from "@prisma/client";
 export const getAllLearnerNoUserData = async (): Promise<Learner[]> => {
   return prisma.learner.findMany();
 };
-
-export const getAllLearnerWithUserData = async (): Promise<
-  (Learner & { user: User })[]
-> => {
+export const getAllLearnerWithUserData = async (): Promise<(Learner & { user: User })[]> => {
   return prisma.learner.findMany({
     include: {
       user: true,
