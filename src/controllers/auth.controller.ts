@@ -14,7 +14,7 @@ const setRefreshTokenCookie = (res: Response, token: string) => {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
     sameSite: 'strict',
-    maxAge: 60 * 60 * 1000, // 1 giờ (khớp với hạn token)
+    maxAge: 60 * 60 * 1000 * 3, // 1 giờ (khớp với hạn token)
   });
 };
 
@@ -34,7 +34,8 @@ export const login = async (req: Request, res: Response) => {
     const { email, password } = req.body;
     const user = await loginUser(email, password);
     if (!user) {
-      return res.status(401).json({ error: 'Email hoặc mật khẩu không đúng.' });
+      res.status(401).json({ error: 'Email hoặc mật khẩu không đúng.' });
+      return;
     }
 
     const accessToken = generateAccessToken(user);
@@ -71,14 +72,21 @@ export const handleGoogleCallback = (req: Request, res: Response) => {
 export const handleRefreshToken = async (req: Request, res: Response) => {
   // Lấy token từ cookie
   const token = req.cookies.refresh_token;
-  if (!token) return res.status(401).json({ error: 'Không có refresh token' });
+  if (!token) {
+    res.status(401).json({ error: 'Không có refresh token' });
+    return;
+  }
+
 
   try {
     const secret = process.env.REFRESH_SECRET!;
     const payload = jwt.verify(token, secret) as { id: string };
     const user = await prisma.user.findUnique({ where: { user_id: payload.id } });
 
-    if (!user) return res.status(401).json({ error: 'User không tồn tại' });
+    if (!user){ 
+      res.status(401).json({ error: 'User không tồn tại' });
+      return;
+    }
 
     const newAccessToken = generateAccessToken(user);
     const newRefreshToken = generateRefreshToken(user);
@@ -87,7 +95,8 @@ export const handleRefreshToken = async (req: Request, res: Response) => {
     res.status(200).json({ accessToken: newAccessToken }); 
   } catch (err) {
     res.clearCookie('refresh_token'); // Xóa cookie hỏng
-    return res.status(403).json({ error: 'Refresh token không hợp lệ.' });
+    res.status(403).json({ error: 'Refresh token không hợp lệ.' });
+    return;
   }
 };
 

@@ -105,7 +105,6 @@ router.get(
     failureRedirect: `${process.env.FRONTEND_URL}/login?error=google_failed`,
     session: false,
   }),
-  // Nếu thành công, gọi controller
   handleGoogleCallback 
 );
 
@@ -139,6 +138,6 @@ router.post('/refresh', handleRefreshToken);
  * 200:
  * description: Logged out successfully.
  */
-router.post('/logout', handleLogout); // 👈 THÊM ROUTE NÀY
+router.post('/logout', handleLogout); 
 
 export default router;

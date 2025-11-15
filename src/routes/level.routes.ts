@@ -42,7 +42,7 @@ router.post("/levels", authenticate, authorizeRoles("ADMIN"), create);
  *       401:
  *         description: Unauthorized
  */
-router.get("/levels", authenticate, authorizeRoles("ADMIN"), getAll);
+router.get("/levels", authenticate, authorizeRoles("ADMIN", "INSTRUCTOR"), getAll);
 
 /**
  * @openapi
@@ -66,7 +66,7 @@ router.get("/levels", authenticate, authorizeRoles("ADMIN"), getAll);
  *       401:
  *         description: Unauthorized
  */
-router.get("/levels/:id", authenticate, authorizeRoles("ADMIN"), getById);
+router.get("/levels/:id", authenticate, authorizeRoles("ADMIN", "INSTRUCTOR"), getById);
 
 /**
  * @openapi
