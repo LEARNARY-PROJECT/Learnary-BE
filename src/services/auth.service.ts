@@ -23,8 +23,8 @@ export const generateRefreshToken = (user: User): string => {
   if (!REFRESH_SECRET) {
     throw new Error('REFRESH_SECRET is not defined');
   }
-  const payload = { id: user.user_id, role: user.role };
-  return jwt.sign(payload, REFRESH_SECRET, { expiresIn: '1h' });
+  const payload = { id: user.user_id, role: user.role }; 
+  return jwt.sign(payload, REFRESH_SECRET, { expiresIn: '3h' });
 };
 
 export const registerUser = async (email: string, password: string, fullName: string) => {

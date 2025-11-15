@@ -134,6 +134,6 @@ router.post('/refresh', handleRefreshToken);
  *       200:
  *         description: Logged out successfully.
  */
-router.post('/logout', handleLogout);
+router.post('/logout', handleLogout); 
 
 export default router;

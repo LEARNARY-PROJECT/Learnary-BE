@@ -14,7 +14,7 @@ const setRefreshTokenCookie = (res: Response, token: string):void => {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
     sameSite: 'strict',
-    maxAge: 60 * 60 * 1000, 
+    maxAge: 60 * 60 * 1000 * 3, // 3 giờ (khớp với hạn token)
   });
 };
 
@@ -60,6 +60,7 @@ export const login = async (req: Request, res: Response): Promise<void> => {
     const user = await loginUser(email, password);
     if (!user) {
       res.status(401).json({ error: 'Email hoặc mật khẩu không đúng.' });
+      return;
     }
    const accessToken = generateAccessToken(user);
    const refreshToken = generateRefreshToken(user);
@@ -104,7 +105,7 @@ export const handleRefreshToken = async (req: Request, res: Response): Promise<v
     const payload = jwt.verify(token, secret) as { id: string };
     const user = await prisma.user.findUnique({ where: { user_id: payload.id } });
 
-    if (!user) {
+    if (!user){ 
       res.status(401).json({ error: 'User không tồn tại' });
       return;
     }
@@ -117,6 +118,7 @@ export const handleRefreshToken = async (req: Request, res: Response): Promise<v
   } catch (err) {
     res.clearCookie('refresh_token'); // Xóa cookie hỏng
     res.status(403).json({ error: 'Refresh token không hợp lệ.' });
+    return;
   }
 };
 

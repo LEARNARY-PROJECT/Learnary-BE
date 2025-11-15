@@ -1,9 +1,8 @@
 import express from 'express';
-import { authenticate, authorizeRoles } from '../middlewares/auth.middleware';
-import { create, getAll, getById, remove, update } from '../controllers/course.controller';
+import { authenticate, authorizeRoles, optionalAuthenticate } from '../middlewares/auth.middleware';
+import * as ControllerCourse from '../controllers/course.controller';
 
 const router = express.Router();
-
 /**
  * @openapi
  * components:
@@ -11,7 +10,7 @@ const router = express.Router();
  *     Course:
  *       type: object
  *       properties:
- *         id:
+ *         course_id:
  *           type: string
  *           example: d1f3a488-3c9e-4fa2-9c01-187f304edf5d
  *         title:
@@ -26,7 +25,10 @@ const router = express.Router();
  *         price:
  *           type: number
  *           example: 49.99
- *         instructorId:
+ *         status:
+ *           type: string
+ *           example: Draft
+ *         instructor_id:
  *           type: string
  *           example: 8c58f8f5-f91a-4bd6-9d34-4567867ecf89
  *         createdAt:
@@ -35,61 +37,75 @@ const router = express.Router();
  *         updatedAt:
  *           type: string
  *           format: date-time
+ *   securitySchemes:
+ *     bearerAuth:
+ *       type: http
+ *       scheme: bearer
+ *       bearerFormat: JWT
+ * tags:
+ *   - name: Course
+ *     description: Các API liên quan đến khóa học
+ *   - name: Course (Instructor)
+ *     description: Các API cho Giảng viên quản lý khóa học
+ *   - name: Course (Admin)
+ *     description: Các API cho Admin duyệt khóa học
  */
 
 /**
  * @openapi
  * /api/courses:
  *   get:
- *     summary: Get all courses
+ *     summary: Lấy tất cả khóa học (Đã xuất bản)
  *     tags: [Course]
  *     responses:
  *       200:
- *         description: List of all courses
+ *         description: Danh sách các khóa học đã xuất bản
  *         content:
  *           application/json:
  *             schema:
  *               type: array
  *               items:
  *                 $ref: '#/components/schemas/Course'
- *       500:
- *         description: Failed to fetch courses
  */
-router.get('/courses', getAll);
+router.get('/courses', ControllerCourse.getAll);
 
+// --- CÁC ROUTE CẦN XÁC THỰC ---
 /**
  * @openapi
  * /api/courses/{id}:
  *   get:
- *     summary: Get a course by ID
+ *     summary: Lấy chi tiết 1 khóa học (Có kiểm tra bảo mật)
  *     tags: [Course]
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
  *         required: true
- *         description: ID of the course to fetch
+ *         description: ID của khóa học
  *         schema:
  *           type: string
  *     responses:
  *       200:
- *         description: Course details
+ *         description: Chi tiết khóa học
  *         content:
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/Course'
+ *       403:
+ *         description: Không có quyền truy cập
  *       404:
- *         description: Course not found
- *       500:
- *         description: Failed to fetch course
+ *         description: Không tìm thấy khóa học
  */
-router.get('/courses/:id', getById);
+router.get('/courses/:id',optionalAuthenticate, ControllerCourse.getById);
+router.use(authenticate);
 
 /**
  * @openapi
  * /api/courses:
  *   post:
- *     summary: Create a new course
- *     tags: [Course]
+ *     summary: (Giảng viên) Tạo một bản nháp khóa học mới
+ *     tags: [Course (Instructor)]
  *     security:
  *       - bearerAuth: []
  *     requestBody:
@@ -98,51 +114,46 @@ router.get('/courses/:id', getById);
  *         application/json:
  *           schema:
  *             type: object
- *             required:
- *               - title
- *               - description
- *               - thumbnail
- *               - price
  *             properties:
  *               title:
  *                 type: string
- *                 example: Introduction to AI
  *               description:
  *                 type: string
- *                 example: A beginner's course on AI
- *               thumbnail:
- *                 type: string
- *                 example: https://example.com/thumbnail.jpg
- *               price:
- *                 type: number
- *                 example: 49.99
+ *               chapters:
+ *                 type: array
+ *                 items:
+ *                   type: object
+ *                   properties:
+ *                     chapter_title:
+ *                       type: string
+ *             required:
+ *               - title
+ *               - chapters
  *     responses:
  *       201:
- *         description: Course created successfully
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/Course'
+ *         description: Tạo bản nháp thành công
  *       400:
- *         description: Invalid data
- *       401:
- *         description: Unauthorized
+ *         description: Lỗi khi tạo khóa học
  */
-router.post('/courses', authenticate, authorizeRoles('INSTRUCTOR', 'ADMIN'), create);
+router.post(
+  '/courses',
+  authorizeRoles('INSTRUCTOR'),
+  ControllerCourse.createDraft,
+);
 
 /**
  * @openapi
- * /api/courses/{id}:
+ * /api/courses/draft/{id}:
  *   put:
- *     summary: Update a course by ID
- *     tags: [Course]
+ *     summary: (Giảng viên) Cập nhật/Lưu một bản nháp
+ *     tags: [Course (Instructor)]
  *     security:
  *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
  *         required: true
- *         description: ID of the course to update
+ *         description: ID của khóa học nháp
  *         schema:
  *           type: string
  *     requestBody:
@@ -151,40 +162,136 @@ router.post('/courses', authenticate, authorizeRoles('INSTRUCTOR', 'ADMIN'), cre
  *         application/json:
  *           schema:
  *             type: object
- *             properties:
- *               title:
- *                 type: string
- *                 example: Advanced AI
- *               description:
- *                 type: string
- *                 example: An advanced course on AI
- *               thumbnail:
- *                 type: string
- *                 example: https://example.com/updated-thumbnail.jpg
- *               price:
- *                 type: number
- *                 example: 99.99
+ *             description: Toàn bộ dữ liệu khóa học (không chứa video_url)
  *     responses:
  *       200:
- *         description: Course updated successfully
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/Course'
+ *         description: Lưu nháp thành công
  *       400:
- *         description: Invalid data
+ *         description: Lỗi lưu nháp
  *       404:
- *         description: Course not found
- *       401:
- *         description: Unauthorized
+ *         description: Không tìm thấy khóa học
  */
-router.put('/courses/:id', authenticate, authorizeRoles('INSTRUCTOR', 'ADMIN'), update);
+router.put(
+  '/courses/draft/:id',
+  authorizeRoles('INSTRUCTOR'),
+  ControllerCourse.updateDraft,
+);
+
+/**
+ * @openapi
+ * /api/courses/submit/{id}:
+ *   post:
+ *     summary: (Giảng viên) Gửi bản nháp để chờ phê duyệt
+ *     tags: [Course (Instructor)]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Gửi thành công
+ *       400:
+ *         description: Khóa học chưa đủ điều kiện gửi duyệt
+ */
+router.post(
+  '/courses/submit/:id',
+  authorizeRoles('INSTRUCTOR'),
+  ControllerCourse.submitApproval,
+);
+
+/**
+ * @openapi
+ * /api/courses/instructor/my-courses:
+ *   get:
+ *     summary: (Giảng viên) Lấy tất cả khóa học của tôi
+ *     tags: [Course (Instructor)]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Danh sách các khóa học của giảng viên
+ */
+router.get(
+  '/courses/instructor/my-courses',
+  authorizeRoles('INSTRUCTOR'),
+  ControllerCourse.getMyCourses,
+);
+
+/**
+ * @openapi
+ * /api/courses/admin/pending:
+ *   get:
+ *     summary: (Admin) Lấy tất cả khóa học đang chờ duyệt
+ *     tags: [Course (Admin)]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Danh sách khóa học Pending
+ */
+router.get(
+  '/courses/admin/pending',
+  authorizeRoles('ADMIN'),
+  ControllerCourse.getPending,
+);
+
+/**
+ * @openapi
+ * /api/courses/admin/approve/{id}:
+ *   post:
+ *     summary: (Admin) Duyệt một khóa học
+ *     tags: [Course (Admin)]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Duyệt thành công
+ */
+router.post(
+  '/courses/admin/approve/:id',
+  authorizeRoles('ADMIN'),
+  ControllerCourse.approve,
+);
+
+/**
+ * @openapi
+ * /api/courses/admin/reject/{id}:
+ *   post:
+ *     summary: (Admin) Từ chối một khóa học
+ *     tags: [Course (Admin)]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Từ chối thành công
+ */
+router.post(
+  '/courses/admin/reject/:id',
+  authorizeRoles('ADMIN'),
+  ControllerCourse.reject,
+);
 
 /**
  * @openapi
  * /api/courses/{id}:
  *   delete:
- *     summary: Delete a course by ID
+ *     summary: Xóa một khóa học (Admin hoặc chủ sở hữu)
  *     tags: [Course]
  *     security:
  *       - bearerAuth: []
@@ -192,17 +299,20 @@ router.put('/courses/:id', authenticate, authorizeRoles('INSTRUCTOR', 'ADMIN'), 
  *       - in: path
  *         name: id
  *         required: true
- *         description: ID of the course to delete
  *         schema:
  *           type: string
  *     responses:
  *       200:
- *         description: Course deleted successfully
+ *         description: Xóa thành công
+ *       403:
+ *         description: Không có quyền
  *       404:
- *         description: Course not found
- *       401:
- *         description: Unauthorized
+ *         description: Không tìm thấy khóa học
  */
-router.delete('/courses/:id', authenticate, authorizeRoles('INSTRUCTOR', 'ADMIN'), remove);
+router.delete(
+  '/courses/:id',
+  authorizeRoles('INSTRUCTOR', 'ADMIN'),
+  ControllerCourse.remove,
+);
 
 export default router;

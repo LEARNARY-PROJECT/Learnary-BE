@@ -1,6 +1,7 @@
 // prisma/schema.prisma
 generator client {
   provider      = "prisma-client-js"
+  output        = "../node_modules/.prisma/client"
   binaryTargets = ["native", "linux-musl-openssl-3.0.x"]
 }
 
@@ -40,7 +41,8 @@ enum CourseEnrollmentStatus {
 
 enum CourseStatus {
   Draft
-  Pubished
+  Published
+  Pending
   Archived
 }
 
@@ -103,13 +105,17 @@ model User {
   transactions      Transaction[]
   submissions       Submission[]
   wallet            Wallet?
-  note              Note?
+  note              Note[]
 
   @@index([email], name: "idx_user_email")
-  @@index([role], name: "idx_user_role")
-  @@index([last_login], name: "idx_user_last_login")
-  @@index([role, isActive], name: "idx_user_role_active")
-  @@index([isActive], name: "idx_user_active")
+  @@index([role],name:"idx_user_role")
+  @@index([last_login],name:"idx_user_last_login")
+  @@index([role,isActive],name:"idx_user_role_active")
+  @@index([isActive],name:"idx_user_active")
+  @@index([googleId], name: "idx_user_googleid")
+  @@index([fullName], name: "idx_user_fullname")
+  @@index([phone], name: "idx_user_phone")
+  @@index([createdAt], name: "idx_user_createdat")
   @@map("users")
 }
 
@@ -153,8 +159,8 @@ model Instructor {
 model InstructorSpecializations {
   instructor_specialization_id String @id @default(uuid()) @db.Char(50)
   instructor_id                String @unique @db.Char(50)
-  specialization_id            String @unique @db.Char(50)
-  admin_id                     String @unique @db.Char(50)
+  specialization_id            String @db.Char(50)
+  admin_id                     String @db.Char(50)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -175,7 +181,7 @@ model Specialization {
   createdAt           DateTime @default(now())
   updatedAt           DateTime @updatedAt
 
-  specialization           InstructorSpecializations?
+  specialization           InstructorSpecializations[]
   instructorQualifications InstructorQualifications[]
 
   @@index([specialization_name], name: "idx_spec_name")
@@ -300,7 +306,7 @@ model Admin {
 
   user                      User                       @relation(fields: [user_id], references: [user_id], onDelete: Cascade)
   adminRole                 AdminRole                  @relation(fields: [admin_role_id], references: [admin_role_id])
-  instructorSpecializations InstructorSpecializations?
+  instructorSpecializations InstructorSpecializations[]
 
   @@index([admin_role_id], name: "idx_admin_role")
   @@map("admins")
@@ -362,9 +368,9 @@ model AccountSecurity {
 
 model Course {
   course_id     String @id @default(uuid()) @db.Char(50)
-  category_id   String @unique @db.Char(50)
-  level_id      String @unique @db.Char(50)
-  instructor_id String @unique @db.Char(50)
+  category_id   String @db.Char(50)
+  level_id      String @db.Char(50)
+  instructor_id String @db.Char(50)
 
   status             CourseStatus    @default(Draft)
   title              String          @db.VarChar(255)
@@ -408,18 +414,15 @@ model Category {
   updatedAt     DateTime @updatedAt
 
   courses Course[]
-
   @@map("categories")
 }
 
 model Level {
   level_id  String @id @default(uuid()) @db.Char(50)
-  course_id String @unique @db.Char(50)
-
-  level_name  String   @unique @db.VarChar(255)
-  order_index Int      @default(0)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  level_name String   @db.VarChar(255) @unique
+  order_index Int @default(0)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 
   course Course[]
 
@@ -455,10 +458,8 @@ model LearnerCourses {
 }
 
 model Chapter {
-  chapter_id String @id @default(uuid()) @db.Char(50)
-  course_id  String @unique @db.Char(50)
-  quiz_id    String @unique @db.Char(50)
-
+  chapter_id    String   @id @default(uuid()) @db.Char(50)
+  course_id     String   @db.Char(50)
   chapter_title String   @db.VarChar(255)
   order_index   Int      @default(0)
   createAt      DateTime @default(now())
@@ -466,18 +467,19 @@ model Chapter {
 
   belongCourse Course   @relation(fields: [course_id], references: [course_id], onDelete: Cascade)
   lessons      Lesson[]
-  haveQuiz     Quiz?
+  quiz         Quiz?
 
   @@index([course_id], name: "idx_section_course")
   @@index([course_id, order_index], name: "idx_section_order")
   @@map("chapters")
 }
 
-model Lesson {
-  lesson_id  String @id @default(uuid()) @db.Char(50)
-  chapter_id String @unique @db.Char(50)
 
-  video_url   String?  @unique @db.VarChar(255)
+model Lesson {
+  lesson_id   String   @id @default(uuid()) @db.Char(50)
+  chapter_id  String   @db.Char(50)
+  title       String   @db.VarChar(255)
+  video_url   String?  @db.VarChar(255)
   isCompleted Boolean  @default(false)
   duration    String   @db.VarChar(100)
   slug        String   @db.Char(50)
@@ -495,8 +497,8 @@ model Lesson {
 
 model Note {
   note_id   String @id @default(uuid()) @db.VarChar(50)
-  user_id   String @unique @db.Char(50)
-  lesson_id String @unique @db.Char(50)
+  user_id   String @db.Char(50)
+  lesson_id String @db.Char(50)
 
   time      Int
   content   String   @db.VarChar(255)
@@ -521,36 +523,35 @@ model Feedback {
 
   user   User   @relation(fields: [user_id], references: [user_id], onDelete: Cascade)
   course Course @relation(fields: [course_id], references: [course_id], onDelete: Cascade)
-
-  @@index([course_id], name: "idx_feedback_course")
-  @@index([user_id], name: "idx_feedback_user")
-  @@index([rating], name: "idx_feedback_rating")
-  @@index([course_id, rating], name: "idx_feedback_course_rating")
-  @@index([createdAt], name: "idx_feedback_created")
+  
+  @@unique([course_id, user_id])
+  @@index([course_id], name: "idx_feedback_course")        
+  @@index([user_id], name: "idx_feedback_user")            
+  @@index([rating], name: "idx_feedback_rating")            
+  @@index([course_id, rating], name: "idx_feedback_course_rating")  
+  @@index([createdAt], name: "idx_feedback_created")         
   @@index([course_id, createdAt], name: "idx_feedback_course_date")
   @@map("feedbacks")
 }
 
 model Quiz {
-  quiz_id    String @id @default(uuid()) @db.Char(50)
-  chapter_id String @unique @db.Char(50)
-  title      String @db.VarChar(100)
-  slug       String @db.Char(50)
+  quiz_id       String   @id @default(uuid()) @db.Char(50)
+  chapter_id    String   @unique @db.Char(50) 
+  title         String   @db.VarChar(100)
+  slug          String   @db.Char(50)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  belongChapter Chapter      @relation(fields: [chapter_id], references: [chapter_id], onDelete: Cascade)
-  questions     Question[]
-  submissions   Submission[]
+  belongChapter Chapter  @relation(fields: [chapter_id], references: [chapter_id], onDelete: Cascade)
+  questions    Question[]
+  submissions  Submission[]
 
   @@map("quizzes")
 }
 
 model Question {
-  question_id String @id @default(uuid()) @db.Char(50)
-  quiz_id     String @unique @db.Char(50)
-
+  question_id String   @id @default(uuid()) @db.Char(50)
+  quiz_id     String   @db.Char(50) 
   title       String
   order_index Int      @default(0)
   createdAt   DateTime @default(now())
@@ -558,18 +559,16 @@ model Question {
 
   belongQuiz Quiz      @relation(fields: [quiz_id], references: [quiz_id], onDelete: Cascade)
   options    Options[]
-  answer     Answer?
+  answers    Answer[]  
 
   @@index([quiz_id], name: "idx_question_quiz")
   @@index([quiz_id, order_index], name: "idx_question_order")
-  @@index([question_id], name: "idx_question_id")
   @@map("questions")
 }
 
 model Options {
-  option_id   String @id @default(uuid()) @db.Char(50)
-  question_id String @unique @db.Char(50)
-
+  option_id      String   @id @default(uuid()) @db.Char(50)
+  question_id    String   @db.Char(50)
   option_content String   @db.VarChar(255)
   is_correct     Boolean
   order_index    Int      @default(0)
@@ -585,8 +584,8 @@ model Options {
 
 model Answer {
   answer_id     String @id @default(uuid()) @db.Char(50)
-  submission_id String @unique @db.Char(50)
-  question_id   String @unique @db.Char(50)
+  submission_id String @db.Char(50)
+  question_id   String @db.Char(50)
 
   is_correct         Boolean
   selected_option_id String   @db.Char(50)
@@ -597,12 +596,13 @@ model Answer {
   ofSubmission Submission @relation(fields: [submission_id], references: [submission_id])
 
   @@map("answers")
+  @@unique([submission_id, question_id])
 }
 
 model Submission {
   submission_id String @id @default(uuid()) @db.Char(50)
-  quiz_id       String @unique @db.Char(50)
-  user_id       String @unique @db.Char(50)
+  quiz_id       String @db.Char(50)
+  user_id       String @db.Char(50)
 
   is_completed Boolean  @default(false)
   duration     String   @db.VarChar(100)
@@ -610,13 +610,14 @@ model Submission {
   updatedAt    DateTime @updatedAt
   submittedAt  DateTime
 
-  belongQuiz Quiz    @relation(fields: [quiz_id], references: [quiz_id], onDelete: Cascade)
-  belongUser User    @relation(fields: [user_id], references: [user_id], onDelete: Cascade)
-  answer     Answer?
+  belongQuiz Quiz @relation(fields: [quiz_id], references: [quiz_id], onDelete: Cascade)
+  belongUser User @relation(fields: [user_id], references: [user_id], onDelete: Cascade)
+  answer Answer[]
 
-  @@index([quiz_id], name: "idx_submission_quiz")
-  @@index([user_id], name: "idx_submission_user")
-  @@index([quiz_id, user_id], name: "idx_submission_unique")
-  @@index([submittedAt], name: "idx_submission_date")
+  @@unique([quiz_id, user_id])
+  @@index([quiz_id], name: "idx_submission_quiz")  
+  @@index([user_id], name: "idx_submission_user")             
+  @@index([quiz_id, user_id], name: "idx_submission_unique")  
+  @@index([submittedAt], name: "idx_submission_date")        
   @@map("submissions")
 }

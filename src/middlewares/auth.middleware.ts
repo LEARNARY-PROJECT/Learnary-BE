@@ -36,6 +36,27 @@ export function authenticate(req: Request, res: Response, next: NextFunction): v
     }
 }
 
+export function optionalAuthenticate(req: Request, res: Response, next: NextFunction): void {
+    const authHeader = req.headers.authorization;
+
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+        // Không có token -> Cứ cho qua
+        next();
+        return;
+    }
+
+    const token = authHeader.split(' ')[1];
+
+    try {
+        const decoded = jwt.verify(token, JWT_SECRET) as JwtPayLoad;
+        req.jwtPayload = decoded; // Gán nếu token hợp lệ
+        next();
+    } catch (error) {
+        // Token lỗi/hết hạn -> Vẫn cho qua (coi như khách)
+        next();
+    }
+}
+
 export function authorizeRoles(...allowedRoles: JwtPayLoad['role'][]) {
     return (req: Request, res: Response, next: NextFunction): void => {
         const jwtPayload = req.jwtPayload;
