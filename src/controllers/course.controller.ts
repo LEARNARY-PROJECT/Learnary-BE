@@ -5,7 +5,7 @@ import prisma from "../lib/client";
 
 export const createDraft = async (req: Request, res: Response): Promise<void> => {
   try {
-    const instructorId = req.User?.id;
+    const instructorId = req.jwtPayload?.id;
     if (!instructorId) {
       res.status(401).json({ message: 'Xác thực không hợp lệ' });
       return;
@@ -47,7 +47,7 @@ export const getById = async (req: Request, res: Response): Promise<void> => {
       return;
     }
 
-    const user = req.User;
+    const user = req.jwtPayload;
     if (!user) {
       res.status(401).json({ message: 'Bạn cần đăng nhập để xem nội dung này' });
       return;
@@ -72,7 +72,7 @@ export const getById = async (req: Request, res: Response): Promise<void> => {
 
 export const updateDraft = async (req: Request, res: Response): Promise<void> => { 
   try {
-    const instructorId = req.User?.id; 
+    const instructorId = req.jwtPayload?.id; 
     if (!instructorId) {
       res.status(401).json({ message: 'Xác thực không hợp lệ' });
       return; 
@@ -93,7 +93,7 @@ export const updateDraft = async (req: Request, res: Response): Promise<void> =>
 
 export const remove = async (req: Request, res: Response): Promise<void> => {
   try {
-    const user = req.User;
+    const user = req.jwtPayload;
     const {id: courseId} = req.params;
 
     if (!user) {
@@ -124,7 +124,7 @@ export const remove = async (req: Request, res: Response): Promise<void> => {
 
 export const submitApproval = async (req: Request, res: Response): Promise<void> => {
   try {
-    const instructorId = req.User?.id;
+    const instructorId = req.jwtPayload?.id;
     if (!instructorId) {
       res.status(401).json({ message: 'Xác thực không hợp lệ' });
       return;
@@ -142,7 +142,7 @@ export const submitApproval = async (req: Request, res: Response): Promise<void>
 
 export const getMyCourses = async (req: Request, res: Response): Promise<void> => { 
   try {
-    const instructorId = req.User?.id; 
+    const instructorId = req.jwtPayload?.id; 
     if (!instructorId) {
       res.status(401).json({ message: 'Xác thực không hợp lệ' });
       return;

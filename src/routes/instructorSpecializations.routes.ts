@@ -1,6 +1,6 @@
 import express from "express";
 import { authenticate, authorizeRoles } from "../middlewares/auth.middleware";
-import { create, getAll, getById, update, remove } from "../controllers/instructorSpecializations.controller";
+import { create, getAll, getById, update, remove, getByInstructor } from "../controllers/instructorSpecializations.controller";
 
 const router = express.Router();
 
@@ -121,5 +121,27 @@ router.put("/instructor-specializations/:id", authenticate, authorizeRoles("ADMI
  *         description: Unauthorized
  */
 router.delete("/instructor-specializations/:id", authenticate, authorizeRoles("ADMIN"), remove);
+
+/**
+ * @openapi
+ * /api/instructor-specializations/instructor/{instructorId}:
+ *   get:
+ *     summary: Get specializations by instructor ID
+ *     tags: [InstructorSpecializations]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: instructorId
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Specializations found
+ *       401:
+ *         description: Unauthorized
+ */
+router.get("/instructor-specializations/instructor/:instructorId", authenticate, authorizeRoles("ADMIN", "INSTRUCTOR"), getByInstructor);
 
 export default router;

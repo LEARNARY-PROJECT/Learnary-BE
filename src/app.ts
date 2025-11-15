@@ -19,6 +19,7 @@ import specializationRoutes from "./routes/specialization.routes";
 import citizenIdsConfirmRoutes from "./routes/citizenIdsConfirm.routes";
 import instructorQualificationsRoutes from "./routes/instructorQualifications.routes";
 import walletRoutes from "./routes/wallet.routes";
+import bankAccountRoutes from "./routes/bankAccount.routes";
 import categoriesRoutes from "./routes/categories.routes";
 import levelRoutes from "./routes/level.routes";
 import learnerCoursesRoutes from "./routes/learnerCourses.routes";
@@ -42,7 +43,7 @@ const port = process.env.PORT || 4000;
 //middlewares
 app.use(
   cors({
-    origin: process.env.CORS_ORIGIN || "http://localhost:3000",
+    origin: process.env.CORS_ORIGIN || "http://localhost:3000" || "http://localhost:3001",
     methods: ["GET", "POST", "PUT", "DELETE","PATCH"],
     allowedHeaders: ["Content-Type", "Authorization","BearerToken"],
     credentials: true,
@@ -70,6 +71,7 @@ app.use("/api", specializationRoutes);
 app.use("/api", citizenIdsConfirmRoutes);
 app.use("/api", instructorQualificationsRoutes);
 app.use("/api", walletRoutes);
+app.use("/api", bankAccountRoutes);
 app.use("/api", categoriesRoutes);
 app.use("/api", levelRoutes);
 app.use("/api", learnerCoursesRoutes);
@@ -90,7 +92,7 @@ app.get("/", (req, res) => {
 createDefaultUserIfNoneExists()
   .then(() => {
     console.log(
-      "App initialized with default admin user if no user with ADMIN role existed"
+      "Backend Service is ready!"
     );
   })
   .catch((err) => {

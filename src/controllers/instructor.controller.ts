@@ -47,3 +47,25 @@ export const remove = async (req: Request, res: Response) => {
     res.status(500).json(failure("Failed to delete instructor", err.message));
   }
 };
+
+export const verify = async (req: Request, res: Response) => {
+  try {
+    const verified = await InstructorService.verifyInstructor(req.params.id);
+    res.json(success(verified, "Instructor verified successfully"));
+  } catch (err: any) {
+    res.status(500).json(failure("Failed to verify instructor", err.message));
+  }
+};
+
+export const getByUserId = async (req: Request, res: Response) => {
+  try {
+    const instructor = await InstructorService.getInstructorByUserId(req.params.userId);
+    if (!instructor) {
+      res.status(404).json(failure("Instructor not found"));
+      return;
+    }
+    res.json(success(instructor, "Instructor fetched successfully"));
+  } catch (err: any) {
+    res.status(500).json(failure("Failed to fetch instructor", err.message));
+  }
+};

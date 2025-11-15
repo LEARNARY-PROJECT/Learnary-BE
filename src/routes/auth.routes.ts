@@ -38,7 +38,6 @@ const router = express.Router();
  *         description: Bad request
  */
 router.post('/register', register);
-
 /**
  * @openapi
  * /api/auth/login:
@@ -68,17 +67,16 @@ router.post('/register', register);
  *         description: Bad request
  */
 router.post('/login', login);
-
 /**
  * @openapi
  * /api/auth/google:
- * get:
- * summary: Start Google OAuth flow
- * tags: [Auth]
- * description: Redirects the user to Google's authentication page.
- * responses:
- * 302:
- * description: Redirecting to Google.
+ *   get:
+ *     summary: Start Google OAuth flow
+ *     tags: [Auth]
+ *     description: Redirects the user to Google's authentication page.
+ *     responses:
+ *       302:
+ *         description: Redirecting to Google.
  */
 router.get(
   '/google',
@@ -91,13 +89,13 @@ router.get(
 /**
  * @openapi
  * /api/auth/google/callback:
- * get:
- * summary: Google OAuth callback
- * tags: [Auth]
- * description: Google redirects back to this endpoint after authentication.
- * responses:
- * 302:
- * description: Redirecting to Frontend with token (on success) or to login page (on failure).
+ *   get:
+ *     summary: Google OAuth callback
+ *     tags: [Auth]
+ *     description: Google redirects back to this endpoint after authentication.
+ *     responses:
+ *       302:
+ *         description: Redirecting to Frontend with token (on success) or to login page (on failure).
  */
 router.get(
   '/google/callback',
@@ -108,35 +106,33 @@ router.get(
   handleGoogleCallback 
 );
 
-
-
 /**
  * @openapi
  * /api/auth/refresh:
- * post:
- * summary: Refresh the access token
- * tags: [Auth]
- * description: Uses the HttpOnly refresh_token cookie to get a new access token.
- * responses:
- * 200:
- * description: A new access token.
- * 401:
- * description: No refresh token provided.
- * 403:
- * description: Invalid or expired refresh token.
+ *   post:
+ *     summary: Refresh the access token
+ *     tags: [Auth]
+ *     description: Uses the HttpOnly refresh_token cookie to get a new access token.
+ *     responses:
+ *       200:
+ *         description: A new access token.
+ *       401:
+ *         description: No refresh token provided.
+ *       403:
+ *         description: Invalid or expired refresh token.
  */
 router.post('/refresh', handleRefreshToken);
 
 /**
  * @openapi
  * /api/auth/logout:
- * post:
- * summary: Logout the user
- * tags: [Auth]
- * description: Clears the HttpOnly refresh_token cookie.
- * responses:
- * 200:
- * description: Logged out successfully.
+ *   post:
+ *     summary: Logout the user
+ *     tags: [Auth]
+ *     description: Clears the HttpOnly refresh_token cookie.
+ *     responses:
+ *       200:
+ *         description: Logged out successfully.
  */
 router.post('/logout', handleLogout); 
 
