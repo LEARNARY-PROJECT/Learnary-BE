@@ -2,6 +2,7 @@ import multer from "multer";
 
 const storage = multer.memoryStorage();
 
+//image upload config (cho image)
 const upload = multer({
     storage,
     limits: { 
@@ -12,6 +13,22 @@ const upload = multer({
             cb(null, true);
         } else {
             cb(new Error('Chỉ chấp nhận file ảnh'));
+        }
+    }
+});
+
+// video upload config (cho lessons)
+export const videoUpload = multer({
+    storage,
+    limits: { 
+        fileSize: 500 * 1024 * 1024 // 500MB
+    },
+    fileFilter: (_, file, cb) => {
+        const allowedTypes = ['video/mp4', 'video/webm', 'video/quicktime'];
+        if (allowedTypes.includes(file.mimetype)) {
+            cb(null, true);
+        } else {
+            cb(new Error('Chỉ chấp nhận video MP4, WEBM, hoặc MOV'));
         }
     }
 });

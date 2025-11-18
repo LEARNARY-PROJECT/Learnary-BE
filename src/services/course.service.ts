@@ -1,5 +1,6 @@
 import prisma from "../lib/client";
 import { CourseStatus } from '@prisma/client';
+import { moveVideosToPermanent, deleteVideos } from './videoLesson.service';
 
 const getInstructorId = async (userId: string): Promise<string> => {
   const instructor = await prisma.instructor.findUnique({
@@ -64,8 +65,33 @@ export const getCoursesByInstructorId = async (userId: string) => {
   });
 };
 
-export const deleteCourse = (course_id: string) =>
-  prisma.course.delete({ where: { course_id } });
+export const deleteCourse = async (course_id: string) => {
+  const course = await prisma.course.findUnique({
+    where: { course_id },
+    include: {
+      chapter: {
+        include: {
+          lessons: { select: { video_url: true } }
+        }
+      }
+    }
+  });
+  if (!course) {
+    throw new Error('Course not found');
+  }
+  const videoUrls: string[] = [];
+  course.chapter.forEach(chapter => {
+    chapter.lessons.forEach(lesson => {
+      if (lesson.video_url) {
+        videoUrls.push(lesson.video_url);
+      }
+    });
+  });
+  if (videoUrls.length > 0) {
+    await deleteVideos(videoUrls);
+  }
+  return prisma.course.delete({ where: { course_id } });
+};
 
 export const createDraftCourse = async (
   userId: string,
@@ -387,14 +413,103 @@ export const getPendingCourses = () =>
     orderBy: { updatedAt: 'asc' },
   });
 
-export const approveCourse = (courseId: string) =>
-  prisma.course.update({
+/**
+ * Approve course: Move videos from temporary_videos to videos folder
+ */
+export const approveCourse = async (courseId: string) => {
+  // Get all lessons with temporary video URLs
+  const course = await prisma.course.findUnique({
     where: { course_id: courseId, status: CourseStatus.Pending },
-    data: { status: CourseStatus.Published },
+    include: {
+      chapter: {
+        include: {
+          lessons: { select: { lesson_id: true, video_url: true } }
+        }
+      }
+    }
   });
 
-export const rejectCourse = (courseId: string) =>
-  prisma.course.update({
-    where: { course_id: courseId, status: CourseStatus.Pending },
-    data: { status: CourseStatus.Draft },
+  if (!course) {
+    throw new Error('Course not found or not pending');
+  }
+
+  const videoUpdates: { lessonId: string; oldUrl: string }[] = [];
+  course.chapter.forEach(chapter => {
+    chapter.lessons.forEach(lesson => {
+      if (lesson.video_url && lesson.video_url.includes('temporary_videos')) {
+        videoUpdates.push({
+          lessonId: lesson.lesson_id,
+          oldUrl: lesson.video_url
+        });
+      }
+    });
   });
+
+  // chuyển url video tạm cũ thành url video chính
+  const temporaryUrls = videoUpdates.map(u => u.oldUrl);
+  let newUrls: string[] = [];
+  if (temporaryUrls.length > 0) {
+    newUrls = await moveVideosToPermanent(temporaryUrls);
+  }
+
+  // cập nhật lại thông tin khác của course
+  return prisma.$transaction(async (tx) => {
+    const updatedCourse = await tx.course.update({
+      where: { course_id: courseId },
+      data: { status: CourseStatus.Published },
+    });
+
+    // cập nhật lại url mới vào db
+    for (let i = 0; i < videoUpdates.length; i++) {
+      await tx.lesson.update({
+        where: { lesson_id: videoUpdates[i].lessonId },
+        data: { video_url: newUrls[i] }
+      });
+    }
+    return updatedCourse;
+  });
+};
+
+export const rejectCourse = async (courseId: string) => {
+  const course = await prisma.course.findUnique({
+    where: { course_id: courseId, status: CourseStatus.Pending },
+    include: {
+      chapter: {
+        include: {
+          lessons: { select: { lesson_id: true, video_url: true } }
+        }
+      }
+    }
+  });
+
+  if (!course) {
+    throw new Error('Course not found or not pending');
+  }
+
+  const videoUrls: string[] = [];
+  const lessonIds: string[] = [];
+  course.chapter.forEach(chapter => {
+    chapter.lessons.forEach(lesson => {
+      if (lesson.video_url && lesson.video_url.includes('temporary_videos')) {
+        videoUrls.push(lesson.video_url);
+        lessonIds.push(lesson.lesson_id);
+      }
+    });
+  });
+  if (videoUrls.length > 0) {
+    await deleteVideos(videoUrls);
+  }
+  return prisma.$transaction(async (tx) => {
+    const updatedCourse = await tx.course.update({
+      where: { course_id: courseId },
+      data: { status: CourseStatus.Draft },
+    });
+    for (const lessonId of lessonIds) {
+      await tx.lesson.update({
+        where: { lesson_id: lessonId },
+        data: { video_url: null }
+      });
+    }
+    return updatedCourse;
+  });
+};
