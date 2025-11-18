@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
+import { decode } from 'node:punycode';
 
 export interface JwtPayLoad {
     id: string;
@@ -28,6 +29,7 @@ export function authenticate(req: Request, res: Response, next: NextFunction): v
 
     try {
         const decoded = jwt.verify(token, JWT_SECRET) as JwtPayLoad;
+/*         console.log(decoded) */
         req.jwtPayload = decoded; 
         next();
     } catch (error) {

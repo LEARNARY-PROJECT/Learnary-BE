@@ -6,7 +6,6 @@ import { validateQualificationDates, toStartOfDay, getTodayStartOfDay } from "..
 export const createInstructorQualifications = async (
   data: Omit<InstructorQualifications, 'instructor_qualification_id' | 'createdAt' | 'updateAt' | 'qualification_images' | 'instructor_id'> & { 
     specialization_name?: string;
-    user_id: string; 
   },
   files?: Express.Multer.File[]
 ): Promise<InstructorQualifications> => {
@@ -17,6 +16,7 @@ export const createInstructorQualifications = async (
   if (!data.specialization_id && !data.specialization_name) {
     throw new Error('Either specialization_id or specialization_name is required');
   }
+  
   if (!data.user_id) {
     throw new Error('user_id is required');
   }
@@ -24,29 +24,14 @@ export const createInstructorQualifications = async (
   const user = await prisma.user.findUnique({
     where: { user_id: data.user_id }
   });
-
   if (!user) {
     throw new Error('User not found');
   }
-
-  let instructor = await prisma.instructor.findUnique({
-    where: { user_id: data.user_id }
-  });
-
-  if (!instructor) {
-    // Tạo instructor record mới (chưa verify) - LẦN ĐẦU SUBMIT QUALIFICATION
-    instructor = await prisma.instructor.create({
-      data: {
-        user_id: data.user_id,
-        isVerified: false
-      }
-    });
+  if (user.role !== 'LEARNER') {
+    throw new Error('Only LEARNER can submit qualifications');
   }
 
-  const instructorId = instructor.instructor_id;
-
   let specializationId = data.specialization_id;
-
   if (data.specialization_name && !data.specialization_id) {
     const existingSpec = await prisma.specialization.findUnique({
       where: { specialization_name: data.specialization_name }
@@ -58,7 +43,7 @@ export const createInstructorQualifications = async (
       const newSpec = await prisma.specialization.create({
         data: {
           specialization_name: data.specialization_name,
-          instructor_id: instructorId!,
+          user_id: data.user_id,
           isVerified: false
         }
       });
@@ -76,14 +61,14 @@ export const createInstructorQualifications = async (
 
   const qualification = await prisma.instructorQualifications.create({ 
     data: {
-      instructor_id: instructorId!,
+      user_id: data.user_id, 
       specialization_id: specializationId,
       title: data.title,
       issue_date: issueDate, 
       expire_date: expireDate,
+      issue_place: data.issue_place,
       type: data.type ?? 'Certificate',
-      status: data.status ?? 'Pending',
-      isVerified: data.isVerified ?? false,
+      status: 'Pending',
       qualification_images: [],
     }
   });
@@ -215,15 +200,19 @@ export const approveQualification = async (instructor_qualification_id: string, 
   }
 
   const qualification = await prisma.instructorQualifications.findUnique({
-    where: { instructor_qualification_id: instructor_qualification_id },
+    where: { instructor_qualification_id },
     include: {
       specialization: true,
-      instructor: true // Include instructor để lấy user_id
+      user: true // ✅ Include user thay vì instructor
     }
   });
 
   if (!qualification) {
     throw new Error('Qualification not found');
+  }
+
+  if (qualification.status === 'Approved') {
+    throw new Error('Qualification already approved');
   }
 
   const admin = await prisma.admin.findUnique({
@@ -235,30 +224,47 @@ export const approveQualification = async (instructor_qualification_id: string, 
   }
 
   return prisma.$transaction(async (tx) => {
-    // duyệt qualification
+    // 1. ✅ TẠO INSTRUCTOR (nếu chưa có)
+    let instructor = await tx.instructor.findUnique({
+      where: { user_id: qualification.user_id }
+    });
+
+    if (!instructor) {
+      instructor = await tx.instructor.create({
+        data: {
+          user_id: qualification.user_id,
+          isVerified: true, // ✅ Verified ngay khi tạo
+          status: 'Active'
+        }
+      });
+    } else {
+      // Update nếu đã tồn tại
+      instructor = await tx.instructor.update({
+        where: { instructor_id: instructor.instructor_id },
+        data: { 
+          isVerified: true,
+          status: 'Active'
+        }
+      });
+    }
+
+    // 2. ✅ UPDATE QUALIFICATION với instructor_id
     const updatedQualification = await tx.instructorQualifications.update({
       where: { instructor_qualification_id },
       data: {
+        instructor_id: instructor.instructor_id, // ✅ Gán instructor_id
         status: 'Approved',
         isVerified: true
       }
     });
 
-    // duyệt instructor
-    if (!qualification.instructor.isVerified) {
-      await tx.instructor.update({
-        where: { instructor_id: qualification.instructor_id },
-        data: { isVerified: true }
-      });
-    }
-
-    // Đổi role user 
+    // 3. ✅ ĐỔI ROLE USER → INSTRUCTOR
     await tx.user.update({
-      where: { user_id: qualification.instructor.user_id },
+      where: { user_id: qualification.user_id },
       data: { role: 'INSTRUCTOR' }
     });
 
-    // 4. duyệt specialization
+    // 4. ✅ DUYỆT SPECIALIZATION
     if (!qualification.specialization.isVerified) {
       await tx.specialization.update({
         where: { specialization_id: qualification.specialization_id },
@@ -266,10 +272,10 @@ export const approveQualification = async (instructor_qualification_id: string, 
       });
     }
 
-    // tạo relationship
+    // 5. ✅ TẠO INSTRUCTOR-SPECIALIZATION RELATIONSHIP
     const existingLink = await tx.instructorSpecializations.findFirst({
       where: {
-        instructor_id: qualification.instructor_id,
+        instructor_id: instructor.instructor_id,
         specialization_id: qualification.specialization_id
       }
     });
@@ -277,7 +283,7 @@ export const approveQualification = async (instructor_qualification_id: string, 
     if (!existingLink) {
       await tx.instructorSpecializations.create({
         data: {
-          instructor_id: qualification.instructor_id,
+          instructor_id: instructor.instructor_id,
           specialization_id: qualification.specialization_id,
           admin_id: admin_id
         }

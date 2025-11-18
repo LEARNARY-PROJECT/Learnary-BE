@@ -5,14 +5,13 @@ import prisma from "../lib/client";
 
 export const createDraft = async (req: Request, res: Response): Promise<void> => {
   try {
-    const instructorId = req.jwtPayload?.id;
-    if (!instructorId) {
-      res.status(401).json({ message: 'Xác thực không hợp lệ' });
+    const userId = req.jwtPayload?.id;
+    if (!userId) {
+      res.status(401).json({ message: 'Missing instructor_id' });
       return;
     }
-
     const newCourse = await courseService.createDraftCourse(
-      instructorId,
+      userId,
       req.body,
     );
     res.status(201).json(newCourse); 
