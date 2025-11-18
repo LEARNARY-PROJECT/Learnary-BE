@@ -1,23 +1,30 @@
 import express from "express";
 import { authenticate, authorizeRoles } from "../middlewares/auth.middleware";
-import { create, getAll, getById, update, remove } from "../controllers/lesson.controller";
+import { create, getAll, getById, update, remove, deleteVideo } from "../controllers/lesson.controller";
+import { videoUpload } from "../config/multer.config";
 
+/*  videoUpload.single('video') nghĩa là middleware của multer chỉ cho phép upload 1 file duy nhất với field name là video */
 const router = express.Router();
 
 /**
  * @openapi
  * /api/lessons:
  *   post:
- *     summary: Create a new lesson
+ *     summary: Create a new lesson with optional video upload
  *     tags: [Lesson]
  *     security:
  *       - bearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
- *         application/json:
+ *         multipart/form-data:
  *           schema:
  *             type: object
+ *             properties:
+ *               video:
+ *                 type: string
+ *                 format: binary
+ *                 description: Video file (MP4, WEBM, MOV - max 500MB)
  *     responses:
  *       201:
  *         description: Lesson created successfully
@@ -26,7 +33,7 @@ const router = express.Router();
  *       401:
  *         description: Unauthorized
  */
-router.post("/lessons", authenticate, authorizeRoles("ADMIN"), create);
+router.post("/lessons", authenticate, authorizeRoles("INSTRUCTOR"), videoUpload.single('video'), create);
 
 /**
  * @openapi
@@ -42,7 +49,7 @@ router.post("/lessons", authenticate, authorizeRoles("ADMIN"), create);
  *       401:
  *         description: Unauthorized
  */
-router.get("/lessons", authenticate, authorizeRoles("ADMIN"), getAll);
+router.get("/lessons", authenticate, getAll);
 
 /**
  * @openapi
@@ -66,13 +73,13 @@ router.get("/lessons", authenticate, authorizeRoles("ADMIN"), getAll);
  *       401:
  *         description: Unauthorized
  */
-router.get("/lessons/:id", authenticate, authorizeRoles("ADMIN"), getById);
+router.get("/lessons/:id", authenticate, getById);
 
 /**
  * @openapi
  * /api/lessons/{id}:
  *   put:
- *     summary: Update lesson by ID
+ *     summary: Update lesson with optional video replacement
  *     tags: [Lesson]
  *     security:
  *       - bearerAuth: []
@@ -85,9 +92,14 @@ router.get("/lessons/:id", authenticate, authorizeRoles("ADMIN"), getById);
  *     requestBody:
  *       required: true
  *       content:
- *         application/json:
+ *         multipart/form-data:
  *           schema:
  *             type: object
+ *             properties:
+ *               video:
+ *                 type: string
+ *                 format: binary
+ *                 description: Video file (MP4, WEBM, MOV - max 500MB)
  *     responses:
  *       200:
  *         description: Lesson updated successfully
@@ -96,13 +108,13 @@ router.get("/lessons/:id", authenticate, authorizeRoles("ADMIN"), getById);
  *       401:
  *         description: Unauthorized
  */
-router.put("/lessons/:id", authenticate, authorizeRoles("ADMIN"), update);
+router.put("/lessons/:id", authenticate, authorizeRoles("INSTRUCTOR"), videoUpload.single('video'), update);
 
 /**
  * @openapi
  * /api/lessons/{id}:
  *   delete:
- *     summary: Delete lesson by ID
+ *     summary: Delete lesson and its video
  *     tags: [Lesson]
  *     security:
  *       - bearerAuth: []
@@ -120,6 +132,30 @@ router.put("/lessons/:id", authenticate, authorizeRoles("ADMIN"), update);
  *       401:
  *         description: Unauthorized
  */
-router.delete("/lessons/:id", authenticate, authorizeRoles("ADMIN"), remove);
+router.delete("/lessons/:id", authenticate, authorizeRoles("INSTRUCTOR"), remove);
+
+/**
+ * @openapi
+ * /api/lessons/{id}/video:
+ *   delete:
+ *     summary: Delete only the video from a lesson
+ *     tags: [Lesson]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Video deleted successfully
+ *       404:
+ *         description: Lesson not found or has no video
+ *       401:
+ *         description: Unauthorized
+ */
+router.delete("/lessons/:id/video", authenticate, authorizeRoles("INSTRUCTOR"), deleteVideo);
 
 export default router;
