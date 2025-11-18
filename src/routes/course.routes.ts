@@ -137,7 +137,7 @@ router.use(authenticate);
  */
 router.post(
   '/courses',
-  authorizeRoles('INSTRUCTOR'),
+  authorizeRoles('INSTRUCTOR','ADMIN'),
   ControllerCourse.createDraft,
 );
 

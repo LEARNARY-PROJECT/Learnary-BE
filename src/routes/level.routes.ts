@@ -26,7 +26,7 @@ const router = express.Router();
  *       401:
  *         description: Unauthorized
  */
-router.post("/levels", authenticate, authorizeRoles("ADMIN"), create);
+router.post("/levels", authenticate, authorizeRoles("ADMIN","LEARNER","INSTRUCTOR"), create);
 
 /**
  * @openapi
@@ -42,7 +42,7 @@ router.post("/levels", authenticate, authorizeRoles("ADMIN"), create);
  *       401:
  *         description: Unauthorized
  */
-router.get("/levels", authenticate, authorizeRoles("ADMIN", "INSTRUCTOR"), getAll);
+router.get("/levels", authenticate, authorizeRoles("ADMIN", "LEARNER","INSTRUCTOR"), getAll);
 
 /**
  * @openapi
@@ -66,7 +66,7 @@ router.get("/levels", authenticate, authorizeRoles("ADMIN", "INSTRUCTOR"), getAl
  *       401:
  *         description: Unauthorized
  */
-router.get("/levels/:id", authenticate, authorizeRoles("ADMIN", "INSTRUCTOR"), getById);
+router.get("/levels/:id", authenticate, authorizeRoles("ADMIN", "LEARNER","INSTRUCTOR"), getById);
 
 /**
  * @openapi
