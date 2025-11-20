@@ -104,10 +104,12 @@ export const updateUserRole = async (req: Request, res: Response) => {
 
 export const updateUserInformation: RequestHandler = async (req, res) => {
     try {
+        
         const userId = req.params.id.trim();
         const jwtPayload: JwtPayLoad = req.jwtPayload!;
         const jwtId = jwtPayload.id.trim();
-        if (jwtId !== userId) {
+        
+        if (jwtId !== userId && jwtPayload.role !== 'ADMIN') {
             res.status(403).json({ error: 'Forbidden: You can only update your own information' });
             return;
         }
