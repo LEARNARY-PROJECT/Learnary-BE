@@ -10,6 +10,7 @@ import {
     getRecentlyActiveUsers,
     getInactiveUsers,
     uploadAvatarToS3,
+    getFullUserProfile
 } from '../services/user.service';
 import { JwtPayLoad } from '../middlewares/auth.middleware';
 
@@ -128,9 +129,10 @@ export const updateUserInformation: RequestHandler = async (req, res) => {
             message: 'User information updated successfully',
             user: updatedUser
         });
-    } catch (err: any) {
-        console.error("Update user information error:", err);
-        if (err.message === 'User not found') {
+    } catch (err) {
+        const e = err as Error;
+        console.error("Update user information error:", e);
+        if (e.message === 'User not found') {
             res.status(404).json({ error: 'User not found' });
             return;
         }
@@ -154,15 +156,16 @@ export const uploadAvatar: RequestHandler = async (req, res) => {
             avatarUrl: updatedUser.avatar,
             user: updatedUser,
         });
-    } catch (error: any) {
-        console.error('Upload avatar error:', error);
-        if (error.message === 'User not found') {
+    } catch (error) {
+        const e = error as Error;
+        console.error('Upload avatar error:', e);
+        if (e.message === 'User not found') {
             res.status(404).json({ error: 'User not found' });
             return;
         }
         res.status(500).json({ 
             error: 'Server error during upload',
-            details: error.message 
+            details: e.message 
         });
     }
 };
@@ -176,8 +179,9 @@ export const getRecentlyActive: RequestHandler = async (req, res) => {
             count: users.length,
             users,
         });
-    } catch (error: any) {
-        console.error("Get recently active users error:", error);
+    } catch (error) {
+        const e = error as Error;
+        console.error("Get recently active users error:", e);
         res.status(500).json({ error: 'Failed to fetch recently active users' });
     }
 };
@@ -193,8 +197,50 @@ export const getInactive: RequestHandler = async (req, res) => {
             count: users.length,
             users,
         });
-    } catch (err: any) {
-        console.error("Get inactive users error:", err);
+    } catch (err) {
+        const e = err as Error;
+        console.error("Get inactive users error:", e);
         res.status(500).json({ error: 'Failed to fetch inactive users' });
+    }
+};
+
+// API Xem chi tiết Học viên
+export const getUserDetailForAdmin: RequestHandler = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const user = await getFullUserProfile(id);
+        if (!user) {
+            res.status(404).json({ error: "User not found" });
+            return;
+        }
+        res.status(200).json({
+            success: true,
+            data: user
+        });
+    } catch (error) {
+        const e = error as Error;
+        console.error("Get user detail for admin error:", e);
+        res.status(500).json({ error: "Internal server error" });
+    }
+};
+
+// API Xem chi tiết Giảng viên
+export const getInstructorDetailForAdmin: RequestHandler = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const user = await getFullUserProfile(id);
+        if (!user || !user.instructor) {
+            res.status(404).json({ error: "Instructor not found" });
+            return;
+        }
+
+        res.status(200).json({
+            success: true,
+            data: user
+        });
+    } catch (error) {
+        const e = error as Error;
+        console.error("Get instructor detail for admin error:", e);
+        res.status(500).json({ error: "Internal server error" });
     }
 };

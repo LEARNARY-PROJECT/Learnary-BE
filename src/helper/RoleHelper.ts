@@ -45,24 +45,24 @@ export async function getOnlyRoleEntityId(
  * @param expectedRole Role mong đợi ("LEARNER" | "INSTRUCTOR" | "ADMIN")
  * @returns Entity tương ứng hoặc null
  */
-export async function confirmEntity<T>(
-  req: Request,
-  expectedRole: "LEARNER" | "INSTRUCTOR" | "ADMIN"
-): Promise<T | null> {
-  const user_id = req.user!.id;
-  const roleInfo = await getRoleIdByUserId(user_id);
+// export async function confirmEntity<T>(
+//   req: Request,
+//   expectedRole: "LEARNER" | "INSTRUCTOR" | "ADMIN"
+// ): Promise<T | null> {
+//   const user_id = req.user!.id;
+//   const roleInfo = await getRoleIdByUserId(user_id);
 
-  if (!roleInfo || roleInfo.role !== expectedRole || !roleInfo.id) {
-    return null;
-  }
-  switch (expectedRole) {
-    case "LEARNER":
-      return (await prisma.learner.findUnique({ where: { learner_id: roleInfo.id } })) as T;
-    case "INSTRUCTOR":
-      return (await prisma.instructor.findUnique({ where: { instructor_id: roleInfo.id } })) as T;
-    case "ADMIN":
-      return (await prisma.admin.findUnique({ where: { admin_id: roleInfo.id } })) as T;
-    default:
-      return null;
-  }
-}
+//   if (!roleInfo || roleInfo.role !== expectedRole || !roleInfo.id) {
+//     return null;
+//   }
+//   switch (expectedRole) {
+//     case "LEARNER":
+//       return (await prisma.learner.findUnique({ where: { learner_id: roleInfo.id } })) as T;
+//     case "INSTRUCTOR":
+//       return (await prisma.instructor.findUnique({ where: { instructor_id: roleInfo.id } })) as T;
+//     case "ADMIN":
+//       return (await prisma.admin.findUnique({ where: { admin_id: roleInfo.id } })) as T;
+//     default:
+//       return null;
+//   }
+// }

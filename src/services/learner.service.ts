@@ -4,11 +4,35 @@ import { Learner, User } from "@prisma/client";
 export const getAllLearnerNoUserData = async (): Promise<Learner[]> => {
   return prisma.learner.findMany();
 };
-export const getAllLearnerWithUserData = async (): Promise<(Learner & { user: User })[]> => {
+
+export const getAllLearnerWithUserData = async () => {
   return prisma.learner.findMany({
-    include: {
-      user: true,
+    where: {
+      user: {
+        role: 'LEARNER' 
+      }
     },
+    include: {
+      user: {
+        select: {
+          user_id: true,
+          fullName: true,
+          email: true,
+          phone: true,
+          avatar: true,
+          isActive: true,
+          last_login: true,
+        }
+      },
+      _count: {
+        select: {
+          learner_courses: true
+        }
+      }
+    },
+    orderBy: {
+      enrolledAt: 'desc'
+    }
   });
 };
 
@@ -18,6 +42,11 @@ export const getLearnerById = async (id: string): Promise<Learner | null> => {
   });
 };
 
+export const getLearnerByUserId = async (userId: string): Promise<Learner | null> => {
+  return prisma.learner.findUnique({
+    where: { user_id: userId },
+  });
+};
 
 export const deleteLearner = async (learner_id: string): Promise<Learner> => {
   return prisma.learner.delete({
@@ -34,4 +63,3 @@ export const updateLearner = async (
     data,
   });
 };
-

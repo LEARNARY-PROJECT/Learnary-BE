@@ -5749,6 +5749,89 @@
         }
       }
     },
+    "/api/users/{id}/detail": {
+      "get": {
+        "summary": "Get full user details (Learner info, Wallet, Transactions) for Admin",
+        "tags": [
+          "User"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The user ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User details fetched successfully"
+          },
+          "403": {
+            "description": "Forbidden (Not Admin)"
+          },
+          "404": {
+            "description": "User not found"
+          }
+        }
+      }
+    },
+    "/api/users/{id}/instructor-detail": {
+      "get": {
+        "summary": "Get full user details (Qualifications, Instructor-Info, Courses, Wallet, Transactions) for Admin",
+        "tags": [
+          "User"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The user ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Instructor details fetched successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden (Not Admin)"
+          },
+          "404": {
+            "description": "Instructor not found"
+          }
+        }
+      }
+    },
     "/api/wallets": {
       "post": {
         "summary": "Create a new wallet",
