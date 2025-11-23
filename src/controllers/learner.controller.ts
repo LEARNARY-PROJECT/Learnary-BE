@@ -1,7 +1,7 @@
 import * as LearnerService from "../services/learner.service";
 import { Response, Request } from "express";
 import { Learner } from "@prisma/client";
-import { success, failure } from "../utils/response"; // Giả sử bạn có file này
+import { success, failure } from "../utils/response"; 
 
 // Hàm này dùng để lấy thông tin Learner dựa trên Token của người đang đăng nhập
 async function ensureLearner(req: Request, res: Response): Promise<Learner | null> {
@@ -18,7 +18,7 @@ async function ensureLearner(req: Request, res: Response): Promise<Learner | nul
   return learner;
 }
 
-export const getAllLearnerNoUserData = async (req: Request, res: Response) => {
+export const getAllLearnerNoUserData = async (req:Request, res: Response) => {
   try {
     const learners = await LearnerService.getAllLearnerNoUserData();
     return res.status(200).json(success(learners, "Learners fetched successfully"));

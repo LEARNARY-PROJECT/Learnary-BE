@@ -18,7 +18,7 @@ const router = express.Router()
  *       401:
  *         description: Unauthorized
  */
-router.get('/learners', authenticate, authorizeRoles('ADMIN'), (req, res) => { void getAllLearnerNoUserData })
+router.get('/learners', authenticate, authorizeRoles('ADMIN'), (req, res) => { void getAllLearnerNoUserData(req,res) })
 
 /**
  * @openapi
@@ -34,7 +34,7 @@ router.get('/learners', authenticate, authorizeRoles('ADMIN'), (req, res) => { v
  *       401:
  *         description: Unauthorized
  */
-router.get('/learners/with-user', authenticate, authorizeRoles('ADMIN'), (req, res) => { void getAllLearnerWithUserData(res) })
+router.get('/learners/with-user', authenticate, authorizeRoles('ADMIN'), (_, res) => { void getAllLearnerWithUserData(res) })
 
 /**
  * @openapi

@@ -217,7 +217,7 @@ router.post(
  */
 router.get(
   '/courses/instructor/my-courses',
-  authorizeRoles('INSTRUCTOR'),
+  authorizeRoles('INSTRUCTOR','ADMIN'),
   ControllerCourse.getMyCourses,
 );
 
