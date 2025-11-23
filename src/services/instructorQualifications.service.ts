@@ -75,7 +75,6 @@ export const createInstructorQualifications = async (
 
   if (files && files.length > 0) {
     const imageUrls = await uploadQualificationImages(qualification.instructor_qualification_id, files);
-    
     return prisma.instructorQualifications.update({
       where: { instructor_qualification_id: qualification.instructor_qualification_id },
       data: { qualification_images: imageUrls }
@@ -190,12 +189,12 @@ export const deleteInstructorQualifications = async (instructor_qualification_id
   });
 };
 
-export const approveQualification = async (instructor_qualification_id: string, admin_id: string): Promise<InstructorQualifications> => {
+export const approveQualification = async (instructor_qualification_id: string, currentUserId: string): Promise<InstructorQualifications> => {
   if (!instructor_qualification_id) {
     throw new Error('instructor_qualification_id is required');
   }
 
-  if (!admin_id) {
+  if (!currentUserId) {
     throw new Error('admin_id is required');
   }
 
@@ -203,7 +202,7 @@ export const approveQualification = async (instructor_qualification_id: string, 
     where: { instructor_qualification_id },
     include: {
       specialization: true,
-      user: true // ✅ Include user thay vì instructor
+      user: true 
     }
   });
 
@@ -216,7 +215,7 @@ export const approveQualification = async (instructor_qualification_id: string, 
   }
 
   const admin = await prisma.admin.findUnique({
-    where: { admin_id }
+    where: { user_id: currentUserId } 
   });
 
   if (!admin) {
@@ -224,7 +223,6 @@ export const approveQualification = async (instructor_qualification_id: string, 
   }
 
   return prisma.$transaction(async (tx) => {
-    // 1. ✅ TẠO INSTRUCTOR (nếu chưa có)
     let instructor = await tx.instructor.findUnique({
       where: { user_id: qualification.user_id }
     });
@@ -233,12 +231,11 @@ export const approveQualification = async (instructor_qualification_id: string, 
       instructor = await tx.instructor.create({
         data: {
           user_id: qualification.user_id,
-          isVerified: true, // ✅ Verified ngay khi tạo
+          isVerified: true, 
           status: 'Active'
         }
       });
     } else {
-      // Update nếu đã tồn tại
       instructor = await tx.instructor.update({
         where: { instructor_id: instructor.instructor_id },
         data: { 
@@ -248,31 +245,26 @@ export const approveQualification = async (instructor_qualification_id: string, 
       });
     }
 
-    // 2. ✅ UPDATE QUALIFICATION với instructor_id
     const updatedQualification = await tx.instructorQualifications.update({
       where: { instructor_qualification_id },
       data: {
-        instructor_id: instructor.instructor_id, // ✅ Gán instructor_id
+        instructor_id: instructor.instructor_id, 
         status: 'Approved',
         isVerified: true
       }
     });
 
-    // 3. ✅ ĐỔI ROLE USER → INSTRUCTOR
     await tx.user.update({
       where: { user_id: qualification.user_id },
       data: { role: 'INSTRUCTOR' }
     });
 
-    // 4. ✅ DUYỆT SPECIALIZATION
     if (!qualification.specialization.isVerified) {
       await tx.specialization.update({
         where: { specialization_id: qualification.specialization_id },
         data: { isVerified: true }
       });
     }
-
-    // 5. ✅ TẠO INSTRUCTOR-SPECIALIZATION RELATIONSHIP
     const existingLink = await tx.instructorSpecializations.findFirst({
       where: {
         instructor_id: instructor.instructor_id,
@@ -285,7 +277,7 @@ export const approveQualification = async (instructor_qualification_id: string, 
         data: {
           instructor_id: instructor.instructor_id,
           specialization_id: qualification.specialization_id,
-          admin_id: admin_id
+          admin_id: admin.admin_id
         }
       });
     }

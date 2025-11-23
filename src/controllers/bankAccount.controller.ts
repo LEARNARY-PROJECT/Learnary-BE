@@ -28,11 +28,12 @@ export const createBank: RequestHandler = async (req, res) => {
             message: 'Bank account created successfully',
             data: newBankAccount
         });
-    } catch (error: any) {
-        console.error("Failed to create bank account:", error);
+    } catch (error) {
+        const e = error as Error;
+        console.error("Failed to create bank account:", e);
         res.status(500).json({ 
             error: 'Failed to create bank account',
-            details: error.message 
+            details: e.message 
         });
     }
 };
@@ -65,11 +66,12 @@ export const updateBankInformation: RequestHandler = async (req, res) => {
             message: 'Bank account updated successfully',
             data: updatedInformation
         });
-    } catch (error: any) {
-        console.error("Update bank information error:", error);
+    } catch (error) {
+        const e = error as Error;
+        console.error("Update bank information error:", e);
         res.status(500).json({ 
             error: 'Failed to update bank information.',
-            details: error.message
+            details: e.message
         });
     }
 };
@@ -86,11 +88,12 @@ export const deleteBank: RequestHandler = async (req, res) => {
         res.status(200).json({ 
             message: "Bank account deleted successfully!" 
         });
-    } catch (error: any) {
-        console.error("Delete bank error:", error);
+    } catch (error) {
+        const e = error as Error;
+        console.error("Delete bank error:", e);
         res.status(500).json({ 
             error: 'Failed to delete bank account.',
-            details: error.message
+            details: e.message
         });
     }
 };
@@ -114,11 +117,12 @@ export const getUserBankAccount: RequestHandler = async (req, res) => {
             message: "Bank account retrieved successfully",
             data: neededBank
         });
-    } catch (error: any) {
-        console.error("Get bank account error:", error);
+    } catch (error) {
+        const e = error as Error;
+        console.error("Get bank account error:", e);
         res.status(500).json({ 
             error: 'Failed to get bank account.',
-            details: error.message
+            details: e.message
         });
     }
 }; 

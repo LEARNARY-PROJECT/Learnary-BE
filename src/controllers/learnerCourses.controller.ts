@@ -6,8 +6,9 @@ export const create = async (req: Request, res: Response) => {
   try {
     const leanrerCourse = await LearnerCoursesService.createLearnerCourse(req.body);
     res.status(201).json(success(leanrerCourse, "LeanrerCourse created successfully"));
-  } catch (err: any) {
-    res.status(500).json(failure("Failed to create leanrerCourse", err.message));
+  } catch (err) {
+    const e = err as Error;
+    res.status(500).json(failure("Failed to create leanrerCourse", e.message));
   }
 };
 
@@ -24,8 +25,9 @@ export const getById = async (req: Request, res: Response) => {
       return;
     }
     res.json(success(leanrerCourse, "LeanrerCourse fetched successfully"));
-  } catch (err: any) {
-    res.status(500).json(failure("Failed to fetch leanrerCourse", err.message));
+  } catch (err) {
+    const e = err as Error;
+    res.status(500).json(failure("Failed to fetch leanrerCourse", e.message));
   }
 };
 
@@ -33,8 +35,9 @@ export const getAll = async (_: Request, res: Response) => {
   try {
     const leanrerCourses = await LearnerCoursesService.getAllLearnerCourses();
     res.json(success(leanrerCourses, "All leanrerCourses fetched successfully"));
-  } catch (err: any) {
-    res.status(500).json(failure("Failed to fetch leanrerCourses", err.message));
+  } catch (err) {
+    const e = err as Error;
+    res.status(500).json(failure("Failed to fetch leanrerCourses", e.message));
   }
 };
 
@@ -47,8 +50,9 @@ export const update = async (req: Request, res: Response) => {
     }
     const updated = await LearnerCoursesService.updateLearnerCourse(learner_id,course_id, req.body);
     res.json(success(updated, "LeanrerCourse updated successfully"));
-  } catch (err: any) {
-    res.status(500).json(failure("Failed to update leanrerCourse", err.message));
+  } catch (err) {
+    const e = err as Error;
+    res.status(500).json(failure("Failed to update leanrerCourse", e.message));
   }
 };
 
@@ -61,7 +65,8 @@ export const remove = async (req: Request, res: Response) => {
     }
     await LearnerCoursesService.deleteLearnerCourse(learner_id,course_id);
     res.json(success(null, "LeanrerCourse deleted successfully"));
-  } catch (err: any) {
-    res.status(500).json(failure("Failed to delete leanrerCourse", err.message));
+  } catch (err) {
+    const e = err as Error;
+    res.status(500).json(failure("Failed to delete leanrerCourse", e.message));
   }
 };

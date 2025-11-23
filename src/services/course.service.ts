@@ -1,6 +1,7 @@
 import prisma from "../lib/client";
 import { CourseStatus } from '@prisma/client';
 import { moveVideosToPermanent, deleteVideos } from './videoLesson.service';
+import type { CourseCreateDto, ChapterDto, LessonDto, QuizDto, QuestionDto, OptionDto } from '../types/course';
 
 const getInstructorId = async (userId: string): Promise<string> => {
   const instructor = await prisma.instructor.findUnique({
@@ -95,8 +96,7 @@ export const deleteCourse = async (course_id: string) => {
 
 export const createDraftCourse = async (
   userId: string,
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  data: any,
+  data: CourseCreateDto,
 ) => {
 
   const instructor = await prisma.instructor.findUnique({
@@ -131,13 +131,11 @@ export const createDraftCourse = async (
     slug: data.title.toLowerCase().replace(/\s+/g, '-'),
     status: CourseStatus.Draft.trim(),
     chapter: {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      create: data.chapter.map((chapter: any) => ({
+    create: (data.chapter as ChapterDto[]).map((chapter: ChapterDto) => ({
         chapter_title: chapter.chapter_title,
         lessons: chapter.lessons
           ? {
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            create: chapter.lessons.map((lesson: any) => ({
+            create: chapter.lessons.map((lesson) => ({
               title: lesson.title,
               duration: lesson.duration || '00:00',
               slug: lesson.title.toLowerCase().replace(/\s+/g, '-'),
@@ -150,12 +148,10 @@ export const createDraftCourse = async (
               title: chapter.quiz.title,
               slug: chapter.quiz.title.toLowerCase().replace(/\s+/g, '-'),
               questions: {
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                create: chapter.quiz.questions.map((question: any) => ({
+                create: (chapter.quiz?.questions || []).map((question) => ({
                   title: question.title,
                   options: {
-                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                    create: question.options.map((option: any) => ({
+                    create: (question.options || []).map((option) => ({
                       option_content: option.option_content,
                       is_correct: option.is_correct,
                     })),
@@ -181,13 +177,11 @@ export const createDraftCourse = async (
       slug: cleanData.title.toLowerCase().replace(/\s+/g, '-'),
       status: CourseStatus.Draft,
       chapter: {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        create: data.chapter.map((chapter: any) => ({
+        create: (data.chapter as ChapterDto[]).map((chapter: ChapterDto) => ({
           chapter_title: chapter.chapter_title,
           lessons: chapter.lessons
             ? {
-              // eslint-disable-next-line @typescript-eslint/no-explicit-any
-              create: chapter.lessons.map((lesson: any) => ({
+              create: chapter.lessons.map((lesson) => ({
                 title: lesson.title,
                 duration: lesson.duration || '00:00',
                 slug: lesson.title.toLowerCase().replace(/\s+/g, '-'),
@@ -200,12 +194,10 @@ export const createDraftCourse = async (
                 title: chapter.quiz.title,
                 slug: chapter.quiz.title.toLowerCase().replace(/\s+/g, '-'),
                 questions: {
-                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                  create: chapter.quiz.questions.map((question: any) => ({
+                  create: (chapter.quiz?.questions || []).map((question) => ({
                     title: question.title,
                     options: {
-                      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                      create: question.options.map((option: any) => ({
+                      create: (question.options || []).map((option) => ({
                         option_content: option.option_content,
                         is_correct: option.is_correct,
                       })),
@@ -225,7 +217,7 @@ export const createDraftCourse = async (
 export const updateDraftCourse = async (
   courseId: string,
   userId: string,
-  data: any,
+  data: CourseCreateDto,
 ) => {
   const instructorId = await getInstructorId(userId);
   const course = await prisma.course.findFirst({
@@ -237,16 +229,15 @@ export const updateDraftCourse = async (
     throw new Error('Khóa học này đã được gửi duyệt, không thể lưu nháp.');
   }
 
-  const hasVideo = data.chapter?.some((c: any) => c.lessons?.some((l: any) => l.video_url && l.video_url.length > 0));
+  const hasVideo = (data.chapter || []).some((c) => c.lessons?.some((l) => l.video_url && l.video_url.length > 0));
 
   if (hasVideo) {
     throw new Error('Không thể lưu nháp khi đã có video. Vui lòng Gửi phê duyệt.');
   }
 
   return await prisma.$transaction(async (tx) => {
-    await tx.chapter.deleteMany({
-      where: { course_id: courseId },
-    });
+    await tx.chapter.deleteMany({ where: { course_id: courseId } });
+
     const updatedCourse = await tx.course.update({
       where: { course_id: courseId },
       data: {
@@ -258,35 +249,35 @@ export const updateDraftCourse = async (
         level_id: data.level_id.trim(),
         slug: data.title.toLowerCase().replace(/\s+/g, '-'),
         chapter: {
-          create: data.chapter.map((chapter: any) => ({
+          create: (data.chapter || []).map((chapter) => ({
             chapter_title: chapter.chapter_title,
             lessons: chapter.lessons
               ? {
-                create: chapter.lessons.map((lesson: any) => ({
-                  title: lesson.title,
-                  duration: lesson.duration || '00:00',
-                  slug: lesson.title.toLowerCase().replace(/\s+/g, '-'),
-                })),
-              }
+                  create: chapter.lessons.map((lesson) => ({
+                    title: lesson.title,
+                    duration: lesson.duration || '00:00',
+                    slug: lesson.title.toLowerCase().replace(/\s+/g, '-'),
+                  })),
+                }
               : undefined,
             quiz: chapter.quiz
               ? {
-                create: {
-                  title: chapter.quiz.title,
-                  slug: chapter.quiz.title.toLowerCase().replace(/\s+/g, '-'),
-                  questions: {
-                    create: chapter.quiz.questions.map((question: any) => ({
-                      title: question.title,
-                      options: {
-                        create: question.options.map((option: any) => ({
-                          option_content: option.option_content,
-                          is_correct: option.is_correct,
-                        })),
-                      },
-                    })),
+                  create: {
+                    title: chapter.quiz.title,
+                    slug: chapter.quiz.title.toLowerCase().replace(/\s+/g, '-'),
+                    questions: {
+                      create: (chapter.quiz?.questions || []).map((question) => ({
+                        title: question.title,
+                        options: {
+                          create: (question.options || []).map((option) => ({
+                            option_content: option.option_content,
+                            is_correct: option.is_correct,
+                          })),
+                        },
+                      })),
+                    },
                   },
-                },
-              }
+                }
               : undefined,
           })),
         },
@@ -310,7 +301,7 @@ export const updateDraftCourse = async (
 export const submitCourseForApproval = async (
   courseId: string,
   userId: string,
-  data: any,
+  data: CourseCreateDto,
 ) => {
   const instructorId = await getInstructorId(userId);
   const course = await prisma.course.findFirst({
@@ -322,13 +313,13 @@ export const submitCourseForApproval = async (
     throw new Error('Khóa học này đã được gửi duyệt.');
   }
 
-  const allChaptersHaveLessons = data.chapter.every((c: any) => c.lessons && c.lessons.length > 0);
+  const allChaptersHaveLessons = (data.chapter || []).every((c) => c.lessons && c.lessons.length > 0);
   if (!allChaptersHaveLessons) {
     throw new Error('Mỗi chương phải có ít nhất 1 bài học.');
   }
 
-  const allLessonsHaveVideo = data.chapter.every((c: any) =>
-    c.lessons.every((l: any) => l.video_url && l.video_url.trim() !== '')
+  const allLessonsHaveVideo = (data.chapter || []).every((c) =>
+    (c.lessons || []).every((l) => l.video_url && l.video_url.trim() !== '')
   );
   if (!allLessonsHaveVideo) {
     throw new Error('Tất cả các bài học đã tạo phải có video mới được gửi duyệt.');
@@ -347,10 +338,10 @@ export const submitCourseForApproval = async (
         level_id: data.level_id?.trim(),
         slug: data.title.toLowerCase().replace(/\s+/g, '-'),
         chapter: {
-          create: data.chapter.map((chapter: any) => ({
+          create: (data.chapter || []).map((chapter) => ({
             chapter_title: chapter.chapter_title,
             lessons: chapter.lessons ? {
-              create: chapter.lessons.map((lesson: any) => ({
+              create: chapter.lessons.map((lesson) => ({
                 title: lesson.title,
                 duration: lesson.duration || '00:00',
                 slug: lesson.title.toLowerCase().replace(/\s+/g, '-'),
@@ -363,10 +354,10 @@ export const submitCourseForApproval = async (
                   title: chapter.quiz.title,
                   slug: chapter.quiz.title.toLowerCase().replace(/\s+/g, '-'),
                   questions: {
-                    create: chapter.quiz.questions.map((question: any) => ({
+                    create: (chapter.quiz?.questions || []).map((question) => ({
                       title: question.title,
                       options: {
-                        create: question.options.map((option: any) => ({
+                        create: (question.options || []).map((option) => ({
                           option_content: option.option_content,
                           is_correct: option.is_correct,
                         })),

@@ -1,4 +1,6 @@
-export interface ApiResponse<T = any> {
+import type { JsonValue } from "../types/common";
+
+export interface ApiResponse<T = JsonValue> {
   success:boolean;
   data: T;
   message: string;
