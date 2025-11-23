@@ -121,6 +121,7 @@ export const updateUserInformation: RequestHandler = async (req, res) => {
             avatar: req.body.avatar,
             bio: req.body.bio,
             city: req.body.city,
+            country: req.body.country,
             nation: req.body.nation,
             dateOfBirth: req.body.dateOfBirth,
         };

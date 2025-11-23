@@ -3,7 +3,7 @@ import prisma from "../lib/client";
 import { User, Learner } from "@prisma/client";
 import type { Role, Wallet } from "@prisma/client";
 import { S3_BUCKET_NAME, s3Client } from '../config/s3.config';
-import { PutObjectCommand } from '@aws-sdk/client-s3';
+import { PutObjectCommand, DeleteObjectCommand } from '@aws-sdk/client-s3';
 import path from 'path';
 import { sliceHalfUserId } from "../utils/commons";
 import type { JsonValue } from "../types/common";
@@ -99,6 +99,7 @@ export interface UpdateUserData {
   address?: string;
   avatar?: string;
   bio?: string;
+  country?:string;
   dateOfBirth?: Date | string;
   city?: string;
   nation?: string;
@@ -112,25 +113,19 @@ export const editUserInformation = async (id: string, data: UpdateUserData): Pro
   if (!existingUser) {
     throw new Error('User not found');
   }
-
-  const updateData: Partial<Record<string, JsonValue>> = {};
-  if (data.fullName !== undefined) updateData.fullName = data.fullName;
-  if (data.phone !== undefined) updateData.phone = data.phone;
-  if (data.city !== undefined) updateData.city = data.city;
-  if (data.nation !== undefined) updateData.nation = data.nation;
-  if (data.address !== undefined) updateData.address = data.address;
-  if (data.avatar !== undefined) updateData.avatar = data.avatar;
-  if (data.bio !== undefined) updateData.bio = data.bio;
-  if (data.dateOfBirth !== undefined) {
-    // store date as ISO string to fit JsonValue types
-    updateData.dateOfBirth = typeof data.dateOfBirth === 'string' ? data.dateOfBirth : data.dateOfBirth.toISOString();
+  const updateData: Partial<UpdateUserData> = {...data};
+  if(updateData.dateOfBirth) {
+    const date = new Date(updateData.dateOfBirth);
+    if(!isNaN(date.getTime())) {
+      updateData.dateOfBirth=date.toISOString();
+    } else {
+      delete updateData.dateOfBirth;
+    }
   }
-
   const updatedUser = await prisma.user.update({
     where: { user_id: id },
     data: updateData,
   });
-
   return updatedUser;
 };
 
@@ -168,7 +163,24 @@ export const uploadAvatarToS3 = async (userId: string, file: Express.Multer.File
   const fileExtension = path.extname(file.originalname)
   const fileName = `${halfUserId}${fileExtension}`
   const s3Key = `avatar/${fileName}`
-
+  try {
+    if(user.avatar) {
+      const oldAvatarUrl = user.avatar;
+      const oldS3Key = oldAvatarUrl.replace(`https://${S3_BUCKET_NAME}.s3.amazonaws.com/`,'');
+      if(oldS3Key !== s3Key) {
+        try {
+          await s3Client.send(new DeleteObjectCommand({
+            Bucket: S3_BUCKET_NAME,
+            Key: oldS3Key
+          }));
+        } catch (deleteError) {
+          console.warn('Warning: Failed to delete old avatar:', deleteError);
+        }
+      }
+    }
+  } catch (error) {
+    throw new Error("Error while compare URL avatar")
+  }
   const uploadParams = {
     Bucket: S3_BUCKET_NAME,
     Key: s3Key,
@@ -179,7 +191,6 @@ export const uploadAvatarToS3 = async (userId: string, file: Express.Multer.File
   try {
     await s3Client.send(new PutObjectCommand(uploadParams))
     const avatarUrl = `https://${S3_BUCKET_NAME}.s3.amazonaws.com/${s3Key}`
-    console.log('Upload S3 successful:', avatarUrl)
     
     const updatedUser = await updateAvatar(userId, avatarUrl)
     return updatedUser
