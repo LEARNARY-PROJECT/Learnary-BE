@@ -6,9 +6,10 @@ export const create = async (req: Request, res: Response) => {
   try {
     const adminRolePermission = await AdminRolePermissionService.createAdminRolePermission(req.body);
     res.status(201).json(success(adminRolePermission, "AdminRolePermission created successfully"));
-  } catch (err: any) {
-    res.status(500).json(failure("Failed to create adminRolePermission", err.message));
-  }
+    } catch (err) {
+      const e = err as Error;
+      res.status(500).json(failure("Failed to create adminRolePermission", e.message));
+    }
 };
 
 export const getById = async (req: Request, res: Response) => {
@@ -20,18 +21,20 @@ export const getById = async (req: Request, res: Response) => {
       return;
     }
     res.json(success(adminRolePermission, "AdminRolePermission fetched successfully"));
-  } catch (err: any) {
-    res.status(500).json(failure("Failed to fetch adminRolePermission", err.message));
-  }
+    } catch (err) {
+      const e = err as Error;
+      res.status(500).json(failure("Failed to fetch adminRolePermission", e.message));
+    }
 };
 
 export const getAll = async (_: Request, res: Response) => {
   try {
     const adminRolePermissions = await AdminRolePermissionService.getAllAdminRolePermissions();
     res.json(success(adminRolePermissions, "All adminRolePermissions fetched successfully"));
-  } catch (err: any) {
-    res.status(500).json(failure("Failed to fetch adminRolePermissions", err.message));
-  }
+    } catch (err) {
+      const e = err as Error;
+      res.status(500).json(failure("Failed to fetch adminRolePermissions", e.message));
+    }
 };
 
 export const update = async (req: Request, res: Response) => {
@@ -39,9 +42,10 @@ export const update = async (req: Request, res: Response) => {
     const { permission_id, admin_role_id } = req.params;
     const updated = await AdminRolePermissionService.updateAdminRolePermission(permission_id, admin_role_id, req.body);
     res.json(success(updated, "AdminRolePermission updated successfully"));
-  } catch (err: any) {
-    res.status(500).json(failure("Failed to update adminRolePermission", err.message));
-  }
+    } catch (err) {
+      const e = err as Error;
+      res.status(500).json(failure("Failed to update adminRolePermission", e.message));
+    }
 };
 
 export const remove = async (req: Request, res: Response) => {
@@ -49,7 +53,8 @@ export const remove = async (req: Request, res: Response) => {
     const { permission_id, admin_role_id } = req.params;
     await AdminRolePermissionService.deleteAdminRolePermission(permission_id, admin_role_id);
     res.json(success(null, "AdminRolePermission deleted successfully"));
-  } catch (err: any) {
-    res.status(500).json(failure("Failed to delete adminRolePermission", err.message));
-  }
+    } catch (err) {
+      const e = err as Error;
+      res.status(500).json(failure("Failed to delete adminRolePermission", e.message));
+    }
 };

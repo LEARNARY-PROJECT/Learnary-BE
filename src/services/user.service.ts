@@ -6,6 +6,7 @@ import { S3_BUCKET_NAME, s3Client } from '../config/s3.config';
 import { PutObjectCommand } from '@aws-sdk/client-s3';
 import path from 'path';
 import { sliceHalfUserId } from "../utils/commons";
+import type { JsonValue } from "../types/common";
 export const createDefaultUserIfNoneExists = async () => {
   const userCount = await prisma.user.count();
   const adminCount = await prisma.user.count({
@@ -112,7 +113,7 @@ export const editUserInformation = async (id: string, data: UpdateUserData): Pro
     throw new Error('User not found');
   }
 
-  const updateData: any = {};
+  const updateData: Partial<Record<string, JsonValue>> = {};
   if (data.fullName !== undefined) updateData.fullName = data.fullName;
   if (data.phone !== undefined) updateData.phone = data.phone;
   if (data.city !== undefined) updateData.city = data.city;
@@ -121,7 +122,8 @@ export const editUserInformation = async (id: string, data: UpdateUserData): Pro
   if (data.avatar !== undefined) updateData.avatar = data.avatar;
   if (data.bio !== undefined) updateData.bio = data.bio;
   if (data.dateOfBirth !== undefined) {
-    updateData.dateOfBirth = typeof data.dateOfBirth === 'string' ? new Date(data.dateOfBirth) : data.dateOfBirth;
+    // store date as ISO string to fit JsonValue types
+    updateData.dateOfBirth = typeof data.dateOfBirth === 'string' ? data.dateOfBirth : data.dateOfBirth.toISOString();
   }
 
   const updatedUser = await prisma.user.update({
@@ -175,7 +177,6 @@ export const uploadAvatarToS3 = async (userId: string, file: Express.Multer.File
   };
 
   try {
-    //  ghi đè vào link url cũ, không tạo thêm
     await s3Client.send(new PutObjectCommand(uploadParams))
     const avatarUrl = `https://${S3_BUCKET_NAME}.s3.amazonaws.com/${s3Key}`
     console.log('Upload S3 successful:', avatarUrl)
@@ -218,5 +219,60 @@ export const getInactiveUsers = async (daysAgo: number = 30): Promise<User[]> =>
     orderBy: {
       last_login: 'asc',
     },
+  });
+};
+
+export const getFullUserProfile = async (userId: string) => {
+  return prisma.user.findUnique({
+    where: { user_id: userId },
+    include: {
+      wallet: true,
+      transactions: {
+        take: 5,
+        orderBy: { createdAt: 'desc' }
+      },
+      learner: {
+        include: {
+          learner_courses: {
+            include: {
+              course: {
+                select: {
+                  title: true,
+                  thumbnail: true,
+                  slug: true,
+                  price: true
+                }
+              }
+            }
+          }
+        }
+      },
+      instructor: {
+        include: {
+          instructor_qualifications: {
+            where: { status: 'Approved' }
+          },
+          instructorSpecialization: {
+            include: {
+              specialization: true
+            }
+          },
+          courses: {
+            select: {
+              course_id: true,
+              title: true,
+              thumbnail: true,
+              status: true,
+              price: true,
+              createdAt: true,
+              _count: {
+                select: { learnerCourses: true }
+              }
+            },
+            orderBy: { createdAt: 'desc' }
+          }
+        }
+      }
+    }
   });
 };

@@ -9,7 +9,9 @@ import {
     updateUserInformation,
     getRecentlyActive,
     getInactive,
-    uploadAvatar
+    uploadAvatar,
+    getUserDetailForAdmin,
+    getInstructorDetailForAdmin
 } from '../controllers/user.controller';
 import { authenticate, authorizeRoles } from '../middlewares/auth.middleware';
 import upload from "../config/multer.config"
@@ -226,7 +228,75 @@ router.get('/users/inactive', authenticate, authorizeRoles('ADMIN'), getInactive
  *         description: User not found
  */
 router.delete('/users/:id',authenticate,authorizeRoles('ADMIN'),deleteUserByID);
-router.get('/users/getMyProfile/:id', authenticate, getMyProfile); 
+router.get('/users/getMyProfile/:id', authenticate, getMyProfile);
+
+/**
+ * @openapi
+ * /api/users/{id}/detail:
+ *   get:
+ *     summary: Get full user details (Learner info, Wallet, Transactions) for Admin
+ *     tags: [User]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: The user ID
+ *     responses:
+ *       200:
+ *         description: User details fetched successfully
+ *       404:
+ *         description: User not found
+ *       403:
+ *         description: Forbidden (Not Admin)
+ */
+router.get(
+    '/users/:id/detail', 
+    authenticate, 
+    authorizeRoles('ADMIN'), 
+    getUserDetailForAdmin
+);
+
+/**
+ * @openapi
+ * /api/users/{id}/instructor-detail:
+ *   get:
+ *     summary: Get full user details (Qualifications, Instructor-Info, Courses, Wallet, Transactions) for Admin
+ *     tags: [User]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: The user ID
+ *     responses:
+ *       200:
+ *         description: Instructor details fetched successfully
+ *         content:
+ *           application/json:
+*             schema:
+ *               type: object
+ *               properties:
+ *                  success:
+ *                     type: boolean
+ *                     example: true
+ *       404:
+ *         description: Instructor not found
+ *       403:
+ *         description: Forbidden (Not Admin)
+ */
+router.get(
+    '/users/:id/instructor-detail', 
+    authenticate, authorizeRoles('ADMIN'), 
+    getInstructorDetailForAdmin
+);
+ 
 /**
  * @openapi
  * /api/users/{id}:
@@ -263,5 +333,4 @@ router.get(
     authorizeRoles('ADMIN', 'INSTRUCTOR'), 
     getById
 );
-
 export default router;

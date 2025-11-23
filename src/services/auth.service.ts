@@ -111,5 +111,18 @@ export const findOrCreateGoogleUser = async (profile: Profile): Promise<User> =>
       last_login: new Date()
     },
   });
+  // Ensure learner and wallet records exist for learner role
+  if (user.role === 'LEARNER') {
+    const existingLearner = await prisma.learner.findUnique({ where: { user_id: user.user_id } });
+    if (!existingLearner) {
+      await prisma.learner.create({ data: { user_id: user.user_id } });
+    }
+
+    const existingWallet = await prisma.wallet.findUnique({ where: { user_id: user.user_id } });
+    if (!existingWallet) {
+      await prisma.wallet.create({ data: { user_id: user.user_id, balance: 0 } });
+    }
+  }
+
   return user;
 };

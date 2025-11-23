@@ -6,8 +6,9 @@ export const create = async (req: Request, res: Response) => {
   try {
     const instructorSpecializations = await InstructorSpecializationsService.createInstructorSpecializations(req.body);
     res.status(201).json(success(instructorSpecializations, "InstructorSpecializations created successfully"));
-  } catch (err: any) {
-    res.status(500).json(failure("Failed to create instructorSpecializations", err.message));
+  } catch (err) {
+    const e = err as Error;
+    res.status(500).json(failure("Failed to create instructorSpecializations", e.message));
   }
 };
 
@@ -19,8 +20,9 @@ export const getById = async (req: Request, res: Response) => {
       return;
     }
     res.json(success(instructorSpecializations, "InstructorSpecializations fetched successfully"));
-  } catch (err: any) {
-    res.status(500).json(failure("Failed to fetch instructorSpecializations", err.message));
+  } catch (err) {
+    const e = err as Error;
+    res.status(500).json(failure("Failed to fetch instructorSpecializations", e.message));
   }
 };
 
@@ -28,8 +30,9 @@ export const getAll = async (_: Request, res: Response) => {
   try {
     const instructorSpecializations = await InstructorSpecializationsService.getAllInstructorSpecializations();
     res.json(success(instructorSpecializations, "All instructorSpecializations fetched successfully"));
-  } catch (err: any) {
-    res.status(500).json(failure("Failed to fetch instructorSpecializations", err.message));
+  } catch (err) {
+    const e = err as Error;
+    res.status(500).json(failure("Failed to fetch instructorSpecializations", e.message));
   }
 };
 
@@ -37,8 +40,9 @@ export const update = async (req: Request, res: Response) => {
   try {
     const updated = await InstructorSpecializationsService.updateInstructorSpecializations(req.params.id, req.body);
     res.json(success(updated, "InstructorSpecializations updated successfully"));
-  } catch (err: any) {
-    res.status(500).json(failure("Failed to update instructorSpecializations", err.message));
+  } catch (err) {
+    const e = err as Error;
+    res.status(500).json(failure("Failed to update instructorSpecializations", e.message));
   }
 };
 
@@ -46,8 +50,9 @@ export const remove = async (req: Request, res: Response) => {
   try {
     await InstructorSpecializationsService.deleteInstructorSpecializations(req.params.id);
     res.json(success(null, "InstructorSpecializations deleted successfully"));
-  } catch (err: any) {
-    res.status(500).json(failure("Failed to delete instructorSpecializations", err.message));
+  } catch (err) {
+    const e = err as Error;
+    res.status(500).json(failure("Failed to delete instructorSpecializations", e.message));
   }
 };
 
@@ -55,7 +60,8 @@ export const getByInstructor = async (req: Request, res: Response) => {
   try {
     const specializations = await InstructorSpecializationsService.getSpecializationsByInstructor(req.params.instructorId);
     res.json(success(specializations, "Specializations fetched successfully"));
-  } catch (err: any) {
-    res.status(500).json(failure("Failed to fetch specializations", err.message));
+  } catch (err) {
+    const e = err as Error;
+    res.status(500).json(failure("Failed to fetch specializations", e.message));
   }
 };

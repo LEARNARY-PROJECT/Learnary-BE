@@ -109,7 +109,9 @@ export const isEmptyObject = (obj: object): boolean => {
  * @param obj - Object gốc
  * @returns Object mới không có undefined
  */
-export const removeUndefined = <T extends Record<string, any>>(obj: T): Partial<T> => {
+import type { JsonValue } from "../types/common";
+
+export const removeUndefined = <T extends Record<string, JsonValue>>(obj: T): Partial<T> => {
   return Object.fromEntries(
     Object.entries(obj).filter(([_, value]) => value !== undefined)
   ) as Partial<T>;
