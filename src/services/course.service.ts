@@ -16,10 +16,17 @@ const getInstructorId = async (userId: string): Promise<string> => {
 export const getAllCourses = () =>
   prisma.course.findMany({
     where: { status: CourseStatus.Published },
-    include: { chapter: true, feedbacks: true }
+    include: {
+      chapter: {
+        include: { lessons: true }
+      },
+      feedbacks: true,
+      category: true,
+      instructor: {
+        include: { user:true }
+      },
+    }
   });
-
-
 export const getCourseById = (course_id: string) =>
   prisma.course.findUnique({
     where: { course_id },
@@ -131,7 +138,7 @@ export const createDraftCourse = async (
     slug: data.title.toLowerCase().replace(/\s+/g, '-'),
     status: CourseStatus.Draft.trim(),
     chapter: {
-    create: (data.chapter as ChapterDto[]).map((chapter: ChapterDto) => ({
+      create: (data.chapter as ChapterDto[]).map((chapter: ChapterDto) => ({
         chapter_title: chapter.chapter_title,
         lessons: chapter.lessons
           ? {
@@ -253,31 +260,31 @@ export const updateDraftCourse = async (
             chapter_title: chapter.chapter_title,
             lessons: chapter.lessons
               ? {
-                  create: chapter.lessons.map((lesson) => ({
-                    title: lesson.title,
-                    duration: lesson.duration || '00:00',
-                    slug: lesson.title.toLowerCase().replace(/\s+/g, '-'),
-                  })),
-                }
+                create: chapter.lessons.map((lesson) => ({
+                  title: lesson.title,
+                  duration: lesson.duration || '00:00',
+                  slug: lesson.title.toLowerCase().replace(/\s+/g, '-'),
+                })),
+              }
               : undefined,
             quiz: chapter.quiz
               ? {
-                  create: {
-                    title: chapter.quiz.title,
-                    slug: chapter.quiz.title.toLowerCase().replace(/\s+/g, '-'),
-                    questions: {
-                      create: (chapter.quiz?.questions || []).map((question) => ({
-                        title: question.title,
-                        options: {
-                          create: (question.options || []).map((option) => ({
-                            option_content: option.option_content,
-                            is_correct: option.is_correct,
-                          })),
-                        },
-                      })),
-                    },
+                create: {
+                  title: chapter.quiz.title,
+                  slug: chapter.quiz.title.toLowerCase().replace(/\s+/g, '-'),
+                  questions: {
+                    create: (chapter.quiz?.questions || []).map((question) => ({
+                      title: question.title,
+                      options: {
+                        create: (question.options || []).map((option) => ({
+                          option_content: option.option_content,
+                          is_correct: option.is_correct,
+                        })),
+                      },
+                    })),
                   },
-                }
+                },
+              }
               : undefined,
           })),
         },
