@@ -27,9 +27,17 @@ export const createDraft = async (req: Request, res: Response): Promise<void> =>
 export const getAll = async (_: Request, res: Response): Promise<void> => {
   try {
     const courses = await courseService.getAllCourses();
-    res.json(courses);
+    // Trả về format chuẩn mà Frontend đang đợi: { success: true, data: [...] }
+    res.status(200).json({
+        success: true,
+        data: courses
+    });
   } catch (error) {
-    res.status(500).json({ message: 'Lấy khóa học thất bại', error: (error as Error).message });
+    console.error("Error fetching admin courses:", error);
+    res.status(500).json({ 
+        message: 'Lấy danh sách khóa học thất bại', 
+        error: (error as Error).message 
+    });
   }
 };
 
@@ -173,7 +181,12 @@ export const approve = async (req: Request, res: Response): Promise<void> => {
 
 export const reject = async (req: Request, res: Response): Promise<void> => {
   try {
-    const course = await courseService.rejectCourse(req.params.id);
+    const { reason } = req.body;
+    if (!reason || reason.trim() === '') {
+       res.status(400).json({ message: 'Vui lòng cung cấp lý do từ chối.' });
+       return;
+    }
+    const course = await courseService.rejectCourse(req.params.id, reason);
     res.json(course);
   } catch (error) { 
     res.status(500).json({ message: 'Từ chối khóa học thất bại', error: (error as Error).message });

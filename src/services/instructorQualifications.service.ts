@@ -214,15 +214,15 @@ export const approveQualification = async (instructor_qualification_id: string, 
     throw new Error('Qualification already approved');
   }
 
-  const admin = await prisma.admin.findUnique({
-    where: { user_id: currentUserId } 
-  });
-
-  if (!admin) {
-    throw new Error('Admin not found');
-  }
-
   return prisma.$transaction(async (tx) => {
+    let admin = await tx.admin.findUnique({ where: { user_id: currentUserId } });
+    if (!admin) {
+      let adminRole = await tx.adminRole.findFirst();
+      if (!adminRole) {
+        adminRole = await tx.adminRole.create({ data: { role_name: 'Admin' } });
+      }
+      admin = await tx.admin.create({ data: { user_id: currentUserId, admin_role_id: adminRole.admin_role_id } });
+    }
     let instructor = await tx.instructor.findUnique({
       where: { user_id: qualification.user_id }
     });

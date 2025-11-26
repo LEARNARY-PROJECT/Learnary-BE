@@ -2462,6 +2462,42 @@
         }
       }
     },
+    "/api/courses/instructor/my-courses": {
+      "get": {
+        "summary": "(Giảng viên) Lấy tất cả khóa học của tôi",
+        "tags": [
+          "Course (Instructor)"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Danh sách các khóa học của giảng viên"
+          }
+        }
+      }
+    },
+    "/api/courses/admin/pending": {
+      "get": {
+        "summary": "(Admin) Lấy tất cả khóa học đang chờ duyệt",
+        "tags": [
+          "Course (Admin)"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Danh sách khóa học Pending"
+          }
+        }
+      }
+    },
     "/api/courses/{id}": {
       "get": {
         "summary": "Lấy chi tiết 1 khóa học (Có kiểm tra bảo mật)",
@@ -2609,42 +2645,6 @@
           },
           "400": {
             "description": "Khóa học chưa đủ điều kiện gửi duyệt"
-          }
-        }
-      }
-    },
-    "/api/courses/instructor/my-courses": {
-      "get": {
-        "summary": "(Giảng viên) Lấy tất cả khóa học của tôi",
-        "tags": [
-          "Course (Instructor)"
-        ],
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Danh sách các khóa học của giảng viên"
-          }
-        }
-      }
-    },
-    "/api/courses/admin/pending": {
-      "get": {
-        "summary": "(Admin) Lấy tất cả khóa học đang chờ duyệt",
-        "tags": [
-          "Course (Admin)"
-        ],
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Danh sách khóa học Pending"
           }
         }
       }
