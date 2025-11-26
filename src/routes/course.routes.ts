@@ -173,7 +173,7 @@ router.post(
  */
 router.put(
   '/courses/draft/:id',
-  authorizeRoles('INSTRUCTOR'),
+  authorizeRoles('INSTRUCTOR','ADMIN'),
   ControllerCourse.updateDraft,
 );
 
@@ -199,7 +199,7 @@ router.put(
  */
 router.post(
   '/courses/submit/:id',
-  authorizeRoles('INSTRUCTOR'),
+  authorizeRoles('INSTRUCTOR','ADMIN'),
   ControllerCourse.submitApproval,
 );
 

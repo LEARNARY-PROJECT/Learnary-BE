@@ -408,6 +408,7 @@ model Course {
   @@index([status], name: "idx_course_status")
   @@index([status, category_id], name: "idx_course_status_cat")
   @@index([price], name: "idx_course_price")
+  @@index([slug],name:"idx_course_slug")
   @@index([hot, sale_off], name: "idx_course_hot_sale")
   @@index([createdAt], name: "idx_course_created")
   @@index([available_language], name: "idx_course_language")

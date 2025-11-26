@@ -213,13 +213,19 @@ export const approveQualification = async (instructor_qualification_id: string, 
   if (qualification.status === 'Approved') {
     throw new Error('Qualification already approved');
   }
-
-  const admin = await prisma.admin.findUnique({
-    where: { user_id: currentUserId } 
+  
+  currentUserId = currentUserId.trim();
+  
+  const currentUser = await prisma.user.findUnique({
+    where: { user_id: currentUserId }
   });
-
-  if (!admin) {
-    throw new Error('Admin not found');
+  
+  if (!currentUser) {
+    throw new Error('User not found');
+  }
+  
+  if (currentUser.role !== 'ADMIN') {
+    throw new Error('Only ADMIN can approve qualifications');
   }
 
   return prisma.$transaction(async (tx) => {
@@ -265,6 +271,12 @@ export const approveQualification = async (instructor_qualification_id: string, 
         data: { isVerified: true }
       });
     }
+    
+    // Get or create admin record for tracking
+    let admin = await tx.admin.findUnique({
+      where: { user_id: currentUserId }
+    });
+    
     const existingLink = await tx.instructorSpecializations.findFirst({
       where: {
         instructor_id: instructor.instructor_id,
@@ -272,7 +284,8 @@ export const approveQualification = async (instructor_qualification_id: string, 
       }
     });
 
-    if (!existingLink) {
+    if (!existingLink && admin) {
+      // Only create link if admin record exists
       await tx.instructorSpecializations.create({
         data: {
           instructor_id: instructor.instructor_id,

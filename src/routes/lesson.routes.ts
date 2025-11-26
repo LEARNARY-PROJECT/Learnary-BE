@@ -33,7 +33,7 @@ const router = express.Router();
  *       401:
  *         description: Unauthorized
  */
-router.post("/lessons", authenticate, authorizeRoles("INSTRUCTOR"), videoUpload.single('video'), create);
+router.post("/lessons", authenticate, authorizeRoles("INSTRUCTOR","ADMIN"), videoUpload.single('video'), create);
 
 /**
  * @openapi
@@ -108,7 +108,7 @@ router.get("/lessons/:id", authenticate, getById);
  *       401:
  *         description: Unauthorized
  */
-router.put("/lessons/:id", authenticate, authorizeRoles("INSTRUCTOR"), videoUpload.single('video'), update);
+router.put("/lessons/:id", authenticate, authorizeRoles("INSTRUCTOR","ADMIN"), videoUpload.single('video'), update);
 
 /**
  * @openapi
@@ -132,7 +132,7 @@ router.put("/lessons/:id", authenticate, authorizeRoles("INSTRUCTOR"), videoUplo
  *       401:
  *         description: Unauthorized
  */
-router.delete("/lessons/:id", authenticate, authorizeRoles("INSTRUCTOR"), remove);
+router.delete("/lessons/:id", authenticate, authorizeRoles("INSTRUCTOR","ADMIN"), remove);
 
 /**
  * @openapi
@@ -156,6 +156,6 @@ router.delete("/lessons/:id", authenticate, authorizeRoles("INSTRUCTOR"), remove
  *       401:
  *         description: Unauthorized
  */
-router.delete("/lessons/:id/video", authenticate, authorizeRoles("INSTRUCTOR"), deleteVideo);
+router.delete("/lessons/:id/video", authenticate, authorizeRoles("INSTRUCTOR","ADMIN"), deleteVideo);
 
 export default router;
