@@ -12,7 +12,12 @@ export const getCourseBySlug = async (slugs: string): Promise<Course> => {
     }, 
     include: {
       category:true,
-      level:true
+      level:true,
+      instructor: {
+        include: {
+          user:true,
+        }
+      },
     }
   })
   if (!course) throw new Error('Không tìm thấy khóa học với slug này!')
