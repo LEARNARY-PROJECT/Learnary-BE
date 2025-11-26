@@ -1,5 +1,5 @@
 import prisma from "../lib/client";
-import { AccountSecurity } from "@prisma/client";
+import { AccountSecurity } from '../generated/prisma'
 
 export const createAccountSecurity = async (data: Omit<AccountSecurity, 'account_security_id' | 'createdAt' | 'updatedAt'>) => {
   return prisma.accountSecurity.create({ data });

@@ -1,5 +1,5 @@
 import prisma from "../lib/client";
-import { Admin } from "@prisma/client";
+import { Admin } from'../generated/prisma'
 
 export const createAdmin = async (data: Omit<Admin, 'admin_id' | 'createdAt' | 'updatedAt'>) => {
   return prisma.admin.create({ data });

@@ -1,5 +1,5 @@
 import prisma from "../lib/client";
-import { Course, CourseStatus } from '@prisma/client';
+import { Course, CourseStatus } from '../generated/prisma'
 import { moveVideosToPermanent, deleteVideos } from './videoLesson.service';
 import type { CourseCreateDto, ChapterDto, LessonDto, QuizDto, QuestionDto, OptionDto } from '../types/course';
 import { CreateSlug, checkExistingSlug } from "../utils/slug";

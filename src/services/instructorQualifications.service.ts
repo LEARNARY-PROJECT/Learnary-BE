@@ -1,5 +1,5 @@
 import prisma from "../lib/client";
-import { InstructorQualifications, QualificationType, ApprovalStatus } from "@prisma/client";
+import { InstructorQualifications, QualificationType, ApprovalStatus } from '../generated/prisma'
 import { uploadQualificationImages, deleteQualificationImages, deleteSingleQualificationImage } from "./qualificationImage.service";
 import { validateQualificationDates, toStartOfDay, getTodayStartOfDay } from "../utils/dateUtils";
 

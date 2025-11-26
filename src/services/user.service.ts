@@ -1,7 +1,7 @@
 import bcryptjs from "bcryptjs";
 import prisma from "../lib/client";
-import { User, Learner } from "@prisma/client";
-import type { Role, Wallet } from "@prisma/client";
+import { User, Learner } from '../generated/prisma'
+import type { Role, Wallet } from '../generated/prisma'
 import { S3_BUCKET_NAME, s3Client } from '../config/s3.config';
 import { PutObjectCommand, DeleteObjectCommand } from '@aws-sdk/client-s3';
 import path from 'path';

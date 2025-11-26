@@ -1,5 +1,5 @@
 import prisma from "../lib/client";
-import { Lesson } from "@prisma/client";
+import { Lesson } from '../generated/prisma'
 import { uploadTemporaryVideo, uploadPermanentVideo, updateVideo, deleteVideo } from "./videoLesson.service";
 
 export const createLesson = async (

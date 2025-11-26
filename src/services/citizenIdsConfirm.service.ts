@@ -1,5 +1,5 @@
 import prisma from "../lib/client";
-import { CitizenIdsConfirm } from "@prisma/client";
+import { CitizenIdsConfirm } from '../generated/prisma'
 
 export const createCitizenIdsConfirm = async (data: Omit<CitizenIdsConfirm, 'citizen_id' | 'createdAt' | 'updatedAt'>) => {
   return prisma.citizenIdsConfirm.create({ data });

@@ -1,5 +1,5 @@
 import prisma from "../lib/client";
-import { Permission } from "@prisma/client";
+import { Permission } from '../generated/prisma'
 
 export const createPermission = async (data: Omit<Permission, 'permission_id' | 'createdAt' | 'updatedAt'>) => {
   return prisma.permission.create({ data });

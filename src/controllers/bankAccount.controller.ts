@@ -6,7 +6,7 @@ import {
     getAllBankAccount,
     getBankById
 } from '../services/bankAccount.service'
-import { BankAccount } from '@prisma/client';
+import { BankAccount } from '../generated/prisma'
 
 type updateBankData = Omit<BankAccount,"bank_id"| "instructor_id" | "created_at" | "updated_at">
 export const createBank: RequestHandler = async (req, res) => {

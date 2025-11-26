@@ -1,5 +1,5 @@
 import prisma from "../lib/client";
-import { Note } from "@prisma/client";
+import { Note } from '../generated/prisma'
 
 export const createNote = async (data: Omit<Note, 'note_id' | 'createAt' | 'updatedAt'>) => {
   return prisma.note.create({ data });

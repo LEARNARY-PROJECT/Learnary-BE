@@ -1,5 +1,5 @@
 import prisma from "../lib/client";
-import { Prisma } from "@prisma/client";
+import { Prisma } from '../generated/prisma'
 
 export const createOption = async (data: Prisma.OptionsCreateInput) => {
   return prisma.options.create({ data });

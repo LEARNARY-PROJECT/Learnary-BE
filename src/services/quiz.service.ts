@@ -1,5 +1,5 @@
 import prisma from "../lib/client";
-import { Prisma } from "@prisma/client";
+import { Prisma } from '../generated/prisma'
 
 export const createQuiz = async (data: Prisma.QuizCreateInput) => {
   return prisma.quiz.create({ data });

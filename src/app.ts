@@ -39,13 +39,15 @@ dotenv.config();
 
 const app = express();
 const port = process.env.PORT || 4000;
-
+const allowedOrigins = process.env.CORS_ORIGIN
+  ? process.env.CORS_ORIGIN.split(',') // sử dụng chuỗi phân tách bằng dấu phẩy
+  : ["http://localhost:3000", "http://localhost:3001"]; 
 //middlewares
 app.use(
   cors({
-    origin: process.env.CORS_ORIGIN || "http://localhost:3000" || "http://localhost:3001",
-    methods: ["GET", "POST", "PUT", "DELETE","PATCH"],
-    allowedHeaders: ["Content-Type", "Authorization","BearerToken"],
+    origin: allowedOrigins,
+    methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
+    allowedHeaders: ["Content-Type", "Authorization", "BearerToken"],
     credentials: true,
   })
 );
@@ -88,7 +90,21 @@ app.use("/api", submissionRoutes);
 app.get("/", (req, res) => {
   res.send("Backend đang chạy rất bình tĩnh và bình thường");
 });
-
+async function startServer() {
+    try {
+        await createDefaultUserIfNoneExists();
+        console.log("Database initialization check completed.");
+        setupSwagger(app);
+        app.listen(port, () => {
+            console.log(`Server is running on http://localhost:${port}`);
+            console.log(`Swagger UI is available at http://localhost:${port}/api-docs`);
+            console.log("Backend Service is fully ready! (DB connected)");
+        });
+    } catch (err) {
+        console.error("❌ Fatal Error: Could not connect to the database or start server.", err);
+        process.exit(1); 
+    }
+}
 createDefaultUserIfNoneExists()
   .then(() => {
     console.log(
@@ -98,13 +114,5 @@ createDefaultUserIfNoneExists()
   .catch((err) => {
     console.error("Error creating default user", err);
   });
-
-//Swagger
-setupSwagger(app);
-
-app.listen(port, () => {
-  console.log(`Server is running on http://localhost:${port}`);
-  console.log(`Swagger UI is available at http://localhost:${port}/api-docs`);
-});
-
+startServer();
 export default app;
