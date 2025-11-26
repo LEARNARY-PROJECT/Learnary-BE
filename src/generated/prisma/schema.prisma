@@ -1,0 +1,633 @@
+// prisma/schema.prisma
+generator client {
+  provider      = "prisma-client-js"
+  output        = "../src/generated/prisma"
+  binaryTargets = ["native", "linux-musl-openssl-3.0.x"]
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Role {
+  LEARNER
+  INSTRUCTOR
+  ADMIN
+}
+
+enum Status {
+  Active
+  Inactive
+  Suspended
+}
+
+enum ApprovalStatus {
+  Pending
+  Approved
+  Rejected
+}
+
+enum QualificationType {
+  Degree
+  Certificate
+}
+
+enum CourseEnrollmentStatus {
+  Enrolled
+  Completed
+  Cancelled
+}
+
+enum CourseStatus {
+  Draft
+  Published
+  Pending
+  Archived
+}
+
+enum LanguageOptions {
+  English
+  Vietnamese
+}
+
+enum TransactionType {
+  Withdraw
+  Deposit
+  Pay
+}
+
+enum TransactionMethod {
+  Credit_Card
+  Voucher
+  Bank_Transfer
+  PayPal
+}
+
+enum TransactionStatus {
+  Pending
+  Success
+  Failed
+  Refunded
+}
+
+enum TransactionNote {
+  User_Pay
+  Pay_For_Instructor
+}
+
+model User {
+  user_id     String    @id @default(uuid()) @db.Char(50)
+  email       String    @unique @db.Char(50)
+  phone       String?   @unique @db.Char(50)
+  avatar      String?   @db.VarChar(255)
+  dateOfBirth DateTime?
+  address     String?   @db.VarChar(255)
+  city        String?   @db.VarChar(255)
+  country     String?   @db.VarChar(255)
+  nation      String?   @db.VarChar(255)
+  bio         String?   @db.VarChar(255)
+  last_login  DateTime?
+  isActive    Boolean   @default(true)
+  password    String?
+  fullName    String    @db.VarChar(255)
+  googleId    String?   @unique
+  role        Role      @default(LEARNER)
+  gender      String    @default("OTHER")
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  feedbacks                 Feedback[]
+  learner                   Learner?
+  instructor                Instructor?
+  admin                     Admin?
+  accountSecurities         AccountSecurity?
+  transactions              Transaction[]
+  submissions               Submission[]
+  wallet                    Wallet?
+  note                      Note[]
+  instructor_qualifications InstructorQualifications[]
+  specializations           Specialization[]
+
+  @@index([email], name: "idx_user_email")
+  @@index([role], name: "idx_user_role")
+  @@index([last_login], name: "idx_user_last_login")
+  @@index([role, isActive], name: "idx_user_role_active")
+  @@index([isActive], name: "idx_user_active")
+  @@index([googleId], name: "idx_user_googleid")
+  @@index([fullName], name: "idx_user_fullname")
+  @@index([phone], name: "idx_user_phone")
+  @@index([createdAt], name: "idx_user_createdat")
+  @@map("users")
+}
+
+model Learner {
+  learner_id String   @id @default(uuid()) @db.Char(50)
+  user_id    String   @unique @db.Char(50)
+  enrolledAt DateTime @default(now())
+
+  updatedAt DateTime @updatedAt
+  createAt  DateTime @default(now())
+
+  user            User             @relation(fields: [user_id], references: [user_id], onDelete: Cascade)
+  learner_courses LearnerCourses[]
+
+  @@map("learners")
+}
+
+model Instructor {
+  instructor_id String  @id @default(uuid()) @db.Char(50)
+  user_id       String  @unique @db.Char(50)
+  isVerified    Boolean @default(false)
+  status        Status  @default(Inactive)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user                      User                       @relation(fields: [user_id], references: [user_id], onDelete: Cascade)
+  bank_accout               BankAccount?
+  instructorSpecialization  InstructorSpecializations?
+  citizen_id_confirms       CitizenIdsConfirm[]
+  instructor_qualifications InstructorQualifications[]
+  courses                   Course[]
+
+  @@index([status], name: "idx_instructor_status")
+  @@index([isVerified], name: "idx_instructor_verified")
+  @@index([status, isVerified], name: "idx_instructor_status_verified")
+  @@index([createdAt], name: "idx_instructor_created")
+  @@map("instructors")
+}
+
+model InstructorSpecializations {
+  instructor_specialization_id String @id @default(uuid()) @db.Char(50)
+  instructor_id                String @unique @db.Char(50)
+  specialization_id            String @db.Char(50)
+  admin_id                     String @db.Char(50)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  specialization Specialization @relation(fields: [specialization_id], references: [specialization_id])
+  instructor     Instructor     @relation(fields: [instructor_id], references: [instructor_id], onDelete: Cascade)
+  admin          Admin          @relation(fields: [admin_id], references: [admin_id])
+
+  @@map("instructor_specializations")
+}
+
+model Specialization {
+  specialization_id String  @id @default(uuid()) @db.Char(50)
+  instructor_id     String? @unique @db.Char(50)
+  user_id           String  @db.Char(50)
+
+  specialization_name String   @unique @db.VarChar(255)
+  isVerified          Boolean  @default(false)
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+
+  specialization           InstructorSpecializations[]
+  instructorQualifications InstructorQualifications[]
+  belong_user              User                        @relation(fields: [user_id], references: [user_id])
+
+  @@index([specialization_name], name: "idx_spec_name")
+  @@index([isVerified], name: "idx_spec_verified")
+  @@map("specializations")
+}
+
+model CitizenIdsConfirm {
+  citizen_id    String @id @default(uuid()) @db.Char(50)
+  instructor_id String @unique @db.Char(50)
+
+  citizen_number String         @unique
+  date_of_birth  DateTime
+  place_of_birth String         @db.VarChar(255)
+  issued_place   String         @db.VarChar(255)
+  status         ApprovalStatus @default(Pending)
+  isVerified     Boolean        @default(false)
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+
+  instructor Instructor @relation(fields: [instructor_id], references: [instructor_id], onDelete: Cascade)
+
+  @@index([status], name: "idx_citizen_status")
+  @@index([isVerified], name: "idx_citizen_verified")
+  @@map("citizen_ids_confirms")
+}
+
+model InstructorQualifications {
+  instructor_qualification_id String  @id @default(uuid()) @db.VarChar(50)
+  instructor_id               String? @db.Char(50)
+  specialization_id           String  @db.Char(50)
+  user_id                     String  @db.Char(50)
+
+  type                 QualificationType @default(Certificate)
+  title                String            @db.VarChar(255)
+  issue_date           DateTime
+  expire_date          DateTime?
+  issue_place          String?           @db.VarChar(255)
+  qualification_images String[]
+  status               ApprovalStatus    @default(Pending)
+  isVerified           Boolean           @default(false)
+  createdAt            DateTime          @default(now())
+  updateAt             DateTime          @updatedAt
+
+  instructor     Instructor?    @relation(fields: [instructor_id], references: [instructor_id])
+  user           User           @relation(fields: [user_id], references: [user_id])
+  specialization Specialization @relation(fields: [specialization_id], references: [specialization_id])
+
+  @@unique([user_id, specialization_id])
+  @@index([instructor_id], name: "idx_iq_instructor") //  FK
+  @@index([user_id], name: "idx_iq_user")
+  @@index([specialization_id], name: "idx_iq_specialization") //  FK
+  @@index([status], name: "idx_iq_status") // Filter
+  @@index([isVerified], name: "idx_iq_verified") // Filter
+  @@index([expire_date], name: "idx_iq_expire")
+  @@map("instructor_qualifications")
+}
+
+model BankAccount {
+  bank_id             String   @id @default(uuid()) @db.Char(50)
+  instructor_id       String   @unique @db.Char(50)
+  bank_name           String   @db.VarChar(255)
+  account_number      String   @db.VarChar(255)
+  account_holder_name String   @db.VarChar(255)
+  created_at          DateTime @default(now())
+  updated_at          DateTime @updatedAt
+
+  belongInstructor Instructor? @relation(fields: [instructor_id], references: [instructor_id], onDelete: Cascade)
+
+  @@index([instructor_id], name: "idx_instructor_bank")
+  @@map("bank_account")
+}
+
+model Wallet {
+  wallet_id String @id @default(uuid()) @db.VarChar(50)
+  user_id   String @unique @db.Char(50)
+
+  balance  Decimal  @db.Decimal(10, 2)
+  createAt DateTime @default(now())
+  updateAt DateTime @updatedAt
+
+  belongUser   User          @relation(fields: [user_id], references: [user_id], onDelete: Cascade)
+  transactions Transaction[]
+
+  @@index([balance], name: "idx_wallet_balance")
+  @@map("wallets")
+}
+
+model Transaction {
+  transaction_id String @id @default(uuid()) @db.Char(50)
+  course_id      String @db.Char(50)
+  user_id        String @db.Char(50)
+  wallet_id      String @db.Char(50)
+
+  transaction_type TransactionType
+  commission_rate  Decimal?          @db.Decimal(5, 2)
+  payment_method   TransactionMethod
+  amount           Decimal?          @db.Decimal(10, 2)
+  currency         String            @db.VarChar(10)
+  status           TransactionStatus @default(Pending)
+  note             TransactionNote
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+
+  course Course @relation(fields: [course_id], references: [course_id])
+  user   User   @relation(fields: [user_id], references: [user_id], onDelete: Cascade)
+  wallet Wallet @relation(fields: [wallet_id], references: [wallet_id])
+
+  @@index([user_id], name: "idx_trans_user")
+  @@index([wallet_id], name: "idx_trans_wallet")
+  @@index([course_id], name: "idx_trans_course")
+  @@index([status], name: "idx_trans_status")
+  @@index([transaction_type], name: "idx_trans_type")
+  @@index([payment_method], name: "idx_trans_method")
+  @@index([createdAt], name: "idx_trans_created")
+  @@index([user_id, status], name: "idx_trans_user_status")
+  @@index([user_id, createdAt], name: "idx_trans_user_date")
+  @@map("transactions")
+}
+
+model Admin {
+  admin_id      String @id @default(uuid()) @db.Char(50)
+  user_id       String @unique @db.Char(50)
+  admin_role_id String @unique @db.Char(50)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user                      User                        @relation(fields: [user_id], references: [user_id], onDelete: Cascade)
+  adminRole                 AdminRole                   @relation(fields: [admin_role_id], references: [admin_role_id])
+  instructorSpecializations InstructorSpecializations[]
+
+  @@index([admin_role_id], name: "idx_admin_role")
+  @@map("admins")
+}
+
+model AdminRole {
+  admin_role_id String @id @default(uuid()) @db.Char(50)
+
+  role_name String   @unique @db.VarChar(255)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  admins      Admin[]
+  permissions AdminRolePermission[] @relation("RoleToPermission")
+
+  @@map("admin_roles")
+}
+
+model Permission {
+  permission_id String @id @default(uuid()) @db.Char(50)
+
+  permission_name String   @unique @db.VarChar(255)
+  description     String?  @db.VarChar(255)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  adminRoles AdminRolePermission[] @relation("PermissionToAdminRole")
+
+  @@map("permissions")
+}
+
+model AdminRolePermission {
+  permission_id String @default(uuid()) @db.Char(50)
+  admin_role_id String @unique @db.Char(50)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  permission       Permission @relation("PermissionToAdminRole", fields: [permission_id], references: [permission_id])
+  roleToPermission AdminRole? @relation("RoleToPermission", fields: [admin_role_id], references: [admin_role_id])
+
+  @@id([permission_id, admin_role_id])
+  @@index([admin_role_id], name: "idx_arp_role")
+  @@map("admin_role_permissions")
+}
+
+model AccountSecurity {
+  account_security_id String @id @default(uuid()) @db.Char(50)
+  user_id             String @unique @db.Char(50)
+
+  failed_login_attempts Int      @db.Integer
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+
+  user User @relation(fields: [user_id], references: [user_id], onDelete: Cascade)
+
+  @@map("account_securities")
+}
+
+model Course {
+  course_id     String @id @default(uuid()) @db.Char(50)
+  category_id   String @db.Char(50)
+  level_id      String @db.Char(50)
+  instructor_id String @db.Char(50)
+
+  status             CourseStatus    @default(Draft)
+  title              String          @db.VarChar(255)
+  slug               String?         @unique @db.VarChar(255)
+  requirement        String?         @db.VarChar(255)
+  description        String          @db.VarChar(255)
+  thumbnail          String          @db.VarChar(255)
+  price              Decimal         @db.Decimal(10, 2)
+  sale_off           Boolean         @default(false)
+  hot                Boolean         @default(false)
+  tag                Boolean         @default(false)
+  available_language LanguageOptions @default(Vietnamese)
+  createdAt          DateTime        @default(now())
+  updatedAt          DateTime        @updatedAt
+
+  feedbacks      Feedback[]
+  learnerCourses LearnerCourses[]
+  chapter        Chapter[]
+  level          Level            @relation(fields: [level_id], references: [level_id], onDelete: Cascade)
+  category       Category         @relation(fields: [category_id], references: [category_id], onDelete: Cascade)
+  instructor     Instructor       @relation(fields: [instructor_id], references: [instructor_id], onDelete: Cascade)
+  transaction    Transaction[]
+
+  @@index([category_id], name: "idx_course_category")
+  @@index([instructor_id], name: "idx_course_instructor")
+  @@index([status], name: "idx_course_status")
+  @@index([status, category_id], name: "idx_course_status_cat")
+  @@index([price], name: "idx_course_price")
+  @@index([slug], name: "idx_course_slug")
+  @@index([hot, sale_off], name: "idx_course_hot_sale")
+  @@index([createdAt], name: "idx_course_created")
+  @@index([available_language], name: "idx_course_language")
+  @@map("courses")
+}
+
+model Category {
+  category_id String @id @default(uuid()) @db.Char(50)
+
+  category_name String   @unique @db.VarChar(255)
+  slug          String?  @db.Char(255)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  courses Course[]
+
+  @@map("categories")
+}
+
+model Level {
+  level_id    String   @id @default(uuid()) @db.Char(50)
+  level_name  String   @unique @db.VarChar(255)
+  order_index Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  course Course[]
+
+  @@index([order_index], name: "idx_level_order")
+  @@map("levels")
+}
+
+model LearnerCourses {
+  learner_id String @unique @db.Char(50)
+  course_id  String @unique @db.Char(50)
+
+  status      CourseEnrollmentStatus @default(Enrolled)
+  progress    Decimal                @db.Decimal(5, 2)
+  rating      Int                    @db.Integer
+  feedback    String                 @db.VarChar(255)
+  createdAt   DateTime               @default(now())
+  updatedAt   DateTime               @updatedAt
+  enrolledAt  DateTime               @default(now())
+  completedAt DateTime
+
+  learner Learner @relation(fields: [learner_id], references: [learner_id], onDelete: Cascade)
+  course  Course  @relation(fields: [course_id], references: [course_id], onDelete: Cascade)
+
+  @@id([learner_id, course_id])
+  @@unique([learner_id, course_id])
+  @@index([learner_id], name: "idx_lc_learner")
+  @@index([course_id], name: "idx_lc_course")
+  @@index([status], name: "idx_lc_status")
+  @@index([learner_id, status], name: "idx_lc_learner_status")
+  @@index([enrolledAt], name: "idx_lc_enrolled")
+  @@index([completedAt], name: "idx_lc_completed")
+  @@map("learner_courses")
+}
+
+model Chapter {
+  chapter_id    String   @id @default(uuid()) @db.Char(50)
+  course_id     String   @db.Char(50)
+  chapter_title String   @db.VarChar(255)
+  order_index   Int      @default(0)
+  createAt      DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  belongCourse Course   @relation(fields: [course_id], references: [course_id], onDelete: Cascade)
+  lessons      Lesson[]
+  quiz         Quiz?
+
+  @@index([course_id], name: "idx_section_course")
+  @@index([course_id, order_index], name: "idx_section_order")
+  @@map("chapters")
+}
+
+model Lesson {
+  lesson_id   String   @id @default(uuid()) @db.Char(50)
+  chapter_id  String   @db.Char(50)
+  title       String   @db.VarChar(255)
+  video_url   String?  @db.VarChar(255)
+  isCompleted Boolean  @default(false)
+  duration    String   @db.VarChar(100)
+  slug        String   @db.Char(50)
+  order_index Int      @default(0)
+  createAt    DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  belongChapter Chapter @relation(fields: [chapter_id], references: [chapter_id], onDelete: Cascade)
+  notes         Note[]
+
+  @@index([chapter_id], name: "idx_lesson_section")
+  @@index([chapter_id, order_index], name: "idx_lesson_order")
+  @@map("lessons")
+}
+
+model Note {
+  note_id   String @id @default(uuid()) @db.VarChar(50)
+  user_id   String @db.Char(50)
+  lesson_id String @db.Char(50)
+
+  time      Int
+  content   String   @db.VarChar(255)
+  createAt  DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  belongUser   User   @relation(fields: [user_id], references: [user_id], onDelete: Cascade)
+  belongLesson Lesson @relation(fields: [lesson_id], references: [lesson_id], onDelete: Cascade)
+
+  @@map("notes")
+}
+
+model Feedback {
+  id        String  @id @default(uuid()) @db.Char(50)
+  course_id String  @unique @db.Char(50)
+  user_id   String  @unique @db.Char(50)
+  rating    Int     @db.Integer
+  comment   String? @db.VarChar(255)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user   User   @relation(fields: [user_id], references: [user_id], onDelete: Cascade)
+  course Course @relation(fields: [course_id], references: [course_id], onDelete: Cascade)
+
+  @@unique([course_id, user_id])
+  @@index([course_id], name: "idx_feedback_course")
+  @@index([user_id], name: "idx_feedback_user")
+  @@index([rating], name: "idx_feedback_rating")
+  @@index([course_id, rating], name: "idx_feedback_course_rating")
+  @@index([createdAt], name: "idx_feedback_created")
+  @@index([course_id, createdAt], name: "idx_feedback_course_date")
+  @@map("feedbacks")
+}
+
+model Quiz {
+  quiz_id    String   @id @default(uuid()) @db.Char(50)
+  chapter_id String   @unique @db.Char(50)
+  title      String   @db.VarChar(100)
+  slug       String   @db.Char(50)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  belongChapter Chapter      @relation(fields: [chapter_id], references: [chapter_id], onDelete: Cascade)
+  questions     Question[]
+  submissions   Submission[]
+
+  @@map("quizzes")
+}
+
+model Question {
+  question_id String   @id @default(uuid()) @db.Char(50)
+  quiz_id     String   @db.Char(50)
+  title       String
+  order_index Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  belongQuiz Quiz      @relation(fields: [quiz_id], references: [quiz_id], onDelete: Cascade)
+  options    Options[]
+  answers    Answer[]
+
+  @@index([quiz_id], name: "idx_question_quiz")
+  @@index([quiz_id, order_index], name: "idx_question_order")
+  @@map("questions")
+}
+
+model Options {
+  option_id      String   @id @default(uuid()) @db.Char(50)
+  question_id    String   @db.Char(50)
+  option_content String   @db.VarChar(255)
+  is_correct     Boolean
+  order_index    Int      @default(0)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  belongQuestion Question @relation(fields: [question_id], references: [question_id], onDelete: Cascade)
+
+  @@index([question_id], name: "idx_option_question")
+  @@index([question_id, order_index], name: "idx_option_order")
+  @@map("options")
+}
+
+model Answer {
+  answer_id     String @id @default(uuid()) @db.Char(50)
+  submission_id String @db.Char(50)
+  question_id   String @db.Char(50)
+
+  is_correct         Boolean
+  selected_option_id String   @db.Char(50)
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+
+  ofQuestion   Question   @relation(fields: [question_id], references: [question_id], onDelete: Cascade)
+  ofSubmission Submission @relation(fields: [submission_id], references: [submission_id])
+
+  @@unique([submission_id, question_id])
+  @@map("answers")
+}
+
+model Submission {
+  submission_id String @id @default(uuid()) @db.Char(50)
+  quiz_id       String @db.Char(50)
+  user_id       String @db.Char(50)
+
+  is_completed Boolean  @default(false)
+  duration     String   @db.VarChar(100)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  submittedAt  DateTime
+
+  belongQuiz Quiz     @relation(fields: [quiz_id], references: [quiz_id], onDelete: Cascade)
+  belongUser User     @relation(fields: [user_id], references: [user_id], onDelete: Cascade)
+  answer     Answer[]
+
+  @@unique([quiz_id, user_id])
+  @@index([quiz_id], name: "idx_submission_quiz")
+  @@index([user_id], name: "idx_submission_user")
+  @@index([quiz_id, user_id], name: "idx_submission_unique")
+  @@index([submittedAt], name: "idx_submission_date")
+  @@map("submissions")
+}

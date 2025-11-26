@@ -1,12 +1,12 @@
 // prisma/schema.prisma
 generator client {
   provider      = "prisma-client-js"
-  output        = "../node_modules/.prisma/client"
+  output        = "../src/generated/prisma"
   binaryTargets = ["native", "linux-musl-openssl-3.0.x"]
 }
 
 datasource db {
-  provider = "postgres"
+  provider = "postgresql"
 }
 
 enum Role {
@@ -383,7 +383,7 @@ model Course {
 
   status             CourseStatus    @default(Draft)
   title              String          @db.VarChar(255)
-  slug               String?         @db.VarChar(255)
+  slug               String?         @db.VarChar(255) @unique
   requirement        String?         @db.VarChar(255)
   description        String          @db.VarChar(255)
   thumbnail          String          @db.VarChar(255)
@@ -408,6 +408,7 @@ model Course {
   @@index([status], name: "idx_course_status")
   @@index([status, category_id], name: "idx_course_status_cat")
   @@index([price], name: "idx_course_price")
+  @@index([slug],name:"idx_course_slug")
   @@index([hot, sale_off], name: "idx_course_hot_sale")
   @@index([createdAt], name: "idx_course_created")
   @@index([available_language], name: "idx_course_language")

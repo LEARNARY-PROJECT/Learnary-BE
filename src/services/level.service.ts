@@ -1,5 +1,5 @@
 import prisma from "../lib/client";
-import { Level } from "@prisma/client";
+import { Level } from '../generated/prisma'
 
 export const createLevel = async (data: Omit<Level, 'level_id' | 'createdAt' | 'updatedAt'>) => {
   return prisma.level.create({ data });

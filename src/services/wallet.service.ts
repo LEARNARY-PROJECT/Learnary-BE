@@ -1,5 +1,5 @@
 import prisma from "../lib/client";
-import { Wallet } from "@prisma/client";
+import { Wallet } from '../generated/prisma'
 
 export const createWallet = async (data: Omit<Wallet, 'wallet_id' | 'createAt' | 'updateAt'>) => {
   return prisma.wallet.create({ data });

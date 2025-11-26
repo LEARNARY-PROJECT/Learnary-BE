@@ -1,5 +1,5 @@
 import prisma from "../lib/client";
-import { Category } from "@prisma/client";
+import { Category } from '../generated/prisma'
 type UpdateCategoryData =  Partial<Omit<Category, 'category_id' | 'createdAt' | 'updatedAt'>>
 export const createCategory = async (data: Omit<Category, 'category_id' | 'createdAt' | 'updatedAt'>) => {
   if (!data.category_name || !data.slug) {

@@ -1,6 +1,6 @@
 import * as LearnerService from "../services/learner.service";
 import { Response, Request } from "express";
-import { Learner } from "@prisma/client";
+import { Learner } from '../generated/prisma'
 import { success, failure } from "../utils/response"; 
 
 // Hàm này dùng để lấy thông tin Learner dựa trên Token của người đang đăng nhập

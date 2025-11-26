@@ -29,7 +29,6 @@ export function authenticate(req: Request, res: Response, next: NextFunction): v
 
     try {
         const decoded = jwt.verify(token, JWT_SECRET) as JwtPayLoad;
-/*         console.log(decoded) */
         req.jwtPayload = decoded; 
         next();
     } catch (error) {

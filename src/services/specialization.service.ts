@@ -1,5 +1,5 @@
 import prisma from "../lib/client";
-import { Specialization } from "@prisma/client";
+import { Specialization } from '../generated/prisma'
 
 export const createSpecialization = async (data: Omit<Specialization, 'specialization_id' | 'createdAt' | 'updatedAt'>):Promise<Specialization> => {
   if (!data.specialization_name || !data.instructor_id) {

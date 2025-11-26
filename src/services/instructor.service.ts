@@ -1,5 +1,5 @@
 import prisma from "../lib/client";
-import { Instructor, Status } from "@prisma/client";
+import { Instructor, Status } from '../generated/prisma'
 
 export const createInstructor = async (
   data: Omit<Instructor, 'instructor_id' | 'createdAt' | 'updatedAt'>
