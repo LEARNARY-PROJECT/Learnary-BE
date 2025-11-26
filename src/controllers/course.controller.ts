@@ -32,9 +32,27 @@ export const getAll = async (_: Request, res: Response): Promise<void> => {
     res.status(500).json({ message: 'Lấy khóa học thất bại', error: (error as Error).message });
   }
 };
-
+export const getCourseBySlug = async(req:Request, res:Response): Promise<void> => {
+  try {
+    const slug = req.params;
+    if(slug) {
+      res.status(500).json({message:"Không thấy slug để truy vấn!"})
+      return
+    }
+    const course = await courseService.getCourseBySlug(slug);
+    if(!course) {
+      res.status(404).json({message:"Không thấy course với slug này!"})
+      return
+    }
+    res.status(200).json(course);
+  } catch (error) {
+     console.error("Error in getById:", error);
+     res.status(500).json({ message: 'Lỗi khi lấy course id từ slug!', error: (error as Error).message });
+  }
+}
 export const getById = async (req: Request, res: Response): Promise<void> => {
   try {
+
     const course = await courseService.getCourseById(req.params.id);
     if (!course) {
       res.status(404).json({ message: 'Không tìm thấy khóa học' });

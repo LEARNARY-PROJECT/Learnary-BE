@@ -9,7 +9,6 @@
     "strict": true,
     "skipLibCheck": true
   },
-  "include": [
-    "src/**/*.ts"
-, "src/config/prisma.config.ts"  ]
+  "include": ["src/**/*.ts"], //những file 
+  "exclude": [ "prisma.config.ts"]
 }

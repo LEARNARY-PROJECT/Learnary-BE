@@ -1,8 +1,19 @@
 import prisma from "../lib/client";
-import { CourseStatus } from '@prisma/client';
+import { Course, CourseStatus } from '@prisma/client';
 import { moveVideosToPermanent, deleteVideos } from './videoLesson.service';
 import type { CourseCreateDto, ChapterDto, LessonDto, QuizDto, QuestionDto, OptionDto } from '../types/course';
 import { CreateSlug, checkExistingSlug } from "../utils/slug";
+
+export const getCourseBySlug = async (slugs: string): Promise<Course> => {
+  if (!slugs) throw new Error('Không tìm thấy slug truyền vào!')
+  const course = await prisma.course.findFirst({
+    where: {
+      slug: slugs
+    }
+  })
+  if (!course) throw new Error('Không tìm thấy khóa học với slug này!')
+  return course;
+}
 const getInstructorId = async (userId: string): Promise<string> => {
   const instructor = await prisma.instructor.findUnique({
     where: { user_id: userId },
@@ -23,10 +34,10 @@ export const getAllCourses = () =>
       feedbacks: true,
       category: true,
       instructor: {
-        include: { user:true }
+        include: { user: true }
       },
     }
-  });
+});
 export const getCourseById = (course_id: string) =>
   prisma.course.findUnique({
     where: { course_id },
@@ -58,7 +69,7 @@ export const getCourseById = (course_id: string) =>
       },
       feedbacks: true,
     },
-  });
+});
 
 export const getCoursesByInstructorId = async (userId: string) => {
   const instructor = await prisma.instructor.findUnique({
@@ -166,9 +177,9 @@ export const createDraftCourse = async (
       })),
     },
   }
-  if(await checkExistingSlug(cleanData.slug) == true) {
+  if (await checkExistingSlug(cleanData.slug) == true) {
     throw new Error('Slug của khoá học này đã tồn tại, vui lòng chọn tên khác!');
-  } 
+  }
   return await prisma.course.create({
     data: {
       instructor_id: realInstructorId,
@@ -320,14 +331,14 @@ export const submitCourseForApproval = async (
   if (!allChaptersHaveLessons) {
     throw new Error('Mỗi chương phải có ít nhất 1 bài học.');
   }
-  
+
   const allLessonsHaveVideo = (data.chapter || []).every((c) =>
     (c.lessons || []).every((l) => {
       const hasVideo = l.video_url && l.video_url.trim() !== '';
       return hasVideo;
     })
   );
-  
+
   if (!allLessonsHaveVideo) {
     throw new Error('Tất cả các bài học đã tạo phải có video mới được gửi duyệt.');
   }
@@ -365,7 +376,7 @@ export const submitCourseForApproval = async (
                     slug: chapter.quiz.title.trim().toLowerCase().replace(/\s+/g, '-'),
                     questions: {
                       create: (chapter.quiz?.questions || [])
-                        .filter(q => q.title && q.title.trim() !== '') 
+                        .filter(q => q.title && q.title.trim() !== '')
                         .map((question, questionIndex) => ({
                           title: question.title.trim(),
                           order_index: questionIndex,
