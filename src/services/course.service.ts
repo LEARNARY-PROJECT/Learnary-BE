@@ -9,6 +9,10 @@ export const getCourseBySlug = async (slugs: string): Promise<Course> => {
   const course = await prisma.course.findFirst({
     where: {
       slug: slugs
+    }, 
+    include: {
+      category:true,
+      level:true
     }
   })
   if (!course) throw new Error('Không tìm thấy khóa học với slug này!')

@@ -34,8 +34,8 @@ export const getAll = async (_: Request, res: Response): Promise<void> => {
 };
 export const getCourseBySlug = async(req:Request, res:Response): Promise<void> => {
   try {
-    const slug = req.params;
-    if(slug) {
+    const slug = req.params.slug;
+    if(!slug) {
       res.status(500).json({message:"Không thấy slug để truy vấn!"})
       return
     }
