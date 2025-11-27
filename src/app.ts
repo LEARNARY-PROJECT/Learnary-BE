@@ -39,9 +39,10 @@ dotenv.config();
 
 const app = express();
 const port = process.env.PORT || 4000;
+const isDevelopment = process.env.NODE_ENV === 'development';
 const allowedOrigins = process.env.CORS_ORIGIN
   ? process.env.CORS_ORIGIN.split(',') // sử dụng chuỗi phân tách bằng dấu phẩy
-  : ["http://localhost:3000", "http://localhost:3001"]; 
+  : ["http://localhost:3000", "http://localhost:3001", "http://learnary.site"];
 //middlewares
 app.use(
   cors({
@@ -91,19 +92,25 @@ app.get("/", (_, res) => {
   res.send("Backend đang chạy rất bình tĩnh và bình thường");
 });
 async function startServer() {
-    try {
-        await createDefaultUserIfNoneExists();
-        console.log("Database initialization check completed.");
-        setupSwagger(app);
-        app.listen(port, () => {
-            console.log(`Server is running on http://localhost:${port}`);
-            console.log(`Swagger UI is available at http://localhost:${port}/api-docs`);
-            console.log("Backend Service is fully ready! (DB connected)");
-        });
-    } catch (err) {
-        console.error("❌ Fatal Error: Could not connect to the database or start server.", err);
-        process.exit(1); 
-    }
+  try {
+    console.log(`\n🚀 Starting server...`);
+    console.log(`📦 Environment: ${process.env.NODE_ENV || 'development'}`);
+    console.log(`🔌 Database: ${isDevelopment ? 'LOCAL' : 'PRODUCTION'}`);
+    
+    await createDefaultUserIfNoneExists();
+    console.log("✅ Database connection successful");
+
+    setupSwagger(app);
+
+    app.listen(port, () => {
+      console.log(`\n✅ Server is running on http://localhost:${port}`);
+      console.log(`📚 Swagger UI: http://localhost:${port}/api-docs`);
+      console.log(`🎉 Backend Service is fully ready!\n`);
+    });
+  } catch (err) {
+    console.error("❌ Fatal Error: Could not start server", err);
+    process.exit(1);
+  }
 }
 createDefaultUserIfNoneExists()
   .then(() => {
