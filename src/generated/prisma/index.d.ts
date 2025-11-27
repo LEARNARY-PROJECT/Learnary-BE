@@ -4038,6 +4038,37 @@ export namespace Prisma {
 
 
   /**
+   * Count Type OptionsCountOutputType
+   */
+
+  export type OptionsCountOutputType = {
+    choosedByAnswers: number
+  }
+
+  export type OptionsCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    choosedByAnswers?: boolean | OptionsCountOutputTypeCountChoosedByAnswersArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * OptionsCountOutputType without action
+   */
+  export type OptionsCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the OptionsCountOutputType
+     */
+    select?: OptionsCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * OptionsCountOutputType without action
+   */
+  export type OptionsCountOutputTypeCountChoosedByAnswersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AnswerWhereInput
+  }
+
+
+  /**
    * Count Type SubmissionCountOutputType
    */
 
@@ -33109,6 +33140,8 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     belongQuestion?: boolean | QuestionDefaultArgs<ExtArgs>
+    choosedByAnswers?: boolean | Options$choosedByAnswersArgs<ExtArgs>
+    _count?: boolean | OptionsCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["options"]>
 
   export type OptionsSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -33146,6 +33179,8 @@ export namespace Prisma {
   export type OptionsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"option_id" | "question_id" | "option_content" | "is_correct" | "order_index" | "createdAt" | "updatedAt", ExtArgs["result"]["options"]>
   export type OptionsInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     belongQuestion?: boolean | QuestionDefaultArgs<ExtArgs>
+    choosedByAnswers?: boolean | Options$choosedByAnswersArgs<ExtArgs>
+    _count?: boolean | OptionsCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type OptionsIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     belongQuestion?: boolean | QuestionDefaultArgs<ExtArgs>
@@ -33158,6 +33193,7 @@ export namespace Prisma {
     name: "Options"
     objects: {
       belongQuestion: Prisma.$QuestionPayload<ExtArgs>
+      choosedByAnswers: Prisma.$AnswerPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       option_id: string
@@ -33562,6 +33598,7 @@ export namespace Prisma {
   export interface Prisma__OptionsClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     belongQuestion<T extends QuestionDefaultArgs<ExtArgs> = {}>(args?: Subset<T, QuestionDefaultArgs<ExtArgs>>): Prisma__QuestionClient<$Result.GetResult<Prisma.$QuestionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    choosedByAnswers<T extends Options$choosedByAnswersArgs<ExtArgs> = {}>(args?: Subset<T, Options$choosedByAnswersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AnswerPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -33994,6 +34031,30 @@ export namespace Prisma {
   }
 
   /**
+   * Options.choosedByAnswers
+   */
+  export type Options$choosedByAnswersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Answer
+     */
+    select?: AnswerSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Answer
+     */
+    omit?: AnswerOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AnswerInclude<ExtArgs> | null
+    where?: AnswerWhereInput
+    orderBy?: AnswerOrderByWithRelationInput | AnswerOrderByWithRelationInput[]
+    cursor?: AnswerWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: AnswerScalarFieldEnum | AnswerScalarFieldEnum[]
+  }
+
+  /**
    * Options without action
    */
   export type OptionsDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -34026,8 +34087,8 @@ export namespace Prisma {
     answer_id: string | null
     submission_id: string | null
     question_id: string | null
+    option_id: string | null
     is_correct: boolean | null
-    selected_option_id: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -34036,8 +34097,8 @@ export namespace Prisma {
     answer_id: string | null
     submission_id: string | null
     question_id: string | null
+    option_id: string | null
     is_correct: boolean | null
-    selected_option_id: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -34046,8 +34107,8 @@ export namespace Prisma {
     answer_id: number
     submission_id: number
     question_id: number
+    option_id: number
     is_correct: number
-    selected_option_id: number
     createdAt: number
     updatedAt: number
     _all: number
@@ -34058,8 +34119,8 @@ export namespace Prisma {
     answer_id?: true
     submission_id?: true
     question_id?: true
+    option_id?: true
     is_correct?: true
-    selected_option_id?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -34068,8 +34129,8 @@ export namespace Prisma {
     answer_id?: true
     submission_id?: true
     question_id?: true
+    option_id?: true
     is_correct?: true
-    selected_option_id?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -34078,8 +34139,8 @@ export namespace Prisma {
     answer_id?: true
     submission_id?: true
     question_id?: true
+    option_id?: true
     is_correct?: true
-    selected_option_id?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -34161,8 +34222,8 @@ export namespace Prisma {
     answer_id: string
     submission_id: string
     question_id: string
+    option_id: string
     is_correct: boolean
-    selected_option_id: string
     createdAt: Date
     updatedAt: Date
     _count: AnswerCountAggregateOutputType | null
@@ -34188,60 +34249,66 @@ export namespace Prisma {
     answer_id?: boolean
     submission_id?: boolean
     question_id?: boolean
+    option_id?: boolean
     is_correct?: boolean
-    selected_option_id?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     ofQuestion?: boolean | QuestionDefaultArgs<ExtArgs>
     ofSubmission?: boolean | SubmissionDefaultArgs<ExtArgs>
+    choosedOption?: boolean | OptionsDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["answer"]>
 
   export type AnswerSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     answer_id?: boolean
     submission_id?: boolean
     question_id?: boolean
+    option_id?: boolean
     is_correct?: boolean
-    selected_option_id?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     ofQuestion?: boolean | QuestionDefaultArgs<ExtArgs>
     ofSubmission?: boolean | SubmissionDefaultArgs<ExtArgs>
+    choosedOption?: boolean | OptionsDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["answer"]>
 
   export type AnswerSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     answer_id?: boolean
     submission_id?: boolean
     question_id?: boolean
+    option_id?: boolean
     is_correct?: boolean
-    selected_option_id?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     ofQuestion?: boolean | QuestionDefaultArgs<ExtArgs>
     ofSubmission?: boolean | SubmissionDefaultArgs<ExtArgs>
+    choosedOption?: boolean | OptionsDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["answer"]>
 
   export type AnswerSelectScalar = {
     answer_id?: boolean
     submission_id?: boolean
     question_id?: boolean
+    option_id?: boolean
     is_correct?: boolean
-    selected_option_id?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type AnswerOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"answer_id" | "submission_id" | "question_id" | "is_correct" | "selected_option_id" | "createdAt" | "updatedAt", ExtArgs["result"]["answer"]>
+  export type AnswerOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"answer_id" | "submission_id" | "question_id" | "option_id" | "is_correct" | "createdAt" | "updatedAt", ExtArgs["result"]["answer"]>
   export type AnswerInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     ofQuestion?: boolean | QuestionDefaultArgs<ExtArgs>
     ofSubmission?: boolean | SubmissionDefaultArgs<ExtArgs>
+    choosedOption?: boolean | OptionsDefaultArgs<ExtArgs>
   }
   export type AnswerIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     ofQuestion?: boolean | QuestionDefaultArgs<ExtArgs>
     ofSubmission?: boolean | SubmissionDefaultArgs<ExtArgs>
+    choosedOption?: boolean | OptionsDefaultArgs<ExtArgs>
   }
   export type AnswerIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     ofQuestion?: boolean | QuestionDefaultArgs<ExtArgs>
     ofSubmission?: boolean | SubmissionDefaultArgs<ExtArgs>
+    choosedOption?: boolean | OptionsDefaultArgs<ExtArgs>
   }
 
   export type $AnswerPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -34249,13 +34316,14 @@ export namespace Prisma {
     objects: {
       ofQuestion: Prisma.$QuestionPayload<ExtArgs>
       ofSubmission: Prisma.$SubmissionPayload<ExtArgs>
+      choosedOption: Prisma.$OptionsPayload<ExtArgs>
     }
     scalars: $Extensions.GetPayloadResult<{
       answer_id: string
       submission_id: string
       question_id: string
+      option_id: string
       is_correct: boolean
-      selected_option_id: string
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["answer"]>
@@ -34654,6 +34722,7 @@ export namespace Prisma {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     ofQuestion<T extends QuestionDefaultArgs<ExtArgs> = {}>(args?: Subset<T, QuestionDefaultArgs<ExtArgs>>): Prisma__QuestionClient<$Result.GetResult<Prisma.$QuestionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     ofSubmission<T extends SubmissionDefaultArgs<ExtArgs> = {}>(args?: Subset<T, SubmissionDefaultArgs<ExtArgs>>): Prisma__SubmissionClient<$Result.GetResult<Prisma.$SubmissionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    choosedOption<T extends OptionsDefaultArgs<ExtArgs> = {}>(args?: Subset<T, OptionsDefaultArgs<ExtArgs>>): Prisma__OptionsClient<$Result.GetResult<Prisma.$OptionsPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -34686,8 +34755,8 @@ export namespace Prisma {
     readonly answer_id: FieldRef<"Answer", 'String'>
     readonly submission_id: FieldRef<"Answer", 'String'>
     readonly question_id: FieldRef<"Answer", 'String'>
+    readonly option_id: FieldRef<"Answer", 'String'>
     readonly is_correct: FieldRef<"Answer", 'Boolean'>
-    readonly selected_option_id: FieldRef<"Answer", 'String'>
     readonly createdAt: FieldRef<"Answer", 'DateTime'>
     readonly updatedAt: FieldRef<"Answer", 'DateTime'>
   }
@@ -36614,8 +36683,8 @@ export namespace Prisma {
     answer_id: 'answer_id',
     submission_id: 'submission_id',
     question_id: 'question_id',
+    option_id: 'option_id',
     is_correct: 'is_correct',
-    selected_option_id: 'selected_option_id',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
@@ -38793,6 +38862,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Options"> | Date | string
     updatedAt?: DateTimeFilter<"Options"> | Date | string
     belongQuestion?: XOR<QuestionScalarRelationFilter, QuestionWhereInput>
+    choosedByAnswers?: AnswerListRelationFilter
   }
 
   export type OptionsOrderByWithRelationInput = {
@@ -38804,6 +38874,7 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     belongQuestion?: QuestionOrderByWithRelationInput
+    choosedByAnswers?: AnswerOrderByRelationAggregateInput
   }
 
   export type OptionsWhereUniqueInput = Prisma.AtLeast<{
@@ -38818,6 +38889,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Options"> | Date | string
     updatedAt?: DateTimeFilter<"Options"> | Date | string
     belongQuestion?: XOR<QuestionScalarRelationFilter, QuestionWhereInput>
+    choosedByAnswers?: AnswerListRelationFilter
   }, "option_id">
 
   export type OptionsOrderByWithAggregationInput = {
@@ -38855,24 +38927,26 @@ export namespace Prisma {
     answer_id?: StringFilter<"Answer"> | string
     submission_id?: StringFilter<"Answer"> | string
     question_id?: StringFilter<"Answer"> | string
+    option_id?: StringFilter<"Answer"> | string
     is_correct?: BoolFilter<"Answer"> | boolean
-    selected_option_id?: StringFilter<"Answer"> | string
     createdAt?: DateTimeFilter<"Answer"> | Date | string
     updatedAt?: DateTimeFilter<"Answer"> | Date | string
     ofQuestion?: XOR<QuestionScalarRelationFilter, QuestionWhereInput>
     ofSubmission?: XOR<SubmissionScalarRelationFilter, SubmissionWhereInput>
+    choosedOption?: XOR<OptionsScalarRelationFilter, OptionsWhereInput>
   }
 
   export type AnswerOrderByWithRelationInput = {
     answer_id?: SortOrder
     submission_id?: SortOrder
     question_id?: SortOrder
+    option_id?: SortOrder
     is_correct?: SortOrder
-    selected_option_id?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     ofQuestion?: QuestionOrderByWithRelationInput
     ofSubmission?: SubmissionOrderByWithRelationInput
+    choosedOption?: OptionsOrderByWithRelationInput
   }
 
   export type AnswerWhereUniqueInput = Prisma.AtLeast<{
@@ -38883,20 +38957,21 @@ export namespace Prisma {
     NOT?: AnswerWhereInput | AnswerWhereInput[]
     submission_id?: StringFilter<"Answer"> | string
     question_id?: StringFilter<"Answer"> | string
+    option_id?: StringFilter<"Answer"> | string
     is_correct?: BoolFilter<"Answer"> | boolean
-    selected_option_id?: StringFilter<"Answer"> | string
     createdAt?: DateTimeFilter<"Answer"> | Date | string
     updatedAt?: DateTimeFilter<"Answer"> | Date | string
     ofQuestion?: XOR<QuestionScalarRelationFilter, QuestionWhereInput>
     ofSubmission?: XOR<SubmissionScalarRelationFilter, SubmissionWhereInput>
+    choosedOption?: XOR<OptionsScalarRelationFilter, OptionsWhereInput>
   }, "answer_id" | "submission_id_question_id">
 
   export type AnswerOrderByWithAggregationInput = {
     answer_id?: SortOrder
     submission_id?: SortOrder
     question_id?: SortOrder
+    option_id?: SortOrder
     is_correct?: SortOrder
-    selected_option_id?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: AnswerCountOrderByAggregateInput
@@ -38911,8 +38986,8 @@ export namespace Prisma {
     answer_id?: StringWithAggregatesFilter<"Answer"> | string
     submission_id?: StringWithAggregatesFilter<"Answer"> | string
     question_id?: StringWithAggregatesFilter<"Answer"> | string
+    option_id?: StringWithAggregatesFilter<"Answer"> | string
     is_correct?: BoolWithAggregatesFilter<"Answer"> | boolean
-    selected_option_id?: StringWithAggregatesFilter<"Answer"> | string
     createdAt?: DateTimeWithAggregatesFilter<"Answer"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Answer"> | Date | string
   }
@@ -41000,6 +41075,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     belongQuestion: QuestionCreateNestedOneWithoutOptionsInput
+    choosedByAnswers?: AnswerCreateNestedManyWithoutChoosedOptionInput
   }
 
   export type OptionsUncheckedCreateInput = {
@@ -41010,6 +41086,7 @@ export namespace Prisma {
     order_index?: number
     createdAt?: Date | string
     updatedAt?: Date | string
+    choosedByAnswers?: AnswerUncheckedCreateNestedManyWithoutChoosedOptionInput
   }
 
   export type OptionsUpdateInput = {
@@ -41020,6 +41097,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     belongQuestion?: QuestionUpdateOneRequiredWithoutOptionsNestedInput
+    choosedByAnswers?: AnswerUpdateManyWithoutChoosedOptionNestedInput
   }
 
   export type OptionsUncheckedUpdateInput = {
@@ -41030,6 +41108,7 @@ export namespace Prisma {
     order_index?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    choosedByAnswers?: AnswerUncheckedUpdateManyWithoutChoosedOptionNestedInput
   }
 
   export type OptionsCreateManyInput = {
@@ -41063,20 +41142,20 @@ export namespace Prisma {
 
   export type AnswerCreateInput = {
     answer_id?: string
-    is_correct: boolean
-    selected_option_id: string
+    is_correct?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     ofQuestion: QuestionCreateNestedOneWithoutAnswersInput
     ofSubmission: SubmissionCreateNestedOneWithoutAnswerInput
+    choosedOption: OptionsCreateNestedOneWithoutChoosedByAnswersInput
   }
 
   export type AnswerUncheckedCreateInput = {
     answer_id?: string
     submission_id: string
     question_id: string
-    is_correct: boolean
-    selected_option_id: string
+    option_id: string
+    is_correct?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -41084,19 +41163,19 @@ export namespace Prisma {
   export type AnswerUpdateInput = {
     answer_id?: StringFieldUpdateOperationsInput | string
     is_correct?: BoolFieldUpdateOperationsInput | boolean
-    selected_option_id?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     ofQuestion?: QuestionUpdateOneRequiredWithoutAnswersNestedInput
     ofSubmission?: SubmissionUpdateOneRequiredWithoutAnswerNestedInput
+    choosedOption?: OptionsUpdateOneRequiredWithoutChoosedByAnswersNestedInput
   }
 
   export type AnswerUncheckedUpdateInput = {
     answer_id?: StringFieldUpdateOperationsInput | string
     submission_id?: StringFieldUpdateOperationsInput | string
     question_id?: StringFieldUpdateOperationsInput | string
+    option_id?: StringFieldUpdateOperationsInput | string
     is_correct?: BoolFieldUpdateOperationsInput | boolean
-    selected_option_id?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -41105,8 +41184,8 @@ export namespace Prisma {
     answer_id?: string
     submission_id: string
     question_id: string
-    is_correct: boolean
-    selected_option_id: string
+    option_id: string
+    is_correct?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -41114,7 +41193,6 @@ export namespace Prisma {
   export type AnswerUpdateManyMutationInput = {
     answer_id?: StringFieldUpdateOperationsInput | string
     is_correct?: BoolFieldUpdateOperationsInput | boolean
-    selected_option_id?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -41123,8 +41201,8 @@ export namespace Prisma {
     answer_id?: StringFieldUpdateOperationsInput | string
     submission_id?: StringFieldUpdateOperationsInput | string
     question_id?: StringFieldUpdateOperationsInput | string
+    option_id?: StringFieldUpdateOperationsInput | string
     is_correct?: BoolFieldUpdateOperationsInput | boolean
-    selected_option_id?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -42868,6 +42946,11 @@ export namespace Prisma {
     isNot?: SubmissionWhereInput
   }
 
+  export type OptionsScalarRelationFilter = {
+    is?: OptionsWhereInput
+    isNot?: OptionsWhereInput
+  }
+
   export type AnswerSubmission_idQuestion_idCompoundUniqueInput = {
     submission_id: string
     question_id: string
@@ -42877,8 +42960,8 @@ export namespace Prisma {
     answer_id?: SortOrder
     submission_id?: SortOrder
     question_id?: SortOrder
+    option_id?: SortOrder
     is_correct?: SortOrder
-    selected_option_id?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -42887,8 +42970,8 @@ export namespace Prisma {
     answer_id?: SortOrder
     submission_id?: SortOrder
     question_id?: SortOrder
+    option_id?: SortOrder
     is_correct?: SortOrder
-    selected_option_id?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -42897,8 +42980,8 @@ export namespace Prisma {
     answer_id?: SortOrder
     submission_id?: SortOrder
     question_id?: SortOrder
+    option_id?: SortOrder
     is_correct?: SortOrder
-    selected_option_id?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -44986,12 +45069,54 @@ export namespace Prisma {
     connect?: QuestionWhereUniqueInput
   }
 
+  export type AnswerCreateNestedManyWithoutChoosedOptionInput = {
+    create?: XOR<AnswerCreateWithoutChoosedOptionInput, AnswerUncheckedCreateWithoutChoosedOptionInput> | AnswerCreateWithoutChoosedOptionInput[] | AnswerUncheckedCreateWithoutChoosedOptionInput[]
+    connectOrCreate?: AnswerCreateOrConnectWithoutChoosedOptionInput | AnswerCreateOrConnectWithoutChoosedOptionInput[]
+    createMany?: AnswerCreateManyChoosedOptionInputEnvelope
+    connect?: AnswerWhereUniqueInput | AnswerWhereUniqueInput[]
+  }
+
+  export type AnswerUncheckedCreateNestedManyWithoutChoosedOptionInput = {
+    create?: XOR<AnswerCreateWithoutChoosedOptionInput, AnswerUncheckedCreateWithoutChoosedOptionInput> | AnswerCreateWithoutChoosedOptionInput[] | AnswerUncheckedCreateWithoutChoosedOptionInput[]
+    connectOrCreate?: AnswerCreateOrConnectWithoutChoosedOptionInput | AnswerCreateOrConnectWithoutChoosedOptionInput[]
+    createMany?: AnswerCreateManyChoosedOptionInputEnvelope
+    connect?: AnswerWhereUniqueInput | AnswerWhereUniqueInput[]
+  }
+
   export type QuestionUpdateOneRequiredWithoutOptionsNestedInput = {
     create?: XOR<QuestionCreateWithoutOptionsInput, QuestionUncheckedCreateWithoutOptionsInput>
     connectOrCreate?: QuestionCreateOrConnectWithoutOptionsInput
     upsert?: QuestionUpsertWithoutOptionsInput
     connect?: QuestionWhereUniqueInput
     update?: XOR<XOR<QuestionUpdateToOneWithWhereWithoutOptionsInput, QuestionUpdateWithoutOptionsInput>, QuestionUncheckedUpdateWithoutOptionsInput>
+  }
+
+  export type AnswerUpdateManyWithoutChoosedOptionNestedInput = {
+    create?: XOR<AnswerCreateWithoutChoosedOptionInput, AnswerUncheckedCreateWithoutChoosedOptionInput> | AnswerCreateWithoutChoosedOptionInput[] | AnswerUncheckedCreateWithoutChoosedOptionInput[]
+    connectOrCreate?: AnswerCreateOrConnectWithoutChoosedOptionInput | AnswerCreateOrConnectWithoutChoosedOptionInput[]
+    upsert?: AnswerUpsertWithWhereUniqueWithoutChoosedOptionInput | AnswerUpsertWithWhereUniqueWithoutChoosedOptionInput[]
+    createMany?: AnswerCreateManyChoosedOptionInputEnvelope
+    set?: AnswerWhereUniqueInput | AnswerWhereUniqueInput[]
+    disconnect?: AnswerWhereUniqueInput | AnswerWhereUniqueInput[]
+    delete?: AnswerWhereUniqueInput | AnswerWhereUniqueInput[]
+    connect?: AnswerWhereUniqueInput | AnswerWhereUniqueInput[]
+    update?: AnswerUpdateWithWhereUniqueWithoutChoosedOptionInput | AnswerUpdateWithWhereUniqueWithoutChoosedOptionInput[]
+    updateMany?: AnswerUpdateManyWithWhereWithoutChoosedOptionInput | AnswerUpdateManyWithWhereWithoutChoosedOptionInput[]
+    deleteMany?: AnswerScalarWhereInput | AnswerScalarWhereInput[]
+  }
+
+  export type AnswerUncheckedUpdateManyWithoutChoosedOptionNestedInput = {
+    create?: XOR<AnswerCreateWithoutChoosedOptionInput, AnswerUncheckedCreateWithoutChoosedOptionInput> | AnswerCreateWithoutChoosedOptionInput[] | AnswerUncheckedCreateWithoutChoosedOptionInput[]
+    connectOrCreate?: AnswerCreateOrConnectWithoutChoosedOptionInput | AnswerCreateOrConnectWithoutChoosedOptionInput[]
+    upsert?: AnswerUpsertWithWhereUniqueWithoutChoosedOptionInput | AnswerUpsertWithWhereUniqueWithoutChoosedOptionInput[]
+    createMany?: AnswerCreateManyChoosedOptionInputEnvelope
+    set?: AnswerWhereUniqueInput | AnswerWhereUniqueInput[]
+    disconnect?: AnswerWhereUniqueInput | AnswerWhereUniqueInput[]
+    delete?: AnswerWhereUniqueInput | AnswerWhereUniqueInput[]
+    connect?: AnswerWhereUniqueInput | AnswerWhereUniqueInput[]
+    update?: AnswerUpdateWithWhereUniqueWithoutChoosedOptionInput | AnswerUpdateWithWhereUniqueWithoutChoosedOptionInput[]
+    updateMany?: AnswerUpdateManyWithWhereWithoutChoosedOptionInput | AnswerUpdateManyWithWhereWithoutChoosedOptionInput[]
+    deleteMany?: AnswerScalarWhereInput | AnswerScalarWhereInput[]
   }
 
   export type QuestionCreateNestedOneWithoutAnswersInput = {
@@ -45004,6 +45129,12 @@ export namespace Prisma {
     create?: XOR<SubmissionCreateWithoutAnswerInput, SubmissionUncheckedCreateWithoutAnswerInput>
     connectOrCreate?: SubmissionCreateOrConnectWithoutAnswerInput
     connect?: SubmissionWhereUniqueInput
+  }
+
+  export type OptionsCreateNestedOneWithoutChoosedByAnswersInput = {
+    create?: XOR<OptionsCreateWithoutChoosedByAnswersInput, OptionsUncheckedCreateWithoutChoosedByAnswersInput>
+    connectOrCreate?: OptionsCreateOrConnectWithoutChoosedByAnswersInput
+    connect?: OptionsWhereUniqueInput
   }
 
   export type QuestionUpdateOneRequiredWithoutAnswersNestedInput = {
@@ -45020,6 +45151,14 @@ export namespace Prisma {
     upsert?: SubmissionUpsertWithoutAnswerInput
     connect?: SubmissionWhereUniqueInput
     update?: XOR<XOR<SubmissionUpdateToOneWithWhereWithoutAnswerInput, SubmissionUpdateWithoutAnswerInput>, SubmissionUncheckedUpdateWithoutAnswerInput>
+  }
+
+  export type OptionsUpdateOneRequiredWithoutChoosedByAnswersNestedInput = {
+    create?: XOR<OptionsCreateWithoutChoosedByAnswersInput, OptionsUncheckedCreateWithoutChoosedByAnswersInput>
+    connectOrCreate?: OptionsCreateOrConnectWithoutChoosedByAnswersInput
+    upsert?: OptionsUpsertWithoutChoosedByAnswersInput
+    connect?: OptionsWhereUniqueInput
+    update?: XOR<XOR<OptionsUpdateToOneWithWhereWithoutChoosedByAnswersInput, OptionsUpdateWithoutChoosedByAnswersInput>, OptionsUncheckedUpdateWithoutChoosedByAnswersInput>
   }
 
   export type QuizCreateNestedOneWithoutSubmissionsInput = {
@@ -50441,6 +50580,7 @@ export namespace Prisma {
     order_index?: number
     createdAt?: Date | string
     updatedAt?: Date | string
+    choosedByAnswers?: AnswerCreateNestedManyWithoutChoosedOptionInput
   }
 
   export type OptionsUncheckedCreateWithoutBelongQuestionInput = {
@@ -50450,6 +50590,7 @@ export namespace Prisma {
     order_index?: number
     createdAt?: Date | string
     updatedAt?: Date | string
+    choosedByAnswers?: AnswerUncheckedCreateNestedManyWithoutChoosedOptionInput
   }
 
   export type OptionsCreateOrConnectWithoutBelongQuestionInput = {
@@ -50464,18 +50605,18 @@ export namespace Prisma {
 
   export type AnswerCreateWithoutOfQuestionInput = {
     answer_id?: string
-    is_correct: boolean
-    selected_option_id: string
+    is_correct?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     ofSubmission: SubmissionCreateNestedOneWithoutAnswerInput
+    choosedOption: OptionsCreateNestedOneWithoutChoosedByAnswersInput
   }
 
   export type AnswerUncheckedCreateWithoutOfQuestionInput = {
     answer_id?: string
     submission_id: string
-    is_correct: boolean
-    selected_option_id: string
+    option_id: string
+    is_correct?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -50573,8 +50714,8 @@ export namespace Prisma {
     answer_id?: StringFilter<"Answer"> | string
     submission_id?: StringFilter<"Answer"> | string
     question_id?: StringFilter<"Answer"> | string
+    option_id?: StringFilter<"Answer"> | string
     is_correct?: BoolFilter<"Answer"> | boolean
-    selected_option_id?: StringFilter<"Answer"> | string
     createdAt?: DateTimeFilter<"Answer"> | Date | string
     updatedAt?: DateTimeFilter<"Answer"> | Date | string
   }
@@ -50602,6 +50743,34 @@ export namespace Prisma {
   export type QuestionCreateOrConnectWithoutOptionsInput = {
     where: QuestionWhereUniqueInput
     create: XOR<QuestionCreateWithoutOptionsInput, QuestionUncheckedCreateWithoutOptionsInput>
+  }
+
+  export type AnswerCreateWithoutChoosedOptionInput = {
+    answer_id?: string
+    is_correct?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    ofQuestion: QuestionCreateNestedOneWithoutAnswersInput
+    ofSubmission: SubmissionCreateNestedOneWithoutAnswerInput
+  }
+
+  export type AnswerUncheckedCreateWithoutChoosedOptionInput = {
+    answer_id?: string
+    submission_id: string
+    question_id: string
+    is_correct?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type AnswerCreateOrConnectWithoutChoosedOptionInput = {
+    where: AnswerWhereUniqueInput
+    create: XOR<AnswerCreateWithoutChoosedOptionInput, AnswerUncheckedCreateWithoutChoosedOptionInput>
+  }
+
+  export type AnswerCreateManyChoosedOptionInputEnvelope = {
+    data: AnswerCreateManyChoosedOptionInput | AnswerCreateManyChoosedOptionInput[]
+    skipDuplicates?: boolean
   }
 
   export type QuestionUpsertWithoutOptionsInput = {
@@ -50633,6 +50802,22 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     answers?: AnswerUncheckedUpdateManyWithoutOfQuestionNestedInput
+  }
+
+  export type AnswerUpsertWithWhereUniqueWithoutChoosedOptionInput = {
+    where: AnswerWhereUniqueInput
+    update: XOR<AnswerUpdateWithoutChoosedOptionInput, AnswerUncheckedUpdateWithoutChoosedOptionInput>
+    create: XOR<AnswerCreateWithoutChoosedOptionInput, AnswerUncheckedCreateWithoutChoosedOptionInput>
+  }
+
+  export type AnswerUpdateWithWhereUniqueWithoutChoosedOptionInput = {
+    where: AnswerWhereUniqueInput
+    data: XOR<AnswerUpdateWithoutChoosedOptionInput, AnswerUncheckedUpdateWithoutChoosedOptionInput>
+  }
+
+  export type AnswerUpdateManyWithWhereWithoutChoosedOptionInput = {
+    where: AnswerScalarWhereInput
+    data: XOR<AnswerUpdateManyMutationInput, AnswerUncheckedUpdateManyWithoutChoosedOptionInput>
   }
 
   export type QuestionCreateWithoutAnswersInput = {
@@ -50685,6 +50870,31 @@ export namespace Prisma {
   export type SubmissionCreateOrConnectWithoutAnswerInput = {
     where: SubmissionWhereUniqueInput
     create: XOR<SubmissionCreateWithoutAnswerInput, SubmissionUncheckedCreateWithoutAnswerInput>
+  }
+
+  export type OptionsCreateWithoutChoosedByAnswersInput = {
+    option_id?: string
+    option_content: string
+    is_correct: boolean
+    order_index?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    belongQuestion: QuestionCreateNestedOneWithoutOptionsInput
+  }
+
+  export type OptionsUncheckedCreateWithoutChoosedByAnswersInput = {
+    option_id?: string
+    question_id: string
+    option_content: string
+    is_correct: boolean
+    order_index?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type OptionsCreateOrConnectWithoutChoosedByAnswersInput = {
+    where: OptionsWhereUniqueInput
+    create: XOR<OptionsCreateWithoutChoosedByAnswersInput, OptionsUncheckedCreateWithoutChoosedByAnswersInput>
   }
 
   export type QuestionUpsertWithoutAnswersInput = {
@@ -50749,6 +50959,37 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     submittedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type OptionsUpsertWithoutChoosedByAnswersInput = {
+    update: XOR<OptionsUpdateWithoutChoosedByAnswersInput, OptionsUncheckedUpdateWithoutChoosedByAnswersInput>
+    create: XOR<OptionsCreateWithoutChoosedByAnswersInput, OptionsUncheckedCreateWithoutChoosedByAnswersInput>
+    where?: OptionsWhereInput
+  }
+
+  export type OptionsUpdateToOneWithWhereWithoutChoosedByAnswersInput = {
+    where?: OptionsWhereInput
+    data: XOR<OptionsUpdateWithoutChoosedByAnswersInput, OptionsUncheckedUpdateWithoutChoosedByAnswersInput>
+  }
+
+  export type OptionsUpdateWithoutChoosedByAnswersInput = {
+    option_id?: StringFieldUpdateOperationsInput | string
+    option_content?: StringFieldUpdateOperationsInput | string
+    is_correct?: BoolFieldUpdateOperationsInput | boolean
+    order_index?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    belongQuestion?: QuestionUpdateOneRequiredWithoutOptionsNestedInput
+  }
+
+  export type OptionsUncheckedUpdateWithoutChoosedByAnswersInput = {
+    option_id?: StringFieldUpdateOperationsInput | string
+    question_id?: StringFieldUpdateOperationsInput | string
+    option_content?: StringFieldUpdateOperationsInput | string
+    is_correct?: BoolFieldUpdateOperationsInput | boolean
+    order_index?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type QuizCreateWithoutSubmissionsInput = {
@@ -50847,18 +51088,18 @@ export namespace Prisma {
 
   export type AnswerCreateWithoutOfSubmissionInput = {
     answer_id?: string
-    is_correct: boolean
-    selected_option_id: string
+    is_correct?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     ofQuestion: QuestionCreateNestedOneWithoutAnswersInput
+    choosedOption: OptionsCreateNestedOneWithoutChoosedByAnswersInput
   }
 
   export type AnswerUncheckedCreateWithoutOfSubmissionInput = {
     answer_id?: string
     question_id: string
-    is_correct: boolean
-    selected_option_id: string
+    option_id: string
+    is_correct?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -52307,8 +52548,8 @@ export namespace Prisma {
   export type AnswerCreateManyOfQuestionInput = {
     answer_id?: string
     submission_id: string
-    is_correct: boolean
-    selected_option_id: string
+    option_id: string
+    is_correct?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -52320,6 +52561,7 @@ export namespace Prisma {
     order_index?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    choosedByAnswers?: AnswerUpdateManyWithoutChoosedOptionNestedInput
   }
 
   export type OptionsUncheckedUpdateWithoutBelongQuestionInput = {
@@ -52329,6 +52571,7 @@ export namespace Prisma {
     order_index?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    choosedByAnswers?: AnswerUncheckedUpdateManyWithoutChoosedOptionNestedInput
   }
 
   export type OptionsUncheckedUpdateManyWithoutBelongQuestionInput = {
@@ -52343,17 +52586,17 @@ export namespace Prisma {
   export type AnswerUpdateWithoutOfQuestionInput = {
     answer_id?: StringFieldUpdateOperationsInput | string
     is_correct?: BoolFieldUpdateOperationsInput | boolean
-    selected_option_id?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     ofSubmission?: SubmissionUpdateOneRequiredWithoutAnswerNestedInput
+    choosedOption?: OptionsUpdateOneRequiredWithoutChoosedByAnswersNestedInput
   }
 
   export type AnswerUncheckedUpdateWithoutOfQuestionInput = {
     answer_id?: StringFieldUpdateOperationsInput | string
     submission_id?: StringFieldUpdateOperationsInput | string
+    option_id?: StringFieldUpdateOperationsInput | string
     is_correct?: BoolFieldUpdateOperationsInput | boolean
-    selected_option_id?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -52361,8 +52604,44 @@ export namespace Prisma {
   export type AnswerUncheckedUpdateManyWithoutOfQuestionInput = {
     answer_id?: StringFieldUpdateOperationsInput | string
     submission_id?: StringFieldUpdateOperationsInput | string
+    option_id?: StringFieldUpdateOperationsInput | string
     is_correct?: BoolFieldUpdateOperationsInput | boolean
-    selected_option_id?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AnswerCreateManyChoosedOptionInput = {
+    answer_id?: string
+    submission_id: string
+    question_id: string
+    is_correct?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type AnswerUpdateWithoutChoosedOptionInput = {
+    answer_id?: StringFieldUpdateOperationsInput | string
+    is_correct?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    ofQuestion?: QuestionUpdateOneRequiredWithoutAnswersNestedInput
+    ofSubmission?: SubmissionUpdateOneRequiredWithoutAnswerNestedInput
+  }
+
+  export type AnswerUncheckedUpdateWithoutChoosedOptionInput = {
+    answer_id?: StringFieldUpdateOperationsInput | string
+    submission_id?: StringFieldUpdateOperationsInput | string
+    question_id?: StringFieldUpdateOperationsInput | string
+    is_correct?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AnswerUncheckedUpdateManyWithoutChoosedOptionInput = {
+    answer_id?: StringFieldUpdateOperationsInput | string
+    submission_id?: StringFieldUpdateOperationsInput | string
+    question_id?: StringFieldUpdateOperationsInput | string
+    is_correct?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -52370,8 +52649,8 @@ export namespace Prisma {
   export type AnswerCreateManyOfSubmissionInput = {
     answer_id?: string
     question_id: string
-    is_correct: boolean
-    selected_option_id: string
+    option_id: string
+    is_correct?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -52379,17 +52658,17 @@ export namespace Prisma {
   export type AnswerUpdateWithoutOfSubmissionInput = {
     answer_id?: StringFieldUpdateOperationsInput | string
     is_correct?: BoolFieldUpdateOperationsInput | boolean
-    selected_option_id?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     ofQuestion?: QuestionUpdateOneRequiredWithoutAnswersNestedInput
+    choosedOption?: OptionsUpdateOneRequiredWithoutChoosedByAnswersNestedInput
   }
 
   export type AnswerUncheckedUpdateWithoutOfSubmissionInput = {
     answer_id?: StringFieldUpdateOperationsInput | string
     question_id?: StringFieldUpdateOperationsInput | string
+    option_id?: StringFieldUpdateOperationsInput | string
     is_correct?: BoolFieldUpdateOperationsInput | boolean
-    selected_option_id?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -52397,8 +52676,8 @@ export namespace Prisma {
   export type AnswerUncheckedUpdateManyWithoutOfSubmissionInput = {
     answer_id?: StringFieldUpdateOperationsInput | string
     question_id?: StringFieldUpdateOperationsInput | string
+    option_id?: StringFieldUpdateOperationsInput | string
     is_correct?: BoolFieldUpdateOperationsInput | boolean
-    selected_option_id?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }

@@ -1,5 +1,5 @@
 import express from "express";
-import { authenticate, authorizeRoles } from "../middlewares/auth.middleware";
+import { authenticate, authorizeRoles, optionalAuthenticate } from "../middlewares/auth.middleware";
 import { create, getAll, getById, update, remove } from "../controllers/note.controller";
 
 const router = express.Router();
@@ -26,7 +26,7 @@ const router = express.Router();
  *       401:
  *         description: Unauthorized
  */
-router.post("/notes", authenticate, authorizeRoles("ADMIN"), create);
+router.post("/notes/create", authenticate, optionalAuthenticate, create);
 
 /**
  * @openapi
@@ -42,7 +42,7 @@ router.post("/notes", authenticate, authorizeRoles("ADMIN"), create);
  *       401:
  *         description: Unauthorized
  */
-router.get("/notes", authenticate, authorizeRoles("ADMIN"), getAll);
+router.get("/notes", authenticate, optionalAuthenticate, getAll);
 
 /**
  * @openapi
@@ -66,7 +66,7 @@ router.get("/notes", authenticate, authorizeRoles("ADMIN"), getAll);
  *       401:
  *         description: Unauthorized
  */
-router.get("/notes/:id", authenticate, authorizeRoles("ADMIN"), getById);
+router.get("/notes/:id", authenticate, optionalAuthenticate, getById);
 
 /**
  * @openapi
@@ -96,7 +96,7 @@ router.get("/notes/:id", authenticate, authorizeRoles("ADMIN"), getById);
  *       401:
  *         description: Unauthorized
  */
-router.put("/notes/:id", authenticate, authorizeRoles("ADMIN"), update);
+router.put("/notes/:id", authenticate, optionalAuthenticate, update);
 
 /**
  * @openapi
@@ -120,6 +120,6 @@ router.put("/notes/:id", authenticate, authorizeRoles("ADMIN"), update);
  *       401:
  *         description: Unauthorized
  */
-router.delete("/notes/:id", authenticate, authorizeRoles("ADMIN"), remove);
+router.delete("/notes/:id", authenticate, optionalAuthenticate, remove);
 
 export default router;

@@ -25,7 +25,7 @@ const router = Router();
  *       401:
  *         description: Unauthorized
  */
-router.post("/", submissionController.createSubmission);
+router.post("/submissions/create", submissionController.createSubmission);
 
 /**
  * @swagger
@@ -41,7 +41,7 @@ router.post("/", submissionController.createSubmission);
  *       401:
  *         description: Unauthorized
  */
-router.get("/", submissionController.getAllSubmissions);
+router.get("/submissions", submissionController.getAllSubmissions);
 
 /**
  * @swagger
@@ -65,7 +65,7 @@ router.get("/", submissionController.getAllSubmissions);
  *       404:
  *         description: Submission not found
  */
-router.get("/:id", submissionController.getSubmissionById);
+router.get("/submissions/:id", submissionController.getSubmissionById);
 
 /**
  * @swagger
@@ -95,7 +95,7 @@ router.get("/:id", submissionController.getSubmissionById);
  *       404:
  *         description: Submission not found
  */
-router.put("/:id", submissionController.updateSubmission);
+router.put("/submissions/update/:id", submissionController.updateSubmission);
 
 /**
  * @swagger
@@ -119,6 +119,6 @@ router.put("/:id", submissionController.updateSubmission);
  *       404:
  *         description: Submission not found
  */
-router.delete("/:id", submissionController.deleteSubmission);
+router.delete("/submissions/delete:id", submissionController.deleteSubmission);
 
 export default router;

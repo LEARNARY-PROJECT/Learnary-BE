@@ -87,7 +87,7 @@ app.use("/api", answerRoutes);
 app.use("/api", submissionRoutes);
 
 //test routes
-app.get("/", (req, res) => {
+app.get("/", (_, res) => {
   res.send("Backend đang chạy rất bình tĩnh và bình thường");
 });
 async function startServer() {
