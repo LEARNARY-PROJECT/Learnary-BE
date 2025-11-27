@@ -87,10 +87,32 @@ app.use("/api", optionsRoutes);
 app.use("/api", answerRoutes);
 app.use("/api", submissionRoutes);
 
-//test routes
 app.get("/", (_, res) => {
-  res.send("Backend đang chạy rất bình tĩnh và bình thường");
+  const environment = process.env.NODE_ENV || 'development';
+  const isDevelopment = environment === 'development';
+  
+  res.json({
+    status: "running",
+    message: "Backend đang chạy rất bình tĩnh và bình thường 🚀",
+    environment: environment,
+    mode: isDevelopment ? "LOCAL" : "PRODUCTION",
+    timestamp: new Date().toISOString(),
+    database: {
+      host: isDevelopment ? "localhost:5433" : "Heroku Postgres",
+      type: isDevelopment ? "Local PostgreSQL" : "Production PostgreSQL"
+    },
+    server: {
+      port: process.env.PORT || 4000,
+      uptime: `${Math.floor(process.uptime())}s`
+    },
+    links: {
+      swagger: "/api-docs",
+      health: "/api/health",
+      healthDb: "/api/health/db"
+    }
+  });
 });
+
 async function startServer() {
   try {
     console.log(`\n🚀 Starting server...`);
