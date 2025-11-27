@@ -486,16 +486,18 @@ model Chapter {
 }
 
 model Lesson {
-  lesson_id   String   @id @default(uuid()) @db.Char(50)
-  chapter_id  String   @db.Char(50)
-  title       String   @db.VarChar(255)
-  video_url   String?  @db.VarChar(255)
-  isCompleted Boolean  @default(false)
-  duration    String   @db.VarChar(100)
-  slug        String   @db.Char(50)
-  order_index Int      @default(0)
-  createAt    DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  lesson_id  String @id @default(uuid()) @db.Char(50)
+  chapter_id String @db.Char(50)
+
+  title       String  @db.VarChar(255)
+  video_url   String? @db.VarChar(255)
+  isCompleted Boolean @default(false)
+  duration    String  @db.VarChar(100)
+  slug        String  @db.Char(50)
+  order_index Int     @default(0)
+
+  createAt  DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   belongChapter Chapter @relation(fields: [chapter_id], references: [chapter_id], onDelete: Cascade)
   notes         Note[]
@@ -585,7 +587,8 @@ model Options {
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
 
-  belongQuestion Question @relation(fields: [question_id], references: [question_id], onDelete: Cascade)
+  belongQuestion   Question @relation(fields: [question_id], references: [question_id], onDelete: Cascade)
+  choosedByAnswers Answer[]
 
   @@index([question_id], name: "idx_option_question")
   @@index([question_id, order_index], name: "idx_option_order")
@@ -596,14 +599,15 @@ model Answer {
   answer_id     String @id @default(uuid()) @db.Char(50)
   submission_id String @db.Char(50)
   question_id   String @db.Char(50)
+  option_id     String @db.Char(50)
 
-  is_correct         Boolean
-  selected_option_id String   @db.Char(50)
-  createdAt          DateTime @default(now())
-  updatedAt          DateTime @updatedAt
+  is_correct Boolean  @default(false)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 
-  ofQuestion   Question   @relation(fields: [question_id], references: [question_id], onDelete: Cascade)
-  ofSubmission Submission @relation(fields: [submission_id], references: [submission_id])
+  ofQuestion    Question   @relation(fields: [question_id], references: [question_id], onDelete: Cascade)
+  ofSubmission  Submission @relation(fields: [submission_id], references: [submission_id])
+  choosedOption Options    @relation(fields: [option_id], references: [option_id])
 
   @@unique([submission_id, question_id])
   @@map("answers")

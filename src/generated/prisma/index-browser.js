@@ -403,8 +403,8 @@ exports.Prisma.AnswerScalarFieldEnum = {
   answer_id: 'answer_id',
   submission_id: 'submission_id',
   question_id: 'question_id',
+  option_id: 'option_id',
   is_correct: 'is_correct',
-  selected_option_id: 'selected_option_id',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };

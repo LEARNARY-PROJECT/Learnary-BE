@@ -12,7 +12,28 @@ export const getCourseBySlug = async (slugs: string): Promise<Course> => {
     }, 
     include: {
       category:true,
-      level:true
+      level:true,
+      instructor: {
+        include: {
+          user:true,
+        }
+      },
+      chapter: {
+        include: {
+          lessons:true,
+          quiz: {
+            include: {
+              questions:{
+                include: {
+                  options:true,
+                  answers:true,
+                }
+              },
+              submissions:true
+            }
+          },
+        }
+      }
     }
   })
   if (!course) throw new Error('Không tìm thấy khóa học với slug này!')
@@ -204,7 +225,7 @@ export const createDraftCourse = async (
               create: chapter.lessons.map((lesson) => ({
                 title: lesson.title,
                 duration: lesson.duration || '00:00',
-                slug: lesson.title.toLowerCase().replace(/\s+/g, '-'),
+                slug: CreateSlug(lesson.title)
               })),
             }
             : undefined,

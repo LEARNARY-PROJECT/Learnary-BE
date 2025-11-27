@@ -4,7 +4,7 @@ export const CreateSlug = (title: String) => {
     if (!title || typeof title !== 'string') {
         return 'Error-Slug'
     }
-    const slug = title.normalize("NFD")                     // tách dấu
+    const slug = title.normalize("NFD")       // tách dấu
         .replace(/[\u0300-\u036f]/g, "")      // xoá dấu
         .replace(/đ/g, "d").replace(/Đ/g, "D") // thay đ -> d
         .toLowerCase()
