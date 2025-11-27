@@ -18,6 +18,12 @@ export const getCourseBySlug = async (slugs: string): Promise<Course> => {
           user:true,
         }
       },
+      chapter: {
+        include: {
+          lessons:true,
+          quiz: true,
+        }
+      }
     }
   })
   if (!course) throw new Error('Không tìm thấy khóa học với slug này!')

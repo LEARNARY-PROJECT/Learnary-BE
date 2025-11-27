@@ -96,7 +96,7 @@ router.get("/categories/:id", authenticate, authorizeRoles("ADMIN", "LEARNER","I
  *       401:
  *         description: Unauthorized
  */
-router.put("/categories/:id", authenticate, authorizeRoles("ADMIN"), update);
+router.put("/categories/update/:id", authenticate, authorizeRoles("ADMIN"), update);
 
 /**
  * @openapi
