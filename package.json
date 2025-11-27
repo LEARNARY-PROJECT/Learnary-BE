@@ -5,7 +5,7 @@
   "main": "dist/app.js",
   "scripts": {
     "dev": "cross-env NODE_ENV=development ts-node-dev --respawn --transpile-only src/app.ts",
-    "build": "tsc",
+    "build": "tsc && npx prisma generate && node scripts/copy-generated.js",
     "start": "NODE_ENV=production node dist/app.js",
     "start:dev": "cross-env NODE_ENV=development node dist/app.js",
     "test": "cross-env NODE_ENV=test jest",
