@@ -27,7 +27,7 @@ const prismaClientSingleton = () => {
   return new PrismaClient({
     adapter: adapter,
     log: isDevelopment 
-      ? ['query', 'error', 'warn']  // Dev: log queries
+      ? ['error', 'warn']  // Dev: log queries
       : ['error'],  // Production: chỉ log errors
   });
 };
