@@ -21346,6 +21346,7 @@ export namespace Prisma {
     requirement: string | null
     description: string | null
     thumbnail: string | null
+    admin_note: string | null
     price: Decimal | null
     sale_off: boolean | null
     hot: boolean | null
@@ -21366,6 +21367,7 @@ export namespace Prisma {
     requirement: string | null
     description: string | null
     thumbnail: string | null
+    admin_note: string | null
     price: Decimal | null
     sale_off: boolean | null
     hot: boolean | null
@@ -21386,6 +21388,7 @@ export namespace Prisma {
     requirement: number
     description: number
     thumbnail: number
+    admin_note: number
     price: number
     sale_off: number
     hot: number
@@ -21416,6 +21419,7 @@ export namespace Prisma {
     requirement?: true
     description?: true
     thumbnail?: true
+    admin_note?: true
     price?: true
     sale_off?: true
     hot?: true
@@ -21436,6 +21440,7 @@ export namespace Prisma {
     requirement?: true
     description?: true
     thumbnail?: true
+    admin_note?: true
     price?: true
     sale_off?: true
     hot?: true
@@ -21456,6 +21461,7 @@ export namespace Prisma {
     requirement?: true
     description?: true
     thumbnail?: true
+    admin_note?: true
     price?: true
     sale_off?: true
     hot?: true
@@ -21563,6 +21569,7 @@ export namespace Prisma {
     requirement: string | null
     description: string
     thumbnail: string
+    admin_note: string | null
     price: Decimal
     sale_off: boolean
     hot: boolean
@@ -21602,6 +21609,7 @@ export namespace Prisma {
     requirement?: boolean
     description?: boolean
     thumbnail?: boolean
+    admin_note?: boolean
     price?: boolean
     sale_off?: boolean
     hot?: boolean
@@ -21630,6 +21638,7 @@ export namespace Prisma {
     requirement?: boolean
     description?: boolean
     thumbnail?: boolean
+    admin_note?: boolean
     price?: boolean
     sale_off?: boolean
     hot?: boolean
@@ -21653,6 +21662,7 @@ export namespace Prisma {
     requirement?: boolean
     description?: boolean
     thumbnail?: boolean
+    admin_note?: boolean
     price?: boolean
     sale_off?: boolean
     hot?: boolean
@@ -21676,6 +21686,7 @@ export namespace Prisma {
     requirement?: boolean
     description?: boolean
     thumbnail?: boolean
+    admin_note?: boolean
     price?: boolean
     sale_off?: boolean
     hot?: boolean
@@ -21685,7 +21696,7 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type CourseOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"course_id" | "category_id" | "level_id" | "instructor_id" | "status" | "title" | "slug" | "requirement" | "description" | "thumbnail" | "price" | "sale_off" | "hot" | "tag" | "available_language" | "createdAt" | "updatedAt", ExtArgs["result"]["course"]>
+  export type CourseOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"course_id" | "category_id" | "level_id" | "instructor_id" | "status" | "title" | "slug" | "requirement" | "description" | "thumbnail" | "admin_note" | "price" | "sale_off" | "hot" | "tag" | "available_language" | "createdAt" | "updatedAt", ExtArgs["result"]["course"]>
   export type CourseInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     feedbacks?: boolean | Course$feedbacksArgs<ExtArgs>
     learnerCourses?: boolean | Course$learnerCoursesArgs<ExtArgs>
@@ -21729,6 +21740,7 @@ export namespace Prisma {
       requirement: string | null
       description: string
       thumbnail: string
+      admin_note: string | null
       price: Prisma.Decimal
       sale_off: boolean
       hot: boolean
@@ -22176,6 +22188,7 @@ export namespace Prisma {
     readonly requirement: FieldRef<"Course", 'String'>
     readonly description: FieldRef<"Course", 'String'>
     readonly thumbnail: FieldRef<"Course", 'String'>
+    readonly admin_note: FieldRef<"Course", 'String'>
     readonly price: FieldRef<"Course", 'Decimal'>
     readonly sale_off: FieldRef<"Course", 'Boolean'>
     readonly hot: FieldRef<"Course", 'Boolean'>
@@ -36491,6 +36504,7 @@ export namespace Prisma {
     requirement: 'requirement',
     description: 'description',
     thumbnail: 'thumbnail',
+    admin_note: 'admin_note',
     price: 'price',
     sale_off: 'sale_off',
     hot: 'hot',
@@ -38055,6 +38069,7 @@ export namespace Prisma {
     requirement?: StringNullableFilter<"Course"> | string | null
     description?: StringFilter<"Course"> | string
     thumbnail?: StringFilter<"Course"> | string
+    admin_note?: StringNullableFilter<"Course"> | string | null
     price?: DecimalFilter<"Course"> | Decimal | DecimalJsLike | number | string
     sale_off?: BoolFilter<"Course"> | boolean
     hot?: BoolFilter<"Course"> | boolean
@@ -38082,6 +38097,7 @@ export namespace Prisma {
     requirement?: SortOrderInput | SortOrder
     description?: SortOrder
     thumbnail?: SortOrder
+    admin_note?: SortOrderInput | SortOrder
     price?: SortOrder
     sale_off?: SortOrder
     hot?: SortOrder
@@ -38112,6 +38128,7 @@ export namespace Prisma {
     requirement?: StringNullableFilter<"Course"> | string | null
     description?: StringFilter<"Course"> | string
     thumbnail?: StringFilter<"Course"> | string
+    admin_note?: StringNullableFilter<"Course"> | string | null
     price?: DecimalFilter<"Course"> | Decimal | DecimalJsLike | number | string
     sale_off?: BoolFilter<"Course"> | boolean
     hot?: BoolFilter<"Course"> | boolean
@@ -38139,6 +38156,7 @@ export namespace Prisma {
     requirement?: SortOrderInput | SortOrder
     description?: SortOrder
     thumbnail?: SortOrder
+    admin_note?: SortOrderInput | SortOrder
     price?: SortOrder
     sale_off?: SortOrder
     hot?: SortOrder
@@ -38167,6 +38185,7 @@ export namespace Prisma {
     requirement?: StringNullableWithAggregatesFilter<"Course"> | string | null
     description?: StringWithAggregatesFilter<"Course"> | string
     thumbnail?: StringWithAggregatesFilter<"Course"> | string
+    admin_note?: StringNullableWithAggregatesFilter<"Course"> | string | null
     price?: DecimalWithAggregatesFilter<"Course"> | Decimal | DecimalJsLike | number | string
     sale_off?: BoolWithAggregatesFilter<"Course"> | boolean
     hot?: BoolWithAggregatesFilter<"Course"> | boolean
@@ -40218,6 +40237,7 @@ export namespace Prisma {
     requirement?: string | null
     description: string
     thumbnail: string
+    admin_note?: string | null
     price: Decimal | DecimalJsLike | number | string
     sale_off?: boolean
     hot?: boolean
@@ -40245,6 +40265,7 @@ export namespace Prisma {
     requirement?: string | null
     description: string
     thumbnail: string
+    admin_note?: string | null
     price: Decimal | DecimalJsLike | number | string
     sale_off?: boolean
     hot?: boolean
@@ -40266,6 +40287,7 @@ export namespace Prisma {
     requirement?: NullableStringFieldUpdateOperationsInput | string | null
     description?: StringFieldUpdateOperationsInput | string
     thumbnail?: StringFieldUpdateOperationsInput | string
+    admin_note?: NullableStringFieldUpdateOperationsInput | string | null
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     sale_off?: BoolFieldUpdateOperationsInput | boolean
     hot?: BoolFieldUpdateOperationsInput | boolean
@@ -40293,6 +40315,7 @@ export namespace Prisma {
     requirement?: NullableStringFieldUpdateOperationsInput | string | null
     description?: StringFieldUpdateOperationsInput | string
     thumbnail?: StringFieldUpdateOperationsInput | string
+    admin_note?: NullableStringFieldUpdateOperationsInput | string | null
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     sale_off?: BoolFieldUpdateOperationsInput | boolean
     hot?: BoolFieldUpdateOperationsInput | boolean
@@ -40317,6 +40340,7 @@ export namespace Prisma {
     requirement?: string | null
     description: string
     thumbnail: string
+    admin_note?: string | null
     price: Decimal | DecimalJsLike | number | string
     sale_off?: boolean
     hot?: boolean
@@ -40334,6 +40358,7 @@ export namespace Prisma {
     requirement?: NullableStringFieldUpdateOperationsInput | string | null
     description?: StringFieldUpdateOperationsInput | string
     thumbnail?: StringFieldUpdateOperationsInput | string
+    admin_note?: NullableStringFieldUpdateOperationsInput | string | null
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     sale_off?: BoolFieldUpdateOperationsInput | boolean
     hot?: BoolFieldUpdateOperationsInput | boolean
@@ -40354,6 +40379,7 @@ export namespace Prisma {
     requirement?: NullableStringFieldUpdateOperationsInput | string | null
     description?: StringFieldUpdateOperationsInput | string
     thumbnail?: StringFieldUpdateOperationsInput | string
+    admin_note?: NullableStringFieldUpdateOperationsInput | string | null
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     sale_off?: BoolFieldUpdateOperationsInput | boolean
     hot?: BoolFieldUpdateOperationsInput | boolean
@@ -42342,6 +42368,7 @@ export namespace Prisma {
     requirement?: SortOrder
     description?: SortOrder
     thumbnail?: SortOrder
+    admin_note?: SortOrder
     price?: SortOrder
     sale_off?: SortOrder
     hot?: SortOrder
@@ -42366,6 +42393,7 @@ export namespace Prisma {
     requirement?: SortOrder
     description?: SortOrder
     thumbnail?: SortOrder
+    admin_note?: SortOrder
     price?: SortOrder
     sale_off?: SortOrder
     hot?: SortOrder
@@ -42386,6 +42414,7 @@ export namespace Prisma {
     requirement?: SortOrder
     description?: SortOrder
     thumbnail?: SortOrder
+    admin_note?: SortOrder
     price?: SortOrder
     sale_off?: SortOrder
     hot?: SortOrder
@@ -46623,6 +46652,7 @@ export namespace Prisma {
     requirement?: string | null
     description: string
     thumbnail: string
+    admin_note?: string | null
     price: Decimal | DecimalJsLike | number | string
     sale_off?: boolean
     hot?: boolean
@@ -46648,6 +46678,7 @@ export namespace Prisma {
     requirement?: string | null
     description: string
     thumbnail: string
+    admin_note?: string | null
     price: Decimal | DecimalJsLike | number | string
     sale_off?: boolean
     hot?: boolean
@@ -46880,6 +46911,7 @@ export namespace Prisma {
     requirement?: StringNullableFilter<"Course"> | string | null
     description?: StringFilter<"Course"> | string
     thumbnail?: StringFilter<"Course"> | string
+    admin_note?: StringNullableFilter<"Course"> | string | null
     price?: DecimalFilter<"Course"> | Decimal | DecimalJsLike | number | string
     sale_off?: BoolFilter<"Course"> | boolean
     hot?: BoolFilter<"Course"> | boolean
@@ -47937,6 +47969,7 @@ export namespace Prisma {
     requirement?: string | null
     description: string
     thumbnail: string
+    admin_note?: string | null
     price: Decimal | DecimalJsLike | number | string
     sale_off?: boolean
     hot?: boolean
@@ -47963,6 +47996,7 @@ export namespace Prisma {
     requirement?: string | null
     description: string
     thumbnail: string
+    admin_note?: string | null
     price: Decimal | DecimalJsLike | number | string
     sale_off?: boolean
     hot?: boolean
@@ -48089,6 +48123,7 @@ export namespace Prisma {
     requirement?: NullableStringFieldUpdateOperationsInput | string | null
     description?: StringFieldUpdateOperationsInput | string
     thumbnail?: StringFieldUpdateOperationsInput | string
+    admin_note?: NullableStringFieldUpdateOperationsInput | string | null
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     sale_off?: BoolFieldUpdateOperationsInput | boolean
     hot?: BoolFieldUpdateOperationsInput | boolean
@@ -48115,6 +48150,7 @@ export namespace Prisma {
     requirement?: NullableStringFieldUpdateOperationsInput | string | null
     description?: StringFieldUpdateOperationsInput | string
     thumbnail?: StringFieldUpdateOperationsInput | string
+    admin_note?: NullableStringFieldUpdateOperationsInput | string | null
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     sale_off?: BoolFieldUpdateOperationsInput | boolean
     hot?: BoolFieldUpdateOperationsInput | boolean
@@ -49222,6 +49258,7 @@ export namespace Prisma {
     requirement?: string | null
     description: string
     thumbnail: string
+    admin_note?: string | null
     price: Decimal | DecimalJsLike | number | string
     sale_off?: boolean
     hot?: boolean
@@ -49247,6 +49284,7 @@ export namespace Prisma {
     requirement?: string | null
     description: string
     thumbnail: string
+    admin_note?: string | null
     price: Decimal | DecimalJsLike | number | string
     sale_off?: boolean
     hot?: boolean
@@ -49294,6 +49332,7 @@ export namespace Prisma {
     requirement?: string | null
     description: string
     thumbnail: string
+    admin_note?: string | null
     price: Decimal | DecimalJsLike | number | string
     sale_off?: boolean
     hot?: boolean
@@ -49319,6 +49358,7 @@ export namespace Prisma {
     requirement?: string | null
     description: string
     thumbnail: string
+    admin_note?: string | null
     price: Decimal | DecimalJsLike | number | string
     sale_off?: boolean
     hot?: boolean
@@ -49387,6 +49427,7 @@ export namespace Prisma {
     requirement?: string | null
     description: string
     thumbnail: string
+    admin_note?: string | null
     price: Decimal | DecimalJsLike | number | string
     sale_off?: boolean
     hot?: boolean
@@ -49413,6 +49454,7 @@ export namespace Prisma {
     requirement?: string | null
     description: string
     thumbnail: string
+    admin_note?: string | null
     price: Decimal | DecimalJsLike | number | string
     sale_off?: boolean
     hot?: boolean
@@ -49476,6 +49518,7 @@ export namespace Prisma {
     requirement?: NullableStringFieldUpdateOperationsInput | string | null
     description?: StringFieldUpdateOperationsInput | string
     thumbnail?: StringFieldUpdateOperationsInput | string
+    admin_note?: NullableStringFieldUpdateOperationsInput | string | null
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     sale_off?: BoolFieldUpdateOperationsInput | boolean
     hot?: BoolFieldUpdateOperationsInput | boolean
@@ -49502,6 +49545,7 @@ export namespace Prisma {
     requirement?: NullableStringFieldUpdateOperationsInput | string | null
     description?: StringFieldUpdateOperationsInput | string
     thumbnail?: StringFieldUpdateOperationsInput | string
+    admin_note?: NullableStringFieldUpdateOperationsInput | string | null
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     sale_off?: BoolFieldUpdateOperationsInput | boolean
     hot?: BoolFieldUpdateOperationsInput | boolean
@@ -49522,6 +49566,7 @@ export namespace Prisma {
     requirement?: string | null
     description: string
     thumbnail: string
+    admin_note?: string | null
     price: Decimal | DecimalJsLike | number | string
     sale_off?: boolean
     hot?: boolean
@@ -49548,6 +49593,7 @@ export namespace Prisma {
     requirement?: string | null
     description: string
     thumbnail: string
+    admin_note?: string | null
     price: Decimal | DecimalJsLike | number | string
     sale_off?: boolean
     hot?: boolean
@@ -49645,6 +49691,7 @@ export namespace Prisma {
     requirement?: NullableStringFieldUpdateOperationsInput | string | null
     description?: StringFieldUpdateOperationsInput | string
     thumbnail?: StringFieldUpdateOperationsInput | string
+    admin_note?: NullableStringFieldUpdateOperationsInput | string | null
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     sale_off?: BoolFieldUpdateOperationsInput | boolean
     hot?: BoolFieldUpdateOperationsInput | boolean
@@ -49671,6 +49718,7 @@ export namespace Prisma {
     requirement?: NullableStringFieldUpdateOperationsInput | string | null
     description?: StringFieldUpdateOperationsInput | string
     thumbnail?: StringFieldUpdateOperationsInput | string
+    admin_note?: NullableStringFieldUpdateOperationsInput | string | null
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     sale_off?: BoolFieldUpdateOperationsInput | boolean
     hot?: BoolFieldUpdateOperationsInput | boolean
@@ -50133,6 +50181,7 @@ export namespace Prisma {
     requirement?: string | null
     description: string
     thumbnail: string
+    admin_note?: string | null
     price: Decimal | DecimalJsLike | number | string
     sale_off?: boolean
     hot?: boolean
@@ -50159,6 +50208,7 @@ export namespace Prisma {
     requirement?: string | null
     description: string
     thumbnail: string
+    admin_note?: string | null
     price: Decimal | DecimalJsLike | number | string
     sale_off?: boolean
     hot?: boolean
@@ -50270,6 +50320,7 @@ export namespace Prisma {
     requirement?: NullableStringFieldUpdateOperationsInput | string | null
     description?: StringFieldUpdateOperationsInput | string
     thumbnail?: StringFieldUpdateOperationsInput | string
+    admin_note?: NullableStringFieldUpdateOperationsInput | string | null
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     sale_off?: BoolFieldUpdateOperationsInput | boolean
     hot?: BoolFieldUpdateOperationsInput | boolean
@@ -50296,6 +50347,7 @@ export namespace Prisma {
     requirement?: NullableStringFieldUpdateOperationsInput | string | null
     description?: StringFieldUpdateOperationsInput | string
     thumbnail?: StringFieldUpdateOperationsInput | string
+    admin_note?: NullableStringFieldUpdateOperationsInput | string | null
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     sale_off?: BoolFieldUpdateOperationsInput | boolean
     hot?: BoolFieldUpdateOperationsInput | boolean
@@ -51518,6 +51570,7 @@ export namespace Prisma {
     requirement?: string | null
     description: string
     thumbnail: string
+    admin_note?: string | null
     price: Decimal | DecimalJsLike | number | string
     sale_off?: boolean
     hot?: boolean
@@ -51619,6 +51672,7 @@ export namespace Prisma {
     requirement?: NullableStringFieldUpdateOperationsInput | string | null
     description?: StringFieldUpdateOperationsInput | string
     thumbnail?: StringFieldUpdateOperationsInput | string
+    admin_note?: NullableStringFieldUpdateOperationsInput | string | null
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     sale_off?: BoolFieldUpdateOperationsInput | boolean
     hot?: BoolFieldUpdateOperationsInput | boolean
@@ -51644,6 +51698,7 @@ export namespace Prisma {
     requirement?: NullableStringFieldUpdateOperationsInput | string | null
     description?: StringFieldUpdateOperationsInput | string
     thumbnail?: StringFieldUpdateOperationsInput | string
+    admin_note?: NullableStringFieldUpdateOperationsInput | string | null
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     sale_off?: BoolFieldUpdateOperationsInput | boolean
     hot?: BoolFieldUpdateOperationsInput | boolean
@@ -51667,6 +51722,7 @@ export namespace Prisma {
     requirement?: NullableStringFieldUpdateOperationsInput | string | null
     description?: StringFieldUpdateOperationsInput | string
     thumbnail?: StringFieldUpdateOperationsInput | string
+    admin_note?: NullableStringFieldUpdateOperationsInput | string | null
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     sale_off?: BoolFieldUpdateOperationsInput | boolean
     hot?: BoolFieldUpdateOperationsInput | boolean
@@ -52132,6 +52188,7 @@ export namespace Prisma {
     requirement?: string | null
     description: string
     thumbnail: string
+    admin_note?: string | null
     price: Decimal | DecimalJsLike | number | string
     sale_off?: boolean
     hot?: boolean
@@ -52149,6 +52206,7 @@ export namespace Prisma {
     requirement?: NullableStringFieldUpdateOperationsInput | string | null
     description?: StringFieldUpdateOperationsInput | string
     thumbnail?: StringFieldUpdateOperationsInput | string
+    admin_note?: NullableStringFieldUpdateOperationsInput | string | null
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     sale_off?: BoolFieldUpdateOperationsInput | boolean
     hot?: BoolFieldUpdateOperationsInput | boolean
@@ -52174,6 +52232,7 @@ export namespace Prisma {
     requirement?: NullableStringFieldUpdateOperationsInput | string | null
     description?: StringFieldUpdateOperationsInput | string
     thumbnail?: StringFieldUpdateOperationsInput | string
+    admin_note?: NullableStringFieldUpdateOperationsInput | string | null
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     sale_off?: BoolFieldUpdateOperationsInput | boolean
     hot?: BoolFieldUpdateOperationsInput | boolean
@@ -52197,6 +52256,7 @@ export namespace Prisma {
     requirement?: NullableStringFieldUpdateOperationsInput | string | null
     description?: StringFieldUpdateOperationsInput | string
     thumbnail?: StringFieldUpdateOperationsInput | string
+    admin_note?: NullableStringFieldUpdateOperationsInput | string | null
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     sale_off?: BoolFieldUpdateOperationsInput | boolean
     hot?: BoolFieldUpdateOperationsInput | boolean
@@ -52216,6 +52276,7 @@ export namespace Prisma {
     requirement?: string | null
     description: string
     thumbnail: string
+    admin_note?: string | null
     price: Decimal | DecimalJsLike | number | string
     sale_off?: boolean
     hot?: boolean
@@ -52233,6 +52294,7 @@ export namespace Prisma {
     requirement?: NullableStringFieldUpdateOperationsInput | string | null
     description?: StringFieldUpdateOperationsInput | string
     thumbnail?: StringFieldUpdateOperationsInput | string
+    admin_note?: NullableStringFieldUpdateOperationsInput | string | null
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     sale_off?: BoolFieldUpdateOperationsInput | boolean
     hot?: BoolFieldUpdateOperationsInput | boolean
@@ -52258,6 +52320,7 @@ export namespace Prisma {
     requirement?: NullableStringFieldUpdateOperationsInput | string | null
     description?: StringFieldUpdateOperationsInput | string
     thumbnail?: StringFieldUpdateOperationsInput | string
+    admin_note?: NullableStringFieldUpdateOperationsInput | string | null
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     sale_off?: BoolFieldUpdateOperationsInput | boolean
     hot?: BoolFieldUpdateOperationsInput | boolean
@@ -52281,6 +52344,7 @@ export namespace Prisma {
     requirement?: NullableStringFieldUpdateOperationsInput | string | null
     description?: StringFieldUpdateOperationsInput | string
     thumbnail?: StringFieldUpdateOperationsInput | string
+    admin_note?: NullableStringFieldUpdateOperationsInput | string | null
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     sale_off?: BoolFieldUpdateOperationsInput | boolean
     hot?: BoolFieldUpdateOperationsInput | boolean

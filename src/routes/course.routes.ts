@@ -70,6 +70,45 @@ const router = express.Router();
 router.get('/courses', ControllerCourse.getAll);
 router.get('/courses/slug/:slug',optionalAuthenticate, ControllerCourse.getCourseBySlug)
 // --- CÁC ROUTE CẦN XÁC THỰC ---
+
+/**
+ * @openapi
+ * /api/courses/instructor/my-courses:
+ *   get:
+ *     summary: (Giảng viên) Lấy tất cả khóa học của tôi
+ *     tags: [Course (Instructor)]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Danh sách các khóa học của giảng viên
+ */
+router.get(
+  '/courses/instructor/my-courses',
+  authenticate,
+  authorizeRoles('INSTRUCTOR','ADMIN'),
+  ControllerCourse.getMyCourses,
+);
+
+/**
+ * @openapi
+ * /api/courses/admin/pending:
+ *   get:
+ *     summary: (Admin) Lấy tất cả khóa học đang chờ duyệt
+ *     tags: [Course (Admin)]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Danh sách khóa học Pending
+ */
+router.get(
+  '/courses/admin/pending',
+  authenticate,
+  authorizeRoles('ADMIN'),
+  ControllerCourse.getPending,
+);
+
 /**
  * @openapi
  * /api/courses/{id}:
@@ -202,41 +241,6 @@ router.post(
   ControllerCourse.submitApproval,
 );
 
-/**
- * @openapi
- * /api/courses/instructor/my-courses:
- *   get:
- *     summary: (Giảng viên) Lấy tất cả khóa học của tôi
- *     tags: [Course (Instructor)]
- *     security:
- *       - bearerAuth: []
- *     responses:
- *       200:
- *         description: Danh sách các khóa học của giảng viên
- */
-router.get(
-  '/courses/instructor/my-courses',
-  authorizeRoles('INSTRUCTOR','ADMIN'),
-  ControllerCourse.getMyCourses,
-);
-
-/**
- * @openapi
- * /api/courses/admin/pending:
- *   get:
- *     summary: (Admin) Lấy tất cả khóa học đang chờ duyệt
- *     tags: [Course (Admin)]
- *     security:
- *       - bearerAuth: []
- *     responses:
- *       200:
- *         description: Danh sách khóa học Pending
- */
-router.get(
-  '/courses/admin/pending',
-  authorizeRoles('ADMIN'),
-  ControllerCourse.getPending,
-);
 
 /**
  * @openapi

@@ -49,20 +49,40 @@ const getInstructorId = async (userId: string): Promise<string> => {
   return instructor.instructor_id;
 };
 
-export const getAllCourses = () =>
-  prisma.course.findMany({
-    where: { status: CourseStatus.Published },
+export const getAllCourses = async () => {
+  return prisma.course.findMany({
     include: {
+      instructor: {
+        include: {
+          user: {
+            select: {
+              fullName: true,
+              avatar: true,
+              email: true
+            }
+          }
+        }
+      },
       chapter: {
         include: { lessons: true }
       },
       feedbacks: true,
+      // Lấy tên Danh mục
       category: true,
-      instructor: {
-        include: { user: true }
-      },
+
+      // Đếm số lượng học viên đã tham gia
+      _count: {
+        select: { learnerCourses: true }
+      }
+    },
+    
+    orderBy: { 
+      createdAt: 'desc' // Khóa học mới nhất lên đầu
     }
-});
+  });
+};
+
+
 export const getCourseById = (course_id: string) =>
   prisma.course.findUnique({
     where: { course_id },
@@ -516,7 +536,7 @@ export const approveCourse = async (courseId: string) => {
   });
 };
 
-export const rejectCourse = async (courseId: string) => {
+export const rejectCourse = async (courseId: string, reason: string) => {
   const course = await prisma.course.findUnique({
     where: { course_id: courseId, status: CourseStatus.Pending },
     include: {
@@ -548,7 +568,7 @@ export const rejectCourse = async (courseId: string) => {
   return prisma.$transaction(async (tx) => {
     const updatedCourse = await tx.course.update({
       where: { course_id: courseId },
-      data: { status: CourseStatus.Draft },
+      data: { status: CourseStatus.Archived, admin_note: reason },
     });
     for (const lessonId of lessonIds) {
       await tx.lesson.update({
