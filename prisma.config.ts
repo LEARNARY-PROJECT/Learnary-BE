@@ -18,7 +18,6 @@ if (!dbUrl) {
 export default defineConfig({
   schema: "prisma/schema.prisma",
   datasource: {
-    // Có thể truyền thẳng string, không bắt buộc phải dùng helper env()
     url: dbUrl,
   },
 });
