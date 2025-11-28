@@ -4,10 +4,16 @@
   "description": "",
   "main": "dist/app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "ts-node-dev --respawn --transpile-only src/app.ts",
-    "build": "tsc",
-    "start": "node dist/app.js"
+    "dev": "cross-env NODE_ENV=development ts-node-dev --respawn --transpile-only src/app.ts",
+    "build": "tsc && npx prisma generate",
+    "start": "NODE_ENV=production node dist/app.js",
+    "start:dev": "cross-env NODE_ENV=development node dist/app.js",
+    "test": "cross-env NODE_ENV=test jest",
+    "prisma:generate": "prisma generate",
+    "prisma:migrate:dev": "cross-env NODE_ENV=development prisma migrate dev",
+    "prisma:migrate:deploy": "prisma migrate deploy",
+    "prisma:studio": "cross-env NODE_ENV=development prisma studio",
+    "prisma:seed": "cross-env NODE_ENV=development ts-node prisma/seed.ts"
   },
   "keywords": [],
   "author": "",
@@ -15,19 +21,21 @@
   "type": "commonjs",
   "dependencies": {
     "@aws-sdk/client-s3": "^3.926.0",
-    "@prisma/client": "^6.6.0",
+    "@prisma/adapter-pg": "^7.0.1",
+    "@prisma/client": "^7.0.1",
     "bcryptjs": "^3.0.2",
     "chalk": "^5.6.2",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
-    "dotenv": "^16.5.0",
+    "dotenv": "^16.6.1",
     "express": "^5.1.0",
     "jsonwebtoken": "^9.0.2",
     "jwt-decode": "^4.0.0",
     "multer": "^2.0.2",
     "passport": "^0.7.0",
     "passport-google-oauth20": "^2.0.0",
-    "prisma": "^6.6.0",
+    "pg": "^8.16.3",
+    "prisma": "^7.0.1",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.1"
   },
@@ -41,12 +49,14 @@
     "@types/node": "^22.14.1",
     "@types/passport": "^1.0.17",
     "@types/passport-google-oauth20": "^2.0.17",
+    "@types/pg": "^8.15.6",
     "@types/swagger-jsdoc": "^6.0.4",
     "@types/swagger-ui-express": "^4.1.8",
+    "cross-env": "^10.1.0",
     "ts-node-dev": "^2.0.0",
     "typescript": "^5.8.3"
   },
   "prisma": {
-    "schema": "prisma/schema.prisma"
+    "schema": "@/prisma/schema.prisma"
   }
 }

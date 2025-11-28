@@ -68,7 +68,7 @@ const router = express.Router();
  *                 $ref: '#/components/schemas/Course'
  */
 router.get('/courses', ControllerCourse.getAll);
-
+router.get('/courses/slug/:slug',optionalAuthenticate, ControllerCourse.getCourseBySlug)
 // --- CÁC ROUTE CẦN XÁC THỰC ---
 
 /**
@@ -212,10 +212,9 @@ router.post(
  */
 router.put(
   '/courses/draft/:id',
-  authorizeRoles('INSTRUCTOR'),
+  authorizeRoles('INSTRUCTOR','ADMIN'),
   ControllerCourse.updateDraft,
 );
-
 /**
  * @openapi
  * /api/courses/submit/{id}:
@@ -238,7 +237,7 @@ router.put(
  */
 router.post(
   '/courses/submit/:id',
-  authorizeRoles('INSTRUCTOR'),
+  authorizeRoles('INSTRUCTOR','ADMIN'),
   ControllerCourse.submitApproval,
 );
 

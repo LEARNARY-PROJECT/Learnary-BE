@@ -96,7 +96,7 @@ router.get("/levels/:id", authenticate, authorizeRoles("ADMIN", "LEARNER","INSTR
  *       401:
  *         description: Unauthorized
  */
-router.put("/levels/:id", authenticate, authorizeRoles("ADMIN"), update);
+router.put("/levels/update/:id", authenticate, authorizeRoles("ADMIN"), update);
 
 /**
  * @openapi

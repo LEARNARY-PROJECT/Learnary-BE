@@ -1,5 +1,5 @@
 import prisma from "../lib/client";
-import { Learner } from "@prisma/client";
+import { Learner } from '../generated/prisma'
 import { Request } from "express";
 import * as LearnerService from "../services/learner.service";
 

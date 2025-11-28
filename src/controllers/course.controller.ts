@@ -1,4 +1,4 @@
-import { Request, Response } from 'express';
+import { Request, Response, NextFunction } from 'express';
 import * as courseService from '../services/course.service';
 import prisma from "../lib/client";
 
@@ -14,10 +14,10 @@ export const createDraft = async (req: Request, res: Response): Promise<void> =>
       userId,
       req.body,
     );
-    res.status(201).json(newCourse); 
+    res.status(201).json(newCourse);
   } catch (error) {
     console.error('LỖI TẠI createDraft:', error);
-    res 
+    res
       .status(500)
       .json({ message: 'Tạo bản nháp thất bại', error: (error as Error).message });
   }
@@ -40,9 +40,27 @@ export const getAll = async (_: Request, res: Response): Promise<void> => {
     });
   }
 };
-
+export const getCourseBySlug = async(req:Request, res:Response): Promise<void> => {
+  try {
+    const slug = req.params.slug;
+    if(!slug) {
+      res.status(500).json({message:"Không thấy slug để truy vấn!"})
+      return
+    }
+    const course = await courseService.getCourseBySlug(slug);
+    if(!course) {
+      res.status(404).json({message:"Không thấy course với slug này!"})
+      return
+    }
+    res.status(200).json(course);
+  } catch (error) {
+     console.error("Error in getById:", error);
+     res.status(500).json({ message: 'Lỗi khi lấy course id từ slug!', error: (error as Error).message });
+  }
+}
 export const getById = async (req: Request, res: Response): Promise<void> => {
   try {
+
     const course = await courseService.getCourseById(req.params.id);
     if (!course) {
       res.status(404).json({ message: 'Không tìm thấy khóa học' });
@@ -64,12 +82,12 @@ export const getById = async (req: Request, res: Response): Promise<void> => {
     const isOwner = course.instructor?.user_id === user.id;
 
     if (isAdmin || isOwner) {
-      res.json(course); 
+      res.json(course);
       return;
     }
 
     res.status(403).json({ message: 'Bạn không có quyền truy cập khóa học này.' });
-    
+
   } catch (error) {
     console.error("Error in getById:", error);
     res.status(500).json({ message: 'Lỗi máy chủ', error: (error as Error).message });
@@ -77,17 +95,17 @@ export const getById = async (req: Request, res: Response): Promise<void> => {
 };
 
 
-export const updateDraft = async (req: Request, res: Response): Promise<void> => { 
+export const updateDraft = async (req: Request, res: Response): Promise<void> => {
   try {
-    const instructorId = req.jwtPayload?.id; 
+    const instructorId = req.jwtPayload?.id;
     if (!instructorId) {
       res.status(401).json({ message: 'Xác thực không hợp lệ' });
-      return; 
+      return;
     }
 
     const updated = await courseService.updateDraftCourse(
       req.params.id,
-      instructorId,     
+      instructorId,
       req.body,
     );
     res.json(updated);
@@ -101,13 +119,13 @@ export const updateDraft = async (req: Request, res: Response): Promise<void> =>
 export const remove = async (req: Request, res: Response): Promise<void> => {
   try {
     const user = req.jwtPayload;
-    const {id: courseId} = req.params;
+    const { id: courseId } = req.params;
 
     if (!user) {
       res.status(401).json({ message: 'Không thể xác thực người dùng.' });
       return;
     }
-    
+
     const course = await courseService.getCourseById(courseId);
     if (!course) {
       res.status(404).json({ message: 'Không tìm thấy khóa học' });
@@ -121,7 +139,7 @@ export const remove = async (req: Request, res: Response): Promise<void> => {
       res.status(403).json({ message: 'Bạn không có quyền xóa khóa học này.' });
       return;
     }
-    
+
     await courseService.deleteCourse(courseId);
     res.status(200).json({ message: 'Delete successfully' });
   } catch (error) {
@@ -131,14 +149,14 @@ export const remove = async (req: Request, res: Response): Promise<void> => {
 
 export const submitApproval = async (req: Request, res: Response): Promise<void> => {
   try {
-    const instructorId = req.jwtPayload?.id;
-    if (!instructorId) {
+    const userId = req.jwtPayload?.id;
+    if (!userId) {
       res.status(401).json({ message: 'Xác thực không hợp lệ' });
       return;
     }
     const submittedCourse = await courseService.submitCourseForApproval(
       req.params.id,
-      instructorId,
+      userId,
       req.body
     );
     res.json(submittedCourse);
@@ -147,9 +165,9 @@ export const submitApproval = async (req: Request, res: Response): Promise<void>
   }
 };
 
-export const getMyCourses = async (req: Request, res: Response): Promise<void> => { 
+export const getMyCourses = async (req: Request, res: Response): Promise<void> => {
   try {
-    const instructorId = req.jwtPayload?.id; 
+    const instructorId = req.jwtPayload?.id;
     if (!instructorId) {
       res.status(401).json({ message: 'Xác thực không hợp lệ' });
       return;
@@ -165,16 +183,16 @@ export const getPending = async (_: Request, res: Response): Promise<void> => {
   try {
     const courses = await courseService.getPendingCourses();
     res.json(courses);
-  } catch (error) { 
+  } catch (error) {
     res.status(500).json({ message: 'Lấy danh sách chờ duyệt thất bại', error: (error as Error).message });
   }
 };
 
-export const approve = async (req: Request, res: Response): Promise<void> => { 
+export const approve = async (req: Request, res: Response): Promise<void> => {
   try {
     const course = await courseService.approveCourse(req.params.id);
     res.json(course);
-  } catch (error) { 
+  } catch (error) {
     res.status(500).json({ message: 'Duyệt khóa học thất bại', error: (error as Error).message });
   }
 };
@@ -188,7 +206,7 @@ export const reject = async (req: Request, res: Response): Promise<void> => {
     }
     const course = await courseService.rejectCourse(req.params.id, reason);
     res.json(course);
-  } catch (error) { 
+  } catch (error) {
     res.status(500).json({ message: 'Từ chối khóa học thất bại', error: (error as Error).message });
   }
 };

@@ -1,5 +1,5 @@
 import prisma from "../lib/client";
-import { InstructorQualifications, QualificationType, ApprovalStatus } from "@prisma/client";
+import { InstructorQualifications, QualificationType, ApprovalStatus } from '../generated/prisma'
 import { uploadQualificationImages, deleteQualificationImages, deleteSingleQualificationImage } from "./qualificationImage.service";
 import { validateQualificationDates, toStartOfDay, getTodayStartOfDay } from "../utils/dateUtils";
 
@@ -213,6 +213,20 @@ export const approveQualification = async (instructor_qualification_id: string, 
   if (qualification.status === 'Approved') {
     throw new Error('Qualification already approved');
   }
+  
+  currentUserId = currentUserId.trim();
+  
+  const currentUser = await prisma.user.findUnique({
+    where: { user_id: currentUserId }
+  });
+  
+  if (!currentUser) {
+    throw new Error('User not found');
+  }
+  
+  if (currentUser.role !== 'ADMIN') {
+    throw new Error('Only ADMIN can approve qualifications');
+  }
 
   return prisma.$transaction(async (tx) => {
     let admin = await tx.admin.findUnique({ where: { user_id: currentUserId } });
@@ -265,6 +279,7 @@ export const approveQualification = async (instructor_qualification_id: string, 
         data: { isVerified: true }
       });
     }
+    
     const existingLink = await tx.instructorSpecializations.findFirst({
       where: {
         instructor_id: instructor.instructor_id,
@@ -272,7 +287,8 @@ export const approveQualification = async (instructor_qualification_id: string, 
       }
     });
 
-    if (!existingLink) {
+    if (!existingLink && admin) {
+      // Only create link if admin record exists
       await tx.instructorSpecializations.create({
         data: {
           instructor_id: instructor.instructor_id,

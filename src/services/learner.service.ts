@@ -1,5 +1,5 @@
 import prisma from "../lib/client";
-import { Learner, User } from "@prisma/client";
+import { Learner, User } from '../generated/prisma'
 
 export const getAllLearnerNoUserData = async (): Promise<Learner[]> => {
   return prisma.learner.findMany();

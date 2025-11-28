@@ -1,5 +1,5 @@
 import prisma from "../lib/client";
-import { AdminRole } from "@prisma/client";
+import { AdminRole } from '../generated/prisma'
 
 export const createAdminRole = async (data: Omit<AdminRole, 'admin_role_id' | 'createdAt' | 'updatedAt'>) => {
   return prisma.adminRole.create({ data });

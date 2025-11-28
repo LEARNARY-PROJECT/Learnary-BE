@@ -1,13 +1,12 @@
 // prisma/schema.prisma
 generator client {
   provider      = "prisma-client-js"
-  output        = "../node_modules/.prisma/client"
+  output        = "../src/generated/prisma"
   binaryTargets = ["native", "linux-musl-openssl-3.0.x"]
 }
 
 datasource db {
-  provider = "postgres"
-  url      = env("DATABASE_URL_LOCAL")
+  provider = "postgresql"
 }
 
 enum Role {
@@ -214,15 +213,15 @@ model CitizenIdsConfirm {
 }
 
 model InstructorQualifications {
-  instructor_qualification_id String @id @default(uuid()) @db.VarChar(50)
-  instructor_id               String? @db.Char(50) 
-  specialization_id           String @db.Char(50)
-  user_id                     String @db.Char(50)
+  instructor_qualification_id String  @id @default(uuid()) @db.VarChar(50)
+  instructor_id               String? @db.Char(50)
+  specialization_id           String  @db.Char(50)
+  user_id                     String  @db.Char(50)
 
   type                 QualificationType @default(Certificate)
   title                String            @db.VarChar(255)
   issue_date           DateTime
-  expire_date          DateTime? 
+  expire_date          DateTime?
   issue_place          String?           @db.VarChar(255)
   qualification_images String[]
   status               ApprovalStatus    @default(Pending)
@@ -234,9 +233,9 @@ model InstructorQualifications {
   user           User           @relation(fields: [user_id], references: [user_id])
   specialization Specialization @relation(fields: [specialization_id], references: [specialization_id])
 
-  @@unique([user_id, specialization_id])  
+  @@unique([user_id, specialization_id])
   @@index([instructor_id], name: "idx_iq_instructor") //  FK
-  @@index([user_id], name: "idx_iq_user") 
+  @@index([user_id], name: "idx_iq_user")
   @@index([specialization_id], name: "idx_iq_specialization") //  FK
   @@index([status], name: "idx_iq_status") // Filter
   @@index([isVerified], name: "idx_iq_verified") // Filter
@@ -384,7 +383,7 @@ model Course {
 
   status             CourseStatus    @default(Draft)
   title              String          @db.VarChar(255)
-  slug               String?         @db.VarChar(255)
+  slug               String?         @unique @db.VarChar(255)
   requirement        String?         @db.VarChar(255)
   description        String          @db.VarChar(255)
   thumbnail          String          @db.VarChar(255)
@@ -410,6 +409,7 @@ model Course {
   @@index([status], name: "idx_course_status")
   @@index([status, category_id], name: "idx_course_status_cat")
   @@index([price], name: "idx_course_price")
+  @@index([slug], name: "idx_course_slug")
   @@index([hot, sale_off], name: "idx_course_hot_sale")
   @@index([createdAt], name: "idx_course_created")
   @@index([available_language], name: "idx_course_language")
@@ -487,16 +487,18 @@ model Chapter {
 }
 
 model Lesson {
-  lesson_id   String   @id @default(uuid()) @db.Char(50)
-  chapter_id  String   @db.Char(50)
-  title       String   @db.VarChar(255)
-  video_url   String?  @db.VarChar(255)
-  isCompleted Boolean  @default(false)
-  duration    String   @db.VarChar(100)
-  slug        String   @db.Char(50)
-  order_index Int      @default(0)
-  createAt    DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  lesson_id  String @id @default(uuid()) @db.Char(50)
+  chapter_id String @db.Char(50)
+
+  title       String  @db.VarChar(255)
+  video_url   String? @db.VarChar(255)
+  isCompleted Boolean @default(false)
+  duration    String  @db.VarChar(100)
+  slug        String  @db.Char(50)
+  order_index Int     @default(0)
+
+  createAt  DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   belongChapter Chapter @relation(fields: [chapter_id], references: [chapter_id], onDelete: Cascade)
   notes         Note[]
@@ -511,7 +513,6 @@ model Note {
   user_id   String @db.Char(50)
   lesson_id String @db.Char(50)
 
-  time      Int
   content   String   @db.VarChar(255)
   createAt  DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -586,7 +587,8 @@ model Options {
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
 
-  belongQuestion Question @relation(fields: [question_id], references: [question_id], onDelete: Cascade)
+  belongQuestion   Question @relation(fields: [question_id], references: [question_id], onDelete: Cascade)
+  choosedByAnswers Answer[]
 
   @@index([question_id], name: "idx_option_question")
   @@index([question_id, order_index], name: "idx_option_order")
@@ -597,14 +599,15 @@ model Answer {
   answer_id     String @id @default(uuid()) @db.Char(50)
   submission_id String @db.Char(50)
   question_id   String @db.Char(50)
+  option_id     String @db.Char(50)
 
-  is_correct         Boolean
-  selected_option_id String   @db.Char(50)
-  createdAt          DateTime @default(now())
-  updatedAt          DateTime @updatedAt
+  is_correct Boolean  @default(false)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 
-  ofQuestion   Question   @relation(fields: [question_id], references: [question_id], onDelete: Cascade)
-  ofSubmission Submission @relation(fields: [submission_id], references: [submission_id])
+  ofQuestion    Question   @relation(fields: [question_id], references: [question_id], onDelete: Cascade)
+  ofSubmission  Submission @relation(fields: [submission_id], references: [submission_id])
+  choosedOption Options    @relation(fields: [option_id], references: [option_id])
 
   @@unique([submission_id, question_id])
   @@map("answers")

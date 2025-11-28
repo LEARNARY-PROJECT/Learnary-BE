@@ -1,5 +1,5 @@
 import prisma from "../lib/client";
-import { LearnerCourses } from "@prisma/client";
+import { LearnerCourses } from '../generated/prisma'
 
 export const createLearnerCourse = async (data: Omit<LearnerCourses, 'createdAt' | 'updatedAt'>) => {
   return prisma.learnerCourses.create({ data });

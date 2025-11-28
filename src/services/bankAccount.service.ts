@@ -1,5 +1,5 @@
 import prisma from "../lib/client";
-import { BankAccount } from "@prisma/client";
+import { BankAccount } from '../generated/prisma'
 
 export const createBankAccount = async (
   data: Omit<BankAccount, 'bank_id' | 'created_at' | 'updated_at'>

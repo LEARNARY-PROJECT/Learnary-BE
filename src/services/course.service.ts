@@ -1,8 +1,44 @@
 import prisma from "../lib/client";
-import { CourseStatus } from '@prisma/client';
+import { Course, CourseStatus } from '../generated/prisma'
 import { moveVideosToPermanent, deleteVideos } from './videoLesson.service';
 import type { CourseCreateDto, ChapterDto, LessonDto, QuizDto, QuestionDto, OptionDto } from '../types/course';
+import { CreateSlug, checkExistingSlug } from "../utils/slug";
 
+export const getCourseBySlug = async (slugs: string): Promise<Course> => {
+  if (!slugs) throw new Error('Không tìm thấy slug truyền vào!')
+  const course = await prisma.course.findFirst({
+    where: {
+      slug: slugs
+    }, 
+    include: {
+      category:true,
+      level:true,
+      instructor: {
+        include: {
+          user:true,
+        }
+      },
+      chapter: {
+        include: {
+          lessons:true,
+          quiz: {
+            include: {
+              questions:{
+                include: {
+                  options:true,
+                  answers:true,
+                }
+              },
+              submissions:true
+            }
+          },
+        }
+      }
+    }
+  })
+  if (!course) throw new Error('Không tìm thấy khóa học với slug này!')
+  return course;
+}
 const getInstructorId = async (userId: string): Promise<string> => {
   const instructor = await prisma.instructor.findUnique({
     where: { user_id: userId },
@@ -27,7 +63,10 @@ export const getAllCourses = async () => {
           }
         }
       },
-      
+      chapter: {
+        include: { lessons: true }
+      },
+      feedbacks: true,
       // Lấy tên Danh mục
       category: true,
 
@@ -75,7 +114,7 @@ export const getCourseById = (course_id: string) =>
       },
       feedbacks: true,
     },
-  });
+});
 
 export const getCoursesByInstructorId = async (userId: string) => {
   const instructor = await prisma.instructor.findUnique({
@@ -122,21 +161,16 @@ export const createDraftCourse = async (
   userId: string,
   data: CourseCreateDto,
 ) => {
-
   const instructor = await prisma.instructor.findUnique({
     where: { user_id: userId },
   });
-
   if (!instructor) {
     throw new Error('Tài khoản này chưa đăng ký làm Giảng viên.');
   }
-
   const realInstructorId = instructor.instructor_id;
-
   const draftCount = await prisma.course.count({
     where: { instructor_id: realInstructorId, status: CourseStatus.Draft },
   });
-
   if (draftCount >= 3) {
     throw new Error('Bạn đã đạt giới hạn 3 bản nháp.');
   }
@@ -152,10 +186,10 @@ export const createDraftCourse = async (
     description: data.description.trim(),
     thumbnail: data.thumbnail.trim(),
     price: data.price,
-    slug: data.title.toLowerCase().replace(/\s+/g, '-'),
+    slug: CreateSlug(data.title),
     status: CourseStatus.Draft.trim(),
     chapter: {
-    create: (data.chapter as ChapterDto[]).map((chapter: ChapterDto) => ({
+      create: (data.chapter as ChapterDto[]).map((chapter: ChapterDto) => ({
         chapter_title: chapter.chapter_title,
         lessons: chapter.lessons
           ? {
@@ -188,6 +222,9 @@ export const createDraftCourse = async (
       })),
     },
   }
+  if (await checkExistingSlug(cleanData.slug) == true) {
+    throw new Error('Slug của khoá học này đã tồn tại, vui lòng chọn tên khác!');
+  }
   return await prisma.course.create({
     data: {
       instructor_id: realInstructorId,
@@ -198,7 +235,7 @@ export const createDraftCourse = async (
       description: cleanData.description,
       thumbnail: cleanData.thumbnail,
       price: cleanData.price,
-      slug: cleanData.title.toLowerCase().replace(/\s+/g, '-'),
+      slug: cleanData.slug,
       status: CourseStatus.Draft,
       chapter: {
         create: (data.chapter as ChapterDto[]).map((chapter: ChapterDto) => ({
@@ -208,7 +245,7 @@ export const createDraftCourse = async (
               create: chapter.lessons.map((lesson) => ({
                 title: lesson.title,
                 duration: lesson.duration || '00:00',
-                slug: lesson.title.toLowerCase().replace(/\s+/g, '-'),
+                slug: CreateSlug(lesson.title)
               })),
             }
             : undefined,
@@ -277,101 +314,13 @@ export const updateDraftCourse = async (
             chapter_title: chapter.chapter_title,
             lessons: chapter.lessons
               ? {
-                  create: chapter.lessons.map((lesson) => ({
-                    title: lesson.title,
-                    duration: lesson.duration || '00:00',
-                    slug: lesson.title.toLowerCase().replace(/\s+/g, '-'),
-                  })),
-                }
+                create: chapter.lessons.map((lesson) => ({
+                  title: lesson.title,
+                  duration: lesson.duration || '00:00',
+                  slug: lesson.title.toLowerCase().replace(/\s+/g, '-'),
+                })),
+              }
               : undefined,
-            quiz: chapter.quiz
-              ? {
-                  create: {
-                    title: chapter.quiz.title,
-                    slug: chapter.quiz.title.toLowerCase().replace(/\s+/g, '-'),
-                    questions: {
-                      create: (chapter.quiz?.questions || []).map((question) => ({
-                        title: question.title,
-                        options: {
-                          create: (question.options || []).map((option) => ({
-                            option_content: option.option_content,
-                            is_correct: option.is_correct,
-                          })),
-                        },
-                      })),
-                    },
-                  },
-                }
-              : undefined,
-          })),
-        },
-      },
-      include: {
-        chapter: {
-          include: {
-            lessons: true,
-            quiz: {
-              include: { questions: { include: { options: true } } },
-            },
-          },
-        },
-      },
-    });
-
-    return updatedCourse;
-  });
-};
-
-export const submitCourseForApproval = async (
-  courseId: string,
-  userId: string,
-  data: CourseCreateDto,
-) => {
-  const instructorId = await getInstructorId(userId);
-  const course = await prisma.course.findFirst({
-    where: { course_id: courseId, instructor_id: instructorId },
-  });
-
-  if (!course) throw new Error('Khóa học không tồn tại.');
-  if (course.status !== CourseStatus.Draft) {
-    throw new Error('Khóa học này đã được gửi duyệt.');
-  }
-
-  const allChaptersHaveLessons = (data.chapter || []).every((c) => c.lessons && c.lessons.length > 0);
-  if (!allChaptersHaveLessons) {
-    throw new Error('Mỗi chương phải có ít nhất 1 bài học.');
-  }
-
-  const allLessonsHaveVideo = (data.chapter || []).every((c) =>
-    (c.lessons || []).every((l) => l.video_url && l.video_url.trim() !== '')
-  );
-  if (!allLessonsHaveVideo) {
-    throw new Error('Tất cả các bài học đã tạo phải có video mới được gửi duyệt.');
-  }
-
-  await prisma.$transaction(async (tx) => {
-    await tx.chapter.deleteMany({ where: { course_id: courseId } });
-    await tx.course.update({
-      where: { course_id: courseId },
-      data: {
-        title: data.title.trim(),
-        description: data.description,
-        requirement: data.requirement,
-        price: data.price,
-        category_id: data.category_id?.trim(),
-        level_id: data.level_id?.trim(),
-        slug: data.title.toLowerCase().replace(/\s+/g, '-'),
-        chapter: {
-          create: (data.chapter || []).map((chapter) => ({
-            chapter_title: chapter.chapter_title,
-            lessons: chapter.lessons ? {
-              create: chapter.lessons.map((lesson) => ({
-                title: lesson.title,
-                duration: lesson.duration || '00:00',
-                slug: lesson.title.toLowerCase().replace(/\s+/g, '-'),
-                video_url: lesson.video_url,
-              }))
-            } : undefined,
             quiz: chapter.quiz
               ? {
                 create: {
@@ -405,7 +354,109 @@ export const submitCourseForApproval = async (
         },
       },
     });
+
+    return updatedCourse;
   });
+};
+
+export const submitCourseForApproval = async (
+  courseId: string,
+  userId: string,
+  data: CourseCreateDto,
+) => {
+  const instructorId = await getInstructorId(userId);
+  const course = await prisma.course.findFirst({
+    where: { course_id: courseId, instructor_id: instructorId },
+  });
+  if (!course) throw new Error('Khóa học không tồn tại.');
+  if (course.status !== CourseStatus.Draft) {
+    throw new Error('Khóa học này đã được gửi duyệt.');
+  }
+  const allChaptersHaveLessons = (data.chapter || []).every((c) => c.lessons && c.lessons.length > 0);
+  if (!allChaptersHaveLessons) {
+    throw new Error('Mỗi chương phải có ít nhất 1 bài học.');
+  }
+
+  const allLessonsHaveVideo = (data.chapter || []).every((c) =>
+    (c.lessons || []).every((l) => {
+      const hasVideo = l.video_url && l.video_url.trim() !== '';
+      return hasVideo;
+    })
+  );
+
+  if (!allLessonsHaveVideo) {
+    throw new Error('Tất cả các bài học đã tạo phải có video mới được gửi duyệt.');
+  }
+
+  try {
+    await prisma.$transaction(async (tx) => {
+      await tx.chapter.deleteMany({ where: { course_id: courseId } });
+      await tx.course.update({
+        where: { course_id: courseId },
+        data: {
+          title: data.title.trim(),
+          description: data.description?.trim(),
+          requirement: data.requirement?.trim(),
+          price: data.price,
+          category_id: data.category_id?.trim(),
+          level_id: data.level_id?.trim(),
+          slug: CreateSlug(data.title.trim()),
+          chapter: {
+            create: (data.chapter || []).map((chapter, chapterIndex) => ({
+              chapter_title: chapter.chapter_title.trim(),
+              order_index: chapterIndex,
+              lessons: chapter.lessons ? {
+                create: chapter.lessons.map((lesson, lessonIndex) => ({
+                  title: lesson.title.trim(),
+                  duration: (lesson.duration || '00:00').trim(),
+                  slug: lesson.title.trim().toLowerCase().replace(/\s+/g, '-'),
+                  video_url: lesson.video_url?.trim(),
+                  order_index: lessonIndex,
+                }))
+              } : undefined,
+              quiz: chapter.quiz
+                ? {
+                  create: {
+                    title: chapter.quiz.title.trim(),
+                    slug: chapter.quiz.title.trim().toLowerCase().replace(/\s+/g, '-'),
+                    questions: {
+                      create: (chapter.quiz?.questions || [])
+                        .filter(q => q.title && q.title.trim() !== '')
+                        .map((question, questionIndex) => ({
+                          title: question.title.trim(),
+                          order_index: questionIndex,
+                          options: {
+                            create: (question.options || []).map((option, optionIndex) => ({
+                              option_content: option.option_content.trim(),
+                              is_correct: option.is_correct,
+                              order_index: optionIndex,
+                            })),
+                          },
+                        })),
+                    },
+                  },
+                }
+                : undefined,
+            })),
+          },
+        },
+        include: {
+          chapter: {
+            include: {
+              lessons: true,
+              quiz: {
+                include: { questions: { include: { options: true } } },
+              },
+            },
+          },
+        },
+      });
+    });
+  } catch (error) {
+    console.error('=== TRANSACTION ERROR ===');
+    console.error(error);
+    throw error;
+  }
 
   return await prisma.course.update({
     where: { course_id: courseId },
