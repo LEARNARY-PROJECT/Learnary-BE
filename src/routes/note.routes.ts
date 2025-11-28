@@ -1,6 +1,6 @@
 import express from "express";
 import { authenticate, authorizeRoles, optionalAuthenticate } from "../middlewares/auth.middleware";
-import { create, getAll, getById, update, remove } from "../controllers/note.controller";
+import { create, getAll, getById, update, remove,getMyNotesGrouped,getMyNotesByLesson,getMyNotes } from "../controllers/note.controller";
 
 const router = express.Router();
 
@@ -121,5 +121,58 @@ router.put("/notes/:id", authenticate, optionalAuthenticate, update);
  *         description: Unauthorized
  */
 router.delete("/notes/:id", authenticate, optionalAuthenticate, remove);
+/**
+ * @openapi
+ * /api/notes/my-notes:
+ *   get:
+ *     summary: Get all notes of current user
+ *     tags: [Note]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: List of user's notes
+ *       401:
+ *         description: Unauthorized
+ */
+router.get("/notes/my-notes", authenticate, getMyNotes);
+
+/**
+ * @openapi
+ * /api/notes/my-notes/lesson/{lesson_id}:
+ *   get:
+ *     summary: Get all notes of current user for a specific lesson
+ *     tags: [Note]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: lesson_id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: List of user's notes for the lesson
+ *       401:
+ *         description: Unauthorized
+ */
+router.get("/notes/my-notes/lesson/:lesson_id", authenticate, getMyNotesByLesson);
+
+/**
+ * @openapi
+ * /api/notes/my-notes/grouped:
+ *   get:
+ *     summary: Get all notes of current user grouped by lesson
+ *     tags: [Note]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: User's notes grouped by lesson
+ *       401:
+ *         description: Unauthorized
+ */
+router.get("/notes/my-notes/grouped", authenticate, getMyNotesGrouped);
 
 export default router;

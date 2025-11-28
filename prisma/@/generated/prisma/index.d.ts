@@ -28612,6 +28612,9 @@ export namespace Prisma {
       note_id: string
       user_id: string
       lesson_id: string
+      /**
+       * time      Int
+       */
       content: string
       createAt: Date
       updatedAt: Date
