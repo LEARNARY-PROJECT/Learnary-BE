@@ -387,6 +387,7 @@ model Course {
   requirement        String?         @db.VarChar(255)
   description        String          @db.VarChar(255)
   thumbnail          String          @db.VarChar(255)
+  admin_note         String?         @db.VarChar(255)
   price              Decimal         @db.Decimal(10, 2)
   sale_off           Boolean         @default(false)
   hot                Boolean         @default(false)
