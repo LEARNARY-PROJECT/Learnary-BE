@@ -1,7 +1,7 @@
 // prisma/schema.prisma
 generator client {
   provider      = "prisma-client-js"
-  output        = "@/generated/prisma"
+  output        = "../src/generated/prisma"
   binaryTargets = ["native", "linux-musl-openssl-3.0.x"]
 }
 
@@ -512,7 +512,6 @@ model Note {
   user_id   String @db.Char(50)
   lesson_id String @db.Char(50)
 
-  time      Int
   content   String   @db.VarChar(255)
   createAt  DateTime @default(now())
   updatedAt DateTime @updatedAt

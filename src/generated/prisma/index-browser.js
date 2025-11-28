@@ -355,7 +355,6 @@ exports.Prisma.NoteScalarFieldEnum = {
   note_id: 'note_id',
   user_id: 'user_id',
   lesson_id: 'lesson_id',
-  time: 'time',
   content: 'content',
   createAt: 'createAt',
   updatedAt: 'updatedAt'

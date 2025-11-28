@@ -55,3 +55,72 @@ export const remove = async (req: Request, res: Response) => {
     res.status(500).json(failure("Failed to delete note", e.message));
   }
 };
+
+// Lấy tất cả notes của user hiện tại
+export const getMyNotes = async (req: Request, res: Response) => {
+  try {
+    const user_id = req.jwtPayload?.id;
+    
+    if (!user_id) {
+      res.status(401).json(failure("Unauthorized"));
+      return;
+    }
+
+    const notes = await NoteService.getNotesByUserId(user_id);
+    res.json(success(notes, "User notes fetched successfully"));
+  } catch (err) {
+    const e = err as Error;
+    res.status(500).json(failure("Failed to fetch user notes", e.message));
+  }
+};
+
+// Lấy notes của user theo lesson_id
+export const getMyNotesByLesson = async (req: Request, res: Response) => {
+  try {
+    const user_id = req.jwtPayload?.id;
+    const { lesson_id } = req.params;
+    
+    if (!user_id) {
+      res.status(401).json(failure("Unauthorized"));
+      return;
+    }
+
+    const notes = await NoteService.getNotesByUserAndLesson(user_id, lesson_id);
+    res.json(success(notes, "User notes for lesson fetched successfully"));
+  } catch (err) {
+    const e = err as Error;
+    res.status(500).json(failure("Failed to fetch user notes for lesson", e.message));
+  }
+};
+
+// Lấy notes của user, nhóm theo lesson
+export const getMyNotesGrouped = async (req: Request, res: Response) => {
+  try {
+    const user_id = req.jwtPayload?.id;
+    
+    if (!user_id) {
+      res.status(401).json(failure("Unauthorized"));
+      return;
+    }
+
+    const notes = await NoteService.getNotesByUserGroupedByLesson(user_id);
+    
+    // Group notes by lesson
+    const groupedNotes = notes.reduce((acc: any, note) => {
+      const lessonId = note.lesson_id;
+      if (!acc[lessonId]) {
+        acc[lessonId] = {
+          lesson: note.belongLesson,
+          notes: []
+        };
+      }
+      acc[lessonId].notes.push(note);
+      return acc;
+    }, {});
+
+    res.json(success(groupedNotes, "User notes grouped by lesson fetched successfully"));
+  } catch (err) {
+    const e = err as Error;
+    res.status(500).json(failure("Failed to fetch grouped notes", e.message));
+  }
+};

@@ -28387,25 +28387,14 @@ export namespace Prisma {
 
   export type AggregateNote = {
     _count: NoteCountAggregateOutputType | null
-    _avg: NoteAvgAggregateOutputType | null
-    _sum: NoteSumAggregateOutputType | null
     _min: NoteMinAggregateOutputType | null
     _max: NoteMaxAggregateOutputType | null
-  }
-
-  export type NoteAvgAggregateOutputType = {
-    time: number | null
-  }
-
-  export type NoteSumAggregateOutputType = {
-    time: number | null
   }
 
   export type NoteMinAggregateOutputType = {
     note_id: string | null
     user_id: string | null
     lesson_id: string | null
-    time: number | null
     content: string | null
     createAt: Date | null
     updatedAt: Date | null
@@ -28415,7 +28404,6 @@ export namespace Prisma {
     note_id: string | null
     user_id: string | null
     lesson_id: string | null
-    time: number | null
     content: string | null
     createAt: Date | null
     updatedAt: Date | null
@@ -28425,7 +28413,6 @@ export namespace Prisma {
     note_id: number
     user_id: number
     lesson_id: number
-    time: number
     content: number
     createAt: number
     updatedAt: number
@@ -28433,19 +28420,10 @@ export namespace Prisma {
   }
 
 
-  export type NoteAvgAggregateInputType = {
-    time?: true
-  }
-
-  export type NoteSumAggregateInputType = {
-    time?: true
-  }
-
   export type NoteMinAggregateInputType = {
     note_id?: true
     user_id?: true
     lesson_id?: true
-    time?: true
     content?: true
     createAt?: true
     updatedAt?: true
@@ -28455,7 +28433,6 @@ export namespace Prisma {
     note_id?: true
     user_id?: true
     lesson_id?: true
-    time?: true
     content?: true
     createAt?: true
     updatedAt?: true
@@ -28465,7 +28442,6 @@ export namespace Prisma {
     note_id?: true
     user_id?: true
     lesson_id?: true
-    time?: true
     content?: true
     createAt?: true
     updatedAt?: true
@@ -28510,18 +28486,6 @@ export namespace Prisma {
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
-     * Select which fields to average
-    **/
-    _avg?: NoteAvgAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to sum
-    **/
-    _sum?: NoteSumAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
      * Select which fields to find the minimum value
     **/
     _min?: NoteMinAggregateInputType
@@ -28552,8 +28516,6 @@ export namespace Prisma {
     take?: number
     skip?: number
     _count?: NoteCountAggregateInputType | true
-    _avg?: NoteAvgAggregateInputType
-    _sum?: NoteSumAggregateInputType
     _min?: NoteMinAggregateInputType
     _max?: NoteMaxAggregateInputType
   }
@@ -28562,13 +28524,10 @@ export namespace Prisma {
     note_id: string
     user_id: string
     lesson_id: string
-    time: number
     content: string
     createAt: Date
     updatedAt: Date
     _count: NoteCountAggregateOutputType | null
-    _avg: NoteAvgAggregateOutputType | null
-    _sum: NoteSumAggregateOutputType | null
     _min: NoteMinAggregateOutputType | null
     _max: NoteMaxAggregateOutputType | null
   }
@@ -28591,7 +28550,6 @@ export namespace Prisma {
     note_id?: boolean
     user_id?: boolean
     lesson_id?: boolean
-    time?: boolean
     content?: boolean
     createAt?: boolean
     updatedAt?: boolean
@@ -28603,7 +28561,6 @@ export namespace Prisma {
     note_id?: boolean
     user_id?: boolean
     lesson_id?: boolean
-    time?: boolean
     content?: boolean
     createAt?: boolean
     updatedAt?: boolean
@@ -28615,7 +28572,6 @@ export namespace Prisma {
     note_id?: boolean
     user_id?: boolean
     lesson_id?: boolean
-    time?: boolean
     content?: boolean
     createAt?: boolean
     updatedAt?: boolean
@@ -28627,13 +28583,12 @@ export namespace Prisma {
     note_id?: boolean
     user_id?: boolean
     lesson_id?: boolean
-    time?: boolean
     content?: boolean
     createAt?: boolean
     updatedAt?: boolean
   }
 
-  export type NoteOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"note_id" | "user_id" | "lesson_id" | "time" | "content" | "createAt" | "updatedAt", ExtArgs["result"]["note"]>
+  export type NoteOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"note_id" | "user_id" | "lesson_id" | "content" | "createAt" | "updatedAt", ExtArgs["result"]["note"]>
   export type NoteInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     belongUser?: boolean | UserDefaultArgs<ExtArgs>
     belongLesson?: boolean | LessonDefaultArgs<ExtArgs>
@@ -28657,7 +28612,6 @@ export namespace Prisma {
       note_id: string
       user_id: string
       lesson_id: string
-      time: number
       content: string
       createAt: Date
       updatedAt: Date
@@ -29089,7 +29043,6 @@ export namespace Prisma {
     readonly note_id: FieldRef<"Note", 'String'>
     readonly user_id: FieldRef<"Note", 'String'>
     readonly lesson_id: FieldRef<"Note", 'String'>
-    readonly time: FieldRef<"Note", 'Int'>
     readonly content: FieldRef<"Note", 'String'>
     readonly createAt: FieldRef<"Note", 'DateTime'>
     readonly updatedAt: FieldRef<"Note", 'DateTime'>
@@ -36620,7 +36573,6 @@ export namespace Prisma {
     note_id: 'note_id',
     user_id: 'user_id',
     lesson_id: 'lesson_id',
-    time: 'time',
     content: 'content',
     createAt: 'createAt',
     updatedAt: 'updatedAt'
@@ -38582,7 +38534,6 @@ export namespace Prisma {
     note_id?: StringFilter<"Note"> | string
     user_id?: StringFilter<"Note"> | string
     lesson_id?: StringFilter<"Note"> | string
-    time?: IntFilter<"Note"> | number
     content?: StringFilter<"Note"> | string
     createAt?: DateTimeFilter<"Note"> | Date | string
     updatedAt?: DateTimeFilter<"Note"> | Date | string
@@ -38594,7 +38545,6 @@ export namespace Prisma {
     note_id?: SortOrder
     user_id?: SortOrder
     lesson_id?: SortOrder
-    time?: SortOrder
     content?: SortOrder
     createAt?: SortOrder
     updatedAt?: SortOrder
@@ -38609,7 +38559,6 @@ export namespace Prisma {
     NOT?: NoteWhereInput | NoteWhereInput[]
     user_id?: StringFilter<"Note"> | string
     lesson_id?: StringFilter<"Note"> | string
-    time?: IntFilter<"Note"> | number
     content?: StringFilter<"Note"> | string
     createAt?: DateTimeFilter<"Note"> | Date | string
     updatedAt?: DateTimeFilter<"Note"> | Date | string
@@ -38621,15 +38570,12 @@ export namespace Prisma {
     note_id?: SortOrder
     user_id?: SortOrder
     lesson_id?: SortOrder
-    time?: SortOrder
     content?: SortOrder
     createAt?: SortOrder
     updatedAt?: SortOrder
     _count?: NoteCountOrderByAggregateInput
-    _avg?: NoteAvgOrderByAggregateInput
     _max?: NoteMaxOrderByAggregateInput
     _min?: NoteMinOrderByAggregateInput
-    _sum?: NoteSumOrderByAggregateInput
   }
 
   export type NoteScalarWhereWithAggregatesInput = {
@@ -38639,7 +38585,6 @@ export namespace Prisma {
     note_id?: StringWithAggregatesFilter<"Note"> | string
     user_id?: StringWithAggregatesFilter<"Note"> | string
     lesson_id?: StringWithAggregatesFilter<"Note"> | string
-    time?: IntWithAggregatesFilter<"Note"> | number
     content?: StringWithAggregatesFilter<"Note"> | string
     createAt?: DateTimeWithAggregatesFilter<"Note"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Note"> | Date | string
@@ -40793,7 +40738,6 @@ export namespace Prisma {
 
   export type NoteCreateInput = {
     note_id?: string
-    time: number
     content: string
     createAt?: Date | string
     updatedAt?: Date | string
@@ -40805,7 +40749,6 @@ export namespace Prisma {
     note_id?: string
     user_id: string
     lesson_id: string
-    time: number
     content: string
     createAt?: Date | string
     updatedAt?: Date | string
@@ -40813,7 +40756,6 @@ export namespace Prisma {
 
   export type NoteUpdateInput = {
     note_id?: StringFieldUpdateOperationsInput | string
-    time?: IntFieldUpdateOperationsInput | number
     content?: StringFieldUpdateOperationsInput | string
     createAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -40825,7 +40767,6 @@ export namespace Prisma {
     note_id?: StringFieldUpdateOperationsInput | string
     user_id?: StringFieldUpdateOperationsInput | string
     lesson_id?: StringFieldUpdateOperationsInput | string
-    time?: IntFieldUpdateOperationsInput | number
     content?: StringFieldUpdateOperationsInput | string
     createAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -40835,7 +40776,6 @@ export namespace Prisma {
     note_id?: string
     user_id: string
     lesson_id: string
-    time: number
     content: string
     createAt?: Date | string
     updatedAt?: Date | string
@@ -40843,7 +40783,6 @@ export namespace Prisma {
 
   export type NoteUpdateManyMutationInput = {
     note_id?: StringFieldUpdateOperationsInput | string
-    time?: IntFieldUpdateOperationsInput | number
     content?: StringFieldUpdateOperationsInput | string
     createAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -40853,7 +40792,6 @@ export namespace Prisma {
     note_id?: StringFieldUpdateOperationsInput | string
     user_id?: StringFieldUpdateOperationsInput | string
     lesson_id?: StringFieldUpdateOperationsInput | string
-    time?: IntFieldUpdateOperationsInput | number
     content?: StringFieldUpdateOperationsInput | string
     createAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -42724,21 +42662,15 @@ export namespace Prisma {
     note_id?: SortOrder
     user_id?: SortOrder
     lesson_id?: SortOrder
-    time?: SortOrder
     content?: SortOrder
     createAt?: SortOrder
     updatedAt?: SortOrder
-  }
-
-  export type NoteAvgOrderByAggregateInput = {
-    time?: SortOrder
   }
 
   export type NoteMaxOrderByAggregateInput = {
     note_id?: SortOrder
     user_id?: SortOrder
     lesson_id?: SortOrder
-    time?: SortOrder
     content?: SortOrder
     createAt?: SortOrder
     updatedAt?: SortOrder
@@ -42748,14 +42680,9 @@ export namespace Prisma {
     note_id?: SortOrder
     user_id?: SortOrder
     lesson_id?: SortOrder
-    time?: SortOrder
     content?: SortOrder
     createAt?: SortOrder
     updatedAt?: SortOrder
-  }
-
-  export type NoteSumOrderByAggregateInput = {
-    time?: SortOrder
   }
 
   export type FeedbackCourse_idUser_idCompoundUniqueInput = {
@@ -45861,7 +45788,6 @@ export namespace Prisma {
 
   export type NoteCreateWithoutBelongUserInput = {
     note_id?: string
-    time: number
     content: string
     createAt?: Date | string
     updatedAt?: Date | string
@@ -45871,7 +45797,6 @@ export namespace Prisma {
   export type NoteUncheckedCreateWithoutBelongUserInput = {
     note_id?: string
     lesson_id: string
-    time: number
     content: string
     createAt?: Date | string
     updatedAt?: Date | string
@@ -46221,7 +46146,6 @@ export namespace Prisma {
     note_id?: StringFilter<"Note"> | string
     user_id?: StringFilter<"Note"> | string
     lesson_id?: StringFilter<"Note"> | string
-    time?: IntFilter<"Note"> | number
     content?: StringFilter<"Note"> | string
     createAt?: DateTimeFilter<"Note"> | Date | string
     updatedAt?: DateTimeFilter<"Note"> | Date | string
@@ -49849,7 +49773,6 @@ export namespace Prisma {
 
   export type NoteCreateWithoutBelongLessonInput = {
     note_id?: string
-    time: number
     content: string
     createAt?: Date | string
     updatedAt?: Date | string
@@ -49859,7 +49782,6 @@ export namespace Prisma {
   export type NoteUncheckedCreateWithoutBelongLessonInput = {
     note_id?: string
     user_id: string
-    time: number
     content: string
     createAt?: Date | string
     updatedAt?: Date | string
@@ -51273,7 +51195,6 @@ export namespace Prisma {
   export type NoteCreateManyBelongUserInput = {
     note_id?: string
     lesson_id: string
-    time: number
     content: string
     createAt?: Date | string
     updatedAt?: Date | string
@@ -51410,7 +51331,6 @@ export namespace Prisma {
 
   export type NoteUpdateWithoutBelongUserInput = {
     note_id?: StringFieldUpdateOperationsInput | string
-    time?: IntFieldUpdateOperationsInput | number
     content?: StringFieldUpdateOperationsInput | string
     createAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -51420,7 +51340,6 @@ export namespace Prisma {
   export type NoteUncheckedUpdateWithoutBelongUserInput = {
     note_id?: StringFieldUpdateOperationsInput | string
     lesson_id?: StringFieldUpdateOperationsInput | string
-    time?: IntFieldUpdateOperationsInput | number
     content?: StringFieldUpdateOperationsInput | string
     createAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -51429,7 +51348,6 @@ export namespace Prisma {
   export type NoteUncheckedUpdateManyWithoutBelongUserInput = {
     note_id?: StringFieldUpdateOperationsInput | string
     lesson_id?: StringFieldUpdateOperationsInput | string
-    time?: IntFieldUpdateOperationsInput | number
     content?: StringFieldUpdateOperationsInput | string
     createAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -52425,7 +52343,6 @@ export namespace Prisma {
   export type NoteCreateManyBelongLessonInput = {
     note_id?: string
     user_id: string
-    time: number
     content: string
     createAt?: Date | string
     updatedAt?: Date | string
@@ -52433,7 +52350,6 @@ export namespace Prisma {
 
   export type NoteUpdateWithoutBelongLessonInput = {
     note_id?: StringFieldUpdateOperationsInput | string
-    time?: IntFieldUpdateOperationsInput | number
     content?: StringFieldUpdateOperationsInput | string
     createAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -52443,7 +52359,6 @@ export namespace Prisma {
   export type NoteUncheckedUpdateWithoutBelongLessonInput = {
     note_id?: StringFieldUpdateOperationsInput | string
     user_id?: StringFieldUpdateOperationsInput | string
-    time?: IntFieldUpdateOperationsInput | number
     content?: StringFieldUpdateOperationsInput | string
     createAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -52452,7 +52367,6 @@ export namespace Prisma {
   export type NoteUncheckedUpdateManyWithoutBelongLessonInput = {
     note_id?: StringFieldUpdateOperationsInput | string
     user_id?: StringFieldUpdateOperationsInput | string
-    time?: IntFieldUpdateOperationsInput | number
     content?: StringFieldUpdateOperationsInput | string
     createAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
