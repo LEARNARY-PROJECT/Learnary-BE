@@ -27,7 +27,7 @@ export const createDraft = async (req: Request, res: Response): Promise<void> =>
 export const getAll = async (_: Request, res: Response): Promise<void> => {
   try {
     const courses = await courseService.getAllCourses();
-    // Trả về format chuẩn mà Frontend đang đợi: { success: true, data: [...] }
+    
     res.status(200).json({
         success: true,
         data: courses
