@@ -119,7 +119,7 @@ async function startServer() {
     console.log(`📦 Environment: ${process.env.NODE_ENV || 'development'}`);
     console.log(`🔌 Database: ${isDevelopment ? 'LOCAL' : 'PRODUCTION'}`);
     
-    await createDefaultUserIfNoneExists();
+    // await createDefaultUserIfNoneExists();
     console.log("✅ Database connection successful");
 
     setupSwagger(app);

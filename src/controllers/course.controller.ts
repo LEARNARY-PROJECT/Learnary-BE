@@ -122,7 +122,7 @@ export const remove = async (req: Request, res: Response): Promise<void> => {
     const { id: courseId } = req.params;
 
     if (!user) {
-      res.status(401).json({ message: 'Không thể xác thực người dùng.' });
+      res.status(401).json({ message: 'Không thể xác thực admin.' });
       return;
     }
 
@@ -133,9 +133,9 @@ export const remove = async (req: Request, res: Response): Promise<void> => {
     }
 
     const isAdmin = user.role === 'ADMIN';
-    const isOwner = course.instructor_id === user.id;
+    /* const isOwner = course.instructor_id === user.id; */
 
-    if (!isAdmin && !isOwner) {
+    if (!isAdmin/*  && !isOwner */) {
       res.status(403).json({ message: 'Bạn không có quyền xóa khóa học này.' });
       return;
     }
