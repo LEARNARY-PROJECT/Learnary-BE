@@ -71,6 +71,9 @@ export const getUserById = async (id: string): Promise<User | null> => {
     where: {
       user_id: id,
     },
+    include: {
+      accountSecurities:true
+    }
   });
   return user;
 };

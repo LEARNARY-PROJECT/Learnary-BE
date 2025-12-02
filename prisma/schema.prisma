@@ -36,6 +36,7 @@ enum CourseEnrollmentStatus {
   Enrolled
   Completed
   Cancelled
+  Progressing
 }
 
 enum CourseStatus {
@@ -69,12 +70,19 @@ enum TransactionStatus {
   Failed
   Refunded
 }
-
+enum WithdrawStatus {
+  Success
+  Pending
+  Rejected
+}
 enum TransactionNote {
   User_Pay
   Pay_For_Instructor
 }
-
+enum GroupType {
+  Combo
+  Group
+}
 model User {
   user_id     String    @id @default(uuid()) @db.Char(50)
   email       String    @unique @db.Char(50)
@@ -107,6 +115,7 @@ model User {
   note                      Note[]
   instructor_qualifications InstructorQualifications[]
   specializations           Specialization[]
+  withdraw_request          WithdrawRequest[]
 
   @@index([email], name: "idx_user_email")
   @@index([role], name: "idx_user_role")
@@ -316,6 +325,7 @@ model Admin {
   user                      User                        @relation(fields: [user_id], references: [user_id], onDelete: Cascade)
   adminRole                 AdminRole                   @relation(fields: [admin_role_id], references: [admin_role_id])
   instructorSpecializations InstructorSpecializations[]
+  withdraw_request_processed WithdrawRequest[]
 
   @@index([admin_role_id], name: "idx_admin_role")
   @@map("admins")
@@ -363,16 +373,46 @@ model AdminRolePermission {
 }
 
 model AccountSecurity {
-  account_security_id String @id @default(uuid()) @db.Char(50)
-  user_id             String @unique @db.Char(50)
-
+  account_security_id   String   @id @default(uuid()) @db.Char(50)
+  user_id               String   @unique @db.Char(50)
+  email_verified        Boolean  @default(false)
   failed_login_attempts Int      @db.Integer
+  verification_token    String?  @db.VarChar(255)
+  token_expires_at      DateTime?
   createdAt             DateTime @default(now())
   updatedAt             DateTime @updatedAt
 
   user User @relation(fields: [user_id], references: [user_id], onDelete: Cascade)
 
   @@map("account_securities")
+}
+model Group {
+  group_id String @id @db.Char(50) @default(uuid())
+  name String 
+  description String
+  type GroupType @default(Group)
+  discount Decimal @db.Decimal(5,2)
+
+  hasCourseGroup CourseGroup[]
+
+
+  createdAt DateTime @default(now())
+  updateAt DateTime @updatedAt
+  @@map("groups")
+}
+model CourseGroup {
+  group_id String  @db.Char(50) 
+  course_id String  @db.Char(50) 
+  order_index Int
+
+  belongToGroup Group @relation(fields: [group_id],references: [group_id],onDelete: Cascade, onUpdate: Cascade)
+  belongToCourse Course @relation(fields: [course_id],references: [course_id],onDelete: Cascade, onUpdate: Cascade)
+
+  createdAt DateTime @default(now())
+  updateAt DateTime @updatedAt
+
+  @@id([course_id, group_id])
+  @@map("course_groups")
 }
 
 model Course {
@@ -399,6 +439,7 @@ model Course {
   feedbacks      Feedback[]
   learnerCourses LearnerCourses[]
   chapter        Chapter[]
+  inCourseGroups CourseGroup[]
   level          Level            @relation(fields: [level_id], references: [level_id], onDelete: Cascade)
   category       Category         @relation(fields: [category_id], references: [category_id], onDelete: Cascade)
   instructor     Instructor       @relation(fields: [instructor_id], references: [instructor_id], onDelete: Cascade)
@@ -522,7 +563,23 @@ model Note {
 
   @@map("notes")
 }
+model WithdrawRequest {
+  withdraw_request_id String @id @default(ulid()) @db.Char(50)
+  user_id String 
+  admin_id String 
 
+  status WithdrawStatus @default(Pending)
+  note String @db.VarChar(255)
+  balance Decimal @db.Decimal(10,2)
+
+  belongUser User @relation(fields: [user_id],references: [user_id],onDelete: Cascade,onUpdate: Cascade)
+  admin Admin @relation(fields: [admin_id],references: [admin_id],onDelete: Cascade,onUpdate: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("withdraw_requests")
+}
 model Feedback {
   id        String  @id @default(uuid()) @db.Char(50)
   course_id String  @unique @db.Char(50)
@@ -622,7 +679,8 @@ model Submission {
   duration     String   @db.VarChar(100)
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
-  submittedAt  DateTime
+  submittedAt  DateTime @default(now())
+
 
   belongQuiz Quiz     @relation(fields: [quiz_id], references: [quiz_id], onDelete: Cascade)
   belongUser User     @relation(fields: [user_id], references: [user_id], onDelete: Cascade)
