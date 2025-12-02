@@ -231,6 +231,7 @@ exports.Prisma.TransactionScalarFieldEnum = {
   course_id: 'course_id',
   user_id: 'user_id',
   wallet_id: 'wallet_id',
+  payment_code: 'payment_code',
   transaction_type: 'transaction_type',
   commission_rate: 'commission_rate',
   payment_method: 'payment_method',
@@ -238,6 +239,10 @@ exports.Prisma.TransactionScalarFieldEnum = {
   currency: 'currency',
   status: 'status',
   note: 'note',
+  description: 'description',
+  sender_bank: 'sender_bank',
+  sender_name: 'sender_name',
+  sender_number: 'sender_number',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -473,8 +478,7 @@ exports.TransactionMethod = exports.$Enums.TransactionMethod = {
 exports.TransactionStatus = exports.$Enums.TransactionStatus = {
   Pending: 'Pending',
   Success: 'Success',
-  Failed: 'Failed',
-  Refunded: 'Refunded'
+  Cancel: 'Cancel'
 };
 
 exports.TransactionNote = exports.$Enums.TransactionNote = {

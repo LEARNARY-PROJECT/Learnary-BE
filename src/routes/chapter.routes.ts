@@ -26,7 +26,7 @@ const router = express.Router();
  *       401:
  *         description: Unauthorized
  */
-router.post("/chapters", authenticate, authorizeRoles("ADMIN"), create);
+router.post("/chapters", authenticate, authorizeRoles("INSTRUCTOR","ADMIN"), create);
 
 /**
  * @openapi
@@ -42,7 +42,7 @@ router.post("/chapters", authenticate, authorizeRoles("ADMIN"), create);
  *       401:
  *         description: Unauthorized
  */
-router.get("/chapters", authenticate, authorizeRoles("ADMIN"), getAll);
+router.get("/chapters", authenticate, authorizeRoles("INSTRUCTOR","ADMIN"), getAll);
 
 /**
  * @openapi
@@ -66,7 +66,7 @@ router.get("/chapters", authenticate, authorizeRoles("ADMIN"), getAll);
  *       401:
  *         description: Unauthorized
  */
-router.get("/chapters/:id", authenticate, authorizeRoles("ADMIN"), getById);
+router.get("/chapters/:id", authenticate, authorizeRoles("INSTRUCTOR","ADMIN"), getById);
 
 /**
  * @openapi
@@ -96,7 +96,7 @@ router.get("/chapters/:id", authenticate, authorizeRoles("ADMIN"), getById);
  *       401:
  *         description: Unauthorized
  */
-router.put("/chapters/:id", authenticate, authorizeRoles("ADMIN"), update);
+router.put("/chapters/:id", authenticate, authorizeRoles("INSTRUCTOR","ADMIN"), update);
 
 /**
  * @openapi
@@ -120,6 +120,6 @@ router.put("/chapters/:id", authenticate, authorizeRoles("ADMIN"), update);
  *       401:
  *         description: Unauthorized
  */
-router.delete("/chapters/:id", authenticate, authorizeRoles("ADMIN"), remove);
+router.delete("/chapters/:id", authenticate, authorizeRoles("INSTRUCTOR","ADMIN"), remove);
 
 export default router;

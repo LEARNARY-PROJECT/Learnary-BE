@@ -66,8 +66,7 @@ enum TransactionMethod {
 enum TransactionStatus {
   Pending
   Success
-  Failed
-  Refunded
+  Cancel
 }
 
 enum TransactionNote {
@@ -274,10 +273,11 @@ model Wallet {
 }
 
 model Transaction {
-  transaction_id String @id @default(uuid()) @db.Char(50)
-  course_id      String @db.Char(50)
-  user_id        String @db.Char(50)
-  wallet_id      String @db.Char(50)
+  transaction_id String  @id @default(uuid()) @db.Char(50)
+  course_id      String  @db.Char(50)
+  user_id        String  @db.Char(50)
+  wallet_id      String? @db.Char(50)
+  payment_code   BigInt  @unique
 
   transaction_type TransactionType
   commission_rate  Decimal?          @db.Decimal(5, 2)
@@ -286,12 +286,16 @@ model Transaction {
   currency         String            @db.VarChar(10)
   status           TransactionStatus @default(Pending)
   note             TransactionNote
+  description      String?           @db.VarChar(255)
+  sender_bank      String?           @db.VarChar(50)
+  sender_name      String?           @db.VarChar(100)
+  sender_number    String?           @db.VarChar(50)
   createdAt        DateTime          @default(now())
   updatedAt        DateTime          @updatedAt
 
-  course Course @relation(fields: [course_id], references: [course_id])
-  user   User   @relation(fields: [user_id], references: [user_id], onDelete: Cascade)
-  wallet Wallet @relation(fields: [wallet_id], references: [wallet_id])
+  course Course  @relation(fields: [course_id], references: [course_id])
+  user   User    @relation(fields: [user_id], references: [user_id], onDelete: Cascade)
+  wallet Wallet? @relation(fields: [wallet_id], references: [wallet_id])
 
   @@index([user_id], name: "idx_trans_user")
   @@index([wallet_id], name: "idx_trans_wallet")

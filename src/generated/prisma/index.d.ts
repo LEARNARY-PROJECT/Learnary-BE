@@ -242,8 +242,7 @@ export type TransactionMethod = (typeof TransactionMethod)[keyof typeof Transact
 export const TransactionStatus: {
   Pending: 'Pending',
   Success: 'Success',
-  Failed: 'Failed',
-  Refunded: 'Refunded'
+  Cancel: 'Cancel'
 };
 
 export type TransactionStatus = (typeof TransactionStatus)[keyof typeof TransactionStatus]
@@ -14697,11 +14696,13 @@ export namespace Prisma {
   }
 
   export type TransactionAvgAggregateOutputType = {
+    payment_code: number | null
     commission_rate: Decimal | null
     amount: Decimal | null
   }
 
   export type TransactionSumAggregateOutputType = {
+    payment_code: bigint | null
     commission_rate: Decimal | null
     amount: Decimal | null
   }
@@ -14711,6 +14712,7 @@ export namespace Prisma {
     course_id: string | null
     user_id: string | null
     wallet_id: string | null
+    payment_code: bigint | null
     transaction_type: $Enums.TransactionType | null
     commission_rate: Decimal | null
     payment_method: $Enums.TransactionMethod | null
@@ -14718,6 +14720,10 @@ export namespace Prisma {
     currency: string | null
     status: $Enums.TransactionStatus | null
     note: $Enums.TransactionNote | null
+    description: string | null
+    sender_bank: string | null
+    sender_name: string | null
+    sender_number: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -14727,6 +14733,7 @@ export namespace Prisma {
     course_id: string | null
     user_id: string | null
     wallet_id: string | null
+    payment_code: bigint | null
     transaction_type: $Enums.TransactionType | null
     commission_rate: Decimal | null
     payment_method: $Enums.TransactionMethod | null
@@ -14734,6 +14741,10 @@ export namespace Prisma {
     currency: string | null
     status: $Enums.TransactionStatus | null
     note: $Enums.TransactionNote | null
+    description: string | null
+    sender_bank: string | null
+    sender_name: string | null
+    sender_number: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -14743,6 +14754,7 @@ export namespace Prisma {
     course_id: number
     user_id: number
     wallet_id: number
+    payment_code: number
     transaction_type: number
     commission_rate: number
     payment_method: number
@@ -14750,6 +14762,10 @@ export namespace Prisma {
     currency: number
     status: number
     note: number
+    description: number
+    sender_bank: number
+    sender_name: number
+    sender_number: number
     createdAt: number
     updatedAt: number
     _all: number
@@ -14757,11 +14773,13 @@ export namespace Prisma {
 
 
   export type TransactionAvgAggregateInputType = {
+    payment_code?: true
     commission_rate?: true
     amount?: true
   }
 
   export type TransactionSumAggregateInputType = {
+    payment_code?: true
     commission_rate?: true
     amount?: true
   }
@@ -14771,6 +14789,7 @@ export namespace Prisma {
     course_id?: true
     user_id?: true
     wallet_id?: true
+    payment_code?: true
     transaction_type?: true
     commission_rate?: true
     payment_method?: true
@@ -14778,6 +14797,10 @@ export namespace Prisma {
     currency?: true
     status?: true
     note?: true
+    description?: true
+    sender_bank?: true
+    sender_name?: true
+    sender_number?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -14787,6 +14810,7 @@ export namespace Prisma {
     course_id?: true
     user_id?: true
     wallet_id?: true
+    payment_code?: true
     transaction_type?: true
     commission_rate?: true
     payment_method?: true
@@ -14794,6 +14818,10 @@ export namespace Prisma {
     currency?: true
     status?: true
     note?: true
+    description?: true
+    sender_bank?: true
+    sender_name?: true
+    sender_number?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -14803,6 +14831,7 @@ export namespace Prisma {
     course_id?: true
     user_id?: true
     wallet_id?: true
+    payment_code?: true
     transaction_type?: true
     commission_rate?: true
     payment_method?: true
@@ -14810,6 +14839,10 @@ export namespace Prisma {
     currency?: true
     status?: true
     note?: true
+    description?: true
+    sender_bank?: true
+    sender_name?: true
+    sender_number?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -14905,7 +14938,8 @@ export namespace Prisma {
     transaction_id: string
     course_id: string
     user_id: string
-    wallet_id: string
+    wallet_id: string | null
+    payment_code: bigint
     transaction_type: $Enums.TransactionType
     commission_rate: Decimal | null
     payment_method: $Enums.TransactionMethod
@@ -14913,6 +14947,10 @@ export namespace Prisma {
     currency: string
     status: $Enums.TransactionStatus
     note: $Enums.TransactionNote
+    description: string | null
+    sender_bank: string | null
+    sender_name: string | null
+    sender_number: string | null
     createdAt: Date
     updatedAt: Date
     _count: TransactionCountAggregateOutputType | null
@@ -14941,6 +14979,7 @@ export namespace Prisma {
     course_id?: boolean
     user_id?: boolean
     wallet_id?: boolean
+    payment_code?: boolean
     transaction_type?: boolean
     commission_rate?: boolean
     payment_method?: boolean
@@ -14948,11 +14987,15 @@ export namespace Prisma {
     currency?: boolean
     status?: boolean
     note?: boolean
+    description?: boolean
+    sender_bank?: boolean
+    sender_name?: boolean
+    sender_number?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     course?: boolean | CourseDefaultArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
-    wallet?: boolean | WalletDefaultArgs<ExtArgs>
+    wallet?: boolean | Transaction$walletArgs<ExtArgs>
   }, ExtArgs["result"]["transaction"]>
 
   export type TransactionSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -14960,6 +15003,7 @@ export namespace Prisma {
     course_id?: boolean
     user_id?: boolean
     wallet_id?: boolean
+    payment_code?: boolean
     transaction_type?: boolean
     commission_rate?: boolean
     payment_method?: boolean
@@ -14967,11 +15011,15 @@ export namespace Prisma {
     currency?: boolean
     status?: boolean
     note?: boolean
+    description?: boolean
+    sender_bank?: boolean
+    sender_name?: boolean
+    sender_number?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     course?: boolean | CourseDefaultArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
-    wallet?: boolean | WalletDefaultArgs<ExtArgs>
+    wallet?: boolean | Transaction$walletArgs<ExtArgs>
   }, ExtArgs["result"]["transaction"]>
 
   export type TransactionSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -14979,6 +15027,7 @@ export namespace Prisma {
     course_id?: boolean
     user_id?: boolean
     wallet_id?: boolean
+    payment_code?: boolean
     transaction_type?: boolean
     commission_rate?: boolean
     payment_method?: boolean
@@ -14986,11 +15035,15 @@ export namespace Prisma {
     currency?: boolean
     status?: boolean
     note?: boolean
+    description?: boolean
+    sender_bank?: boolean
+    sender_name?: boolean
+    sender_number?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     course?: boolean | CourseDefaultArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
-    wallet?: boolean | WalletDefaultArgs<ExtArgs>
+    wallet?: boolean | Transaction$walletArgs<ExtArgs>
   }, ExtArgs["result"]["transaction"]>
 
   export type TransactionSelectScalar = {
@@ -14998,6 +15051,7 @@ export namespace Prisma {
     course_id?: boolean
     user_id?: boolean
     wallet_id?: boolean
+    payment_code?: boolean
     transaction_type?: boolean
     commission_rate?: boolean
     payment_method?: boolean
@@ -15005,25 +15059,29 @@ export namespace Prisma {
     currency?: boolean
     status?: boolean
     note?: boolean
+    description?: boolean
+    sender_bank?: boolean
+    sender_name?: boolean
+    sender_number?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type TransactionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"transaction_id" | "course_id" | "user_id" | "wallet_id" | "transaction_type" | "commission_rate" | "payment_method" | "amount" | "currency" | "status" | "note" | "createdAt" | "updatedAt", ExtArgs["result"]["transaction"]>
+  export type TransactionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"transaction_id" | "course_id" | "user_id" | "wallet_id" | "payment_code" | "transaction_type" | "commission_rate" | "payment_method" | "amount" | "currency" | "status" | "note" | "description" | "sender_bank" | "sender_name" | "sender_number" | "createdAt" | "updatedAt", ExtArgs["result"]["transaction"]>
   export type TransactionInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     course?: boolean | CourseDefaultArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
-    wallet?: boolean | WalletDefaultArgs<ExtArgs>
+    wallet?: boolean | Transaction$walletArgs<ExtArgs>
   }
   export type TransactionIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     course?: boolean | CourseDefaultArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
-    wallet?: boolean | WalletDefaultArgs<ExtArgs>
+    wallet?: boolean | Transaction$walletArgs<ExtArgs>
   }
   export type TransactionIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     course?: boolean | CourseDefaultArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
-    wallet?: boolean | WalletDefaultArgs<ExtArgs>
+    wallet?: boolean | Transaction$walletArgs<ExtArgs>
   }
 
   export type $TransactionPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -15031,13 +15089,14 @@ export namespace Prisma {
     objects: {
       course: Prisma.$CoursePayload<ExtArgs>
       user: Prisma.$UserPayload<ExtArgs>
-      wallet: Prisma.$WalletPayload<ExtArgs>
+      wallet: Prisma.$WalletPayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
       transaction_id: string
       course_id: string
       user_id: string
-      wallet_id: string
+      wallet_id: string | null
+      payment_code: bigint
       transaction_type: $Enums.TransactionType
       commission_rate: Prisma.Decimal | null
       payment_method: $Enums.TransactionMethod
@@ -15045,6 +15104,10 @@ export namespace Prisma {
       currency: string
       status: $Enums.TransactionStatus
       note: $Enums.TransactionNote
+      description: string | null
+      sender_bank: string | null
+      sender_name: string | null
+      sender_number: string | null
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["transaction"]>
@@ -15443,7 +15506,7 @@ export namespace Prisma {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     course<T extends CourseDefaultArgs<ExtArgs> = {}>(args?: Subset<T, CourseDefaultArgs<ExtArgs>>): Prisma__CourseClient<$Result.GetResult<Prisma.$CoursePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    wallet<T extends WalletDefaultArgs<ExtArgs> = {}>(args?: Subset<T, WalletDefaultArgs<ExtArgs>>): Prisma__WalletClient<$Result.GetResult<Prisma.$WalletPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    wallet<T extends Transaction$walletArgs<ExtArgs> = {}>(args?: Subset<T, Transaction$walletArgs<ExtArgs>>): Prisma__WalletClient<$Result.GetResult<Prisma.$WalletPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -15477,6 +15540,7 @@ export namespace Prisma {
     readonly course_id: FieldRef<"Transaction", 'String'>
     readonly user_id: FieldRef<"Transaction", 'String'>
     readonly wallet_id: FieldRef<"Transaction", 'String'>
+    readonly payment_code: FieldRef<"Transaction", 'BigInt'>
     readonly transaction_type: FieldRef<"Transaction", 'TransactionType'>
     readonly commission_rate: FieldRef<"Transaction", 'Decimal'>
     readonly payment_method: FieldRef<"Transaction", 'TransactionMethod'>
@@ -15484,6 +15548,10 @@ export namespace Prisma {
     readonly currency: FieldRef<"Transaction", 'String'>
     readonly status: FieldRef<"Transaction", 'TransactionStatus'>
     readonly note: FieldRef<"Transaction", 'TransactionNote'>
+    readonly description: FieldRef<"Transaction", 'String'>
+    readonly sender_bank: FieldRef<"Transaction", 'String'>
+    readonly sender_name: FieldRef<"Transaction", 'String'>
+    readonly sender_number: FieldRef<"Transaction", 'String'>
     readonly createdAt: FieldRef<"Transaction", 'DateTime'>
     readonly updatedAt: FieldRef<"Transaction", 'DateTime'>
   }
@@ -15879,6 +15947,25 @@ export namespace Prisma {
      * Limit how many Transactions to delete.
      */
     limit?: number
+  }
+
+  /**
+   * Transaction.wallet
+   */
+  export type Transaction$walletArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Wallet
+     */
+    select?: WalletSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Wallet
+     */
+    omit?: WalletOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: WalletInclude<ExtArgs> | null
+    where?: WalletWhereInput
   }
 
   /**
@@ -36426,6 +36513,7 @@ export namespace Prisma {
     course_id: 'course_id',
     user_id: 'user_id',
     wallet_id: 'wallet_id',
+    payment_code: 'payment_code',
     transaction_type: 'transaction_type',
     commission_rate: 'commission_rate',
     payment_method: 'payment_method',
@@ -36433,6 +36521,10 @@ export namespace Prisma {
     currency: 'currency',
     status: 'status',
     note: 'note',
+    description: 'description',
+    sender_bank: 'sender_bank',
+    sender_name: 'sender_name',
+    sender_number: 'sender_number',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
@@ -36803,6 +36895,20 @@ export namespace Prisma {
    * Reference to a field of type 'Decimal[]'
    */
   export type ListDecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'BigInt'
+   */
+  export type BigIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'BigInt'>
+    
+
+
+  /**
+   * Reference to a field of type 'BigInt[]'
+   */
+  export type ListBigIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'BigInt[]'>
     
 
 
@@ -37679,7 +37785,8 @@ export namespace Prisma {
     transaction_id?: StringFilter<"Transaction"> | string
     course_id?: StringFilter<"Transaction"> | string
     user_id?: StringFilter<"Transaction"> | string
-    wallet_id?: StringFilter<"Transaction"> | string
+    wallet_id?: StringNullableFilter<"Transaction"> | string | null
+    payment_code?: BigIntFilter<"Transaction"> | bigint | number
     transaction_type?: EnumTransactionTypeFilter<"Transaction"> | $Enums.TransactionType
     commission_rate?: DecimalNullableFilter<"Transaction"> | Decimal | DecimalJsLike | number | string | null
     payment_method?: EnumTransactionMethodFilter<"Transaction"> | $Enums.TransactionMethod
@@ -37687,18 +37794,23 @@ export namespace Prisma {
     currency?: StringFilter<"Transaction"> | string
     status?: EnumTransactionStatusFilter<"Transaction"> | $Enums.TransactionStatus
     note?: EnumTransactionNoteFilter<"Transaction"> | $Enums.TransactionNote
+    description?: StringNullableFilter<"Transaction"> | string | null
+    sender_bank?: StringNullableFilter<"Transaction"> | string | null
+    sender_name?: StringNullableFilter<"Transaction"> | string | null
+    sender_number?: StringNullableFilter<"Transaction"> | string | null
     createdAt?: DateTimeFilter<"Transaction"> | Date | string
     updatedAt?: DateTimeFilter<"Transaction"> | Date | string
     course?: XOR<CourseScalarRelationFilter, CourseWhereInput>
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
-    wallet?: XOR<WalletScalarRelationFilter, WalletWhereInput>
+    wallet?: XOR<WalletNullableScalarRelationFilter, WalletWhereInput> | null
   }
 
   export type TransactionOrderByWithRelationInput = {
     transaction_id?: SortOrder
     course_id?: SortOrder
     user_id?: SortOrder
-    wallet_id?: SortOrder
+    wallet_id?: SortOrderInput | SortOrder
+    payment_code?: SortOrder
     transaction_type?: SortOrder
     commission_rate?: SortOrderInput | SortOrder
     payment_method?: SortOrder
@@ -37706,6 +37818,10 @@ export namespace Prisma {
     currency?: SortOrder
     status?: SortOrder
     note?: SortOrder
+    description?: SortOrderInput | SortOrder
+    sender_bank?: SortOrderInput | SortOrder
+    sender_name?: SortOrderInput | SortOrder
+    sender_number?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     course?: CourseOrderByWithRelationInput
@@ -37715,12 +37831,13 @@ export namespace Prisma {
 
   export type TransactionWhereUniqueInput = Prisma.AtLeast<{
     transaction_id?: string
+    payment_code?: bigint | number
     AND?: TransactionWhereInput | TransactionWhereInput[]
     OR?: TransactionWhereInput[]
     NOT?: TransactionWhereInput | TransactionWhereInput[]
     course_id?: StringFilter<"Transaction"> | string
     user_id?: StringFilter<"Transaction"> | string
-    wallet_id?: StringFilter<"Transaction"> | string
+    wallet_id?: StringNullableFilter<"Transaction"> | string | null
     transaction_type?: EnumTransactionTypeFilter<"Transaction"> | $Enums.TransactionType
     commission_rate?: DecimalNullableFilter<"Transaction"> | Decimal | DecimalJsLike | number | string | null
     payment_method?: EnumTransactionMethodFilter<"Transaction"> | $Enums.TransactionMethod
@@ -37728,18 +37845,23 @@ export namespace Prisma {
     currency?: StringFilter<"Transaction"> | string
     status?: EnumTransactionStatusFilter<"Transaction"> | $Enums.TransactionStatus
     note?: EnumTransactionNoteFilter<"Transaction"> | $Enums.TransactionNote
+    description?: StringNullableFilter<"Transaction"> | string | null
+    sender_bank?: StringNullableFilter<"Transaction"> | string | null
+    sender_name?: StringNullableFilter<"Transaction"> | string | null
+    sender_number?: StringNullableFilter<"Transaction"> | string | null
     createdAt?: DateTimeFilter<"Transaction"> | Date | string
     updatedAt?: DateTimeFilter<"Transaction"> | Date | string
     course?: XOR<CourseScalarRelationFilter, CourseWhereInput>
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
-    wallet?: XOR<WalletScalarRelationFilter, WalletWhereInput>
-  }, "transaction_id">
+    wallet?: XOR<WalletNullableScalarRelationFilter, WalletWhereInput> | null
+  }, "transaction_id" | "payment_code">
 
   export type TransactionOrderByWithAggregationInput = {
     transaction_id?: SortOrder
     course_id?: SortOrder
     user_id?: SortOrder
-    wallet_id?: SortOrder
+    wallet_id?: SortOrderInput | SortOrder
+    payment_code?: SortOrder
     transaction_type?: SortOrder
     commission_rate?: SortOrderInput | SortOrder
     payment_method?: SortOrder
@@ -37747,6 +37869,10 @@ export namespace Prisma {
     currency?: SortOrder
     status?: SortOrder
     note?: SortOrder
+    description?: SortOrderInput | SortOrder
+    sender_bank?: SortOrderInput | SortOrder
+    sender_name?: SortOrderInput | SortOrder
+    sender_number?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: TransactionCountOrderByAggregateInput
@@ -37763,7 +37889,8 @@ export namespace Prisma {
     transaction_id?: StringWithAggregatesFilter<"Transaction"> | string
     course_id?: StringWithAggregatesFilter<"Transaction"> | string
     user_id?: StringWithAggregatesFilter<"Transaction"> | string
-    wallet_id?: StringWithAggregatesFilter<"Transaction"> | string
+    wallet_id?: StringNullableWithAggregatesFilter<"Transaction"> | string | null
+    payment_code?: BigIntWithAggregatesFilter<"Transaction"> | bigint | number
     transaction_type?: EnumTransactionTypeWithAggregatesFilter<"Transaction"> | $Enums.TransactionType
     commission_rate?: DecimalNullableWithAggregatesFilter<"Transaction"> | Decimal | DecimalJsLike | number | string | null
     payment_method?: EnumTransactionMethodWithAggregatesFilter<"Transaction"> | $Enums.TransactionMethod
@@ -37771,6 +37898,10 @@ export namespace Prisma {
     currency?: StringWithAggregatesFilter<"Transaction"> | string
     status?: EnumTransactionStatusWithAggregatesFilter<"Transaction"> | $Enums.TransactionStatus
     note?: EnumTransactionNoteWithAggregatesFilter<"Transaction"> | $Enums.TransactionNote
+    description?: StringNullableWithAggregatesFilter<"Transaction"> | string | null
+    sender_bank?: StringNullableWithAggregatesFilter<"Transaction"> | string | null
+    sender_name?: StringNullableWithAggregatesFilter<"Transaction"> | string | null
+    sender_number?: StringNullableWithAggregatesFilter<"Transaction"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"Transaction"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Transaction"> | Date | string
   }
@@ -39845,6 +39976,7 @@ export namespace Prisma {
 
   export type TransactionCreateInput = {
     transaction_id?: string
+    payment_code: bigint | number
     transaction_type: $Enums.TransactionType
     commission_rate?: Decimal | DecimalJsLike | number | string | null
     payment_method: $Enums.TransactionMethod
@@ -39852,18 +39984,23 @@ export namespace Prisma {
     currency: string
     status?: $Enums.TransactionStatus
     note: $Enums.TransactionNote
+    description?: string | null
+    sender_bank?: string | null
+    sender_name?: string | null
+    sender_number?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     course: CourseCreateNestedOneWithoutTransactionInput
     user: UserCreateNestedOneWithoutTransactionsInput
-    wallet: WalletCreateNestedOneWithoutTransactionsInput
+    wallet?: WalletCreateNestedOneWithoutTransactionsInput
   }
 
   export type TransactionUncheckedCreateInput = {
     transaction_id?: string
     course_id: string
     user_id: string
-    wallet_id: string
+    wallet_id?: string | null
+    payment_code: bigint | number
     transaction_type: $Enums.TransactionType
     commission_rate?: Decimal | DecimalJsLike | number | string | null
     payment_method: $Enums.TransactionMethod
@@ -39871,12 +40008,17 @@ export namespace Prisma {
     currency: string
     status?: $Enums.TransactionStatus
     note: $Enums.TransactionNote
+    description?: string | null
+    sender_bank?: string | null
+    sender_name?: string | null
+    sender_number?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
 
   export type TransactionUpdateInput = {
     transaction_id?: StringFieldUpdateOperationsInput | string
+    payment_code?: BigIntFieldUpdateOperationsInput | bigint | number
     transaction_type?: EnumTransactionTypeFieldUpdateOperationsInput | $Enums.TransactionType
     commission_rate?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     payment_method?: EnumTransactionMethodFieldUpdateOperationsInput | $Enums.TransactionMethod
@@ -39884,18 +40026,23 @@ export namespace Prisma {
     currency?: StringFieldUpdateOperationsInput | string
     status?: EnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus
     note?: EnumTransactionNoteFieldUpdateOperationsInput | $Enums.TransactionNote
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    sender_bank?: NullableStringFieldUpdateOperationsInput | string | null
+    sender_name?: NullableStringFieldUpdateOperationsInput | string | null
+    sender_number?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     course?: CourseUpdateOneRequiredWithoutTransactionNestedInput
     user?: UserUpdateOneRequiredWithoutTransactionsNestedInput
-    wallet?: WalletUpdateOneRequiredWithoutTransactionsNestedInput
+    wallet?: WalletUpdateOneWithoutTransactionsNestedInput
   }
 
   export type TransactionUncheckedUpdateInput = {
     transaction_id?: StringFieldUpdateOperationsInput | string
     course_id?: StringFieldUpdateOperationsInput | string
     user_id?: StringFieldUpdateOperationsInput | string
-    wallet_id?: StringFieldUpdateOperationsInput | string
+    wallet_id?: NullableStringFieldUpdateOperationsInput | string | null
+    payment_code?: BigIntFieldUpdateOperationsInput | bigint | number
     transaction_type?: EnumTransactionTypeFieldUpdateOperationsInput | $Enums.TransactionType
     commission_rate?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     payment_method?: EnumTransactionMethodFieldUpdateOperationsInput | $Enums.TransactionMethod
@@ -39903,6 +40050,10 @@ export namespace Prisma {
     currency?: StringFieldUpdateOperationsInput | string
     status?: EnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus
     note?: EnumTransactionNoteFieldUpdateOperationsInput | $Enums.TransactionNote
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    sender_bank?: NullableStringFieldUpdateOperationsInput | string | null
+    sender_name?: NullableStringFieldUpdateOperationsInput | string | null
+    sender_number?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -39911,7 +40062,8 @@ export namespace Prisma {
     transaction_id?: string
     course_id: string
     user_id: string
-    wallet_id: string
+    wallet_id?: string | null
+    payment_code: bigint | number
     transaction_type: $Enums.TransactionType
     commission_rate?: Decimal | DecimalJsLike | number | string | null
     payment_method: $Enums.TransactionMethod
@@ -39919,12 +40071,17 @@ export namespace Prisma {
     currency: string
     status?: $Enums.TransactionStatus
     note: $Enums.TransactionNote
+    description?: string | null
+    sender_bank?: string | null
+    sender_name?: string | null
+    sender_number?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
 
   export type TransactionUpdateManyMutationInput = {
     transaction_id?: StringFieldUpdateOperationsInput | string
+    payment_code?: BigIntFieldUpdateOperationsInput | bigint | number
     transaction_type?: EnumTransactionTypeFieldUpdateOperationsInput | $Enums.TransactionType
     commission_rate?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     payment_method?: EnumTransactionMethodFieldUpdateOperationsInput | $Enums.TransactionMethod
@@ -39932,6 +40089,10 @@ export namespace Prisma {
     currency?: StringFieldUpdateOperationsInput | string
     status?: EnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus
     note?: EnumTransactionNoteFieldUpdateOperationsInput | $Enums.TransactionNote
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    sender_bank?: NullableStringFieldUpdateOperationsInput | string | null
+    sender_name?: NullableStringFieldUpdateOperationsInput | string | null
+    sender_number?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -39940,7 +40101,8 @@ export namespace Prisma {
     transaction_id?: StringFieldUpdateOperationsInput | string
     course_id?: StringFieldUpdateOperationsInput | string
     user_id?: StringFieldUpdateOperationsInput | string
-    wallet_id?: StringFieldUpdateOperationsInput | string
+    wallet_id?: NullableStringFieldUpdateOperationsInput | string | null
+    payment_code?: BigIntFieldUpdateOperationsInput | bigint | number
     transaction_type?: EnumTransactionTypeFieldUpdateOperationsInput | $Enums.TransactionType
     commission_rate?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     payment_method?: EnumTransactionMethodFieldUpdateOperationsInput | $Enums.TransactionMethod
@@ -39948,6 +40110,10 @@ export namespace Prisma {
     currency?: StringFieldUpdateOperationsInput | string
     status?: EnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus
     note?: EnumTransactionNoteFieldUpdateOperationsInput | $Enums.TransactionNote
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    sender_bank?: NullableStringFieldUpdateOperationsInput | string | null
+    sender_name?: NullableStringFieldUpdateOperationsInput | string | null
+    sender_number?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -41971,6 +42137,17 @@ export namespace Prisma {
     _max?: NestedDecimalFilter<$PrismaModel>
   }
 
+  export type BigIntFilter<$PrismaModel = never> = {
+    equals?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    in?: bigint[] | number[] | ListBigIntFieldRefInput<$PrismaModel>
+    notIn?: bigint[] | number[] | ListBigIntFieldRefInput<$PrismaModel>
+    lt?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    lte?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    gt?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    gte?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    not?: NestedBigIntFilter<$PrismaModel> | bigint | number
+  }
+
   export type EnumTransactionTypeFilter<$PrismaModel = never> = {
     equals?: $Enums.TransactionType | EnumTransactionTypeFieldRefInput<$PrismaModel>
     in?: $Enums.TransactionType[] | ListEnumTransactionTypeFieldRefInput<$PrismaModel>
@@ -42015,16 +42192,12 @@ export namespace Prisma {
     isNot?: CourseWhereInput
   }
 
-  export type WalletScalarRelationFilter = {
-    is?: WalletWhereInput
-    isNot?: WalletWhereInput
-  }
-
   export type TransactionCountOrderByAggregateInput = {
     transaction_id?: SortOrder
     course_id?: SortOrder
     user_id?: SortOrder
     wallet_id?: SortOrder
+    payment_code?: SortOrder
     transaction_type?: SortOrder
     commission_rate?: SortOrder
     payment_method?: SortOrder
@@ -42032,11 +42205,16 @@ export namespace Prisma {
     currency?: SortOrder
     status?: SortOrder
     note?: SortOrder
+    description?: SortOrder
+    sender_bank?: SortOrder
+    sender_name?: SortOrder
+    sender_number?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
 
   export type TransactionAvgOrderByAggregateInput = {
+    payment_code?: SortOrder
     commission_rate?: SortOrder
     amount?: SortOrder
   }
@@ -42046,6 +42224,7 @@ export namespace Prisma {
     course_id?: SortOrder
     user_id?: SortOrder
     wallet_id?: SortOrder
+    payment_code?: SortOrder
     transaction_type?: SortOrder
     commission_rate?: SortOrder
     payment_method?: SortOrder
@@ -42053,6 +42232,10 @@ export namespace Prisma {
     currency?: SortOrder
     status?: SortOrder
     note?: SortOrder
+    description?: SortOrder
+    sender_bank?: SortOrder
+    sender_name?: SortOrder
+    sender_number?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -42062,6 +42245,7 @@ export namespace Prisma {
     course_id?: SortOrder
     user_id?: SortOrder
     wallet_id?: SortOrder
+    payment_code?: SortOrder
     transaction_type?: SortOrder
     commission_rate?: SortOrder
     payment_method?: SortOrder
@@ -42069,13 +42253,34 @@ export namespace Prisma {
     currency?: SortOrder
     status?: SortOrder
     note?: SortOrder
+    description?: SortOrder
+    sender_bank?: SortOrder
+    sender_name?: SortOrder
+    sender_number?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
 
   export type TransactionSumOrderByAggregateInput = {
+    payment_code?: SortOrder
     commission_rate?: SortOrder
     amount?: SortOrder
+  }
+
+  export type BigIntWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    in?: bigint[] | number[] | ListBigIntFieldRefInput<$PrismaModel>
+    notIn?: bigint[] | number[] | ListBigIntFieldRefInput<$PrismaModel>
+    lt?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    lte?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    gt?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    gte?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    not?: NestedBigIntWithAggregatesFilter<$PrismaModel> | bigint | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedBigIntFilter<$PrismaModel>
+    _min?: NestedBigIntFilter<$PrismaModel>
+    _max?: NestedBigIntFilter<$PrismaModel>
   }
 
   export type EnumTransactionTypeWithAggregatesFilter<$PrismaModel = never> = {
@@ -43993,6 +44198,14 @@ export namespace Prisma {
     connect?: WalletWhereUniqueInput
   }
 
+  export type BigIntFieldUpdateOperationsInput = {
+    set?: bigint | number
+    increment?: bigint | number
+    decrement?: bigint | number
+    multiply?: bigint | number
+    divide?: bigint | number
+  }
+
   export type EnumTransactionTypeFieldUpdateOperationsInput = {
     set?: $Enums.TransactionType
   }
@@ -44033,10 +44246,12 @@ export namespace Prisma {
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutTransactionsInput, UserUpdateWithoutTransactionsInput>, UserUncheckedUpdateWithoutTransactionsInput>
   }
 
-  export type WalletUpdateOneRequiredWithoutTransactionsNestedInput = {
+  export type WalletUpdateOneWithoutTransactionsNestedInput = {
     create?: XOR<WalletCreateWithoutTransactionsInput, WalletUncheckedCreateWithoutTransactionsInput>
     connectOrCreate?: WalletCreateOrConnectWithoutTransactionsInput
     upsert?: WalletUpsertWithoutTransactionsInput
+    disconnect?: WalletWhereInput | boolean
+    delete?: WalletWhereInput | boolean
     connect?: WalletWhereUniqueInput
     update?: XOR<XOR<WalletUpdateToOneWithWhereWithoutTransactionsInput, WalletUpdateWithoutTransactionsInput>, WalletUncheckedUpdateWithoutTransactionsInput>
   }
@@ -45429,6 +45644,17 @@ export namespace Prisma {
     _max?: NestedDecimalFilter<$PrismaModel>
   }
 
+  export type NestedBigIntFilter<$PrismaModel = never> = {
+    equals?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    in?: bigint[] | number[] | ListBigIntFieldRefInput<$PrismaModel>
+    notIn?: bigint[] | number[] | ListBigIntFieldRefInput<$PrismaModel>
+    lt?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    lte?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    gt?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    gte?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    not?: NestedBigIntFilter<$PrismaModel> | bigint | number
+  }
+
   export type NestedEnumTransactionTypeFilter<$PrismaModel = never> = {
     equals?: $Enums.TransactionType | EnumTransactionTypeFieldRefInput<$PrismaModel>
     in?: $Enums.TransactionType[] | ListEnumTransactionTypeFieldRefInput<$PrismaModel>
@@ -45466,6 +45692,33 @@ export namespace Prisma {
     in?: $Enums.TransactionNote[] | ListEnumTransactionNoteFieldRefInput<$PrismaModel>
     notIn?: $Enums.TransactionNote[] | ListEnumTransactionNoteFieldRefInput<$PrismaModel>
     not?: NestedEnumTransactionNoteFilter<$PrismaModel> | $Enums.TransactionNote
+  }
+
+  export type NestedBigIntWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    in?: bigint[] | number[] | ListBigIntFieldRefInput<$PrismaModel>
+    notIn?: bigint[] | number[] | ListBigIntFieldRefInput<$PrismaModel>
+    lt?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    lte?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    gt?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    gte?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    not?: NestedBigIntWithAggregatesFilter<$PrismaModel> | bigint | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedBigIntFilter<$PrismaModel>
+    _min?: NestedBigIntFilter<$PrismaModel>
+    _max?: NestedBigIntFilter<$PrismaModel>
+  }
+
+  export type NestedFloatFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel>
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatFilter<$PrismaModel> | number
   }
 
   export type NestedEnumTransactionTypeWithAggregatesFilter<$PrismaModel = never> = {
@@ -45538,17 +45791,6 @@ export namespace Prisma {
     _sum?: NestedIntFilter<$PrismaModel>
     _min?: NestedIntFilter<$PrismaModel>
     _max?: NestedIntFilter<$PrismaModel>
-  }
-
-  export type NestedFloatFilter<$PrismaModel = never> = {
-    equals?: number | FloatFieldRefInput<$PrismaModel>
-    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
-    lt?: number | FloatFieldRefInput<$PrismaModel>
-    lte?: number | FloatFieldRefInput<$PrismaModel>
-    gt?: number | FloatFieldRefInput<$PrismaModel>
-    gte?: number | FloatFieldRefInput<$PrismaModel>
-    not?: NestedFloatFilter<$PrismaModel> | number
   }
 
   export type NestedEnumCourseStatusFilter<$PrismaModel = never> = {
@@ -45724,6 +45966,7 @@ export namespace Prisma {
 
   export type TransactionCreateWithoutUserInput = {
     transaction_id?: string
+    payment_code: bigint | number
     transaction_type: $Enums.TransactionType
     commission_rate?: Decimal | DecimalJsLike | number | string | null
     payment_method: $Enums.TransactionMethod
@@ -45731,16 +45974,21 @@ export namespace Prisma {
     currency: string
     status?: $Enums.TransactionStatus
     note: $Enums.TransactionNote
+    description?: string | null
+    sender_bank?: string | null
+    sender_name?: string | null
+    sender_number?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     course: CourseCreateNestedOneWithoutTransactionInput
-    wallet: WalletCreateNestedOneWithoutTransactionsInput
+    wallet?: WalletCreateNestedOneWithoutTransactionsInput
   }
 
   export type TransactionUncheckedCreateWithoutUserInput = {
     transaction_id?: string
     course_id: string
-    wallet_id: string
+    wallet_id?: string | null
+    payment_code: bigint | number
     transaction_type: $Enums.TransactionType
     commission_rate?: Decimal | DecimalJsLike | number | string | null
     payment_method: $Enums.TransactionMethod
@@ -45748,6 +45996,10 @@ export namespace Prisma {
     currency: string
     status?: $Enums.TransactionStatus
     note: $Enums.TransactionNote
+    description?: string | null
+    sender_bank?: string | null
+    sender_name?: string | null
+    sender_number?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -46083,7 +46335,8 @@ export namespace Prisma {
     transaction_id?: StringFilter<"Transaction"> | string
     course_id?: StringFilter<"Transaction"> | string
     user_id?: StringFilter<"Transaction"> | string
-    wallet_id?: StringFilter<"Transaction"> | string
+    wallet_id?: StringNullableFilter<"Transaction"> | string | null
+    payment_code?: BigIntFilter<"Transaction"> | bigint | number
     transaction_type?: EnumTransactionTypeFilter<"Transaction"> | $Enums.TransactionType
     commission_rate?: DecimalNullableFilter<"Transaction"> | Decimal | DecimalJsLike | number | string | null
     payment_method?: EnumTransactionMethodFilter<"Transaction"> | $Enums.TransactionMethod
@@ -46091,6 +46344,10 @@ export namespace Prisma {
     currency?: StringFilter<"Transaction"> | string
     status?: EnumTransactionStatusFilter<"Transaction"> | $Enums.TransactionStatus
     note?: EnumTransactionNoteFilter<"Transaction"> | $Enums.TransactionNote
+    description?: StringNullableFilter<"Transaction"> | string | null
+    sender_bank?: StringNullableFilter<"Transaction"> | string | null
+    sender_name?: StringNullableFilter<"Transaction"> | string | null
+    sender_number?: StringNullableFilter<"Transaction"> | string | null
     createdAt?: DateTimeFilter<"Transaction"> | Date | string
     updatedAt?: DateTimeFilter<"Transaction"> | Date | string
   }
@@ -47832,6 +48089,7 @@ export namespace Prisma {
 
   export type TransactionCreateWithoutWalletInput = {
     transaction_id?: string
+    payment_code: bigint | number
     transaction_type: $Enums.TransactionType
     commission_rate?: Decimal | DecimalJsLike | number | string | null
     payment_method: $Enums.TransactionMethod
@@ -47839,6 +48097,10 @@ export namespace Prisma {
     currency: string
     status?: $Enums.TransactionStatus
     note: $Enums.TransactionNote
+    description?: string | null
+    sender_bank?: string | null
+    sender_name?: string | null
+    sender_number?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     course: CourseCreateNestedOneWithoutTransactionInput
@@ -47849,6 +48111,7 @@ export namespace Prisma {
     transaction_id?: string
     course_id: string
     user_id: string
+    payment_code: bigint | number
     transaction_type: $Enums.TransactionType
     commission_rate?: Decimal | DecimalJsLike | number | string | null
     payment_method: $Enums.TransactionMethod
@@ -47856,6 +48119,10 @@ export namespace Prisma {
     currency: string
     status?: $Enums.TransactionStatus
     note: $Enums.TransactionNote
+    description?: string | null
+    sender_bank?: string | null
+    sender_name?: string | null
+    sender_number?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -49045,6 +49312,7 @@ export namespace Prisma {
 
   export type TransactionCreateWithoutCourseInput = {
     transaction_id?: string
+    payment_code: bigint | number
     transaction_type: $Enums.TransactionType
     commission_rate?: Decimal | DecimalJsLike | number | string | null
     payment_method: $Enums.TransactionMethod
@@ -49052,16 +49320,21 @@ export namespace Prisma {
     currency: string
     status?: $Enums.TransactionStatus
     note: $Enums.TransactionNote
+    description?: string | null
+    sender_bank?: string | null
+    sender_name?: string | null
+    sender_number?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     user: UserCreateNestedOneWithoutTransactionsInput
-    wallet: WalletCreateNestedOneWithoutTransactionsInput
+    wallet?: WalletCreateNestedOneWithoutTransactionsInput
   }
 
   export type TransactionUncheckedCreateWithoutCourseInput = {
     transaction_id?: string
     user_id: string
-    wallet_id: string
+    wallet_id?: string | null
+    payment_code: bigint | number
     transaction_type: $Enums.TransactionType
     commission_rate?: Decimal | DecimalJsLike | number | string | null
     payment_method: $Enums.TransactionMethod
@@ -49069,6 +49342,10 @@ export namespace Prisma {
     currency: string
     status?: $Enums.TransactionStatus
     note: $Enums.TransactionNote
+    description?: string | null
+    sender_bank?: string | null
+    sender_name?: string | null
+    sender_number?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -51222,7 +51499,8 @@ export namespace Prisma {
   export type TransactionCreateManyUserInput = {
     transaction_id?: string
     course_id: string
-    wallet_id: string
+    wallet_id?: string | null
+    payment_code: bigint | number
     transaction_type: $Enums.TransactionType
     commission_rate?: Decimal | DecimalJsLike | number | string | null
     payment_method: $Enums.TransactionMethod
@@ -51230,6 +51508,10 @@ export namespace Prisma {
     currency: string
     status?: $Enums.TransactionStatus
     note: $Enums.TransactionNote
+    description?: string | null
+    sender_bank?: string | null
+    sender_name?: string | null
+    sender_number?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -51306,6 +51588,7 @@ export namespace Prisma {
 
   export type TransactionUpdateWithoutUserInput = {
     transaction_id?: StringFieldUpdateOperationsInput | string
+    payment_code?: BigIntFieldUpdateOperationsInput | bigint | number
     transaction_type?: EnumTransactionTypeFieldUpdateOperationsInput | $Enums.TransactionType
     commission_rate?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     payment_method?: EnumTransactionMethodFieldUpdateOperationsInput | $Enums.TransactionMethod
@@ -51313,16 +51596,21 @@ export namespace Prisma {
     currency?: StringFieldUpdateOperationsInput | string
     status?: EnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus
     note?: EnumTransactionNoteFieldUpdateOperationsInput | $Enums.TransactionNote
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    sender_bank?: NullableStringFieldUpdateOperationsInput | string | null
+    sender_name?: NullableStringFieldUpdateOperationsInput | string | null
+    sender_number?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     course?: CourseUpdateOneRequiredWithoutTransactionNestedInput
-    wallet?: WalletUpdateOneRequiredWithoutTransactionsNestedInput
+    wallet?: WalletUpdateOneWithoutTransactionsNestedInput
   }
 
   export type TransactionUncheckedUpdateWithoutUserInput = {
     transaction_id?: StringFieldUpdateOperationsInput | string
     course_id?: StringFieldUpdateOperationsInput | string
-    wallet_id?: StringFieldUpdateOperationsInput | string
+    wallet_id?: NullableStringFieldUpdateOperationsInput | string | null
+    payment_code?: BigIntFieldUpdateOperationsInput | bigint | number
     transaction_type?: EnumTransactionTypeFieldUpdateOperationsInput | $Enums.TransactionType
     commission_rate?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     payment_method?: EnumTransactionMethodFieldUpdateOperationsInput | $Enums.TransactionMethod
@@ -51330,6 +51618,10 @@ export namespace Prisma {
     currency?: StringFieldUpdateOperationsInput | string
     status?: EnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus
     note?: EnumTransactionNoteFieldUpdateOperationsInput | $Enums.TransactionNote
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    sender_bank?: NullableStringFieldUpdateOperationsInput | string | null
+    sender_name?: NullableStringFieldUpdateOperationsInput | string | null
+    sender_number?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -51337,7 +51629,8 @@ export namespace Prisma {
   export type TransactionUncheckedUpdateManyWithoutUserInput = {
     transaction_id?: StringFieldUpdateOperationsInput | string
     course_id?: StringFieldUpdateOperationsInput | string
-    wallet_id?: StringFieldUpdateOperationsInput | string
+    wallet_id?: NullableStringFieldUpdateOperationsInput | string | null
+    payment_code?: BigIntFieldUpdateOperationsInput | bigint | number
     transaction_type?: EnumTransactionTypeFieldUpdateOperationsInput | $Enums.TransactionType
     commission_rate?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     payment_method?: EnumTransactionMethodFieldUpdateOperationsInput | $Enums.TransactionMethod
@@ -51345,6 +51638,10 @@ export namespace Prisma {
     currency?: StringFieldUpdateOperationsInput | string
     status?: EnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus
     note?: EnumTransactionNoteFieldUpdateOperationsInput | $Enums.TransactionNote
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    sender_bank?: NullableStringFieldUpdateOperationsInput | string | null
+    sender_name?: NullableStringFieldUpdateOperationsInput | string | null
+    sender_number?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -51832,6 +52129,7 @@ export namespace Prisma {
     transaction_id?: string
     course_id: string
     user_id: string
+    payment_code: bigint | number
     transaction_type: $Enums.TransactionType
     commission_rate?: Decimal | DecimalJsLike | number | string | null
     payment_method: $Enums.TransactionMethod
@@ -51839,12 +52137,17 @@ export namespace Prisma {
     currency: string
     status?: $Enums.TransactionStatus
     note: $Enums.TransactionNote
+    description?: string | null
+    sender_bank?: string | null
+    sender_name?: string | null
+    sender_number?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
 
   export type TransactionUpdateWithoutWalletInput = {
     transaction_id?: StringFieldUpdateOperationsInput | string
+    payment_code?: BigIntFieldUpdateOperationsInput | bigint | number
     transaction_type?: EnumTransactionTypeFieldUpdateOperationsInput | $Enums.TransactionType
     commission_rate?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     payment_method?: EnumTransactionMethodFieldUpdateOperationsInput | $Enums.TransactionMethod
@@ -51852,6 +52155,10 @@ export namespace Prisma {
     currency?: StringFieldUpdateOperationsInput | string
     status?: EnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus
     note?: EnumTransactionNoteFieldUpdateOperationsInput | $Enums.TransactionNote
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    sender_bank?: NullableStringFieldUpdateOperationsInput | string | null
+    sender_name?: NullableStringFieldUpdateOperationsInput | string | null
+    sender_number?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     course?: CourseUpdateOneRequiredWithoutTransactionNestedInput
@@ -51862,6 +52169,7 @@ export namespace Prisma {
     transaction_id?: StringFieldUpdateOperationsInput | string
     course_id?: StringFieldUpdateOperationsInput | string
     user_id?: StringFieldUpdateOperationsInput | string
+    payment_code?: BigIntFieldUpdateOperationsInput | bigint | number
     transaction_type?: EnumTransactionTypeFieldUpdateOperationsInput | $Enums.TransactionType
     commission_rate?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     payment_method?: EnumTransactionMethodFieldUpdateOperationsInput | $Enums.TransactionMethod
@@ -51869,6 +52177,10 @@ export namespace Prisma {
     currency?: StringFieldUpdateOperationsInput | string
     status?: EnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus
     note?: EnumTransactionNoteFieldUpdateOperationsInput | $Enums.TransactionNote
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    sender_bank?: NullableStringFieldUpdateOperationsInput | string | null
+    sender_name?: NullableStringFieldUpdateOperationsInput | string | null
+    sender_number?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -51877,6 +52189,7 @@ export namespace Prisma {
     transaction_id?: StringFieldUpdateOperationsInput | string
     course_id?: StringFieldUpdateOperationsInput | string
     user_id?: StringFieldUpdateOperationsInput | string
+    payment_code?: BigIntFieldUpdateOperationsInput | bigint | number
     transaction_type?: EnumTransactionTypeFieldUpdateOperationsInput | $Enums.TransactionType
     commission_rate?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     payment_method?: EnumTransactionMethodFieldUpdateOperationsInput | $Enums.TransactionMethod
@@ -51884,6 +52197,10 @@ export namespace Prisma {
     currency?: StringFieldUpdateOperationsInput | string
     status?: EnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus
     note?: EnumTransactionNoteFieldUpdateOperationsInput | $Enums.TransactionNote
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    sender_bank?: NullableStringFieldUpdateOperationsInput | string | null
+    sender_name?: NullableStringFieldUpdateOperationsInput | string | null
+    sender_number?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -52030,7 +52347,8 @@ export namespace Prisma {
   export type TransactionCreateManyCourseInput = {
     transaction_id?: string
     user_id: string
-    wallet_id: string
+    wallet_id?: string | null
+    payment_code: bigint | number
     transaction_type: $Enums.TransactionType
     commission_rate?: Decimal | DecimalJsLike | number | string | null
     payment_method: $Enums.TransactionMethod
@@ -52038,6 +52356,10 @@ export namespace Prisma {
     currency: string
     status?: $Enums.TransactionStatus
     note: $Enums.TransactionNote
+    description?: string | null
+    sender_bank?: string | null
+    sender_name?: string | null
+    sender_number?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -52135,6 +52457,7 @@ export namespace Prisma {
 
   export type TransactionUpdateWithoutCourseInput = {
     transaction_id?: StringFieldUpdateOperationsInput | string
+    payment_code?: BigIntFieldUpdateOperationsInput | bigint | number
     transaction_type?: EnumTransactionTypeFieldUpdateOperationsInput | $Enums.TransactionType
     commission_rate?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     payment_method?: EnumTransactionMethodFieldUpdateOperationsInput | $Enums.TransactionMethod
@@ -52142,16 +52465,21 @@ export namespace Prisma {
     currency?: StringFieldUpdateOperationsInput | string
     status?: EnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus
     note?: EnumTransactionNoteFieldUpdateOperationsInput | $Enums.TransactionNote
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    sender_bank?: NullableStringFieldUpdateOperationsInput | string | null
+    sender_name?: NullableStringFieldUpdateOperationsInput | string | null
+    sender_number?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutTransactionsNestedInput
-    wallet?: WalletUpdateOneRequiredWithoutTransactionsNestedInput
+    wallet?: WalletUpdateOneWithoutTransactionsNestedInput
   }
 
   export type TransactionUncheckedUpdateWithoutCourseInput = {
     transaction_id?: StringFieldUpdateOperationsInput | string
     user_id?: StringFieldUpdateOperationsInput | string
-    wallet_id?: StringFieldUpdateOperationsInput | string
+    wallet_id?: NullableStringFieldUpdateOperationsInput | string | null
+    payment_code?: BigIntFieldUpdateOperationsInput | bigint | number
     transaction_type?: EnumTransactionTypeFieldUpdateOperationsInput | $Enums.TransactionType
     commission_rate?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     payment_method?: EnumTransactionMethodFieldUpdateOperationsInput | $Enums.TransactionMethod
@@ -52159,6 +52487,10 @@ export namespace Prisma {
     currency?: StringFieldUpdateOperationsInput | string
     status?: EnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus
     note?: EnumTransactionNoteFieldUpdateOperationsInput | $Enums.TransactionNote
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    sender_bank?: NullableStringFieldUpdateOperationsInput | string | null
+    sender_name?: NullableStringFieldUpdateOperationsInput | string | null
+    sender_number?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -52166,7 +52498,8 @@ export namespace Prisma {
   export type TransactionUncheckedUpdateManyWithoutCourseInput = {
     transaction_id?: StringFieldUpdateOperationsInput | string
     user_id?: StringFieldUpdateOperationsInput | string
-    wallet_id?: StringFieldUpdateOperationsInput | string
+    wallet_id?: NullableStringFieldUpdateOperationsInput | string | null
+    payment_code?: BigIntFieldUpdateOperationsInput | bigint | number
     transaction_type?: EnumTransactionTypeFieldUpdateOperationsInput | $Enums.TransactionType
     commission_rate?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     payment_method?: EnumTransactionMethodFieldUpdateOperationsInput | $Enums.TransactionMethod
@@ -52174,6 +52507,10 @@ export namespace Prisma {
     currency?: StringFieldUpdateOperationsInput | string
     status?: EnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus
     note?: EnumTransactionNoteFieldUpdateOperationsInput | $Enums.TransactionNote
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    sender_bank?: NullableStringFieldUpdateOperationsInput | string | null
+    sender_name?: NullableStringFieldUpdateOperationsInput | string | null
+    sender_number?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
