@@ -36,6 +36,7 @@ enum CourseEnrollmentStatus {
   Enrolled
   Completed
   Cancelled
+  Progressing
 }
 
 enum CourseStatus {
@@ -376,6 +377,8 @@ model AccountSecurity {
   user_id               String   @unique @db.Char(50)
   email_verified        Boolean  @default(false)
   failed_login_attempts Int      @db.Integer
+  verification_token    String?  @db.VarChar(255)
+  token_expires_at      DateTime?
   createdAt             DateTime @default(now())
   updatedAt             DateTime @updatedAt
 

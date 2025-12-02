@@ -211,7 +211,8 @@ export type QualificationType = (typeof QualificationType)[keyof typeof Qualific
 export const CourseEnrollmentStatus: {
   Enrolled: 'Enrolled',
   Completed: 'Completed',
-  Cancelled: 'Cancelled'
+  Cancelled: 'Cancelled',
+  Progressing: 'Progressing'
 };
 
 export type CourseEnrollmentStatus = (typeof CourseEnrollmentStatus)[keyof typeof CourseEnrollmentStatus]
@@ -20660,6 +20661,8 @@ export namespace Prisma {
     user_id: string | null
     email_verified: boolean | null
     failed_login_attempts: number | null
+    verification_token: string | null
+    token_expires_at: Date | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -20669,6 +20672,8 @@ export namespace Prisma {
     user_id: string | null
     email_verified: boolean | null
     failed_login_attempts: number | null
+    verification_token: string | null
+    token_expires_at: Date | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -20678,6 +20683,8 @@ export namespace Prisma {
     user_id: number
     email_verified: number
     failed_login_attempts: number
+    verification_token: number
+    token_expires_at: number
     createdAt: number
     updatedAt: number
     _all: number
@@ -20697,6 +20704,8 @@ export namespace Prisma {
     user_id?: true
     email_verified?: true
     failed_login_attempts?: true
+    verification_token?: true
+    token_expires_at?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -20706,6 +20715,8 @@ export namespace Prisma {
     user_id?: true
     email_verified?: true
     failed_login_attempts?: true
+    verification_token?: true
+    token_expires_at?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -20715,6 +20726,8 @@ export namespace Prisma {
     user_id?: true
     email_verified?: true
     failed_login_attempts?: true
+    verification_token?: true
+    token_expires_at?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -20811,6 +20824,8 @@ export namespace Prisma {
     user_id: string
     email_verified: boolean
     failed_login_attempts: number
+    verification_token: string | null
+    token_expires_at: Date | null
     createdAt: Date
     updatedAt: Date
     _count: AccountSecurityCountAggregateOutputType | null
@@ -20839,6 +20854,8 @@ export namespace Prisma {
     user_id?: boolean
     email_verified?: boolean
     failed_login_attempts?: boolean
+    verification_token?: boolean
+    token_expires_at?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
@@ -20849,6 +20866,8 @@ export namespace Prisma {
     user_id?: boolean
     email_verified?: boolean
     failed_login_attempts?: boolean
+    verification_token?: boolean
+    token_expires_at?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
@@ -20859,6 +20878,8 @@ export namespace Prisma {
     user_id?: boolean
     email_verified?: boolean
     failed_login_attempts?: boolean
+    verification_token?: boolean
+    token_expires_at?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
@@ -20869,11 +20890,13 @@ export namespace Prisma {
     user_id?: boolean
     email_verified?: boolean
     failed_login_attempts?: boolean
+    verification_token?: boolean
+    token_expires_at?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type AccountSecurityOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"account_security_id" | "user_id" | "email_verified" | "failed_login_attempts" | "createdAt" | "updatedAt", ExtArgs["result"]["accountSecurity"]>
+  export type AccountSecurityOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"account_security_id" | "user_id" | "email_verified" | "failed_login_attempts" | "verification_token" | "token_expires_at" | "createdAt" | "updatedAt", ExtArgs["result"]["accountSecurity"]>
   export type AccountSecurityInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
   }
@@ -20894,6 +20917,8 @@ export namespace Prisma {
       user_id: string
       email_verified: boolean
       failed_login_attempts: number
+      verification_token: string | null
+      token_expires_at: Date | null
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["accountSecurity"]>
@@ -21324,6 +21349,8 @@ export namespace Prisma {
     readonly user_id: FieldRef<"AccountSecurity", 'String'>
     readonly email_verified: FieldRef<"AccountSecurity", 'Boolean'>
     readonly failed_login_attempts: FieldRef<"AccountSecurity", 'Int'>
+    readonly verification_token: FieldRef<"AccountSecurity", 'String'>
+    readonly token_expires_at: FieldRef<"AccountSecurity", 'DateTime'>
     readonly createdAt: FieldRef<"AccountSecurity", 'DateTime'>
     readonly updatedAt: FieldRef<"AccountSecurity", 'DateTime'>
   }
@@ -40309,6 +40336,8 @@ export namespace Prisma {
     user_id: 'user_id',
     email_verified: 'email_verified',
     failed_login_attempts: 'failed_login_attempts',
+    verification_token: 'verification_token',
+    token_expires_at: 'token_expires_at',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
@@ -41901,6 +41930,8 @@ export namespace Prisma {
     user_id?: StringFilter<"AccountSecurity"> | string
     email_verified?: BoolFilter<"AccountSecurity"> | boolean
     failed_login_attempts?: IntFilter<"AccountSecurity"> | number
+    verification_token?: StringNullableFilter<"AccountSecurity"> | string | null
+    token_expires_at?: DateTimeNullableFilter<"AccountSecurity"> | Date | string | null
     createdAt?: DateTimeFilter<"AccountSecurity"> | Date | string
     updatedAt?: DateTimeFilter<"AccountSecurity"> | Date | string
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
@@ -41911,6 +41942,8 @@ export namespace Prisma {
     user_id?: SortOrder
     email_verified?: SortOrder
     failed_login_attempts?: SortOrder
+    verification_token?: SortOrderInput | SortOrder
+    token_expires_at?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     user?: UserOrderByWithRelationInput
@@ -41924,6 +41957,8 @@ export namespace Prisma {
     NOT?: AccountSecurityWhereInput | AccountSecurityWhereInput[]
     email_verified?: BoolFilter<"AccountSecurity"> | boolean
     failed_login_attempts?: IntFilter<"AccountSecurity"> | number
+    verification_token?: StringNullableFilter<"AccountSecurity"> | string | null
+    token_expires_at?: DateTimeNullableFilter<"AccountSecurity"> | Date | string | null
     createdAt?: DateTimeFilter<"AccountSecurity"> | Date | string
     updatedAt?: DateTimeFilter<"AccountSecurity"> | Date | string
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
@@ -41934,6 +41969,8 @@ export namespace Prisma {
     user_id?: SortOrder
     email_verified?: SortOrder
     failed_login_attempts?: SortOrder
+    verification_token?: SortOrderInput | SortOrder
+    token_expires_at?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: AccountSecurityCountOrderByAggregateInput
@@ -41951,6 +41988,8 @@ export namespace Prisma {
     user_id?: StringWithAggregatesFilter<"AccountSecurity"> | string
     email_verified?: BoolWithAggregatesFilter<"AccountSecurity"> | boolean
     failed_login_attempts?: IntWithAggregatesFilter<"AccountSecurity"> | number
+    verification_token?: StringNullableWithAggregatesFilter<"AccountSecurity"> | string | null
+    token_expires_at?: DateTimeNullableWithAggregatesFilter<"AccountSecurity"> | Date | string | null
     createdAt?: DateTimeWithAggregatesFilter<"AccountSecurity"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"AccountSecurity"> | Date | string
   }
@@ -44292,6 +44331,8 @@ export namespace Prisma {
     account_security_id?: string
     email_verified?: boolean
     failed_login_attempts: number
+    verification_token?: string | null
+    token_expires_at?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     user: UserCreateNestedOneWithoutAccountSecuritiesInput
@@ -44302,6 +44343,8 @@ export namespace Prisma {
     user_id: string
     email_verified?: boolean
     failed_login_attempts: number
+    verification_token?: string | null
+    token_expires_at?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -44310,6 +44353,8 @@ export namespace Prisma {
     account_security_id?: StringFieldUpdateOperationsInput | string
     email_verified?: BoolFieldUpdateOperationsInput | boolean
     failed_login_attempts?: IntFieldUpdateOperationsInput | number
+    verification_token?: NullableStringFieldUpdateOperationsInput | string | null
+    token_expires_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutAccountSecuritiesNestedInput
@@ -44320,6 +44365,8 @@ export namespace Prisma {
     user_id?: StringFieldUpdateOperationsInput | string
     email_verified?: BoolFieldUpdateOperationsInput | boolean
     failed_login_attempts?: IntFieldUpdateOperationsInput | number
+    verification_token?: NullableStringFieldUpdateOperationsInput | string | null
+    token_expires_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -44329,6 +44376,8 @@ export namespace Prisma {
     user_id: string
     email_verified?: boolean
     failed_login_attempts: number
+    verification_token?: string | null
+    token_expires_at?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -44337,6 +44386,8 @@ export namespace Prisma {
     account_security_id?: StringFieldUpdateOperationsInput | string
     email_verified?: BoolFieldUpdateOperationsInput | boolean
     failed_login_attempts?: IntFieldUpdateOperationsInput | number
+    verification_token?: NullableStringFieldUpdateOperationsInput | string | null
+    token_expires_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -44346,6 +44397,8 @@ export namespace Prisma {
     user_id?: StringFieldUpdateOperationsInput | string
     email_verified?: BoolFieldUpdateOperationsInput | boolean
     failed_login_attempts?: IntFieldUpdateOperationsInput | number
+    verification_token?: NullableStringFieldUpdateOperationsInput | string | null
+    token_expires_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -46618,6 +46671,8 @@ export namespace Prisma {
     user_id?: SortOrder
     email_verified?: SortOrder
     failed_login_attempts?: SortOrder
+    verification_token?: SortOrder
+    token_expires_at?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -46631,6 +46686,8 @@ export namespace Prisma {
     user_id?: SortOrder
     email_verified?: SortOrder
     failed_login_attempts?: SortOrder
+    verification_token?: SortOrder
+    token_expires_at?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -46640,6 +46697,8 @@ export namespace Prisma {
     user_id?: SortOrder
     email_verified?: SortOrder
     failed_login_attempts?: SortOrder
+    verification_token?: SortOrder
+    token_expires_at?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -50481,6 +50540,8 @@ export namespace Prisma {
     account_security_id?: string
     email_verified?: boolean
     failed_login_attempts: number
+    verification_token?: string | null
+    token_expires_at?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -50489,6 +50550,8 @@ export namespace Prisma {
     account_security_id?: string
     email_verified?: boolean
     failed_login_attempts: number
+    verification_token?: string | null
+    token_expires_at?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -50858,6 +50921,8 @@ export namespace Prisma {
     account_security_id?: StringFieldUpdateOperationsInput | string
     email_verified?: BoolFieldUpdateOperationsInput | boolean
     failed_login_attempts?: IntFieldUpdateOperationsInput | number
+    verification_token?: NullableStringFieldUpdateOperationsInput | string | null
+    token_expires_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -50866,6 +50931,8 @@ export namespace Prisma {
     account_security_id?: StringFieldUpdateOperationsInput | string
     email_verified?: BoolFieldUpdateOperationsInput | boolean
     failed_login_attempts?: IntFieldUpdateOperationsInput | number
+    verification_token?: NullableStringFieldUpdateOperationsInput | string | null
+    token_expires_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }

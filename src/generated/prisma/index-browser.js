@@ -277,6 +277,8 @@ exports.Prisma.AccountSecurityScalarFieldEnum = {
   user_id: 'user_id',
   email_verified: 'email_verified',
   failed_login_attempts: 'failed_login_attempts',
+  verification_token: 'verification_token',
+  token_expires_at: 'token_expires_at',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -532,7 +534,8 @@ exports.LanguageOptions = exports.$Enums.LanguageOptions = {
 exports.CourseEnrollmentStatus = exports.$Enums.CourseEnrollmentStatus = {
   Enrolled: 'Enrolled',
   Completed: 'Completed',
-  Cancelled: 'Cancelled'
+  Cancelled: 'Cancelled',
+  Progressing: 'Progressing'
 };
 
 exports.WithdrawStatus = exports.$Enums.WithdrawStatus = {
