@@ -42542,12 +42542,12 @@ export namespace Prisma {
   }
 
   export type LearnerCoursesWhereUniqueInput = Prisma.AtLeast<{
-    learner_id?: string
-    course_id?: string
     learner_id_course_id?: LearnerCoursesLearner_idCourse_idCompoundUniqueInput
     AND?: LearnerCoursesWhereInput | LearnerCoursesWhereInput[]
     OR?: LearnerCoursesWhereInput[]
     NOT?: LearnerCoursesWhereInput | LearnerCoursesWhereInput[]
+    learner_id?: StringFilter<"LearnerCourses"> | string
+    course_id?: StringFilter<"LearnerCourses"> | string
     status?: EnumCourseEnrollmentStatusFilter<"LearnerCourses"> | $Enums.CourseEnrollmentStatus
     progress?: DecimalFilter<"LearnerCourses"> | Decimal | DecimalJsLike | number | string
     rating?: IntFilter<"LearnerCourses"> | number
@@ -42558,7 +42558,7 @@ export namespace Prisma {
     completedAt?: DateTimeFilter<"LearnerCourses"> | Date | string
     learner?: XOR<LearnerScalarRelationFilter, LearnerWhereInput>
     course?: XOR<CourseScalarRelationFilter, CourseWhereInput>
-  }, "learner_id_course_id" | "learner_id" | "course_id" | "learner_id_course_id">
+  }, "learner_id_course_id" | "learner_id_course_id">
 
   export type LearnerCoursesOrderByWithAggregationInput = {
     learner_id?: SortOrder

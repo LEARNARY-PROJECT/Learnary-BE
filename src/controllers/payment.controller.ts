@@ -32,32 +32,43 @@ export const PaymentController = {
 
     // 2. API Nhận Webhook (Tự động)
     handleWebhook: async (req: Request, res: Response) => {
-        // ✅ BỔ SUNG: Log ra để nhìn thấy PayOS gửi gì trong Ngrok
-        console.log("👉 Webhook received from PayOS:", JSON.stringify(req.body, null, 2));
+        console.log("\n======================== WEBHOOK RECEIVED ========================");
+        console.log("📥 Timestamp:", new Date().toISOString());
+        console.log("📋 Headers:", JSON.stringify(req.headers, null, 2));
+        console.log("📦 Body:", JSON.stringify(req.body, null, 2));
+        console.log("🔑 Signature Header:", req.headers['x-payos-signature'] || req.headers['signature'] || 'NONE');
+        console.log("================================================================\n");
 
         try {
             // Ép kiểu req.body về PayOSWebhookBody
             const webhookBody = req.body as PayOSWebhookBody;
 
             if (!webhookBody || !webhookBody.data) {
+                console.error("❌ Invalid webhook body - missing data field");
                 return res.status(400).json({ 
                     success: false, 
                     message: "Invalid Webhook Body" 
                 });
             }
 
-            await PaymentService.processWebhook(webhookBody);
+            console.log("🔄 Processing webhook with orderCode:", webhookBody.data?.orderCode);
+            const result = await PaymentService.processWebhook(webhookBody);
+            console.log("✅ Webhook processed successfully. Result:", result);
 
             // PayOS yêu cầu phản hồi nhanh, nếu không nó sẽ gửi lại nhiều lần
             return res.json({ success: true, message: "Webhook processed successfully" });
 
         } catch (error) {
-            const err = error as Error;
-            console.error("❌ Webhook Error:", err.message);
+            const err = error as any;
+            console.error("\n❌❌❌ WEBHOOK ERROR ❌❌❌");
+            console.error("Error message:", err?.message || String(err));
+            console.error("Error stack:", err?.stack || 'No stack trace');
+            console.error("Error details:", JSON.stringify(err, null, 2));
+            console.error("❌❌❌❌❌❌❌❌❌❌❌❌❌❌\n");
             
             // Nếu lỗi chữ ký -> Trả về 400 để PayOS biết
             // Nếu lỗi DB -> Vẫn có thể trả về 200 (success: false) để tránh PayOS spam retry (Tùy chiến lược của bạn)
-            return res.status(400).json({ success: false, message: err.message });
+            return res.status(400).json({ success: false, message: err?.message || String(err) });
         }
     },
 

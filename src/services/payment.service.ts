@@ -69,42 +69,68 @@ export const PaymentService = {
 
     // 2. Hàm xử lý Webhook
     processWebhook: async (webhookBody: PayOSWebhookBody): Promise<PayOSWebhookData> => {
-    
-    // 1. Xác thực và lấy mã đơn
-    const webhookData = await payOS.webhooks.verify(webhookBody);
-    const orderCode = webhookData.orderCode;
+        console.log("\n🔧 [WEBHOOK SERVICE] Starting processWebhook...");
+        console.log("📦 Webhook body data:", JSON.stringify(webhookBody.data, null, 2));
 
-    console.log(`🔍 Đang tìm đơn hàng: ${orderCode} trong Database...`);
+        try {
+            // 1. Xác thực và lấy mã đơn
+            console.log("🔐 [STEP 1] Verifying webhook signature...");
+            const webhookData = await payOS.webhooks.verify(webhookBody);
+            const orderCode = webhookData.orderCode;
+            console.log("✅ Webhook verified successfully. OrderCode:", orderCode);
+            console.log("📊 Webhook data:", JSON.stringify(webhookData, null, 2));
 
-    // 2. Mở Transaction
-    await prisma.$transaction(async (tx) => {
-        
-        // ⚠️ BƯỚC QUAN TRỌNG: Tìm xem đơn hàng có tồn tại không trước?
-        const transaction = await tx.transaction.findUnique({
-            where: { payment_code: BigInt(orderCode) }
-        });
+            console.log(`\n🔍 [STEP 2] Searching for transaction with payment_code: ${orderCode}...`);
 
-        // Nếu KHÔNG tìm thấy (VD: do PayOS test fake data 123)
-        if (!transaction) {
-            console.log(`❌ Không tìm thấy đơn hàng mã ${orderCode}. Bỏ qua cập nhật.`);
-            return; // Dừng luôn, không làm gì cả, không báo lỗi
-        }
+            // 2. Mở Transaction
+            await prisma.$transaction(async (tx) => {
+                console.log("💾 [DB TRANSACTION] Started database transaction");
+                
+                // ⚠️ BƯỚC QUAN TRỌNG: Tìm xem đơn hàng có tồn tại không trước?
+                const transaction = await tx.transaction.findUnique({
+                    where: { payment_code: BigInt(orderCode) }
+                });
 
-        // Nếu tìm thấy -> Thì mới Update
-        const updatedTrans = await tx.transaction.update({
-            where: { transaction_id: transaction.transaction_id }, // Update theo ID cho chắc
-            data: { status: TransactionStatus.Success }
-        });
+                // Nếu KHÔNG tìm thấy (VD: do PayOS test fake data 123)
+                if (!transaction) {
+                    console.log(`❌ [DB TRANSACTION] Transaction NOT FOUND with payment_code: ${orderCode}`);
+                    console.log("ℹ️  This might be a test webhook or duplicate. Skipping...");
+                    return; // Dừng luôn, không làm gì cả, không báo lỗi
+                }
+                
+                console.log(`✅ [DB TRANSACTION] Found transaction:`);
+                console.log(`   - transaction_id: ${transaction.transaction_id}`);
+                console.log(`   - user_id: ${transaction.user_id}`);
+                console.log(`   - course_id: ${transaction.course_id}`);
+                console.log(`   - current status: ${transaction.status}`);
+                console.log(`   - amount: ${transaction.amount}`);
 
-        console.log("✅ Đã cập nhật trạng thái transaction thành công.");
+                // Nếu tìm thấy -> Thì mới Update
+                console.log(`\n🔄 [STEP 3] Updating transaction status to Success...`);
+                const updatedTrans = await tx.transaction.update({
+                    where: { transaction_id: transaction.transaction_id }, // Update theo ID cho chắc
+                    data: { status: TransactionStatus.Success }
+                });
+                console.log(`✅ Transaction status updated to: ${updatedTrans.status}`);
 
-            // 2. Tìm thông tin học viên
-            const learner = await tx.learner.findUnique({
-                where: { user_id: updatedTrans.user_id }
-            });
+                // 2. Tìm thông tin học viên
+                console.log(`\n👤 [STEP 4] Looking for learner with user_id: ${updatedTrans.user_id}...`);
+                const learner = await tx.learner.findUnique({
+                    where: { user_id: updatedTrans.user_id }
+                });
 
-            if (learner) {
+                if (!learner) {
+                    console.error(`❌ [CRITICAL] Learner NOT FOUND for user_id: ${updatedTrans.user_id}`);
+                    console.error(`   This user might not have a learner record yet!`);
+                    throw new Error(`Learner not found for user_id: ${updatedTrans.user_id}`);
+                }
+                
+                console.log(`✅ Found learner:`);
+                console.log(`   - learner_id: ${learner.learner_id}`);
+                console.log(`   - user_id: ${learner.user_id}`);
+
                 // Kiểm tra trùng lặp lần cuối
+                console.log(`\n🔍 [STEP 5] Checking if learner already enrolled in course...`);
                 const exists = await tx.learnerCourses.findUnique({
                     where: { 
                         learner_id_course_id: { 
@@ -113,27 +139,48 @@ export const PaymentService = {
                         } 
                     }
                 });
-
-                if (!exists) {
-                    // ⚠️ QUAN TRỌNG: Dùng 'tx.learnerCourses.create' thay vì hàm bên ngoài
-                    // Để đảm bảo nằm chung trong transaction
-                    await tx.learnerCourses.create({
-                        data: {
-                            learner_id: learner.learner_id,
-                            course_id: updatedTrans.course_id,
-                            status: 'Enrolled', // Hoặc CourseEnrollmentStatus.Enrolled
-                            progress: new Prisma.Decimal(0),
-                            rating: 0,
-                            feedback: '',
-                            completedAt: new Date(0), // Hoặc null
-                            enrolledAt: new Date()
-                        }
-                    });
+                
+                if (exists) {
+                    console.log(`⚠️  Learner already enrolled in this course. Skipping enrollment.`);
+                    console.log(`   - Existing record:`, JSON.stringify(exists, null, 2));
+                    return;
                 }
-            }
-        });
+                
+                console.log(`✅ No existing enrollment found. Creating new learner_course record...`);
 
-        return webhookData;
+                // ⚠️ QUAN TRỌNG: Dùng 'tx.learnerCourses.create' thay vì hàm bên ngoài
+                // Để đảm bảo nằm chung trong transaction
+                const learnerCourse = await tx.learnerCourses.create({
+                    data: {
+                        learner_id: learner.learner_id,
+                        course_id: updatedTrans.course_id,
+                        status: CourseEnrollmentStatus.Enrolled,
+                        progress: new Prisma.Decimal(0),
+                        rating: 0,
+                        feedback: '',
+                        completedAt: new Date(),
+                        enrolledAt: new Date()
+                    }
+                });
+                
+                console.log(`\n🎉 [SUCCESS] LearnerCourse created successfully!`);
+                console.log(`   - learner_id: ${learnerCourse.learner_id}`);
+                console.log(`   - course_id: ${learnerCourse.course_id}`);
+                console.log(`   - status: ${learnerCourse.status}`);
+                console.log(`   - enrolled_at: ${learnerCourse.enrolledAt}`);
+            });
+            console.log(`\n✅✅✅ [WEBHOOK SERVICE] processWebhook completed successfully!\n`);
+            return webhookData;
+        } catch (error) {
+            const err = error as any;
+            console.error(`\n❌❌❌ [WEBHOOK SERVICE ERROR] ❌❌❌`);
+            console.error(`Error type: ${err?.constructor?.name || 'Unknown'}`);
+            console.error(`Error message: ${err?.message || String(err)}`);
+            console.error(`Error code: ${err?.code || 'N/A'}`);
+            console.error(`Error stack:`, err?.stack || 'No stack trace');
+            console.error(`❌❌❌❌❌❌❌❌❌❌❌❌❌❌❌❌❌❌\n`);
+            throw err;
+        }
     },
 
     // 3. Hàm hủy thanh toán
