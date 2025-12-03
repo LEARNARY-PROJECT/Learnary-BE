@@ -50590,6 +50590,23 @@ export namespace Prisma {
     _max?: NestedIntFilter<$PrismaModel>
   }
 
+  export type NestedEnumGroupTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.GroupType | EnumGroupTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.GroupType[] | ListEnumGroupTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.GroupType[] | ListEnumGroupTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumGroupTypeFilter<$PrismaModel> | $Enums.GroupType
+  }
+
+  export type NestedEnumGroupTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.GroupType | EnumGroupTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.GroupType[] | ListEnumGroupTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.GroupType[] | ListEnumGroupTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumGroupTypeWithAggregatesFilter<$PrismaModel> | $Enums.GroupType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumGroupTypeFilter<$PrismaModel>
+    _max?: NestedEnumGroupTypeFilter<$PrismaModel>
+  }
+
   export type NestedEnumCourseStatusFilter<$PrismaModel = never> = {
     equals?: $Enums.CourseStatus | EnumCourseStatusFieldRefInput<$PrismaModel>
     in?: $Enums.CourseStatus[] | ListEnumCourseStatusFieldRefInput<$PrismaModel>
