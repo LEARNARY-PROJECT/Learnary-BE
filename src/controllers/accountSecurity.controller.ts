@@ -55,3 +55,94 @@ export const remove = async (req: Request, res: Response) => {
     res.status(500).json(failure("Failed to delete accountSecurity", e.message));
   }
 };
+
+export const verifyUserEmail = async (req: Request, res: Response) => {
+  try {
+    const userId  = req.jwtPayload?.id;
+    const { otp } = req.body;
+    
+    if (!userId) {
+      res.status(400).json(failure("User ID is required"));
+      return;
+    }
+    
+    if (!otp) {
+      res.status(400).json(failure("OTP is required"));
+      return;
+    }
+    
+    const user = await AccountSecurityService.verifyEmailWithToken(userId, otp);
+    res.json(success(user, "Email verified successfully"));
+  } catch (err) {
+    const e = err as Error;
+    res.status(400).json(failure("Failed to verify email", e.message));
+  }
+};
+
+export const sendOTP = async (req: Request, res: Response) => {
+  try {
+    const userId = req.jwtPayload?.id;
+    if (!userId) {
+      res.status(400).json(failure("User ID is required"));
+      return;
+    }
+    await AccountSecurityService.sendOTPEmail(userId);
+    res.json(success(null, "OTP sent to your email successfully"));
+  } catch (err) {
+    const e = err as Error;
+    res.status(500).json(failure("Failed to send OTP", e.message));
+  }
+};
+
+export const sendVerificationLink = async (req: Request, res: Response) => {
+  try {
+    const userId = req.jwtPayload?.id;
+    if (!userId) {
+      res.status(400).json(failure("User ID is required"));
+      return;
+    }
+    await AccountSecurityService.sendVerificationLink(userId);
+    res.json(success(null, "Verification link sent to your email successfully"));
+  } catch (err) {
+    const e = err as Error;
+    res.status(500).json(failure("Failed to send verification link", e.message));
+  }
+};
+
+export const verifyWithToken = async (req: Request, res: Response) => {
+  try {
+    const userId = req.jwtPayload?.id;
+    const { token } = req.body;
+    
+    if (!userId) {
+      res.status(400).json(failure("User ID is required"));
+      return;
+    }
+    
+    if (!token) {
+      res.status(400).json(failure("Token/OTP is required"));
+      return;
+    }
+    
+    const user = await AccountSecurityService.verifyEmailWithToken(userId, token);
+    res.json(success(user, "Email verified successfully"));
+  } catch (err) {
+    const e = err as Error;
+    res.status(400).json(failure("Failed to verify email", e.message));
+  }
+};
+
+export const resendOTP = async (req: Request, res: Response) => {
+  try {
+    const { userId } = req.params;
+    if (!userId) {
+      res.status(400).json(failure("User ID is required"));
+      return;
+    }
+    await AccountSecurityService.sendOTPEmail(userId);
+    res.json(success(null, "OTP resent to your email successfully"));
+  } catch (err) {
+    const e = err as Error;
+    res.status(500).json(failure("Failed to resend OTP", e.message));
+  }
+};
