@@ -447,8 +447,8 @@ model Level {
 }
 
 model LearnerCourses {
-  learner_id String @unique @db.Char(50)
-  course_id  String @unique @db.Char(50)
+  learner_id String @db.Char(50)
+  course_id  String @db.Char(50)
 
   status      CourseEnrollmentStatus @default(Enrolled)
   progress    Decimal                @db.Decimal(5, 2)

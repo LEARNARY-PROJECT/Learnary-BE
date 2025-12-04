@@ -70,6 +70,8 @@ export const PaymentService = {
     // 2. Hàm xử lý Webhook
     processWebhook: async (webhookBody: PayOSWebhookBody): Promise<PayOSWebhookData> => {
     
+    console.log("🔔 Webhook nhận được:", JSON.stringify(webhookBody, null, 2));
+    
     // 1. Xác thực và lấy mã đơn
     const webhookData = await payOS.webhooks.verify(webhookBody);
     const orderCode = webhookData.orderCode;
@@ -90,18 +92,22 @@ export const PaymentService = {
             return; // Dừng luôn, không làm gì cả, không báo lỗi
         }
 
+        console.log(`✅ Tìm thấy transaction:`, transaction);
+
         // Nếu tìm thấy -> Thì mới Update
         const updatedTrans = await tx.transaction.update({
             where: { transaction_id: transaction.transaction_id }, // Update theo ID cho chắc
             data: { status: TransactionStatus.Success }
         });
 
-        console.log("✅ Đã cập nhật trạng thái transaction thành công.");
+        console.log("✅ Đã cập nhật trạng thái transaction thành công:", updatedTrans.transaction_id);
 
             // 2. Tìm thông tin học viên
             const learner = await tx.learner.findUnique({
                 where: { user_id: updatedTrans.user_id }
             });
+
+            console.log(`🔍 Tìm learner với user_id: ${updatedTrans.user_id}`, learner);
 
             if (learner) {
                 // Kiểm tra trùng lặp lần cuối
@@ -114,14 +120,16 @@ export const PaymentService = {
                     }
                 });
 
+                console.log(`🔍 Kiểm tra learner đã enroll chưa:`, exists);
+
                 if (!exists) {
                     // ⚠️ QUAN TRỌNG: Dùng 'tx.learnerCourses.create' thay vì hàm bên ngoài
                     // Để đảm bảo nằm chung trong transaction
-                    await tx.learnerCourses.create({
+                    const enrolled = await tx.learnerCourses.create({
                         data: {
                             learner_id: learner.learner_id,
                             course_id: updatedTrans.course_id,
-                            status: 'Enrolled', // Hoặc CourseEnrollmentStatus.Enrolled
+                            status: CourseEnrollmentStatus.Enrolled,
                             progress: new Prisma.Decimal(0),
                             rating: 0,
                             feedback: '',
@@ -129,10 +137,16 @@ export const PaymentService = {
                             enrolledAt: new Date()
                         }
                     });
+                    console.log(`✅ Đã tạo learnerCourses:`, enrolled);
+                } else {
+                    console.log(`⚠️ Learner đã enroll khóa học này rồi, bỏ qua.`);
                 }
+            } else {
+                console.log(`❌ Không tìm thấy learner với user_id: ${updatedTrans.user_id}`);
             }
         });
 
+        console.log(`🎉 Webhook xử lý thành công cho orderCode: ${orderCode}`);
         return webhookData;
     },
 
