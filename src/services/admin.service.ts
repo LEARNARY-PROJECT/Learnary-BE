@@ -1,8 +1,31 @@
 import prisma from "../lib/client";
-import { Admin } from'../generated/prisma'
-
-export const createAdmin = async (data: Omit<Admin, 'admin_id' | 'createdAt' | 'updatedAt'>) => {
-  return prisma.admin.create({ data });
+import { Admin, User } from '../generated/prisma'
+import bcryptjs from "bcryptjs";
+type createAdminProps = User & { admin_role_id: string }
+export const createAdmin = async (
+  email: string,
+  password: string,
+  fullName: string,
+  admin_role_id_req: string,
+): Promise<User & { admin: Admin }> => {
+  const hashedPassword = await bcryptjs.hash(password, 10);
+  return await prisma.$transaction(async (tx) => {
+    const user = await tx.user.create({
+      data: {
+        email,
+        password: hashedPassword,
+        fullName,
+        role: "ADMIN",
+      }
+    });
+    const admin = await tx.admin.create({
+      data: {
+        user_id: user.user_id,
+        admin_role_id: admin_role_id_req
+      }
+    })
+    return { ...user, admin }
+  })
 };
 
 export const getAdminById = async (admin_id: string) => {
@@ -10,7 +33,14 @@ export const getAdminById = async (admin_id: string) => {
 };
 
 export const getAllAdmins = async () => {
-  return prisma.admin.findMany();
+  return prisma.admin.findMany(
+    {
+      include: {
+        user:true,
+        adminRole:true,
+      }
+    }
+  );
 };
 
 export const updateAdmin = async (admin_id: string, data: Partial<Admin>) => {

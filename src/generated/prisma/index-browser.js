@@ -257,6 +257,7 @@ exports.Prisma.AdminScalarFieldEnum = {
 
 exports.Prisma.AdminRoleScalarFieldEnum = {
   admin_role_id: 'admin_role_id',
+  level: 'level',
   role_name: 'role_name',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
@@ -280,9 +281,30 @@ exports.Prisma.AdminRolePermissionScalarFieldEnum = {
 exports.Prisma.AccountSecurityScalarFieldEnum = {
   account_security_id: 'account_security_id',
   user_id: 'user_id',
+  email_verified: 'email_verified',
   failed_login_attempts: 'failed_login_attempts',
+  verification_token: 'verification_token',
+  token_expires_at: 'token_expires_at',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
+};
+
+exports.Prisma.GroupScalarFieldEnum = {
+  group_id: 'group_id',
+  name: 'name',
+  description: 'description',
+  type: 'type',
+  discount: 'discount',
+  createdAt: 'createdAt',
+  updateAt: 'updateAt'
+};
+
+exports.Prisma.CourseGroupScalarFieldEnum = {
+  group_id: 'group_id',
+  course_id: 'course_id',
+  order_index: 'order_index',
+  createdAt: 'createdAt',
+  updateAt: 'updateAt'
 };
 
 exports.Prisma.CourseScalarFieldEnum = {
@@ -363,6 +385,17 @@ exports.Prisma.NoteScalarFieldEnum = {
   lesson_id: 'lesson_id',
   content: 'content',
   createAt: 'createAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.WithdrawRequestScalarFieldEnum = {
+  withdraw_request_id: 'withdraw_request_id',
+  user_id: 'user_id',
+  admin_id: 'admin_id',
+  status: 'status',
+  note: 'note',
+  balance: 'balance',
+  createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
 
@@ -486,6 +519,11 @@ exports.TransactionNote = exports.$Enums.TransactionNote = {
   Pay_For_Instructor: 'Pay_For_Instructor'
 };
 
+exports.GroupType = exports.$Enums.GroupType = {
+  Combo: 'Combo',
+  Group: 'Group'
+};
+
 exports.CourseStatus = exports.$Enums.CourseStatus = {
   Draft: 'Draft',
   Published: 'Published',
@@ -501,7 +539,14 @@ exports.LanguageOptions = exports.$Enums.LanguageOptions = {
 exports.CourseEnrollmentStatus = exports.$Enums.CourseEnrollmentStatus = {
   Enrolled: 'Enrolled',
   Completed: 'Completed',
-  Cancelled: 'Cancelled'
+  Cancelled: 'Cancelled',
+  Progressing: 'Progressing'
+};
+
+exports.WithdrawStatus = exports.$Enums.WithdrawStatus = {
+  Success: 'Success',
+  Pending: 'Pending',
+  Rejected: 'Rejected'
 };
 
 exports.Prisma.ModelName = {
@@ -520,6 +565,8 @@ exports.Prisma.ModelName = {
   Permission: 'Permission',
   AdminRolePermission: 'AdminRolePermission',
   AccountSecurity: 'AccountSecurity',
+  Group: 'Group',
+  CourseGroup: 'CourseGroup',
   Course: 'Course',
   Category: 'Category',
   Level: 'Level',
@@ -527,6 +574,7 @@ exports.Prisma.ModelName = {
   Chapter: 'Chapter',
   Lesson: 'Lesson',
   Note: 'Note',
+  WithdrawRequest: 'WithdrawRequest',
   Feedback: 'Feedback',
   Quiz: 'Quiz',
   Question: 'Question',

@@ -71,15 +71,9 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(passport.initialize());
 
-// Debug middleware - log tất cả requests
-app.use((req, res, next) => {
-  console.log(`📍 Request: ${req.method} ${req.originalUrl}`);
-  next();
-});
-
 //Routes
 app.use("/api/auth", authRoutes);
-app.use("/api", paymentRoutes); // ⚠️ Mount payment TRƯỚC course để tránh bị authenticate global
+app.use("/api", paymentRoutes); // Mount payment TRƯỚC course để tránh bị authenticate global
 app.use("/api", userRoutes);
 app.use("/api", courseRoutes);
 app.use("/api", feedbackRoutes);
@@ -140,7 +134,7 @@ async function startServer() {
     console.log(`📦 Environment: ${process.env.NODE_ENV || 'development'}`);
     console.log(`🔌 Database: ${isDevelopment ? 'LOCAL' : 'PRODUCTION'}`);
     
-    await createDefaultUserIfNoneExists();
+    // await createDefaultUserIfNoneExists();
     console.log("✅ Database connection successful");
 
     setupSwagger(app);
