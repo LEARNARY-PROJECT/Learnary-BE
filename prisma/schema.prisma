@@ -338,11 +338,12 @@ model Admin {
 model AdminRole {
   admin_role_id String @id @default(uuid()) @db.Char(50)
 
+  level Int
   role_name String   @unique @db.VarChar(255)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  admins      Admin[]
+  admins      Admin?
   permissions AdminRolePermission[] @relation("RoleToPermission")
 
   @@map("admin_roles")
@@ -369,7 +370,7 @@ model AdminRolePermission {
   updatedAt DateTime @updatedAt
 
   permission       Permission @relation("PermissionToAdminRole", fields: [permission_id], references: [permission_id])
-  roleToPermission AdminRole? @relation("RoleToPermission", fields: [admin_role_id], references: [admin_role_id])
+  roleToPermission AdminRole @relation("RoleToPermission", fields: [admin_role_id], references: [admin_role_id])
 
   @@id([permission_id, admin_role_id])
   @@index([admin_role_id], name: "idx_arp_role")

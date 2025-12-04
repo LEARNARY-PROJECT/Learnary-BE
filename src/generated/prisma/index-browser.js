@@ -257,6 +257,7 @@ exports.Prisma.AdminScalarFieldEnum = {
 
 exports.Prisma.AdminRoleScalarFieldEnum = {
   admin_role_id: 'admin_role_id',
+  level: 'level',
   role_name: 'role_name',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'

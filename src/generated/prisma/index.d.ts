@@ -4025,12 +4025,10 @@ export namespace Prisma {
    */
 
   export type AdminRoleCountOutputType = {
-    admins: number
     permissions: number
   }
 
   export type AdminRoleCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    admins?: boolean | AdminRoleCountOutputTypeCountAdminsArgs
     permissions?: boolean | AdminRoleCountOutputTypeCountPermissionsArgs
   }
 
@@ -4043,13 +4041,6 @@ export namespace Prisma {
      * Select specific fields to fetch from the AdminRoleCountOutputType
      */
     select?: AdminRoleCountOutputTypeSelect<ExtArgs> | null
-  }
-
-  /**
-   * AdminRoleCountOutputType without action
-   */
-  export type AdminRoleCountOutputTypeCountAdminsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: AdminWhereInput
   }
 
   /**
@@ -17502,12 +17493,23 @@ export namespace Prisma {
 
   export type AggregateAdminRole = {
     _count: AdminRoleCountAggregateOutputType | null
+    _avg: AdminRoleAvgAggregateOutputType | null
+    _sum: AdminRoleSumAggregateOutputType | null
     _min: AdminRoleMinAggregateOutputType | null
     _max: AdminRoleMaxAggregateOutputType | null
   }
 
+  export type AdminRoleAvgAggregateOutputType = {
+    level: number | null
+  }
+
+  export type AdminRoleSumAggregateOutputType = {
+    level: number | null
+  }
+
   export type AdminRoleMinAggregateOutputType = {
     admin_role_id: string | null
+    level: number | null
     role_name: string | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -17515,6 +17517,7 @@ export namespace Prisma {
 
   export type AdminRoleMaxAggregateOutputType = {
     admin_role_id: string | null
+    level: number | null
     role_name: string | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -17522,6 +17525,7 @@ export namespace Prisma {
 
   export type AdminRoleCountAggregateOutputType = {
     admin_role_id: number
+    level: number
     role_name: number
     createdAt: number
     updatedAt: number
@@ -17529,8 +17533,17 @@ export namespace Prisma {
   }
 
 
+  export type AdminRoleAvgAggregateInputType = {
+    level?: true
+  }
+
+  export type AdminRoleSumAggregateInputType = {
+    level?: true
+  }
+
   export type AdminRoleMinAggregateInputType = {
     admin_role_id?: true
+    level?: true
     role_name?: true
     createdAt?: true
     updatedAt?: true
@@ -17538,6 +17551,7 @@ export namespace Prisma {
 
   export type AdminRoleMaxAggregateInputType = {
     admin_role_id?: true
+    level?: true
     role_name?: true
     createdAt?: true
     updatedAt?: true
@@ -17545,6 +17559,7 @@ export namespace Prisma {
 
   export type AdminRoleCountAggregateInputType = {
     admin_role_id?: true
+    level?: true
     role_name?: true
     createdAt?: true
     updatedAt?: true
@@ -17589,6 +17604,18 @@ export namespace Prisma {
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
+     * Select which fields to average
+    **/
+    _avg?: AdminRoleAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: AdminRoleSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
      * Select which fields to find the minimum value
     **/
     _min?: AdminRoleMinAggregateInputType
@@ -17619,16 +17646,21 @@ export namespace Prisma {
     take?: number
     skip?: number
     _count?: AdminRoleCountAggregateInputType | true
+    _avg?: AdminRoleAvgAggregateInputType
+    _sum?: AdminRoleSumAggregateInputType
     _min?: AdminRoleMinAggregateInputType
     _max?: AdminRoleMaxAggregateInputType
   }
 
   export type AdminRoleGroupByOutputType = {
     admin_role_id: string
+    level: number
     role_name: string
     createdAt: Date
     updatedAt: Date
     _count: AdminRoleCountAggregateOutputType | null
+    _avg: AdminRoleAvgAggregateOutputType | null
+    _sum: AdminRoleSumAggregateOutputType | null
     _min: AdminRoleMinAggregateOutputType | null
     _max: AdminRoleMaxAggregateOutputType | null
   }
@@ -17649,6 +17681,7 @@ export namespace Prisma {
 
   export type AdminRoleSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     admin_role_id?: boolean
+    level?: boolean
     role_name?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -17659,6 +17692,7 @@ export namespace Prisma {
 
   export type AdminRoleSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     admin_role_id?: boolean
+    level?: boolean
     role_name?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -17666,6 +17700,7 @@ export namespace Prisma {
 
   export type AdminRoleSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     admin_role_id?: boolean
+    level?: boolean
     role_name?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -17673,12 +17708,13 @@ export namespace Prisma {
 
   export type AdminRoleSelectScalar = {
     admin_role_id?: boolean
+    level?: boolean
     role_name?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type AdminRoleOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"admin_role_id" | "role_name" | "createdAt" | "updatedAt", ExtArgs["result"]["adminRole"]>
+  export type AdminRoleOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"admin_role_id" | "level" | "role_name" | "createdAt" | "updatedAt", ExtArgs["result"]["adminRole"]>
   export type AdminRoleInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     admins?: boolean | AdminRole$adminsArgs<ExtArgs>
     permissions?: boolean | AdminRole$permissionsArgs<ExtArgs>
@@ -17690,11 +17726,12 @@ export namespace Prisma {
   export type $AdminRolePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "AdminRole"
     objects: {
-      admins: Prisma.$AdminPayload<ExtArgs>[]
+      admins: Prisma.$AdminPayload<ExtArgs> | null
       permissions: Prisma.$AdminRolePermissionPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       admin_role_id: string
+      level: number
       role_name: string
       createdAt: Date
       updatedAt: Date
@@ -18092,7 +18129,7 @@ export namespace Prisma {
    */
   export interface Prisma__AdminRoleClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    admins<T extends AdminRole$adminsArgs<ExtArgs> = {}>(args?: Subset<T, AdminRole$adminsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AdminPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    admins<T extends AdminRole$adminsArgs<ExtArgs> = {}>(args?: Subset<T, AdminRole$adminsArgs<ExtArgs>>): Prisma__AdminClient<$Result.GetResult<Prisma.$AdminPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     permissions<T extends AdminRole$permissionsArgs<ExtArgs> = {}>(args?: Subset<T, AdminRole$permissionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AdminRolePermissionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -18124,6 +18161,7 @@ export namespace Prisma {
    */
   interface AdminRoleFieldRefs {
     readonly admin_role_id: FieldRef<"AdminRole", 'String'>
+    readonly level: FieldRef<"AdminRole", 'Int'>
     readonly role_name: FieldRef<"AdminRole", 'String'>
     readonly createdAt: FieldRef<"AdminRole", 'DateTime'>
     readonly updatedAt: FieldRef<"AdminRole", 'DateTime'>
@@ -18531,11 +18569,6 @@ export namespace Prisma {
      */
     include?: AdminInclude<ExtArgs> | null
     where?: AdminWhereInput
-    orderBy?: AdminOrderByWithRelationInput | AdminOrderByWithRelationInput[]
-    cursor?: AdminWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: AdminScalarFieldEnum | AdminScalarFieldEnum[]
   }
 
   /**
@@ -19808,7 +19841,7 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     permission?: boolean | PermissionDefaultArgs<ExtArgs>
-    roleToPermission?: boolean | AdminRolePermission$roleToPermissionArgs<ExtArgs>
+    roleToPermission?: boolean | AdminRoleDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["adminRolePermission"]>
 
   export type AdminRolePermissionSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -19817,7 +19850,7 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     permission?: boolean | PermissionDefaultArgs<ExtArgs>
-    roleToPermission?: boolean | AdminRolePermission$roleToPermissionArgs<ExtArgs>
+    roleToPermission?: boolean | AdminRoleDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["adminRolePermission"]>
 
   export type AdminRolePermissionSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -19826,7 +19859,7 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     permission?: boolean | PermissionDefaultArgs<ExtArgs>
-    roleToPermission?: boolean | AdminRolePermission$roleToPermissionArgs<ExtArgs>
+    roleToPermission?: boolean | AdminRoleDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["adminRolePermission"]>
 
   export type AdminRolePermissionSelectScalar = {
@@ -19839,22 +19872,22 @@ export namespace Prisma {
   export type AdminRolePermissionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"permission_id" | "admin_role_id" | "createdAt" | "updatedAt", ExtArgs["result"]["adminRolePermission"]>
   export type AdminRolePermissionInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     permission?: boolean | PermissionDefaultArgs<ExtArgs>
-    roleToPermission?: boolean | AdminRolePermission$roleToPermissionArgs<ExtArgs>
+    roleToPermission?: boolean | AdminRoleDefaultArgs<ExtArgs>
   }
   export type AdminRolePermissionIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     permission?: boolean | PermissionDefaultArgs<ExtArgs>
-    roleToPermission?: boolean | AdminRolePermission$roleToPermissionArgs<ExtArgs>
+    roleToPermission?: boolean | AdminRoleDefaultArgs<ExtArgs>
   }
   export type AdminRolePermissionIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     permission?: boolean | PermissionDefaultArgs<ExtArgs>
-    roleToPermission?: boolean | AdminRolePermission$roleToPermissionArgs<ExtArgs>
+    roleToPermission?: boolean | AdminRoleDefaultArgs<ExtArgs>
   }
 
   export type $AdminRolePermissionPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "AdminRolePermission"
     objects: {
       permission: Prisma.$PermissionPayload<ExtArgs>
-      roleToPermission: Prisma.$AdminRolePayload<ExtArgs> | null
+      roleToPermission: Prisma.$AdminRolePayload<ExtArgs>
     }
     scalars: $Extensions.GetPayloadResult<{
       permission_id: string
@@ -20256,7 +20289,7 @@ export namespace Prisma {
   export interface Prisma__AdminRolePermissionClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     permission<T extends PermissionDefaultArgs<ExtArgs> = {}>(args?: Subset<T, PermissionDefaultArgs<ExtArgs>>): Prisma__PermissionClient<$Result.GetResult<Prisma.$PermissionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    roleToPermission<T extends AdminRolePermission$roleToPermissionArgs<ExtArgs> = {}>(args?: Subset<T, AdminRolePermission$roleToPermissionArgs<ExtArgs>>): Prisma__AdminRoleClient<$Result.GetResult<Prisma.$AdminRolePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    roleToPermission<T extends AdminRoleDefaultArgs<ExtArgs> = {}>(args?: Subset<T, AdminRoleDefaultArgs<ExtArgs>>): Prisma__AdminRoleClient<$Result.GetResult<Prisma.$AdminRolePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -20683,25 +20716,6 @@ export namespace Prisma {
      * Limit how many AdminRolePermissions to delete.
      */
     limit?: number
-  }
-
-  /**
-   * AdminRolePermission.roleToPermission
-   */
-  export type AdminRolePermission$roleToPermissionArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the AdminRole
-     */
-    select?: AdminRoleSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the AdminRole
-     */
-    omit?: AdminRoleOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: AdminRoleInclude<ExtArgs> | null
-    where?: AdminRoleWhereInput
   }
 
   /**
@@ -40394,6 +40408,7 @@ export namespace Prisma {
 
   export const AdminRoleScalarFieldEnum: {
     admin_role_id: 'admin_role_id',
+    level: 'level',
     role_name: 'role_name',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
@@ -41896,19 +41911,21 @@ export namespace Prisma {
     OR?: AdminRoleWhereInput[]
     NOT?: AdminRoleWhereInput | AdminRoleWhereInput[]
     admin_role_id?: StringFilter<"AdminRole"> | string
+    level?: IntFilter<"AdminRole"> | number
     role_name?: StringFilter<"AdminRole"> | string
     createdAt?: DateTimeFilter<"AdminRole"> | Date | string
     updatedAt?: DateTimeFilter<"AdminRole"> | Date | string
-    admins?: AdminListRelationFilter
+    admins?: XOR<AdminNullableScalarRelationFilter, AdminWhereInput> | null
     permissions?: AdminRolePermissionListRelationFilter
   }
 
   export type AdminRoleOrderByWithRelationInput = {
     admin_role_id?: SortOrder
+    level?: SortOrder
     role_name?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    admins?: AdminOrderByRelationAggregateInput
+    admins?: AdminOrderByWithRelationInput
     permissions?: AdminRolePermissionOrderByRelationAggregateInput
   }
 
@@ -41918,20 +41935,24 @@ export namespace Prisma {
     AND?: AdminRoleWhereInput | AdminRoleWhereInput[]
     OR?: AdminRoleWhereInput[]
     NOT?: AdminRoleWhereInput | AdminRoleWhereInput[]
+    level?: IntFilter<"AdminRole"> | number
     createdAt?: DateTimeFilter<"AdminRole"> | Date | string
     updatedAt?: DateTimeFilter<"AdminRole"> | Date | string
-    admins?: AdminListRelationFilter
+    admins?: XOR<AdminNullableScalarRelationFilter, AdminWhereInput> | null
     permissions?: AdminRolePermissionListRelationFilter
   }, "admin_role_id" | "role_name">
 
   export type AdminRoleOrderByWithAggregationInput = {
     admin_role_id?: SortOrder
+    level?: SortOrder
     role_name?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: AdminRoleCountOrderByAggregateInput
+    _avg?: AdminRoleAvgOrderByAggregateInput
     _max?: AdminRoleMaxOrderByAggregateInput
     _min?: AdminRoleMinOrderByAggregateInput
+    _sum?: AdminRoleSumOrderByAggregateInput
   }
 
   export type AdminRoleScalarWhereWithAggregatesInput = {
@@ -41939,6 +41960,7 @@ export namespace Prisma {
     OR?: AdminRoleScalarWhereWithAggregatesInput[]
     NOT?: AdminRoleScalarWhereWithAggregatesInput | AdminRoleScalarWhereWithAggregatesInput[]
     admin_role_id?: StringWithAggregatesFilter<"AdminRole"> | string
+    level?: IntWithAggregatesFilter<"AdminRole"> | number
     role_name?: StringWithAggregatesFilter<"AdminRole"> | string
     createdAt?: DateTimeWithAggregatesFilter<"AdminRole"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"AdminRole"> | Date | string
@@ -42008,7 +42030,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"AdminRolePermission"> | Date | string
     updatedAt?: DateTimeFilter<"AdminRolePermission"> | Date | string
     permission?: XOR<PermissionScalarRelationFilter, PermissionWhereInput>
-    roleToPermission?: XOR<AdminRoleNullableScalarRelationFilter, AdminRoleWhereInput> | null
+    roleToPermission?: XOR<AdminRoleScalarRelationFilter, AdminRoleWhereInput>
   }
 
   export type AdminRolePermissionOrderByWithRelationInput = {
@@ -42030,7 +42052,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"AdminRolePermission"> | Date | string
     updatedAt?: DateTimeFilter<"AdminRolePermission"> | Date | string
     permission?: XOR<PermissionScalarRelationFilter, PermissionWhereInput>
-    roleToPermission?: XOR<AdminRoleNullableScalarRelationFilter, AdminRoleWhereInput> | null
+    roleToPermission?: XOR<AdminRoleScalarRelationFilter, AdminRoleWhereInput>
   }, "permission_id_admin_role_id" | "admin_role_id">
 
   export type AdminRolePermissionOrderByWithAggregationInput = {
@@ -44331,42 +44353,47 @@ export namespace Prisma {
 
   export type AdminRoleCreateInput = {
     admin_role_id?: string
+    level: number
     role_name: string
     createdAt?: Date | string
     updatedAt?: Date | string
-    admins?: AdminCreateNestedManyWithoutAdminRoleInput
+    admins?: AdminCreateNestedOneWithoutAdminRoleInput
     permissions?: AdminRolePermissionCreateNestedManyWithoutRoleToPermissionInput
   }
 
   export type AdminRoleUncheckedCreateInput = {
     admin_role_id?: string
+    level: number
     role_name: string
     createdAt?: Date | string
     updatedAt?: Date | string
-    admins?: AdminUncheckedCreateNestedManyWithoutAdminRoleInput
+    admins?: AdminUncheckedCreateNestedOneWithoutAdminRoleInput
     permissions?: AdminRolePermissionUncheckedCreateNestedManyWithoutRoleToPermissionInput
   }
 
   export type AdminRoleUpdateInput = {
     admin_role_id?: StringFieldUpdateOperationsInput | string
+    level?: IntFieldUpdateOperationsInput | number
     role_name?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    admins?: AdminUpdateManyWithoutAdminRoleNestedInput
+    admins?: AdminUpdateOneWithoutAdminRoleNestedInput
     permissions?: AdminRolePermissionUpdateManyWithoutRoleToPermissionNestedInput
   }
 
   export type AdminRoleUncheckedUpdateInput = {
     admin_role_id?: StringFieldUpdateOperationsInput | string
+    level?: IntFieldUpdateOperationsInput | number
     role_name?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    admins?: AdminUncheckedUpdateManyWithoutAdminRoleNestedInput
+    admins?: AdminUncheckedUpdateOneWithoutAdminRoleNestedInput
     permissions?: AdminRolePermissionUncheckedUpdateManyWithoutRoleToPermissionNestedInput
   }
 
   export type AdminRoleCreateManyInput = {
     admin_role_id?: string
+    level: number
     role_name: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -44374,6 +44401,7 @@ export namespace Prisma {
 
   export type AdminRoleUpdateManyMutationInput = {
     admin_role_id?: StringFieldUpdateOperationsInput | string
+    level?: IntFieldUpdateOperationsInput | number
     role_name?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -44381,6 +44409,7 @@ export namespace Prisma {
 
   export type AdminRoleUncheckedUpdateManyInput = {
     admin_role_id?: StringFieldUpdateOperationsInput | string
+    level?: IntFieldUpdateOperationsInput | number
     role_name?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -44450,7 +44479,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     permission?: PermissionCreateNestedOneWithoutAdminRolesInput
-    roleToPermission?: AdminRoleCreateNestedOneWithoutPermissionsInput
+    roleToPermission: AdminRoleCreateNestedOneWithoutPermissionsInput
   }
 
   export type AdminRolePermissionUncheckedCreateInput = {
@@ -44464,7 +44493,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     permission?: PermissionUpdateOneRequiredWithoutAdminRolesNestedInput
-    roleToPermission?: AdminRoleUpdateOneWithoutPermissionsNestedInput
+    roleToPermission?: AdminRoleUpdateOneRequiredWithoutPermissionsNestedInput
   }
 
   export type AdminRolePermissionUncheckedUpdateInput = {
@@ -46759,10 +46788,15 @@ export namespace Prisma {
     updatedAt?: SortOrder
   }
 
-  export type AdminListRelationFilter = {
-    every?: AdminWhereInput
-    some?: AdminWhereInput
-    none?: AdminWhereInput
+  export type IntFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntFilter<$PrismaModel> | number
   }
 
   export type AdminRolePermissionListRelationFilter = {
@@ -46771,23 +46805,25 @@ export namespace Prisma {
     none?: AdminRolePermissionWhereInput
   }
 
-  export type AdminOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
   export type AdminRolePermissionOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
   export type AdminRoleCountOrderByAggregateInput = {
     admin_role_id?: SortOrder
+    level?: SortOrder
     role_name?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
 
+  export type AdminRoleAvgOrderByAggregateInput = {
+    level?: SortOrder
+  }
+
   export type AdminRoleMaxOrderByAggregateInput = {
     admin_role_id?: SortOrder
+    level?: SortOrder
     role_name?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -46795,9 +46831,30 @@ export namespace Prisma {
 
   export type AdminRoleMinOrderByAggregateInput = {
     admin_role_id?: SortOrder
+    level?: SortOrder
     role_name?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+  }
+
+  export type AdminRoleSumOrderByAggregateInput = {
+    level?: SortOrder
+  }
+
+  export type IntWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedIntFilter<$PrismaModel>
+    _min?: NestedIntFilter<$PrismaModel>
+    _max?: NestedIntFilter<$PrismaModel>
   }
 
   export type PermissionCountOrderByAggregateInput = {
@@ -46829,11 +46886,6 @@ export namespace Prisma {
     isNot?: PermissionWhereInput
   }
 
-  export type AdminRoleNullableScalarRelationFilter = {
-    is?: AdminRoleWhereInput | null
-    isNot?: AdminRoleWhereInput | null
-  }
-
   export type AdminRolePermissionPermission_idAdmin_role_idCompoundUniqueInput = {
     permission_id: string
     admin_role_id: string
@@ -46858,17 +46910,6 @@ export namespace Prisma {
     admin_role_id?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-  }
-
-  export type IntFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel>
-    in?: number[] | ListIntFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntFilter<$PrismaModel> | number
   }
 
   export type AccountSecurityCountOrderByAggregateInput = {
@@ -46910,22 +46951,6 @@ export namespace Prisma {
 
   export type AccountSecuritySumOrderByAggregateInput = {
     failed_login_attempts?: SortOrder
-  }
-
-  export type IntWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel>
-    in?: number[] | ListIntFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
-    _count?: NestedIntFilter<$PrismaModel>
-    _avg?: NestedFloatFilter<$PrismaModel>
-    _sum?: NestedIntFilter<$PrismaModel>
-    _min?: NestedIntFilter<$PrismaModel>
-    _max?: NestedIntFilter<$PrismaModel>
   }
 
   export type EnumGroupTypeFilter<$PrismaModel = never> = {
@@ -48975,11 +49000,10 @@ export namespace Prisma {
     deleteMany?: WithdrawRequestScalarWhereInput | WithdrawRequestScalarWhereInput[]
   }
 
-  export type AdminCreateNestedManyWithoutAdminRoleInput = {
-    create?: XOR<AdminCreateWithoutAdminRoleInput, AdminUncheckedCreateWithoutAdminRoleInput> | AdminCreateWithoutAdminRoleInput[] | AdminUncheckedCreateWithoutAdminRoleInput[]
-    connectOrCreate?: AdminCreateOrConnectWithoutAdminRoleInput | AdminCreateOrConnectWithoutAdminRoleInput[]
-    createMany?: AdminCreateManyAdminRoleInputEnvelope
-    connect?: AdminWhereUniqueInput | AdminWhereUniqueInput[]
+  export type AdminCreateNestedOneWithoutAdminRoleInput = {
+    create?: XOR<AdminCreateWithoutAdminRoleInput, AdminUncheckedCreateWithoutAdminRoleInput>
+    connectOrCreate?: AdminCreateOrConnectWithoutAdminRoleInput
+    connect?: AdminWhereUniqueInput
   }
 
   export type AdminRolePermissionCreateNestedManyWithoutRoleToPermissionInput = {
@@ -48989,11 +49013,10 @@ export namespace Prisma {
     connect?: AdminRolePermissionWhereUniqueInput | AdminRolePermissionWhereUniqueInput[]
   }
 
-  export type AdminUncheckedCreateNestedManyWithoutAdminRoleInput = {
-    create?: XOR<AdminCreateWithoutAdminRoleInput, AdminUncheckedCreateWithoutAdminRoleInput> | AdminCreateWithoutAdminRoleInput[] | AdminUncheckedCreateWithoutAdminRoleInput[]
-    connectOrCreate?: AdminCreateOrConnectWithoutAdminRoleInput | AdminCreateOrConnectWithoutAdminRoleInput[]
-    createMany?: AdminCreateManyAdminRoleInputEnvelope
-    connect?: AdminWhereUniqueInput | AdminWhereUniqueInput[]
+  export type AdminUncheckedCreateNestedOneWithoutAdminRoleInput = {
+    create?: XOR<AdminCreateWithoutAdminRoleInput, AdminUncheckedCreateWithoutAdminRoleInput>
+    connectOrCreate?: AdminCreateOrConnectWithoutAdminRoleInput
+    connect?: AdminWhereUniqueInput
   }
 
   export type AdminRolePermissionUncheckedCreateNestedManyWithoutRoleToPermissionInput = {
@@ -49003,18 +49026,22 @@ export namespace Prisma {
     connect?: AdminRolePermissionWhereUniqueInput | AdminRolePermissionWhereUniqueInput[]
   }
 
-  export type AdminUpdateManyWithoutAdminRoleNestedInput = {
-    create?: XOR<AdminCreateWithoutAdminRoleInput, AdminUncheckedCreateWithoutAdminRoleInput> | AdminCreateWithoutAdminRoleInput[] | AdminUncheckedCreateWithoutAdminRoleInput[]
-    connectOrCreate?: AdminCreateOrConnectWithoutAdminRoleInput | AdminCreateOrConnectWithoutAdminRoleInput[]
-    upsert?: AdminUpsertWithWhereUniqueWithoutAdminRoleInput | AdminUpsertWithWhereUniqueWithoutAdminRoleInput[]
-    createMany?: AdminCreateManyAdminRoleInputEnvelope
-    set?: AdminWhereUniqueInput | AdminWhereUniqueInput[]
-    disconnect?: AdminWhereUniqueInput | AdminWhereUniqueInput[]
-    delete?: AdminWhereUniqueInput | AdminWhereUniqueInput[]
-    connect?: AdminWhereUniqueInput | AdminWhereUniqueInput[]
-    update?: AdminUpdateWithWhereUniqueWithoutAdminRoleInput | AdminUpdateWithWhereUniqueWithoutAdminRoleInput[]
-    updateMany?: AdminUpdateManyWithWhereWithoutAdminRoleInput | AdminUpdateManyWithWhereWithoutAdminRoleInput[]
-    deleteMany?: AdminScalarWhereInput | AdminScalarWhereInput[]
+  export type IntFieldUpdateOperationsInput = {
+    set?: number
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
+  }
+
+  export type AdminUpdateOneWithoutAdminRoleNestedInput = {
+    create?: XOR<AdminCreateWithoutAdminRoleInput, AdminUncheckedCreateWithoutAdminRoleInput>
+    connectOrCreate?: AdminCreateOrConnectWithoutAdminRoleInput
+    upsert?: AdminUpsertWithoutAdminRoleInput
+    disconnect?: AdminWhereInput | boolean
+    delete?: AdminWhereInput | boolean
+    connect?: AdminWhereUniqueInput
+    update?: XOR<XOR<AdminUpdateToOneWithWhereWithoutAdminRoleInput, AdminUpdateWithoutAdminRoleInput>, AdminUncheckedUpdateWithoutAdminRoleInput>
   }
 
   export type AdminRolePermissionUpdateManyWithoutRoleToPermissionNestedInput = {
@@ -49031,18 +49058,14 @@ export namespace Prisma {
     deleteMany?: AdminRolePermissionScalarWhereInput | AdminRolePermissionScalarWhereInput[]
   }
 
-  export type AdminUncheckedUpdateManyWithoutAdminRoleNestedInput = {
-    create?: XOR<AdminCreateWithoutAdminRoleInput, AdminUncheckedCreateWithoutAdminRoleInput> | AdminCreateWithoutAdminRoleInput[] | AdminUncheckedCreateWithoutAdminRoleInput[]
-    connectOrCreate?: AdminCreateOrConnectWithoutAdminRoleInput | AdminCreateOrConnectWithoutAdminRoleInput[]
-    upsert?: AdminUpsertWithWhereUniqueWithoutAdminRoleInput | AdminUpsertWithWhereUniqueWithoutAdminRoleInput[]
-    createMany?: AdminCreateManyAdminRoleInputEnvelope
-    set?: AdminWhereUniqueInput | AdminWhereUniqueInput[]
-    disconnect?: AdminWhereUniqueInput | AdminWhereUniqueInput[]
-    delete?: AdminWhereUniqueInput | AdminWhereUniqueInput[]
-    connect?: AdminWhereUniqueInput | AdminWhereUniqueInput[]
-    update?: AdminUpdateWithWhereUniqueWithoutAdminRoleInput | AdminUpdateWithWhereUniqueWithoutAdminRoleInput[]
-    updateMany?: AdminUpdateManyWithWhereWithoutAdminRoleInput | AdminUpdateManyWithWhereWithoutAdminRoleInput[]
-    deleteMany?: AdminScalarWhereInput | AdminScalarWhereInput[]
+  export type AdminUncheckedUpdateOneWithoutAdminRoleNestedInput = {
+    create?: XOR<AdminCreateWithoutAdminRoleInput, AdminUncheckedCreateWithoutAdminRoleInput>
+    connectOrCreate?: AdminCreateOrConnectWithoutAdminRoleInput
+    upsert?: AdminUpsertWithoutAdminRoleInput
+    disconnect?: AdminWhereInput | boolean
+    delete?: AdminWhereInput | boolean
+    connect?: AdminWhereUniqueInput
+    update?: XOR<XOR<AdminUpdateToOneWithWhereWithoutAdminRoleInput, AdminUpdateWithoutAdminRoleInput>, AdminUncheckedUpdateWithoutAdminRoleInput>
   }
 
   export type AdminRolePermissionUncheckedUpdateManyWithoutRoleToPermissionNestedInput = {
@@ -49121,12 +49144,10 @@ export namespace Prisma {
     update?: XOR<XOR<PermissionUpdateToOneWithWhereWithoutAdminRolesInput, PermissionUpdateWithoutAdminRolesInput>, PermissionUncheckedUpdateWithoutAdminRolesInput>
   }
 
-  export type AdminRoleUpdateOneWithoutPermissionsNestedInput = {
+  export type AdminRoleUpdateOneRequiredWithoutPermissionsNestedInput = {
     create?: XOR<AdminRoleCreateWithoutPermissionsInput, AdminRoleUncheckedCreateWithoutPermissionsInput>
     connectOrCreate?: AdminRoleCreateOrConnectWithoutPermissionsInput
     upsert?: AdminRoleUpsertWithoutPermissionsInput
-    disconnect?: AdminRoleWhereInput | boolean
-    delete?: AdminRoleWhereInput | boolean
     connect?: AdminRoleWhereUniqueInput
     update?: XOR<XOR<AdminRoleUpdateToOneWithWhereWithoutPermissionsInput, AdminRoleUpdateWithoutPermissionsInput>, AdminRoleUncheckedUpdateWithoutPermissionsInput>
   }
@@ -49135,14 +49156,6 @@ export namespace Prisma {
     create?: XOR<UserCreateWithoutAccountSecuritiesInput, UserUncheckedCreateWithoutAccountSecuritiesInput>
     connectOrCreate?: UserCreateOrConnectWithoutAccountSecuritiesInput
     connect?: UserWhereUniqueInput
-  }
-
-  export type IntFieldUpdateOperationsInput = {
-    set?: number
-    increment?: number
-    decrement?: number
-    multiply?: number
-    divide?: number
   }
 
   export type UserUpdateOneRequiredWithoutAccountSecuritiesNestedInput = {
@@ -53546,6 +53559,7 @@ export namespace Prisma {
 
   export type AdminRoleCreateWithoutAdminsInput = {
     admin_role_id?: string
+    level: number
     role_name: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -53554,6 +53568,7 @@ export namespace Prisma {
 
   export type AdminRoleUncheckedCreateWithoutAdminsInput = {
     admin_role_id?: string
+    level: number
     role_name: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -53711,6 +53726,7 @@ export namespace Prisma {
 
   export type AdminRoleUpdateWithoutAdminsInput = {
     admin_role_id?: StringFieldUpdateOperationsInput | string
+    level?: IntFieldUpdateOperationsInput | number
     role_name?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -53719,6 +53735,7 @@ export namespace Prisma {
 
   export type AdminRoleUncheckedUpdateWithoutAdminsInput = {
     admin_role_id?: StringFieldUpdateOperationsInput | string
+    level?: IntFieldUpdateOperationsInput | number
     role_name?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -53780,11 +53797,6 @@ export namespace Prisma {
     create: XOR<AdminCreateWithoutAdminRoleInput, AdminUncheckedCreateWithoutAdminRoleInput>
   }
 
-  export type AdminCreateManyAdminRoleInputEnvelope = {
-    data: AdminCreateManyAdminRoleInput | AdminCreateManyAdminRoleInput[]
-    skipDuplicates?: boolean
-  }
-
   export type AdminRolePermissionCreateWithoutRoleToPermissionInput = {
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -53807,31 +53819,33 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type AdminUpsertWithWhereUniqueWithoutAdminRoleInput = {
-    where: AdminWhereUniqueInput
+  export type AdminUpsertWithoutAdminRoleInput = {
     update: XOR<AdminUpdateWithoutAdminRoleInput, AdminUncheckedUpdateWithoutAdminRoleInput>
     create: XOR<AdminCreateWithoutAdminRoleInput, AdminUncheckedCreateWithoutAdminRoleInput>
+    where?: AdminWhereInput
   }
 
-  export type AdminUpdateWithWhereUniqueWithoutAdminRoleInput = {
-    where: AdminWhereUniqueInput
+  export type AdminUpdateToOneWithWhereWithoutAdminRoleInput = {
+    where?: AdminWhereInput
     data: XOR<AdminUpdateWithoutAdminRoleInput, AdminUncheckedUpdateWithoutAdminRoleInput>
   }
 
-  export type AdminUpdateManyWithWhereWithoutAdminRoleInput = {
-    where: AdminScalarWhereInput
-    data: XOR<AdminUpdateManyMutationInput, AdminUncheckedUpdateManyWithoutAdminRoleInput>
+  export type AdminUpdateWithoutAdminRoleInput = {
+    admin_id?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutAdminNestedInput
+    instructorSpecializations?: InstructorSpecializationsUpdateManyWithoutAdminNestedInput
+    withdraw_request_processed?: WithdrawRequestUpdateManyWithoutAdminNestedInput
   }
 
-  export type AdminScalarWhereInput = {
-    AND?: AdminScalarWhereInput | AdminScalarWhereInput[]
-    OR?: AdminScalarWhereInput[]
-    NOT?: AdminScalarWhereInput | AdminScalarWhereInput[]
-    admin_id?: StringFilter<"Admin"> | string
-    user_id?: StringFilter<"Admin"> | string
-    admin_role_id?: StringFilter<"Admin"> | string
-    createdAt?: DateTimeFilter<"Admin"> | Date | string
-    updatedAt?: DateTimeFilter<"Admin"> | Date | string
+  export type AdminUncheckedUpdateWithoutAdminRoleInput = {
+    admin_id?: StringFieldUpdateOperationsInput | string
+    user_id?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    instructorSpecializations?: InstructorSpecializationsUncheckedUpdateManyWithoutAdminNestedInput
+    withdraw_request_processed?: WithdrawRequestUncheckedUpdateManyWithoutAdminNestedInput
   }
 
   export type AdminRolePermissionUpsertWithWhereUniqueWithoutRoleToPermissionInput = {
@@ -53863,7 +53877,7 @@ export namespace Prisma {
   export type AdminRolePermissionCreateWithoutPermissionInput = {
     createdAt?: Date | string
     updatedAt?: Date | string
-    roleToPermission?: AdminRoleCreateNestedOneWithoutPermissionsInput
+    roleToPermission: AdminRoleCreateNestedOneWithoutPermissionsInput
   }
 
   export type AdminRolePermissionUncheckedCreateWithoutPermissionInput = {
@@ -53921,18 +53935,20 @@ export namespace Prisma {
 
   export type AdminRoleCreateWithoutPermissionsInput = {
     admin_role_id?: string
+    level: number
     role_name: string
     createdAt?: Date | string
     updatedAt?: Date | string
-    admins?: AdminCreateNestedManyWithoutAdminRoleInput
+    admins?: AdminCreateNestedOneWithoutAdminRoleInput
   }
 
   export type AdminRoleUncheckedCreateWithoutPermissionsInput = {
     admin_role_id?: string
+    level: number
     role_name: string
     createdAt?: Date | string
     updatedAt?: Date | string
-    admins?: AdminUncheckedCreateNestedManyWithoutAdminRoleInput
+    admins?: AdminUncheckedCreateNestedOneWithoutAdminRoleInput
   }
 
   export type AdminRoleCreateOrConnectWithoutPermissionsInput = {
@@ -53980,18 +53996,20 @@ export namespace Prisma {
 
   export type AdminRoleUpdateWithoutPermissionsInput = {
     admin_role_id?: StringFieldUpdateOperationsInput | string
+    level?: IntFieldUpdateOperationsInput | number
     role_name?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    admins?: AdminUpdateManyWithoutAdminRoleNestedInput
+    admins?: AdminUpdateOneWithoutAdminRoleNestedInput
   }
 
   export type AdminRoleUncheckedUpdateWithoutPermissionsInput = {
     admin_role_id?: StringFieldUpdateOperationsInput | string
+    level?: IntFieldUpdateOperationsInput | number
     role_name?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    admins?: AdminUncheckedUpdateManyWithoutAdminRoleNestedInput
+    admins?: AdminUncheckedUpdateOneWithoutAdminRoleNestedInput
   }
 
   export type UserCreateWithoutAccountSecuritiesInput = {
@@ -57807,42 +57825,10 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type AdminCreateManyAdminRoleInput = {
-    admin_id?: string
-    user_id: string
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
   export type AdminRolePermissionCreateManyRoleToPermissionInput = {
     permission_id?: string
     createdAt?: Date | string
     updatedAt?: Date | string
-  }
-
-  export type AdminUpdateWithoutAdminRoleInput = {
-    admin_id?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    user?: UserUpdateOneRequiredWithoutAdminNestedInput
-    instructorSpecializations?: InstructorSpecializationsUpdateManyWithoutAdminNestedInput
-    withdraw_request_processed?: WithdrawRequestUpdateManyWithoutAdminNestedInput
-  }
-
-  export type AdminUncheckedUpdateWithoutAdminRoleInput = {
-    admin_id?: StringFieldUpdateOperationsInput | string
-    user_id?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    instructorSpecializations?: InstructorSpecializationsUncheckedUpdateManyWithoutAdminNestedInput
-    withdraw_request_processed?: WithdrawRequestUncheckedUpdateManyWithoutAdminNestedInput
-  }
-
-  export type AdminUncheckedUpdateManyWithoutAdminRoleInput = {
-    admin_id?: StringFieldUpdateOperationsInput | string
-    user_id?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type AdminRolePermissionUpdateWithoutRoleToPermissionInput = {
@@ -57872,7 +57858,7 @@ export namespace Prisma {
   export type AdminRolePermissionUpdateWithoutPermissionInput = {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    roleToPermission?: AdminRoleUpdateOneWithoutPermissionsNestedInput
+    roleToPermission?: AdminRoleUpdateOneRequiredWithoutPermissionsNestedInput
   }
 
   export type AdminRolePermissionUncheckedUpdateWithoutPermissionInput = {
