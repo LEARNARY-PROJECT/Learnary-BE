@@ -229,14 +229,35 @@ export const approveQualification = async (instructor_qualification_id: string, 
   }
 
   return prisma.$transaction(async (tx) => {
-    let admin = await tx.admin.findUnique({ where: { user_id: currentUserId } });
+    // 1. Get or create Admin record for current user
+    let admin = await tx.admin.findUnique({
+      where: { user_id: currentUserId }
+    });
+
     if (!admin) {
-      let adminRole = await tx.adminRole.findFirst();
+      // Find or create default Admin role
+      let adminRole = await tx.adminRole.findFirst({
+        where: { role_name: 'Admin' }
+      });
+
       if (!adminRole) {
-        adminRole = await tx.adminRole.create({ data: { role_name: 'Admin' } });
+        adminRole = await tx.adminRole.create({
+          data: { 
+            role_name: 'Admin',
+            level: 1
+          }
+        });
       }
-      admin = await tx.admin.create({ data: { user_id: currentUserId, admin_role_id: adminRole.admin_role_id } });
+
+      admin = await tx.admin.create({
+        data: {
+          user_id: currentUserId,
+          admin_role_id: adminRole.admin_role_id
+        }
+      });
     }
+
+    // 2. Get or create Instructor
     let instructor = await tx.instructor.findUnique({
       where: { user_id: qualification.user_id }
     });
@@ -287,13 +308,13 @@ export const approveQualification = async (instructor_qualification_id: string, 
       }
     });
 
-    if (!existingLink && admin) {
-      // Only create link if admin record exists
+    if (!existingLink) {
+      // Create link with valid admin_id from Admin table
       await tx.instructorSpecializations.create({
         data: {
           instructor_id: instructor.instructor_id,
           specialization_id: qualification.specialization_id,
-          admin_id: admin.admin_id
+          admin_id: admin.admin_id  // Use admin.admin_id instead of user_id
         }
       });
     }

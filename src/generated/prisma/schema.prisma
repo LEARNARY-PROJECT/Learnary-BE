@@ -8,8 +8,6 @@ datasource db {
   provider = "postgresql"
 }
 
-
-
 enum Role {
   LEARNER
   INSTRUCTOR
@@ -326,7 +324,7 @@ model Transaction {
 model Admin {
   admin_id      String @id @default(uuid()) @db.Char(50)
   user_id       String @unique @db.Char(50)
-  admin_role_id String @unique @db.Char(50)
+  admin_role_id String @db.Char(50)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -348,7 +346,7 @@ model AdminRole {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  admins      Admin?
+  admins      Admin[]
   permissions AdminRolePermission[] @relation("RoleToPermission")
 
   @@map("admin_roles")

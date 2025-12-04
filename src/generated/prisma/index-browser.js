@@ -135,11 +135,11 @@ exports.Prisma.UserScalarFieldEnum = {
   isActive: 'isActive',
   password: 'password',
   fullName: 'fullName',
+  googleId: 'googleId',
   role: 'role',
   gender: 'gender',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt',
-  googleId: 'googleId'
+  updatedAt: 'updatedAt'
 };
 
 exports.Prisma.LearnerScalarFieldEnum = {
@@ -170,12 +170,12 @@ exports.Prisma.InstructorSpecializationsScalarFieldEnum = {
 
 exports.Prisma.SpecializationScalarFieldEnum = {
   specialization_id: 'specialization_id',
+  instructor_id: 'instructor_id',
+  user_id: 'user_id',
   specialization_name: 'specialization_name',
   isVerified: 'isVerified',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt',
-  instructor_id: 'instructor_id',
-  user_id: 'user_id'
+  updatedAt: 'updatedAt'
 };
 
 exports.Prisma.CitizenIdsConfirmScalarFieldEnum = {
@@ -195,17 +195,17 @@ exports.Prisma.InstructorQualificationsScalarFieldEnum = {
   instructor_qualification_id: 'instructor_qualification_id',
   instructor_id: 'instructor_id',
   specialization_id: 'specialization_id',
+  user_id: 'user_id',
   type: 'type',
   title: 'title',
   issue_date: 'issue_date',
   expire_date: 'expire_date',
+  issue_place: 'issue_place',
+  qualification_images: 'qualification_images',
   status: 'status',
   isVerified: 'isVerified',
   createdAt: 'createdAt',
-  updateAt: 'updateAt',
-  qualification_images: 'qualification_images',
-  user_id: 'user_id',
-  issue_place: 'issue_place'
+  updateAt: 'updateAt'
 };
 
 exports.Prisma.BankAccountScalarFieldEnum = {
@@ -220,10 +220,10 @@ exports.Prisma.BankAccountScalarFieldEnum = {
 
 exports.Prisma.WalletScalarFieldEnum = {
   wallet_id: 'wallet_id',
+  user_id: 'user_id',
   balance: 'balance',
   createAt: 'createAt',
-  updateAt: 'updateAt',
-  user_id: 'user_id'
+  updateAt: 'updateAt'
 };
 
 exports.Prisma.TransactionScalarFieldEnum = {
@@ -244,12 +244,7 @@ exports.Prisma.TransactionScalarFieldEnum = {
   sender_name: 'sender_name',
   sender_number: 'sender_number',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt',
-  description: 'description',
-  payment_code: 'payment_code',
-  sender_bank: 'sender_bank',
-  sender_name: 'sender_name',
-  sender_number: 'sender_number'
+  updatedAt: 'updatedAt'
 };
 
 exports.Prisma.AdminScalarFieldEnum = {
@@ -286,12 +281,12 @@ exports.Prisma.AdminRolePermissionScalarFieldEnum = {
 exports.Prisma.AccountSecurityScalarFieldEnum = {
   account_security_id: 'account_security_id',
   user_id: 'user_id',
-  failed_login_attempts: 'failed_login_attempts',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt',
   email_verified: 'email_verified',
+  failed_login_attempts: 'failed_login_attempts',
+  verification_token: 'verification_token',
   token_expires_at: 'token_expires_at',
-  verification_token: 'verification_token'
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 };
 
 exports.Prisma.GroupScalarFieldEnum = {
@@ -320,17 +315,17 @@ exports.Prisma.CourseScalarFieldEnum = {
   status: 'status',
   title: 'title',
   slug: 'slug',
+  requirement: 'requirement',
   description: 'description',
   thumbnail: 'thumbnail',
+  admin_note: 'admin_note',
   price: 'price',
   sale_off: 'sale_off',
   hot: 'hot',
   tag: 'tag',
   available_language: 'available_language',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt',
-  requirement: 'requirement',
-  admin_note: 'admin_note'
+  updatedAt: 'updatedAt'
 };
 
 exports.Prisma.CategoryScalarFieldEnum = {
@@ -344,9 +339,9 @@ exports.Prisma.CategoryScalarFieldEnum = {
 exports.Prisma.LevelScalarFieldEnum = {
   level_id: 'level_id',
   level_name: 'level_name',
+  order_index: 'order_index',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt',
-  order_index: 'order_index'
+  updatedAt: 'updatedAt'
 };
 
 exports.Prisma.LearnerCoursesScalarFieldEnum = {
@@ -358,36 +353,36 @@ exports.Prisma.LearnerCoursesScalarFieldEnum = {
   feedback: 'feedback',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
-  completedAt: 'completedAt',
-  enrolledAt: 'enrolledAt'
+  enrolledAt: 'enrolledAt',
+  completedAt: 'completedAt'
 };
 
 exports.Prisma.ChapterScalarFieldEnum = {
   chapter_id: 'chapter_id',
   course_id: 'course_id',
   chapter_title: 'chapter_title',
+  order_index: 'order_index',
   createAt: 'createAt',
-  updatedAt: 'updatedAt',
-  order_index: 'order_index'
+  updatedAt: 'updatedAt'
 };
 
 exports.Prisma.LessonScalarFieldEnum = {
   lesson_id: 'lesson_id',
   chapter_id: 'chapter_id',
+  title: 'title',
+  video_url: 'video_url',
   isCompleted: 'isCompleted',
   duration: 'duration',
-  createAt: 'createAt',
-  updatedAt: 'updatedAt',
-  video_url: 'video_url',
-  order_index: 'order_index',
   slug: 'slug',
-  title: 'title'
+  order_index: 'order_index',
+  createAt: 'createAt',
+  updatedAt: 'updatedAt'
 };
 
 exports.Prisma.NoteScalarFieldEnum = {
   note_id: 'note_id',
-  lesson_id: 'lesson_id',
   user_id: 'user_id',
+  lesson_id: 'lesson_id',
   content: 'content',
   createAt: 'createAt',
   updatedAt: 'updatedAt'
@@ -406,21 +401,21 @@ exports.Prisma.WithdrawRequestScalarFieldEnum = {
 
 exports.Prisma.FeedbackScalarFieldEnum = {
   id: 'id',
+  course_id: 'course_id',
+  user_id: 'user_id',
   rating: 'rating',
   comment: 'comment',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt',
-  course_id: 'course_id',
-  user_id: 'user_id'
+  updatedAt: 'updatedAt'
 };
 
 exports.Prisma.QuizScalarFieldEnum = {
   quiz_id: 'quiz_id',
+  chapter_id: 'chapter_id',
   title: 'title',
   slug: 'slug',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt',
-  chapter_id: 'chapter_id'
+  updatedAt: 'updatedAt'
 };
 
 exports.Prisma.QuestionScalarFieldEnum = {
@@ -446,10 +441,10 @@ exports.Prisma.AnswerScalarFieldEnum = {
   answer_id: 'answer_id',
   submission_id: 'submission_id',
   question_id: 'question_id',
+  option_id: 'option_id',
   is_correct: 'is_correct',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt',
-  option_id: 'option_id'
+  updatedAt: 'updatedAt'
 };
 
 exports.Prisma.SubmissionScalarFieldEnum = {
