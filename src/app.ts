@@ -31,6 +31,7 @@ import questionRoutes from "./routes/question.routes";
 import optionsRoutes from "./routes/options.routes";
 import answerRoutes from "./routes/answer.routes";
 import submissionRoutes from "./routes/submission.routes";
+import paymentRoutes from "./routes/payment.routes";
 import passport from "passport";
 import "./lib/passport";
 import cookieParser from "cookie-parser";
@@ -41,12 +42,25 @@ const app = express();
 const port = process.env.PORT || 4000;
 const isDevelopment = process.env.NODE_ENV === 'development';
 const allowedOrigins = process.env.CORS_ORIGIN
-  ? process.env.CORS_ORIGIN.split(',') // sử dụng chuỗi phân tách bằng dấu phẩy
+  ? process.env.CORS_ORIGIN.split(',')
   : ["http://localhost:3000", "http://localhost:3001", "http://learnary.site"];
+
 //middlewares
 app.use(
   cors({
-    origin: allowedOrigins,
+    origin: (origin, callback) => {
+      // Cho phép requests không có origin (webhooks, Postman)
+      if (!origin) return callback(null, true);
+      
+      // Cho phép các origin trong whitelist
+      if (allowedOrigins.includes(origin)) return callback(null, true);
+      
+      // Cho phép tất cả PayOS domains
+      if (origin.includes('payos.vn')) return callback(null, true);
+      
+      // Block các domain khác
+      callback(new Error('Not allowed by CORS'));
+    },
     methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
     allowedHeaders: ["Content-Type", "Authorization", "BearerToken"],
     credentials: true,
@@ -59,6 +73,7 @@ app.use(passport.initialize());
 
 //Routes
 app.use("/api/auth", authRoutes);
+app.use("/api", paymentRoutes); // Mount payment TRƯỚC course để tránh bị authenticate global
 app.use("/api", userRoutes);
 app.use("/api", courseRoutes);
 app.use("/api", feedbackRoutes);

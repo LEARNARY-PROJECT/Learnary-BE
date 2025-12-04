@@ -7,13 +7,21 @@ import { PutObjectCommand, DeleteObjectCommand } from '@aws-sdk/client-s3';
 import path from 'path';
 import { sliceHalfUserId } from "../utils/commons";
 export const createDefaultUserIfNoneExists = async () => {
-  const userCount = await prisma.user.count();
-  const adminCount = await prisma.user.count({
-    where: {
-      role: "ADMIN",
-    },
+  // Kiểm tra xem admin đã tồn tại chưa
+  const existingAdmin = await prisma.user.findUnique({
+    where: { email: "admin@example.com" }
   });
-  if (userCount === 0 || adminCount === 0) {
+
+  if (existingAdmin) {
+    console.log("Default admin user already exists");
+    return;
+  }
+
+  const adminCount = await prisma.user.count({
+    where: { role: "ADMIN" }
+  });
+
+  if (adminCount === 0) {
     const hashedPassword = await bcryptjs.hash("admin123", 10);
     await prisma.user.create({
       data: {
@@ -24,7 +32,6 @@ export const createDefaultUserIfNoneExists = async () => {
       },
     });
     console.log("Default admin user created");
-    return;
   }
 };
 
