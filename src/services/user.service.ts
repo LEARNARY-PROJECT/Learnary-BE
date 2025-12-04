@@ -6,7 +6,6 @@ import { S3_BUCKET_NAME, s3Client } from '../config/s3.config';
 import { PutObjectCommand, DeleteObjectCommand } from '@aws-sdk/client-s3';
 import path from 'path';
 import { sliceHalfUserId } from "../utils/commons";
-import type { JsonValue } from "../types/common";
 export const createDefaultUserIfNoneExists = async () => {
   const userCount = await prisma.user.count();
   const adminCount = await prisma.user.count({
@@ -47,7 +46,6 @@ export const createUser = async (
     });
     const learner = await tx.learner.create({
       data: {
-        
         user_id: user.user_id,
       }
     })
@@ -64,6 +62,14 @@ export const createUser = async (
 export const getAllUsers = async (): Promise<User[]> => {
   const users = await prisma.user.findMany();
   return users;
+};
+export const getAllAdmin = async (): Promise<User[]> => {
+  const admins = await prisma.user.findMany({
+    where: {
+      role: "ADMIN"
+    }
+  });
+  return admins;
 };
 
 export const getUserById = async (id: string): Promise<User | null> => {

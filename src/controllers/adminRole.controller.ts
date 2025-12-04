@@ -1,9 +1,13 @@
 import { Request, Response } from "express";
 import * as AdminRoleService from "../services/adminRole.service";
 import { success, failure } from "../utils/response";
+import { error } from "node:console";
 
 export const create = async (req: Request, res: Response) => {
   try {
+    if(!req.body) {
+      res.status(500).json(error("Missing field required"));
+    } 
     const adminRole = await AdminRoleService.createAdminRole(req.body);
     res.status(201).json(success(adminRole, "AdminRole created successfully"));
   } catch (err) {

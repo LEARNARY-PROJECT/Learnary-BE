@@ -1,9 +1,33 @@
 import prisma from "../lib/client";
 import { AdminRolePermission } from '../generated/prisma'
 
-export const createAdminRolePermission = async (data: Omit<AdminRolePermission, 'permission_id' | 'admin_role_id' | 'createdAt' | 'updatedAt'>) => {
-  return prisma.adminRolePermission.create({ data });
+export const createAdminRolePermission = async (data: Omit<AdminRolePermission, 'createdAt' | 'updatedAt'>) => {
+  try {
+    // Kiểm tra xem bản ghi đã tồn tại chưa
+    const existing = await prisma.adminRolePermission.findUnique({
+      where: {
+        permission_id_admin_role_id: {
+          permission_id: data.permission_id,
+          admin_role_id: data.admin_role_id
+        }
+      }
+    });
+    if (existing) {
+      return existing; 
+    }
+    return await prisma.adminRolePermission.create({
+      data: {
+        permission_id: data.permission_id,
+        admin_role_id: data.admin_role_id
+      }
+    });
+  } catch (error: any) {
+    console.error("Error creating AdminRolePermission:", error);
+    throw new Error(`Failed to create AdminRolePermission: ${error.message || 'Unknown error'}`);
+  }
 };
+
+
 
 export const getAdminRolePermissionById = async (permission_id: string, admin_role_id: string) => {
   return prisma.adminRolePermission.findUnique({ where: { permission_id_admin_role_id: { permission_id, admin_role_id } } });
