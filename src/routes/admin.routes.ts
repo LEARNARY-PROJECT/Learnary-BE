@@ -44,6 +44,7 @@ router.post("/admins", authenticate, authorizeRoles("ADMIN"), create);
  */
 router.get("/admins", authenticate, authorizeRoles("ADMIN"), getAll);
 
+
 /**
  * @openapi
  * /api/admins/{id}:
