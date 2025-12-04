@@ -10,7 +10,15 @@ export const getAdminRoleById = async (admin_role_id: string) => {
 };
 
 export const getAllAdminRoles = async () => {
-  return prisma.adminRole.findMany();
+  return prisma.adminRole.findMany({
+    include: {
+      permissions: {
+        include: {
+          permission:true
+        }
+      }
+    }
+  });
 };
 
 export const updateAdminRole = async (admin_role_id: string, data: Partial<AdminRole>) => {

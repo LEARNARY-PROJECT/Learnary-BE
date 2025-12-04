@@ -4,8 +4,9 @@ import { success, failure } from "../utils/response";
 
 export const create = async (req: Request, res: Response) => {
   try {
-    const admin = await AdminService.createAdmin(req.body);
-    res.status(201).json(success(admin, "Admin created successfully"));
+    const {email,password,fullName,admin_role_id_req} = req.body
+    const NewAdmin = await AdminService.createAdmin(email,password,fullName,admin_role_id_req);
+    res.status(201).json(success(NewAdmin, "Admin created successfully"));
   } catch (err) {
     const e = err as Error;
     res.status(500).json(failure("Failed to create admin", e.message));

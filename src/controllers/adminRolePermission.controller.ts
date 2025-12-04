@@ -6,11 +6,17 @@ export const create = async (req: Request, res: Response) => {
   try {
     const adminRolePermission = await AdminRolePermissionService.createAdminRolePermission(req.body);
     res.status(201).json(success(adminRolePermission, "AdminRolePermission created successfully"));
-    } catch (err) {
-      const e = err as Error;
+  } catch (err) {
+    const e = err as Error;
+    
+    if (e.message.includes('Unique constraint failed')) {
+      res.status(409).json(failure("Quyền này đã được cấp cho vai trò", e.message));
+    } else {
       res.status(500).json(failure("Failed to create adminRolePermission", e.message));
     }
+  }
 };
+
 
 export const getById = async (req: Request, res: Response) => {
   try {
