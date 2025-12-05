@@ -255,6 +255,11 @@ exports.Prisma.AdminScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.ResourceTypeScalarFieldEnum = {
+  resource_id: 'resource_id',
+  resource_name: 'resource_name'
+};
+
 exports.Prisma.AdminRoleScalarFieldEnum = {
   admin_role_id: 'admin_role_id',
   level: 'level',
@@ -267,6 +272,14 @@ exports.Prisma.PermissionScalarFieldEnum = {
   permission_id: 'permission_id',
   permission_name: 'permission_name',
   description: 'description',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.PermissionOnResourceScalarFieldEnum = {
+  id: 'id',
+  permissionId: 'permissionId',
+  resourceTypeId: 'resourceTypeId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -561,8 +574,10 @@ exports.Prisma.ModelName = {
   Wallet: 'Wallet',
   Transaction: 'Transaction',
   Admin: 'Admin',
+  ResourceType: 'ResourceType',
   AdminRole: 'AdminRole',
   Permission: 'Permission',
+  PermissionOnResource: 'PermissionOnResource',
   AdminRolePermission: 'AdminRolePermission',
   AccountSecurity: 'AccountSecurity',
   Group: 'Group',

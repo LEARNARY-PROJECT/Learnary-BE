@@ -37,6 +37,9 @@ CREATE TYPE "TransactionNote" AS ENUM ('User_Pay', 'Pay_For_Instructor');
 -- CreateEnum
 CREATE TYPE "GroupType" AS ENUM ('Combo', 'Group');
 
+-- CreateEnum
+CREATE TYPE "ResourceType" AS ENUM ('COURSE', 'INSTRUCTOR', 'CATEGORY', 'USER', 'TRANSACTION', 'ALL');
+
 -- CreateTable
 CREATE TABLE "users" (
     "user_id" CHAR(50) NOT NULL,
@@ -53,11 +56,11 @@ CREATE TABLE "users" (
     "isActive" BOOLEAN NOT NULL DEFAULT true,
     "password" TEXT,
     "fullName" VARCHAR(255) NOT NULL,
+    "googleId" TEXT,
     "role" "Role" NOT NULL DEFAULT 'LEARNER',
     "gender" TEXT NOT NULL DEFAULT 'OTHER',
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
-    "googleId" TEXT,
 
     CONSTRAINT "users_pkey" PRIMARY KEY ("user_id")
 );
@@ -100,12 +103,12 @@ CREATE TABLE "instructor_specializations" (
 -- CreateTable
 CREATE TABLE "specializations" (
     "specialization_id" CHAR(50) NOT NULL,
+    "instructor_id" CHAR(50),
+    "user_id" CHAR(50) NOT NULL,
     "specialization_name" VARCHAR(255) NOT NULL,
     "isVerified" BOOLEAN NOT NULL DEFAULT false,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
-    "instructor_id" CHAR(50),
-    "user_id" CHAR(50) NOT NULL,
 
     CONSTRAINT "specializations_pkey" PRIMARY KEY ("specialization_id")
 );
@@ -131,17 +134,17 @@ CREATE TABLE "instructor_qualifications" (
     "instructor_qualification_id" VARCHAR(50) NOT NULL,
     "instructor_id" CHAR(50),
     "specialization_id" CHAR(50) NOT NULL,
+    "user_id" CHAR(50) NOT NULL,
     "type" "QualificationType" NOT NULL DEFAULT 'Certificate',
     "title" VARCHAR(255) NOT NULL,
     "issue_date" TIMESTAMP(3) NOT NULL,
     "expire_date" TIMESTAMP(3),
+    "issue_place" VARCHAR(255),
+    "qualification_images" TEXT[],
     "status" "ApprovalStatus" NOT NULL DEFAULT 'Pending',
     "isVerified" BOOLEAN NOT NULL DEFAULT false,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updateAt" TIMESTAMP(3) NOT NULL,
-    "qualification_images" TEXT[],
-    "user_id" CHAR(50) NOT NULL,
-    "issue_place" VARCHAR(255),
 
     CONSTRAINT "instructor_qualifications_pkey" PRIMARY KEY ("instructor_qualification_id")
 );
@@ -162,10 +165,10 @@ CREATE TABLE "bank_account" (
 -- CreateTable
 CREATE TABLE "wallets" (
     "wallet_id" VARCHAR(50) NOT NULL,
+    "user_id" CHAR(50) NOT NULL,
     "balance" DECIMAL(10,2) NOT NULL,
     "createAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updateAt" TIMESTAMP(3) NOT NULL,
-    "user_id" CHAR(50) NOT NULL,
 
     CONSTRAINT "wallets_pkey" PRIMARY KEY ("wallet_id")
 );
@@ -176,6 +179,7 @@ CREATE TABLE "transactions" (
     "course_id" CHAR(50) NOT NULL,
     "user_id" CHAR(50) NOT NULL,
     "wallet_id" CHAR(50),
+    "payment_code" BIGINT NOT NULL,
     "transaction_type" "TransactionType" NOT NULL,
     "commission_rate" DECIMAL(5,2),
     "payment_method" "TransactionMethod" NOT NULL,
@@ -183,13 +187,12 @@ CREATE TABLE "transactions" (
     "currency" VARCHAR(10) NOT NULL,
     "status" "TransactionStatus" NOT NULL DEFAULT 'Pending',
     "note" "TransactionNote" NOT NULL,
-    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" TIMESTAMP(3) NOT NULL,
     "description" VARCHAR(255),
-    "payment_code" BIGINT NOT NULL,
     "sender_bank" VARCHAR(50),
     "sender_name" VARCHAR(100),
     "sender_number" VARCHAR(50),
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "transactions_pkey" PRIMARY KEY ("transaction_id")
 );
@@ -208,7 +211,9 @@ CREATE TABLE "admins" (
 -- CreateTable
 CREATE TABLE "admin_roles" (
     "admin_role_id" CHAR(50) NOT NULL,
+    "level" INTEGER NOT NULL,
     "role_name" VARCHAR(255) NOT NULL,
+    "resource_type" "ResourceType" NOT NULL DEFAULT 'ALL',
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
@@ -240,12 +245,12 @@ CREATE TABLE "admin_role_permissions" (
 CREATE TABLE "account_securities" (
     "account_security_id" CHAR(50) NOT NULL,
     "user_id" CHAR(50) NOT NULL,
+    "email_verified" BOOLEAN NOT NULL DEFAULT false,
     "failed_login_attempts" INTEGER NOT NULL,
+    "verification_token" VARCHAR(255),
+    "token_expires_at" TIMESTAMP(3),
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
-    "email_verified" BOOLEAN NOT NULL DEFAULT false,
-    "token_expires_at" TIMESTAMP(3),
-    "verification_token" VARCHAR(255),
 
     CONSTRAINT "account_securities_pkey" PRIMARY KEY ("account_security_id")
 );
@@ -283,8 +288,10 @@ CREATE TABLE "courses" (
     "status" "CourseStatus" NOT NULL DEFAULT 'Draft',
     "title" VARCHAR(255) NOT NULL,
     "slug" VARCHAR(255),
+    "requirement" VARCHAR(255),
     "description" VARCHAR(255) NOT NULL,
     "thumbnail" VARCHAR(255) NOT NULL,
+    "admin_note" VARCHAR(255),
     "price" DECIMAL(10,2) NOT NULL,
     "sale_off" BOOLEAN NOT NULL DEFAULT false,
     "hot" BOOLEAN NOT NULL DEFAULT false,
@@ -292,8 +299,6 @@ CREATE TABLE "courses" (
     "available_language" "LanguageOptions" NOT NULL DEFAULT 'Vietnamese',
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
-    "requirement" VARCHAR(255),
-    "admin_note" VARCHAR(255),
 
     CONSTRAINT "courses_pkey" PRIMARY KEY ("course_id")
 );
@@ -313,9 +318,9 @@ CREATE TABLE "categories" (
 CREATE TABLE "levels" (
     "level_id" CHAR(50) NOT NULL,
     "level_name" VARCHAR(255) NOT NULL,
+    "order_index" INTEGER NOT NULL DEFAULT 0,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
-    "order_index" INTEGER NOT NULL DEFAULT 0,
 
     CONSTRAINT "levels_pkey" PRIMARY KEY ("level_id")
 );
@@ -330,8 +335,8 @@ CREATE TABLE "learner_courses" (
     "feedback" VARCHAR(255) NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
-    "completedAt" TIMESTAMP(3) NOT NULL,
     "enrolledAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "completedAt" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "learner_courses_pkey" PRIMARY KEY ("learner_id","course_id")
 );
@@ -341,9 +346,9 @@ CREATE TABLE "chapters" (
     "chapter_id" CHAR(50) NOT NULL,
     "course_id" CHAR(50) NOT NULL,
     "chapter_title" VARCHAR(255) NOT NULL,
+    "order_index" INTEGER NOT NULL DEFAULT 0,
     "createAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
-    "order_index" INTEGER NOT NULL DEFAULT 0,
 
     CONSTRAINT "chapters_pkey" PRIMARY KEY ("chapter_id")
 );
@@ -352,14 +357,14 @@ CREATE TABLE "chapters" (
 CREATE TABLE "lessons" (
     "lesson_id" CHAR(50) NOT NULL,
     "chapter_id" CHAR(50) NOT NULL,
+    "title" VARCHAR(255) NOT NULL,
+    "video_url" VARCHAR(255),
     "isCompleted" BOOLEAN NOT NULL DEFAULT false,
     "duration" VARCHAR(100) NOT NULL,
+    "slug" CHAR(50) NOT NULL,
+    "order_index" INTEGER NOT NULL DEFAULT 0,
     "createAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
-    "video_url" VARCHAR(255),
-    "order_index" INTEGER NOT NULL DEFAULT 0,
-    "slug" CHAR(50) NOT NULL,
-    "title" VARCHAR(255) NOT NULL,
 
     CONSTRAINT "lessons_pkey" PRIMARY KEY ("lesson_id")
 );
@@ -367,8 +372,8 @@ CREATE TABLE "lessons" (
 -- CreateTable
 CREATE TABLE "notes" (
     "note_id" VARCHAR(50) NOT NULL,
-    "lesson_id" CHAR(50) NOT NULL,
     "user_id" CHAR(50) NOT NULL,
+    "lesson_id" CHAR(50) NOT NULL,
     "content" VARCHAR(255) NOT NULL,
     "createAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
@@ -393,12 +398,12 @@ CREATE TABLE "withdraw_requests" (
 -- CreateTable
 CREATE TABLE "feedbacks" (
     "id" CHAR(50) NOT NULL,
+    "course_id" CHAR(50) NOT NULL,
+    "user_id" CHAR(50) NOT NULL,
     "rating" INTEGER NOT NULL,
     "comment" VARCHAR(255),
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
-    "course_id" CHAR(50) NOT NULL,
-    "user_id" CHAR(50) NOT NULL,
 
     CONSTRAINT "feedbacks_pkey" PRIMARY KEY ("id")
 );
@@ -406,11 +411,11 @@ CREATE TABLE "feedbacks" (
 -- CreateTable
 CREATE TABLE "quizzes" (
     "quiz_id" CHAR(50) NOT NULL,
+    "chapter_id" CHAR(50) NOT NULL,
     "title" VARCHAR(100) NOT NULL,
     "slug" CHAR(50) NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
-    "chapter_id" CHAR(50) NOT NULL,
 
     CONSTRAINT "quizzes_pkey" PRIMARY KEY ("quiz_id")
 );
@@ -445,10 +450,10 @@ CREATE TABLE "answers" (
     "answer_id" CHAR(50) NOT NULL,
     "submission_id" CHAR(50) NOT NULL,
     "question_id" CHAR(50) NOT NULL,
+    "option_id" CHAR(50) NOT NULL,
     "is_correct" BOOLEAN NOT NULL DEFAULT false,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
-    "option_id" CHAR(50) NOT NULL,
 
     CONSTRAINT "answers_pkey" PRIMARY KEY ("answer_id")
 );
@@ -525,10 +530,10 @@ CREATE INDEX "idx_instructor_created" ON "instructors"("createdAt");
 CREATE UNIQUE INDEX "instructor_specializations_instructor_id_key" ON "instructor_specializations"("instructor_id");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "specializations_specialization_name_key" ON "specializations"("specialization_name");
+CREATE UNIQUE INDEX "specializations_instructor_id_key" ON "specializations"("instructor_id");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "specializations_instructor_id_key" ON "specializations"("instructor_id");
+CREATE UNIQUE INDEX "specializations_specialization_name_key" ON "specializations"("specialization_name");
 
 -- CreateIndex
 CREATE INDEX "idx_spec_name" ON "specializations"("specialization_name");
@@ -615,9 +620,6 @@ CREATE INDEX "idx_trans_user_date" ON "transactions"("user_id", "createdAt");
 CREATE UNIQUE INDEX "admins_user_id_key" ON "admins"("user_id");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "admins_admin_role_id_key" ON "admins"("admin_role_id");
-
--- CreateIndex
 CREATE INDEX "idx_admin_role" ON "admins"("admin_role_id");
 
 -- CreateIndex
@@ -625,6 +627,9 @@ CREATE UNIQUE INDEX "admin_roles_role_name_key" ON "admin_roles"("role_name");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "permissions_permission_name_key" ON "permissions"("permission_name");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "admin_role_permissions_admin_role_id_key" ON "admin_role_permissions"("admin_role_id");
 
 -- CreateIndex
 CREATE INDEX "idx_arp_role" ON "admin_role_permissions"("admin_role_id");
@@ -771,13 +776,13 @@ ALTER TABLE "learners" ADD CONSTRAINT "learners_user_id_fkey" FOREIGN KEY ("user
 ALTER TABLE "instructors" ADD CONSTRAINT "instructors_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "users"("user_id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "instructor_specializations" ADD CONSTRAINT "instructor_specializations_admin_id_fkey" FOREIGN KEY ("admin_id") REFERENCES "admins"("admin_id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "instructor_specializations" ADD CONSTRAINT "instructor_specializations_specialization_id_fkey" FOREIGN KEY ("specialization_id") REFERENCES "specializations"("specialization_id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "instructor_specializations" ADD CONSTRAINT "instructor_specializations_instructor_id_fkey" FOREIGN KEY ("instructor_id") REFERENCES "instructors"("instructor_id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "instructor_specializations" ADD CONSTRAINT "instructor_specializations_specialization_id_fkey" FOREIGN KEY ("specialization_id") REFERENCES "specializations"("specialization_id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "instructor_specializations" ADD CONSTRAINT "instructor_specializations_admin_id_fkey" FOREIGN KEY ("admin_id") REFERENCES "admins"("admin_id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "specializations" ADD CONSTRAINT "specializations_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "users"("user_id") ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -789,10 +794,10 @@ ALTER TABLE "citizen_ids_confirms" ADD CONSTRAINT "citizen_ids_confirms_instruct
 ALTER TABLE "instructor_qualifications" ADD CONSTRAINT "instructor_qualifications_instructor_id_fkey" FOREIGN KEY ("instructor_id") REFERENCES "instructors"("instructor_id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "instructor_qualifications" ADD CONSTRAINT "instructor_qualifications_specialization_id_fkey" FOREIGN KEY ("specialization_id") REFERENCES "specializations"("specialization_id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "instructor_qualifications" ADD CONSTRAINT "instructor_qualifications_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "users"("user_id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "instructor_qualifications" ADD CONSTRAINT "instructor_qualifications_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "users"("user_id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "instructor_qualifications" ADD CONSTRAINT "instructor_qualifications_specialization_id_fkey" FOREIGN KEY ("specialization_id") REFERENCES "specializations"("specialization_id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "bank_account" ADD CONSTRAINT "bank_account_instructor_id_fkey" FOREIGN KEY ("instructor_id") REFERENCES "instructors"("instructor_id") ON DELETE CASCADE ON UPDATE CASCADE;
@@ -810,25 +815,28 @@ ALTER TABLE "transactions" ADD CONSTRAINT "transactions_user_id_fkey" FOREIGN KE
 ALTER TABLE "transactions" ADD CONSTRAINT "transactions_wallet_id_fkey" FOREIGN KEY ("wallet_id") REFERENCES "wallets"("wallet_id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "admins" ADD CONSTRAINT "admins_admin_role_id_fkey" FOREIGN KEY ("admin_role_id") REFERENCES "admin_roles"("admin_role_id") ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
 ALTER TABLE "admins" ADD CONSTRAINT "admins_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "users"("user_id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "admin_role_permissions" ADD CONSTRAINT "admin_role_permissions_admin_role_id_fkey" FOREIGN KEY ("admin_role_id") REFERENCES "admin_roles"("admin_role_id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "admins" ADD CONSTRAINT "admins_admin_role_id_fkey" FOREIGN KEY ("admin_role_id") REFERENCES "admin_roles"("admin_role_id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "admin_role_permissions" ADD CONSTRAINT "admin_role_permissions_permission_id_fkey" FOREIGN KEY ("permission_id") REFERENCES "permissions"("permission_id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "admin_role_permissions" ADD CONSTRAINT "admin_role_permissions_permission_id_fkey" FOREIGN KEY ("permission_id") REFERENCES "permissions"("permission_id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "admin_role_permissions" ADD CONSTRAINT "admin_role_permissions_admin_role_id_fkey" FOREIGN KEY ("admin_role_id") REFERENCES "admin_roles"("admin_role_id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "account_securities" ADD CONSTRAINT "account_securities_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "users"("user_id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
+ALTER TABLE "course_groups" ADD CONSTRAINT "course_groups_group_id_fkey" FOREIGN KEY ("group_id") REFERENCES "groups"("group_id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
 ALTER TABLE "course_groups" ADD CONSTRAINT "course_groups_course_id_fkey" FOREIGN KEY ("course_id") REFERENCES "courses"("course_id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "course_groups" ADD CONSTRAINT "course_groups_group_id_fkey" FOREIGN KEY ("group_id") REFERENCES "groups"("group_id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "courses" ADD CONSTRAINT "courses_level_id_fkey" FOREIGN KEY ("level_id") REFERENCES "levels"("level_id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "courses" ADD CONSTRAINT "courses_category_id_fkey" FOREIGN KEY ("category_id") REFERENCES "categories"("category_id") ON DELETE CASCADE ON UPDATE CASCADE;
@@ -837,13 +845,10 @@ ALTER TABLE "courses" ADD CONSTRAINT "courses_category_id_fkey" FOREIGN KEY ("ca
 ALTER TABLE "courses" ADD CONSTRAINT "courses_instructor_id_fkey" FOREIGN KEY ("instructor_id") REFERENCES "instructors"("instructor_id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "courses" ADD CONSTRAINT "courses_level_id_fkey" FOREIGN KEY ("level_id") REFERENCES "levels"("level_id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "learner_courses" ADD CONSTRAINT "learner_courses_learner_id_fkey" FOREIGN KEY ("learner_id") REFERENCES "learners"("learner_id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "learner_courses" ADD CONSTRAINT "learner_courses_course_id_fkey" FOREIGN KEY ("course_id") REFERENCES "courses"("course_id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "learner_courses" ADD CONSTRAINT "learner_courses_learner_id_fkey" FOREIGN KEY ("learner_id") REFERENCES "learners"("learner_id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "chapters" ADD CONSTRAINT "chapters_course_id_fkey" FOREIGN KEY ("course_id") REFERENCES "courses"("course_id") ON DELETE CASCADE ON UPDATE CASCADE;
@@ -852,22 +857,22 @@ ALTER TABLE "chapters" ADD CONSTRAINT "chapters_course_id_fkey" FOREIGN KEY ("co
 ALTER TABLE "lessons" ADD CONSTRAINT "lessons_chapter_id_fkey" FOREIGN KEY ("chapter_id") REFERENCES "chapters"("chapter_id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "notes" ADD CONSTRAINT "notes_lesson_id_fkey" FOREIGN KEY ("lesson_id") REFERENCES "lessons"("lesson_id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- AddForeignKey
 ALTER TABLE "notes" ADD CONSTRAINT "notes_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "users"("user_id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "withdraw_requests" ADD CONSTRAINT "withdraw_requests_admin_id_fkey" FOREIGN KEY ("admin_id") REFERENCES "admins"("admin_id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "notes" ADD CONSTRAINT "notes_lesson_id_fkey" FOREIGN KEY ("lesson_id") REFERENCES "lessons"("lesson_id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "withdraw_requests" ADD CONSTRAINT "withdraw_requests_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "users"("user_id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "feedbacks" ADD CONSTRAINT "feedbacks_course_id_fkey" FOREIGN KEY ("course_id") REFERENCES "courses"("course_id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "withdraw_requests" ADD CONSTRAINT "withdraw_requests_admin_id_fkey" FOREIGN KEY ("admin_id") REFERENCES "admins"("admin_id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "feedbacks" ADD CONSTRAINT "feedbacks_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "users"("user_id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "feedbacks" ADD CONSTRAINT "feedbacks_course_id_fkey" FOREIGN KEY ("course_id") REFERENCES "courses"("course_id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "quizzes" ADD CONSTRAINT "quizzes_chapter_id_fkey" FOREIGN KEY ("chapter_id") REFERENCES "chapters"("chapter_id") ON DELETE CASCADE ON UPDATE CASCADE;
@@ -879,13 +884,13 @@ ALTER TABLE "questions" ADD CONSTRAINT "questions_quiz_id_fkey" FOREIGN KEY ("qu
 ALTER TABLE "options" ADD CONSTRAINT "options_question_id_fkey" FOREIGN KEY ("question_id") REFERENCES "questions"("question_id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "answers" ADD CONSTRAINT "answers_option_id_fkey" FOREIGN KEY ("option_id") REFERENCES "options"("option_id") ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
 ALTER TABLE "answers" ADD CONSTRAINT "answers_question_id_fkey" FOREIGN KEY ("question_id") REFERENCES "questions"("question_id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "answers" ADD CONSTRAINT "answers_submission_id_fkey" FOREIGN KEY ("submission_id") REFERENCES "submissions"("submission_id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "answers" ADD CONSTRAINT "answers_option_id_fkey" FOREIGN KEY ("option_id") REFERENCES "options"("option_id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "submissions" ADD CONSTRAINT "submissions_quiz_id_fkey" FOREIGN KEY ("quiz_id") REFERENCES "quizzes"("quiz_id") ON DELETE CASCADE ON UPDATE CASCADE;

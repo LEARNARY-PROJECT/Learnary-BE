@@ -2,11 +2,57 @@ import prisma from "../lib/client";
 import { AdminRole } from '../generated/prisma'
 
 export const createAdminRole = async (data: Omit<AdminRole, 'admin_role_id' | 'createdAt' | 'updatedAt'>) => {
-  return prisma.adminRole.create({ data });
+  return prisma.adminRole.create({ 
+    data,
+    include: {
+      permissions: {
+        include: {
+          permission: {
+            include: {
+              resources: {
+                include: {
+                  resource: true
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  });
 };
 
 export const getAdminRoleById = async (admin_role_id: string) => {
-  return prisma.adminRole.findUnique({ where: { admin_role_id } });
+  return prisma.adminRole.findUnique({ 
+    where: { admin_role_id },
+    include: {
+      permissions: {
+        include: {
+          permission: {
+            include: {
+              resources: {
+                include: {
+                  resource: true
+                }
+              }
+            }
+          }
+        }
+      },
+      admins: {
+        include: {
+          user: {
+            select: {
+              user_id: true,
+              email: true,
+              fullName: true,
+              avatar: true
+            }
+          }
+        }
+      }
+    }
+  });
 };
 
 export const getAllAdminRoles = async () => {
@@ -14,9 +60,33 @@ export const getAllAdminRoles = async () => {
     include: {
       permissions: {
         include: {
-          permission:true
+          permission: {
+            include: {
+              resources: {
+                include: {
+                  resource: true
+                }
+              }
+            }
+          }
+        }
+      },
+      admins: {
+        include: {
+          user: {
+            select: {
+              user_id: true,
+              email: true,
+              fullName: true,
+              avatar: true,
+              role: true
+            }
+          }
         }
       }
+    },
+    orderBy: {
+      level: 'asc'
     }
   });
 };
