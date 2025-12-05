@@ -1,6 +1,6 @@
 import express from "express";
 import { authenticate, authorizeRoles } from "../middlewares/auth.middleware";
-import { create, getAll, getById, update, remove } from "../controllers/admin.controller";
+import { create, getAll, getById, update, remove, getAdminByUserId } from "../controllers/admin.controller";
 
 const router = express.Router();
 
@@ -44,7 +44,6 @@ router.post("/admins", authenticate, authorizeRoles("ADMIN"), create);
  */
 router.get("/admins", authenticate, authorizeRoles("ADMIN"), getAll);
 
-
 /**
  * @openapi
  * /api/admins/{id}:
@@ -68,6 +67,7 @@ router.get("/admins", authenticate, authorizeRoles("ADMIN"), getAll);
  *         description: Unauthorized
  */
 router.get("/admins/:id", authenticate, authorizeRoles("ADMIN"), getById);
+router.get("/admins/getAdminByUserId/:id", authenticate, authorizeRoles("ADMIN"), getAdminByUserId);
 
 /**
  * @openapi

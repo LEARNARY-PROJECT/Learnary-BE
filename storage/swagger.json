@@ -5035,6 +5035,298 @@
         }
       }
     },
+    "/api/permission-resources": {
+      "get": {
+        "summary": "Get all permission-resource assignments",
+        "tags": [
+          "PermissionOnResource"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of assignments"
+          }
+        }
+      },
+      "post": {
+        "summary": "Assign a resource to a permission",
+        "tags": [
+          "PermissionOnResource"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "permissionId",
+                  "resourceTypeId"
+                ],
+                "properties": {
+                  "permissionId": {
+                    "type": "string"
+                  },
+                  "resourceTypeId": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Assignment created"
+          }
+        }
+      }
+    },
+    "/api/permission-resources/{id}": {
+      "get": {
+        "summary": "Get assignment by ID",
+        "tags": [
+          "PermissionOnResource"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Assignment details"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete assignment by ID",
+        "tags": [
+          "PermissionOnResource"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Assignment deleted"
+          }
+        }
+      }
+    },
+    "/api/permission-resources/permission/{permissionId}": {
+      "get": {
+        "summary": "Get all resources assigned to a permission",
+        "tags": [
+          "PermissionOnResource"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "permissionId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of resources"
+          }
+        }
+      }
+    },
+    "/api/permission-resources/resource/{resourceTypeId}": {
+      "get": {
+        "summary": "Get all permissions assigned to a resource",
+        "tags": [
+          "PermissionOnResource"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "resourceTypeId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of permissions"
+          }
+        }
+      }
+    },
+    "/api/permission-resources/assign-to-permission": {
+      "post": {
+        "summary": "Bulk assign resources to a permission (replaces existing)",
+        "tags": [
+          "PermissionOnResource"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "permissionId",
+                  "resourceTypeIds"
+                ],
+                "properties": {
+                  "permissionId": {
+                    "type": "string"
+                  },
+                  "resourceTypeIds": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Resources assigned to permission"
+          }
+        }
+      }
+    },
+    "/api/permission-resources/assign-to-resource": {
+      "post": {
+        "summary": "Bulk assign permissions to a resource (replaces existing)",
+        "tags": [
+          "PermissionOnResource"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "resourceTypeId",
+                  "permissionIds"
+                ],
+                "properties": {
+                  "resourceTypeId": {
+                    "type": "string"
+                  },
+                  "permissionIds": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Permissions assigned to resource"
+          }
+        }
+      }
+    },
+    "/api/permission-resources/unassign": {
+      "delete": {
+        "summary": "Remove specific resource from permission",
+        "tags": [
+          "PermissionOnResource"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "permissionId",
+                  "resourceTypeId"
+                ],
+                "properties": {
+                  "permissionId": {
+                    "type": "string"
+                  },
+                  "resourceTypeId": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Assignment deleted"
+          }
+        }
+      }
+    },
     "/api/questions": {
       "post": {
         "summary": "Create a new question",
@@ -5353,6 +5645,162 @@
           },
           "404": {
             "description": "Quiz not found"
+          }
+        }
+      }
+    },
+    "/api/resource-types": {
+      "get": {
+        "summary": "Get all resource types",
+        "tags": [
+          "ResourceType"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of resource types"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      },
+      "post": {
+        "summary": "Create a new resource type",
+        "tags": [
+          "ResourceType"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "resource_name"
+                ],
+                "properties": {
+                  "resource_name": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Resource type created"
+          },
+          "400": {
+            "description": "Invalid input"
+          }
+        }
+      }
+    },
+    "/api/resource-types/{resource_id}": {
+      "get": {
+        "summary": "Get resource type by ID",
+        "tags": [
+          "ResourceType"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "resource_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Resource type details"
+          },
+          "404": {
+            "description": "Resource type not found"
+          }
+        }
+      },
+      "put": {
+        "summary": "Update resource type",
+        "tags": [
+          "ResourceType"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "resource_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "resource_name": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Resource type updated"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete resource type",
+        "tags": [
+          "ResourceType"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "resource_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Resource type deleted"
           }
         }
       }

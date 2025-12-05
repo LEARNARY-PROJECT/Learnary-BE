@@ -338,6 +338,14 @@ model Admin {
   @@map("admins")
 }
 
+model ResourceType {
+  resource_id   String                 @id @default(uuid()) @db.Char(50)
+  resource_name String                 @unique
+  permissions   PermissionOnResource[]
+
+  @@map("resource_types")
+}
+
 model AdminRole {
   admin_role_id String @id @default(uuid()) @db.Char(50)
 
@@ -360,14 +368,32 @@ model Permission {
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
 
-  adminRoles AdminRolePermission[] @relation("PermissionToAdminRole")
+  adminRoles AdminRolePermission[]  @relation("PermissionToAdminRole")
+  resources  PermissionOnResource[]
 
   @@map("permissions")
 }
 
+model PermissionOnResource {
+  id             String @id @default(uuid())
+  permissionId   String @db.Char(50)
+  resourceTypeId String @db.Char(50)
+
+  permission Permission   @relation(fields: [permissionId], references: [permission_id], onDelete: Cascade)
+  resource   ResourceType @relation(fields: [resourceTypeId], references: [resource_id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([permissionId, resourceTypeId])
+  @@index([permissionId], name: "idx_por_permission")
+  @@index([resourceTypeId], name: "idx_por_resource")
+  @@map("permission_on_resources")
+}
+
 model AdminRolePermission {
   permission_id String @default(uuid()) @db.Char(50)
-  admin_role_id String @unique @db.Char(50)
+  admin_role_id String @db.Char(50)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

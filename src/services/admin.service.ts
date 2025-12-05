@@ -27,20 +27,115 @@ export const createAdmin = async (
     return { ...user, admin }
   })
 };
-
+export const getAdminIdByUserId = async (user_ids:string) => {
+  if(!user_ids) {
+    throw new Error("Missing user_id required")
+  }
+  return prisma.admin.findUnique({
+    where: { user_id: user_ids },
+    include: {
+      user: {
+        select: {
+          user_id: true,
+          email: true,
+          fullName: true,
+          avatar: true,
+          role: true
+        }
+      },
+      adminRole: {
+        include: {
+          permissions: {
+            include: {
+              permission: {
+                include: {
+                  resources: {
+                    include: {
+                      resource: true
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  })
+}
 export const getAdminById = async (admin_id: string) => {
-  return prisma.admin.findUnique({ where: { admin_id } });
+  return prisma.admin.findUnique({ 
+    where: { admin_id },
+    include: {
+      user: {
+        select: {
+          user_id: true,
+          email: true,
+          fullName: true,
+          avatar: true,
+          phone: true,
+          role: true,
+          isActive: true
+        }
+      },
+      adminRole: {
+        include: {
+          permissions: {
+            include: {
+              permission: {
+                include: {
+                  resources: {
+                    include: {
+                      resource: true
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  });
 };
 
 export const getAllAdmins = async () => {
-  return prisma.admin.findMany(
-    {
-      include: {
-        user:true,
-        adminRole:true,
+  return prisma.admin.findMany({
+    include: {
+      user: {
+        select: {
+          user_id: true,
+          email: true,
+          fullName: true,
+          avatar: true,
+          phone: true,
+          role: true,
+          isActive: true,
+          createdAt: true
+        }
+      },
+      adminRole: {
+        include: {
+          permissions: {
+            include: {
+              permission: {
+                include: {
+                  resources: {
+                    include: {
+                      resource: true
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
       }
+    },
+    orderBy: {
+      createdAt: 'desc'
     }
-  );
+  });
 };
 
 export const updateAdmin = async (admin_id: string, data: Partial<Admin>) => {
