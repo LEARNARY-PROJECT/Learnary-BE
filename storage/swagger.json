@@ -2860,6 +2860,220 @@
         }
       }
     },
+    "/api/course-groups/{groupId}/courses": {
+      "get": {
+        "summary": "Get all courses in a group",
+        "tags": [
+          "CourseGroup"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "groupId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of courses in group"
+          }
+        }
+      }
+    },
+    "/api/course-groups": {
+      "post": {
+        "summary": "Add course to group",
+        "tags": [
+          "CourseGroup"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "group_id",
+                  "course_id",
+                  "order_index"
+                ],
+                "properties": {
+                  "group_id": {
+                    "type": "string"
+                  },
+                  "course_id": {
+                    "type": "string"
+                  },
+                  "order_index": {
+                    "type": "number"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Course added to group"
+          }
+        }
+      }
+    },
+    "/api/course-groups/{groupId}/courses/{courseId}": {
+      "delete": {
+        "summary": "Remove course from group",
+        "tags": [
+          "CourseGroup"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "groupId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "courseId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Course removed from group"
+          }
+        }
+      }
+    },
+    "/api/course-groups/{groupId}/courses/{courseId}/order": {
+      "put": {
+        "summary": "Update course order in group",
+        "tags": [
+          "CourseGroup"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "groupId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "courseId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "order_index"
+                ],
+                "properties": {
+                  "order_index": {
+                    "type": "number"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Order updated"
+          }
+        }
+      }
+    },
+    "/api/course-groups/{groupId}/bulk-order": {
+      "put": {
+        "summary": "Bulk update course orders in group",
+        "tags": [
+          "CourseGroup"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "groupId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "courses"
+                ],
+                "properties": {
+                  "courses": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "course_id": {
+                          "type": "string"
+                        },
+                        "order_index": {
+                          "type": "number"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Orders updated"
+          }
+        }
+      }
+    },
     "/api/feedbacks/{courseId}": {
       "get": {
         "summary": "Get feedback for a specific course",
@@ -2919,6 +3133,198 @@
         "responses": {
           "201": {
             "description": "Feedback submitted"
+          }
+        }
+      }
+    },
+    "/api/groups": {
+      "get": {
+        "summary": "Get all groups",
+        "tags": [
+          "Group"
+        ],
+        "responses": {
+          "200": {
+            "description": "List of groups"
+          }
+        }
+      },
+      "post": {
+        "summary": "Create a new group",
+        "tags": [
+          "Group"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "name",
+                  "description",
+                  "discount"
+                ],
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "type": {
+                    "type": "string",
+                    "enum": [
+                      "Combo",
+                      "Group"
+                    ]
+                  },
+                  "discount": {
+                    "type": "number"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Group created"
+          }
+        }
+      }
+    },
+    "/api/groups/type/{type}": {
+      "get": {
+        "summary": "Get groups by type (Combo or Group)",
+        "tags": [
+          "Group"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "type",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "Combo",
+                "Group"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of groups by type"
+          }
+        }
+      }
+    },
+    "/api/groups/{id}": {
+      "get": {
+        "summary": "Get group by ID",
+        "tags": [
+          "Group"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Group details"
+          }
+        }
+      },
+      "put": {
+        "summary": "Update group",
+        "tags": [
+          "Group"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "type": {
+                    "type": "string",
+                    "enum": [
+                      "Combo",
+                      "Group"
+                    ]
+                  },
+                  "discount": {
+                    "type": "number"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Group updated"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete group",
+        "tags": [
+          "Group"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Group deleted"
           }
         }
       }
@@ -3839,6 +4245,58 @@
           },
           "401": {
             "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/learner-courses/my-courses": {
+      "get": {
+        "summary": "Get all courses of the logged-in learner",
+        "tags": [
+          "LearnerCourses"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of learner's purchased courses"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/learner-courses/learner/{learner_id}": {
+      "get": {
+        "summary": "Get all courses by learner ID",
+        "tags": [
+          "LearnerCourses"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "learner_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of courses"
+          },
+          "400": {
+            "description": "Missing learner_id"
           }
         }
       }

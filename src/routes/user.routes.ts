@@ -11,7 +11,8 @@ import {
     getInactive,
     uploadAvatar,
     getUserDetailForAdmin,
-    getInstructorDetailForAdmin
+    getInstructorDetailForAdmin,
+    getUserExceptAdmin
 } from '../controllers/user.controller';
 import { authenticate, authorizeRoles } from '../middlewares/auth.middleware';
 import upload from "../config/multer.config"
@@ -156,6 +157,7 @@ router.patch('/users/update-info/:id', authenticate, updateUserInformation);
  *                     type: string
  */
 router.get('/users', authenticate, authorizeRoles('ADMIN', 'INSTRUCTOR'), getAll);
+router.get('/users/getUserExceptAdmin', authenticate, authorizeRoles('ADMIN'), getUserExceptAdmin);
 
 
 /**

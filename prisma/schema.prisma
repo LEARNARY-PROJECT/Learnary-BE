@@ -420,13 +420,13 @@ model AccountSecurity {
 }
 model Group {
   group_id String @id @db.Char(50) @default(uuid())
+  
   name String 
   description String
   type GroupType @default(Group)
   discount Decimal @db.Decimal(5,2)
 
   hasCourseGroup CourseGroup[]
-
 
   createdAt DateTime @default(now())
   updateAt DateTime @updatedAt

@@ -41,6 +41,41 @@ export const getAll = async (_: Request, res: Response) => {
   }
 };
 
+export const getCoursesByLearner = async (req: Request, res: Response) => {
+  try {
+    const { learner_id } = req.params;
+    
+    if (!learner_id) {
+      return res.status(400).json(failure("learner_id is required"));
+    }
+
+    const courses = await LearnerCoursesService.getCoursesByLearnerId(learner_id);
+    res.json(success(courses, "Courses fetched successfully"));
+  } catch (err) {
+    const e = err as Error;
+    res.status(500).json(failure("Failed to fetch courses", e.message));
+  }
+};
+
+export const getMyCourses = async (req: Request, res: Response) => {
+  try {
+    const user_id = req.jwtPayload?.id;
+    
+    if (!user_id) {
+      return res.status(401).json(failure("Unauthorized"));
+    }
+
+    const courses = await LearnerCoursesService.getCoursesByLearnerUserId(user_id);
+    res.json(success(courses, "Your courses fetched successfully"));
+  } catch (err) {
+    const e = err as Error;
+    if (e.message === 'Learner not found') {
+      return res.status(404).json(failure("Learner not found"));
+    }
+    res.status(500).json(failure("Failed to fetch courses", e.message));
+  }
+};
+
 export const update = async (req: Request, res: Response) => {
   try {
     const learner_id =  req.params.learner_id;

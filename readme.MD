@@ -1,1 +1,3 @@
-ĐÂY LÀ 1 PROJECT CÓ VẺ VIP...
+# Learnary Backend
+
+1 2 3 readme
