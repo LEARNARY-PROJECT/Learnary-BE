@@ -68,9 +68,10 @@ const router = express.Router();
  *                 $ref: '#/components/schemas/Course'
  */
 router.get('/courses', ControllerCourse.getAll);
-router.get('/courses/slug/:slug',optionalAuthenticate, ControllerCourse.getCourseBySlug)
-// --- CÁC ROUTE CẦN XÁC THỰC ---
 
+router.get('/courses/slug/:slug',optionalAuthenticate, ControllerCourse.getCourseBySlug)
+
+// --- CÁC ROUTE CẦN XÁC THỰC ---
 /**
  * @openapi
  * /api/courses/instructor/my-courses:

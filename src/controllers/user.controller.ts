@@ -10,7 +10,8 @@ import {
     getRecentlyActiveUsers,
     getInactiveUsers,
     uploadAvatarToS3,
-    getFullUserProfile
+    getFullUserProfile,
+    getUsersExceptAdmins,
 } from '../services/user.service';
 import { JwtPayLoad } from '../middlewares/auth.middleware';
 
@@ -28,6 +29,15 @@ export const create = async (req: Request, res: Response) => {
 export const getAll = async (_req: Request, res: Response) => {
     try {
         const users = await getAllUsers();
+        res.status(200).json(users);
+    } catch (err) {
+        console.error("Get user by id error", err);
+        res.status(500).json({ error: 'Failed to fetch users.' });
+    }
+};
+export const getUserExceptAdmin = async (_req: Request, res: Response) => {
+    try {
+        const users = await getUsersExceptAdmins();
         res.status(200).json(users);
     } catch (err) {
         console.error("Get user by id error", err);
