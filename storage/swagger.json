@@ -4249,6 +4249,58 @@
         }
       }
     },
+    "/api/learner-courses/my-courses": {
+      "get": {
+        "summary": "Get all courses of the logged-in learner",
+        "tags": [
+          "LearnerCourses"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of learner's purchased courses"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/learner-courses/learner/{learner_id}": {
+      "get": {
+        "summary": "Get all courses by learner ID",
+        "tags": [
+          "LearnerCourses"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "learner_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of courses"
+          },
+          "400": {
+            "description": "Missing learner_id"
+          }
+        }
+      }
+    },
     "/api/leanrer-courses": {
       "post": {
         "summary": "Create a new leanrer course",

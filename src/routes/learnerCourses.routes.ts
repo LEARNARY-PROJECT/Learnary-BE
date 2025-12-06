@@ -1,8 +1,46 @@
 import express from "express";
 import { authenticate, authorizeRoles } from "../middlewares/auth.middleware";
-import { create, getAll, getById, update, remove } from "../controllers/learnerCourses.controller";
+import { create, getAll, getById, update, remove, getCoursesByLearner, getMyCourses } from "../controllers/learnerCourses.controller";
 
 const router = express.Router();
+
+/**
+ * @openapi
+ * /api/learner-courses/my-courses:
+ *   get:
+ *     summary: Get all courses of the logged-in learner
+ *     tags: [LearnerCourses]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: List of learner's purchased courses
+ *       401:
+ *         description: Unauthorized
+ */
+router.get("/learner-courses/my-courses", authenticate, getMyCourses);
+
+/**
+ * @openapi
+ * /api/learner-courses/learner/{learner_id}:
+ *   get:
+ *     summary: Get all courses by learner ID
+ *     tags: [LearnerCourses]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: learner_id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: List of courses
+ *       400:
+ *         description: Missing learner_id
+ */
+router.get("/learner-courses/learner/:learner_id", authenticate, authorizeRoles("ADMIN"), getCoursesByLearner);
 
 /**
  * @openapi
@@ -26,7 +64,7 @@ const router = express.Router();
  *       401:
  *         description: Unauthorized
  */
-router.post("/leanrer-courses", authenticate, authorizeRoles("ADMIN"), create);
+router.post("/learner-courses", authenticate, authorizeRoles("ADMIN"), create);
 
 /**
  * @openapi

@@ -4,10 +4,7 @@ import payOS from '../lib/payos';
 import { CreatePaymentParams, PayOSWebhookBody, PayOSWebhookData } from '../types/payos';
 
 export const PaymentService = {
-    // 1. Hàm tạo Payment Link
     createPaymentLink: async (userId: string, courseId: string): Promise<string> => {
-        
-        // Kiểm tra khóa học
         const course = await prisma.course.findUnique({ where: { course_id: courseId } });
         if (!course) throw new Error("Khóa học không tồn tại");
 
@@ -70,13 +67,9 @@ export const PaymentService = {
     // 2. Hàm xử lý Webhook
     processWebhook: async (webhookBody: PayOSWebhookBody): Promise<PayOSWebhookData> => {
     
-    console.log("🔔 Webhook nhận được:", JSON.stringify(webhookBody, null, 2));
-    
     // 1. Xác thực và lấy mã đơn
     const webhookData = await payOS.webhooks.verify(webhookBody);
     const orderCode = webhookData.orderCode;
-
-    console.log(`🔍 Đang tìm đơn hàng: ${orderCode} trong Database...`);
 
     // 2. Mở Transaction
     await prisma.$transaction(async (tx) => {
@@ -88,11 +81,8 @@ export const PaymentService = {
 
         // Nếu KHÔNG tìm thấy (VD: do PayOS test fake data 123)
         if (!transaction) {
-            console.log(`❌ Không tìm thấy đơn hàng mã ${orderCode}. Bỏ qua cập nhật.`);
             return; // Dừng luôn, không làm gì cả, không báo lỗi
         }
-
-        console.log(`✅ Tìm thấy transaction:`, transaction);
 
         // Nếu tìm thấy -> Thì mới Update
         const updatedTrans = await tx.transaction.update({
@@ -100,14 +90,10 @@ export const PaymentService = {
             data: { status: TransactionStatus.Success }
         });
 
-        console.log("✅ Đã cập nhật trạng thái transaction thành công:", updatedTrans.transaction_id);
-
             // 2. Tìm thông tin học viên
             const learner = await tx.learner.findUnique({
                 where: { user_id: updatedTrans.user_id }
             });
-
-            console.log(`🔍 Tìm learner với user_id: ${updatedTrans.user_id}`, learner);
 
             if (learner) {
                 // Kiểm tra trùng lặp lần cuối
@@ -119,8 +105,6 @@ export const PaymentService = {
                         } 
                     }
                 });
-
-                console.log(`🔍 Kiểm tra learner đã enroll chưa:`, exists);
 
                 if (!exists) {
                     // ⚠️ QUAN TRỌNG: Dùng 'tx.learnerCourses.create' thay vì hàm bên ngoài
@@ -137,29 +121,20 @@ export const PaymentService = {
                             enrolledAt: new Date()
                         }
                     });
-                    console.log(`✅ Đã tạo learnerCourses:`, enrolled);
-                } else {
-                    console.log(`⚠️ Learner đã enroll khóa học này rồi, bỏ qua.`);
                 }
-            } else {
-                console.log(`❌ Không tìm thấy learner với user_id: ${updatedTrans.user_id}`);
             }
         });
 
-        console.log(`🎉 Webhook xử lý thành công cho orderCode: ${orderCode}`);
         return webhookData;
     },
 
     // 3. Hàm hủy thanh toán
     cancelPayment: async (orderCode: number): Promise<void> => {
-        console.log(`🔍 Hủy đơn hàng: ${orderCode}`);
-
         const transaction = await prisma.transaction.findUnique({
             where: { payment_code: BigInt(orderCode) }
         });
 
         if (!transaction) {
-            console.log(`❌ Không tìm thấy đơn hàng mã ${orderCode}`);
             throw new Error('Không tìm thấy giao dịch');
         }
 
@@ -169,9 +144,6 @@ export const PaymentService = {
                 where: { transaction_id: transaction.transaction_id },
                 data: { status: TransactionStatus.Cancel }
             });
-            console.log(`✅ Đã cập nhật trạng thái hủy cho đơn hàng ${orderCode}`);
-        } else {
-            console.log(`⚠️ Đơn hàng ${orderCode} đã có trạng thái ${transaction.status}, không cập nhật`);
         }
     }
 };
