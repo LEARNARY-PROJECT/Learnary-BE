@@ -26,7 +26,24 @@ export const getById = async (req: Request, res: Response) => {
     res.status(500).json(failure("Failed to fetch admin", e.message));
   }
 };
-
+export const getAdminByUserId = async (req: Request,res:Response) => {
+  try {
+    const userId = req.params.id;
+    if(!userId) {
+      res.status(500).json(failure("Missing field userId required"));
+      return;
+    }
+    const admin = await AdminService.getAdminIdByUserId(userId)
+    if(!admin) {
+      res.status(504).json(failure("Not found admin with this user_id"));
+      return;
+    }
+    res.json(success(admin,"Admin fetched successfully"));
+  } catch (error) {
+    const e = error as Error;
+    res.status(500).json(failure("Failed to fetch admin", e.message));
+  }
+}
 export const getAll = async (_: Request, res: Response) => {
   try {
     const admins = await AdminService.getAllAdmins();

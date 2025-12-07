@@ -69,6 +69,11 @@ export type Transaction = $Result.DefaultSelection<Prisma.$TransactionPayload>
  */
 export type Admin = $Result.DefaultSelection<Prisma.$AdminPayload>
 /**
+ * Model ResourceType
+ * 
+ */
+export type ResourceType = $Result.DefaultSelection<Prisma.$ResourceTypePayload>
+/**
  * Model AdminRole
  * 
  */
@@ -78,6 +83,11 @@ export type AdminRole = $Result.DefaultSelection<Prisma.$AdminRolePayload>
  * 
  */
 export type Permission = $Result.DefaultSelection<Prisma.$PermissionPayload>
+/**
+ * Model PermissionOnResource
+ * 
+ */
+export type PermissionOnResource = $Result.DefaultSelection<Prisma.$PermissionOnResourcePayload>
 /**
  * Model AdminRolePermission
  * 
@@ -572,6 +582,16 @@ export class PrismaClient<
   get admin(): Prisma.AdminDelegate<ExtArgs, ClientOptions>;
 
   /**
+   * `prisma.resourceType`: Exposes CRUD operations for the **ResourceType** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more ResourceTypes
+    * const resourceTypes = await prisma.resourceType.findMany()
+    * ```
+    */
+  get resourceType(): Prisma.ResourceTypeDelegate<ExtArgs, ClientOptions>;
+
+  /**
    * `prisma.adminRole`: Exposes CRUD operations for the **AdminRole** model.
     * Example usage:
     * ```ts
@@ -590,6 +610,16 @@ export class PrismaClient<
     * ```
     */
   get permission(): Prisma.PermissionDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.permissionOnResource`: Exposes CRUD operations for the **PermissionOnResource** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more PermissionOnResources
+    * const permissionOnResources = await prisma.permissionOnResource.findMany()
+    * ```
+    */
+  get permissionOnResource(): Prisma.PermissionOnResourceDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.adminRolePermission`: Exposes CRUD operations for the **AdminRolePermission** model.
@@ -1215,8 +1245,10 @@ export namespace Prisma {
     Wallet: 'Wallet',
     Transaction: 'Transaction',
     Admin: 'Admin',
+    ResourceType: 'ResourceType',
     AdminRole: 'AdminRole',
     Permission: 'Permission',
+    PermissionOnResource: 'PermissionOnResource',
     AdminRolePermission: 'AdminRolePermission',
     AccountSecurity: 'AccountSecurity',
     Group: 'Group',
@@ -1250,7 +1282,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "learner" | "instructor" | "instructorSpecializations" | "specialization" | "citizenIdsConfirm" | "instructorQualifications" | "bankAccount" | "wallet" | "transaction" | "admin" | "adminRole" | "permission" | "adminRolePermission" | "accountSecurity" | "group" | "courseGroup" | "course" | "category" | "level" | "learnerCourses" | "chapter" | "lesson" | "note" | "withdrawRequest" | "feedback" | "quiz" | "question" | "options" | "answer" | "submission"
+      modelProps: "user" | "learner" | "instructor" | "instructorSpecializations" | "specialization" | "citizenIdsConfirm" | "instructorQualifications" | "bankAccount" | "wallet" | "transaction" | "admin" | "resourceType" | "adminRole" | "permission" | "permissionOnResource" | "adminRolePermission" | "accountSecurity" | "group" | "courseGroup" | "course" | "category" | "level" | "learnerCourses" | "chapter" | "lesson" | "note" | "withdrawRequest" | "feedback" | "quiz" | "question" | "options" | "answer" | "submission"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -2068,6 +2100,80 @@ export namespace Prisma {
           }
         }
       }
+      ResourceType: {
+        payload: Prisma.$ResourceTypePayload<ExtArgs>
+        fields: Prisma.ResourceTypeFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.ResourceTypeFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ResourceTypePayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.ResourceTypeFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ResourceTypePayload>
+          }
+          findFirst: {
+            args: Prisma.ResourceTypeFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ResourceTypePayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.ResourceTypeFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ResourceTypePayload>
+          }
+          findMany: {
+            args: Prisma.ResourceTypeFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ResourceTypePayload>[]
+          }
+          create: {
+            args: Prisma.ResourceTypeCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ResourceTypePayload>
+          }
+          createMany: {
+            args: Prisma.ResourceTypeCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.ResourceTypeCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ResourceTypePayload>[]
+          }
+          delete: {
+            args: Prisma.ResourceTypeDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ResourceTypePayload>
+          }
+          update: {
+            args: Prisma.ResourceTypeUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ResourceTypePayload>
+          }
+          deleteMany: {
+            args: Prisma.ResourceTypeDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.ResourceTypeUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.ResourceTypeUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ResourceTypePayload>[]
+          }
+          upsert: {
+            args: Prisma.ResourceTypeUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ResourceTypePayload>
+          }
+          aggregate: {
+            args: Prisma.ResourceTypeAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateResourceType>
+          }
+          groupBy: {
+            args: Prisma.ResourceTypeGroupByArgs<ExtArgs>
+            result: $Utils.Optional<ResourceTypeGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.ResourceTypeCountArgs<ExtArgs>
+            result: $Utils.Optional<ResourceTypeCountAggregateOutputType> | number
+          }
+        }
+      }
       AdminRole: {
         payload: Prisma.$AdminRolePayload<ExtArgs>
         fields: Prisma.AdminRoleFieldRefs
@@ -2213,6 +2319,80 @@ export namespace Prisma {
           count: {
             args: Prisma.PermissionCountArgs<ExtArgs>
             result: $Utils.Optional<PermissionCountAggregateOutputType> | number
+          }
+        }
+      }
+      PermissionOnResource: {
+        payload: Prisma.$PermissionOnResourcePayload<ExtArgs>
+        fields: Prisma.PermissionOnResourceFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.PermissionOnResourceFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PermissionOnResourcePayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.PermissionOnResourceFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PermissionOnResourcePayload>
+          }
+          findFirst: {
+            args: Prisma.PermissionOnResourceFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PermissionOnResourcePayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.PermissionOnResourceFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PermissionOnResourcePayload>
+          }
+          findMany: {
+            args: Prisma.PermissionOnResourceFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PermissionOnResourcePayload>[]
+          }
+          create: {
+            args: Prisma.PermissionOnResourceCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PermissionOnResourcePayload>
+          }
+          createMany: {
+            args: Prisma.PermissionOnResourceCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.PermissionOnResourceCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PermissionOnResourcePayload>[]
+          }
+          delete: {
+            args: Prisma.PermissionOnResourceDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PermissionOnResourcePayload>
+          }
+          update: {
+            args: Prisma.PermissionOnResourceUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PermissionOnResourcePayload>
+          }
+          deleteMany: {
+            args: Prisma.PermissionOnResourceDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.PermissionOnResourceUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.PermissionOnResourceUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PermissionOnResourcePayload>[]
+          }
+          upsert: {
+            args: Prisma.PermissionOnResourceUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PermissionOnResourcePayload>
+          }
+          aggregate: {
+            args: Prisma.PermissionOnResourceAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregatePermissionOnResource>
+          }
+          groupBy: {
+            args: Prisma.PermissionOnResourceGroupByArgs<ExtArgs>
+            result: $Utils.Optional<PermissionOnResourceGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.PermissionOnResourceCountArgs<ExtArgs>
+            result: $Utils.Optional<PermissionOnResourceCountAggregateOutputType> | number
           }
         }
       }
@@ -3651,8 +3831,10 @@ export namespace Prisma {
     wallet?: WalletOmit
     transaction?: TransactionOmit
     admin?: AdminOmit
+    resourceType?: ResourceTypeOmit
     adminRole?: AdminRoleOmit
     permission?: PermissionOmit
+    permissionOnResource?: PermissionOnResourceOmit
     adminRolePermission?: AdminRolePermissionOmit
     accountSecurity?: AccountSecurityOmit
     group?: GroupOmit
@@ -4023,6 +4205,37 @@ export namespace Prisma {
 
 
   /**
+   * Count Type ResourceTypeCountOutputType
+   */
+
+  export type ResourceTypeCountOutputType = {
+    permissions: number
+  }
+
+  export type ResourceTypeCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    permissions?: boolean | ResourceTypeCountOutputTypeCountPermissionsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * ResourceTypeCountOutputType without action
+   */
+  export type ResourceTypeCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ResourceTypeCountOutputType
+     */
+    select?: ResourceTypeCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * ResourceTypeCountOutputType without action
+   */
+  export type ResourceTypeCountOutputTypeCountPermissionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PermissionOnResourceWhereInput
+  }
+
+
+  /**
    * Count Type AdminRoleCountOutputType
    */
 
@@ -4068,10 +4281,12 @@ export namespace Prisma {
 
   export type PermissionCountOutputType = {
     adminRoles: number
+    resources: number
   }
 
   export type PermissionCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     adminRoles?: boolean | PermissionCountOutputTypeCountAdminRolesArgs
+    resources?: boolean | PermissionCountOutputTypeCountResourcesArgs
   }
 
   // Custom InputTypes
@@ -4090,6 +4305,13 @@ export namespace Prisma {
    */
   export type PermissionCountOutputTypeCountAdminRolesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: AdminRolePermissionWhereInput
+  }
+
+  /**
+   * PermissionCountOutputType without action
+   */
+  export type PermissionCountOutputTypeCountResourcesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PermissionOnResourceWhereInput
   }
 
 
@@ -17518,6 +17740,1037 @@ export namespace Prisma {
 
 
   /**
+   * Model ResourceType
+   */
+
+  export type AggregateResourceType = {
+    _count: ResourceTypeCountAggregateOutputType | null
+    _min: ResourceTypeMinAggregateOutputType | null
+    _max: ResourceTypeMaxAggregateOutputType | null
+  }
+
+  export type ResourceTypeMinAggregateOutputType = {
+    resource_id: string | null
+    resource_name: string | null
+  }
+
+  export type ResourceTypeMaxAggregateOutputType = {
+    resource_id: string | null
+    resource_name: string | null
+  }
+
+  export type ResourceTypeCountAggregateOutputType = {
+    resource_id: number
+    resource_name: number
+    _all: number
+  }
+
+
+  export type ResourceTypeMinAggregateInputType = {
+    resource_id?: true
+    resource_name?: true
+  }
+
+  export type ResourceTypeMaxAggregateInputType = {
+    resource_id?: true
+    resource_name?: true
+  }
+
+  export type ResourceTypeCountAggregateInputType = {
+    resource_id?: true
+    resource_name?: true
+    _all?: true
+  }
+
+  export type ResourceTypeAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ResourceType to aggregate.
+     */
+    where?: ResourceTypeWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ResourceTypes to fetch.
+     */
+    orderBy?: ResourceTypeOrderByWithRelationInput | ResourceTypeOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: ResourceTypeWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ResourceTypes from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ResourceTypes.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned ResourceTypes
+    **/
+    _count?: true | ResourceTypeCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: ResourceTypeMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: ResourceTypeMaxAggregateInputType
+  }
+
+  export type GetResourceTypeAggregateType<T extends ResourceTypeAggregateArgs> = {
+        [P in keyof T & keyof AggregateResourceType]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateResourceType[P]>
+      : GetScalarType<T[P], AggregateResourceType[P]>
+  }
+
+
+
+
+  export type ResourceTypeGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ResourceTypeWhereInput
+    orderBy?: ResourceTypeOrderByWithAggregationInput | ResourceTypeOrderByWithAggregationInput[]
+    by: ResourceTypeScalarFieldEnum[] | ResourceTypeScalarFieldEnum
+    having?: ResourceTypeScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: ResourceTypeCountAggregateInputType | true
+    _min?: ResourceTypeMinAggregateInputType
+    _max?: ResourceTypeMaxAggregateInputType
+  }
+
+  export type ResourceTypeGroupByOutputType = {
+    resource_id: string
+    resource_name: string
+    _count: ResourceTypeCountAggregateOutputType | null
+    _min: ResourceTypeMinAggregateOutputType | null
+    _max: ResourceTypeMaxAggregateOutputType | null
+  }
+
+  type GetResourceTypeGroupByPayload<T extends ResourceTypeGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<ResourceTypeGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof ResourceTypeGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], ResourceTypeGroupByOutputType[P]>
+            : GetScalarType<T[P], ResourceTypeGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type ResourceTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    resource_id?: boolean
+    resource_name?: boolean
+    permissions?: boolean | ResourceType$permissionsArgs<ExtArgs>
+    _count?: boolean | ResourceTypeCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["resourceType"]>
+
+  export type ResourceTypeSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    resource_id?: boolean
+    resource_name?: boolean
+  }, ExtArgs["result"]["resourceType"]>
+
+  export type ResourceTypeSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    resource_id?: boolean
+    resource_name?: boolean
+  }, ExtArgs["result"]["resourceType"]>
+
+  export type ResourceTypeSelectScalar = {
+    resource_id?: boolean
+    resource_name?: boolean
+  }
+
+  export type ResourceTypeOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"resource_id" | "resource_name", ExtArgs["result"]["resourceType"]>
+  export type ResourceTypeInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    permissions?: boolean | ResourceType$permissionsArgs<ExtArgs>
+    _count?: boolean | ResourceTypeCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type ResourceTypeIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+  export type ResourceTypeIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+
+  export type $ResourceTypePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "ResourceType"
+    objects: {
+      permissions: Prisma.$PermissionOnResourcePayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      resource_id: string
+      resource_name: string
+    }, ExtArgs["result"]["resourceType"]>
+    composites: {}
+  }
+
+  type ResourceTypeGetPayload<S extends boolean | null | undefined | ResourceTypeDefaultArgs> = $Result.GetResult<Prisma.$ResourceTypePayload, S>
+
+  type ResourceTypeCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<ResourceTypeFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: ResourceTypeCountAggregateInputType | true
+    }
+
+  export interface ResourceTypeDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['ResourceType'], meta: { name: 'ResourceType' } }
+    /**
+     * Find zero or one ResourceType that matches the filter.
+     * @param {ResourceTypeFindUniqueArgs} args - Arguments to find a ResourceType
+     * @example
+     * // Get one ResourceType
+     * const resourceType = await prisma.resourceType.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends ResourceTypeFindUniqueArgs>(args: SelectSubset<T, ResourceTypeFindUniqueArgs<ExtArgs>>): Prisma__ResourceTypeClient<$Result.GetResult<Prisma.$ResourceTypePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one ResourceType that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {ResourceTypeFindUniqueOrThrowArgs} args - Arguments to find a ResourceType
+     * @example
+     * // Get one ResourceType
+     * const resourceType = await prisma.resourceType.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends ResourceTypeFindUniqueOrThrowArgs>(args: SelectSubset<T, ResourceTypeFindUniqueOrThrowArgs<ExtArgs>>): Prisma__ResourceTypeClient<$Result.GetResult<Prisma.$ResourceTypePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ResourceType that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ResourceTypeFindFirstArgs} args - Arguments to find a ResourceType
+     * @example
+     * // Get one ResourceType
+     * const resourceType = await prisma.resourceType.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends ResourceTypeFindFirstArgs>(args?: SelectSubset<T, ResourceTypeFindFirstArgs<ExtArgs>>): Prisma__ResourceTypeClient<$Result.GetResult<Prisma.$ResourceTypePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ResourceType that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ResourceTypeFindFirstOrThrowArgs} args - Arguments to find a ResourceType
+     * @example
+     * // Get one ResourceType
+     * const resourceType = await prisma.resourceType.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends ResourceTypeFindFirstOrThrowArgs>(args?: SelectSubset<T, ResourceTypeFindFirstOrThrowArgs<ExtArgs>>): Prisma__ResourceTypeClient<$Result.GetResult<Prisma.$ResourceTypePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more ResourceTypes that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ResourceTypeFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all ResourceTypes
+     * const resourceTypes = await prisma.resourceType.findMany()
+     * 
+     * // Get first 10 ResourceTypes
+     * const resourceTypes = await prisma.resourceType.findMany({ take: 10 })
+     * 
+     * // Only select the `resource_id`
+     * const resourceTypeWithResource_idOnly = await prisma.resourceType.findMany({ select: { resource_id: true } })
+     * 
+     */
+    findMany<T extends ResourceTypeFindManyArgs>(args?: SelectSubset<T, ResourceTypeFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ResourceTypePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a ResourceType.
+     * @param {ResourceTypeCreateArgs} args - Arguments to create a ResourceType.
+     * @example
+     * // Create one ResourceType
+     * const ResourceType = await prisma.resourceType.create({
+     *   data: {
+     *     // ... data to create a ResourceType
+     *   }
+     * })
+     * 
+     */
+    create<T extends ResourceTypeCreateArgs>(args: SelectSubset<T, ResourceTypeCreateArgs<ExtArgs>>): Prisma__ResourceTypeClient<$Result.GetResult<Prisma.$ResourceTypePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many ResourceTypes.
+     * @param {ResourceTypeCreateManyArgs} args - Arguments to create many ResourceTypes.
+     * @example
+     * // Create many ResourceTypes
+     * const resourceType = await prisma.resourceType.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends ResourceTypeCreateManyArgs>(args?: SelectSubset<T, ResourceTypeCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many ResourceTypes and returns the data saved in the database.
+     * @param {ResourceTypeCreateManyAndReturnArgs} args - Arguments to create many ResourceTypes.
+     * @example
+     * // Create many ResourceTypes
+     * const resourceType = await prisma.resourceType.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many ResourceTypes and only return the `resource_id`
+     * const resourceTypeWithResource_idOnly = await prisma.resourceType.createManyAndReturn({
+     *   select: { resource_id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends ResourceTypeCreateManyAndReturnArgs>(args?: SelectSubset<T, ResourceTypeCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ResourceTypePayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a ResourceType.
+     * @param {ResourceTypeDeleteArgs} args - Arguments to delete one ResourceType.
+     * @example
+     * // Delete one ResourceType
+     * const ResourceType = await prisma.resourceType.delete({
+     *   where: {
+     *     // ... filter to delete one ResourceType
+     *   }
+     * })
+     * 
+     */
+    delete<T extends ResourceTypeDeleteArgs>(args: SelectSubset<T, ResourceTypeDeleteArgs<ExtArgs>>): Prisma__ResourceTypeClient<$Result.GetResult<Prisma.$ResourceTypePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one ResourceType.
+     * @param {ResourceTypeUpdateArgs} args - Arguments to update one ResourceType.
+     * @example
+     * // Update one ResourceType
+     * const resourceType = await prisma.resourceType.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends ResourceTypeUpdateArgs>(args: SelectSubset<T, ResourceTypeUpdateArgs<ExtArgs>>): Prisma__ResourceTypeClient<$Result.GetResult<Prisma.$ResourceTypePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more ResourceTypes.
+     * @param {ResourceTypeDeleteManyArgs} args - Arguments to filter ResourceTypes to delete.
+     * @example
+     * // Delete a few ResourceTypes
+     * const { count } = await prisma.resourceType.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends ResourceTypeDeleteManyArgs>(args?: SelectSubset<T, ResourceTypeDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ResourceTypes.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ResourceTypeUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many ResourceTypes
+     * const resourceType = await prisma.resourceType.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends ResourceTypeUpdateManyArgs>(args: SelectSubset<T, ResourceTypeUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ResourceTypes and returns the data updated in the database.
+     * @param {ResourceTypeUpdateManyAndReturnArgs} args - Arguments to update many ResourceTypes.
+     * @example
+     * // Update many ResourceTypes
+     * const resourceType = await prisma.resourceType.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more ResourceTypes and only return the `resource_id`
+     * const resourceTypeWithResource_idOnly = await prisma.resourceType.updateManyAndReturn({
+     *   select: { resource_id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends ResourceTypeUpdateManyAndReturnArgs>(args: SelectSubset<T, ResourceTypeUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ResourceTypePayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one ResourceType.
+     * @param {ResourceTypeUpsertArgs} args - Arguments to update or create a ResourceType.
+     * @example
+     * // Update or create a ResourceType
+     * const resourceType = await prisma.resourceType.upsert({
+     *   create: {
+     *     // ... data to create a ResourceType
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the ResourceType we want to update
+     *   }
+     * })
+     */
+    upsert<T extends ResourceTypeUpsertArgs>(args: SelectSubset<T, ResourceTypeUpsertArgs<ExtArgs>>): Prisma__ResourceTypeClient<$Result.GetResult<Prisma.$ResourceTypePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of ResourceTypes.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ResourceTypeCountArgs} args - Arguments to filter ResourceTypes to count.
+     * @example
+     * // Count the number of ResourceTypes
+     * const count = await prisma.resourceType.count({
+     *   where: {
+     *     // ... the filter for the ResourceTypes we want to count
+     *   }
+     * })
+    **/
+    count<T extends ResourceTypeCountArgs>(
+      args?: Subset<T, ResourceTypeCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], ResourceTypeCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a ResourceType.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ResourceTypeAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends ResourceTypeAggregateArgs>(args: Subset<T, ResourceTypeAggregateArgs>): Prisma.PrismaPromise<GetResourceTypeAggregateType<T>>
+
+    /**
+     * Group by ResourceType.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ResourceTypeGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends ResourceTypeGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: ResourceTypeGroupByArgs['orderBy'] }
+        : { orderBy?: ResourceTypeGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, ResourceTypeGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetResourceTypeGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the ResourceType model
+   */
+  readonly fields: ResourceTypeFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for ResourceType.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__ResourceTypeClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    permissions<T extends ResourceType$permissionsArgs<ExtArgs> = {}>(args?: Subset<T, ResourceType$permissionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PermissionOnResourcePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the ResourceType model
+   */
+  interface ResourceTypeFieldRefs {
+    readonly resource_id: FieldRef<"ResourceType", 'String'>
+    readonly resource_name: FieldRef<"ResourceType", 'String'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * ResourceType findUnique
+   */
+  export type ResourceTypeFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ResourceType
+     */
+    select?: ResourceTypeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ResourceType
+     */
+    omit?: ResourceTypeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ResourceTypeInclude<ExtArgs> | null
+    /**
+     * Filter, which ResourceType to fetch.
+     */
+    where: ResourceTypeWhereUniqueInput
+  }
+
+  /**
+   * ResourceType findUniqueOrThrow
+   */
+  export type ResourceTypeFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ResourceType
+     */
+    select?: ResourceTypeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ResourceType
+     */
+    omit?: ResourceTypeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ResourceTypeInclude<ExtArgs> | null
+    /**
+     * Filter, which ResourceType to fetch.
+     */
+    where: ResourceTypeWhereUniqueInput
+  }
+
+  /**
+   * ResourceType findFirst
+   */
+  export type ResourceTypeFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ResourceType
+     */
+    select?: ResourceTypeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ResourceType
+     */
+    omit?: ResourceTypeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ResourceTypeInclude<ExtArgs> | null
+    /**
+     * Filter, which ResourceType to fetch.
+     */
+    where?: ResourceTypeWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ResourceTypes to fetch.
+     */
+    orderBy?: ResourceTypeOrderByWithRelationInput | ResourceTypeOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ResourceTypes.
+     */
+    cursor?: ResourceTypeWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ResourceTypes from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ResourceTypes.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ResourceTypes.
+     */
+    distinct?: ResourceTypeScalarFieldEnum | ResourceTypeScalarFieldEnum[]
+  }
+
+  /**
+   * ResourceType findFirstOrThrow
+   */
+  export type ResourceTypeFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ResourceType
+     */
+    select?: ResourceTypeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ResourceType
+     */
+    omit?: ResourceTypeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ResourceTypeInclude<ExtArgs> | null
+    /**
+     * Filter, which ResourceType to fetch.
+     */
+    where?: ResourceTypeWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ResourceTypes to fetch.
+     */
+    orderBy?: ResourceTypeOrderByWithRelationInput | ResourceTypeOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ResourceTypes.
+     */
+    cursor?: ResourceTypeWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ResourceTypes from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ResourceTypes.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ResourceTypes.
+     */
+    distinct?: ResourceTypeScalarFieldEnum | ResourceTypeScalarFieldEnum[]
+  }
+
+  /**
+   * ResourceType findMany
+   */
+  export type ResourceTypeFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ResourceType
+     */
+    select?: ResourceTypeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ResourceType
+     */
+    omit?: ResourceTypeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ResourceTypeInclude<ExtArgs> | null
+    /**
+     * Filter, which ResourceTypes to fetch.
+     */
+    where?: ResourceTypeWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ResourceTypes to fetch.
+     */
+    orderBy?: ResourceTypeOrderByWithRelationInput | ResourceTypeOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing ResourceTypes.
+     */
+    cursor?: ResourceTypeWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ResourceTypes from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ResourceTypes.
+     */
+    skip?: number
+    distinct?: ResourceTypeScalarFieldEnum | ResourceTypeScalarFieldEnum[]
+  }
+
+  /**
+   * ResourceType create
+   */
+  export type ResourceTypeCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ResourceType
+     */
+    select?: ResourceTypeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ResourceType
+     */
+    omit?: ResourceTypeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ResourceTypeInclude<ExtArgs> | null
+    /**
+     * The data needed to create a ResourceType.
+     */
+    data: XOR<ResourceTypeCreateInput, ResourceTypeUncheckedCreateInput>
+  }
+
+  /**
+   * ResourceType createMany
+   */
+  export type ResourceTypeCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many ResourceTypes.
+     */
+    data: ResourceTypeCreateManyInput | ResourceTypeCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * ResourceType createManyAndReturn
+   */
+  export type ResourceTypeCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ResourceType
+     */
+    select?: ResourceTypeSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the ResourceType
+     */
+    omit?: ResourceTypeOmit<ExtArgs> | null
+    /**
+     * The data used to create many ResourceTypes.
+     */
+    data: ResourceTypeCreateManyInput | ResourceTypeCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * ResourceType update
+   */
+  export type ResourceTypeUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ResourceType
+     */
+    select?: ResourceTypeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ResourceType
+     */
+    omit?: ResourceTypeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ResourceTypeInclude<ExtArgs> | null
+    /**
+     * The data needed to update a ResourceType.
+     */
+    data: XOR<ResourceTypeUpdateInput, ResourceTypeUncheckedUpdateInput>
+    /**
+     * Choose, which ResourceType to update.
+     */
+    where: ResourceTypeWhereUniqueInput
+  }
+
+  /**
+   * ResourceType updateMany
+   */
+  export type ResourceTypeUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update ResourceTypes.
+     */
+    data: XOR<ResourceTypeUpdateManyMutationInput, ResourceTypeUncheckedUpdateManyInput>
+    /**
+     * Filter which ResourceTypes to update
+     */
+    where?: ResourceTypeWhereInput
+    /**
+     * Limit how many ResourceTypes to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * ResourceType updateManyAndReturn
+   */
+  export type ResourceTypeUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ResourceType
+     */
+    select?: ResourceTypeSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the ResourceType
+     */
+    omit?: ResourceTypeOmit<ExtArgs> | null
+    /**
+     * The data used to update ResourceTypes.
+     */
+    data: XOR<ResourceTypeUpdateManyMutationInput, ResourceTypeUncheckedUpdateManyInput>
+    /**
+     * Filter which ResourceTypes to update
+     */
+    where?: ResourceTypeWhereInput
+    /**
+     * Limit how many ResourceTypes to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * ResourceType upsert
+   */
+  export type ResourceTypeUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ResourceType
+     */
+    select?: ResourceTypeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ResourceType
+     */
+    omit?: ResourceTypeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ResourceTypeInclude<ExtArgs> | null
+    /**
+     * The filter to search for the ResourceType to update in case it exists.
+     */
+    where: ResourceTypeWhereUniqueInput
+    /**
+     * In case the ResourceType found by the `where` argument doesn't exist, create a new ResourceType with this data.
+     */
+    create: XOR<ResourceTypeCreateInput, ResourceTypeUncheckedCreateInput>
+    /**
+     * In case the ResourceType was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<ResourceTypeUpdateInput, ResourceTypeUncheckedUpdateInput>
+  }
+
+  /**
+   * ResourceType delete
+   */
+  export type ResourceTypeDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ResourceType
+     */
+    select?: ResourceTypeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ResourceType
+     */
+    omit?: ResourceTypeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ResourceTypeInclude<ExtArgs> | null
+    /**
+     * Filter which ResourceType to delete.
+     */
+    where: ResourceTypeWhereUniqueInput
+  }
+
+  /**
+   * ResourceType deleteMany
+   */
+  export type ResourceTypeDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ResourceTypes to delete
+     */
+    where?: ResourceTypeWhereInput
+    /**
+     * Limit how many ResourceTypes to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * ResourceType.permissions
+   */
+  export type ResourceType$permissionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PermissionOnResource
+     */
+    select?: PermissionOnResourceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PermissionOnResource
+     */
+    omit?: PermissionOnResourceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PermissionOnResourceInclude<ExtArgs> | null
+    where?: PermissionOnResourceWhereInput
+    orderBy?: PermissionOnResourceOrderByWithRelationInput | PermissionOnResourceOrderByWithRelationInput[]
+    cursor?: PermissionOnResourceWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: PermissionOnResourceScalarFieldEnum | PermissionOnResourceScalarFieldEnum[]
+  }
+
+  /**
+   * ResourceType without action
+   */
+  export type ResourceTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ResourceType
+     */
+    select?: ResourceTypeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ResourceType
+     */
+    omit?: ResourceTypeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ResourceTypeInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Model AdminRole
    */
 
@@ -18814,6 +20067,7 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     adminRoles?: boolean | Permission$adminRolesArgs<ExtArgs>
+    resources?: boolean | Permission$resourcesArgs<ExtArgs>
     _count?: boolean | PermissionCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["permission"]>
 
@@ -18844,6 +20098,7 @@ export namespace Prisma {
   export type PermissionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"permission_id" | "permission_name" | "description" | "createdAt" | "updatedAt", ExtArgs["result"]["permission"]>
   export type PermissionInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     adminRoles?: boolean | Permission$adminRolesArgs<ExtArgs>
+    resources?: boolean | Permission$resourcesArgs<ExtArgs>
     _count?: boolean | PermissionCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type PermissionIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -18853,6 +20108,7 @@ export namespace Prisma {
     name: "Permission"
     objects: {
       adminRoles: Prisma.$AdminRolePermissionPayload<ExtArgs>[]
+      resources: Prisma.$PermissionOnResourcePayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       permission_id: string
@@ -19255,6 +20511,7 @@ export namespace Prisma {
   export interface Prisma__PermissionClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     adminRoles<T extends Permission$adminRolesArgs<ExtArgs> = {}>(args?: Subset<T, Permission$adminRolesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AdminRolePermissionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    resources<T extends Permission$resourcesArgs<ExtArgs> = {}>(args?: Subset<T, Permission$resourcesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PermissionOnResourcePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -19701,6 +20958,30 @@ export namespace Prisma {
   }
 
   /**
+   * Permission.resources
+   */
+  export type Permission$resourcesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PermissionOnResource
+     */
+    select?: PermissionOnResourceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PermissionOnResource
+     */
+    omit?: PermissionOnResourceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PermissionOnResourceInclude<ExtArgs> | null
+    where?: PermissionOnResourceWhereInput
+    orderBy?: PermissionOnResourceOrderByWithRelationInput | PermissionOnResourceOrderByWithRelationInput[]
+    cursor?: PermissionOnResourceWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: PermissionOnResourceScalarFieldEnum | PermissionOnResourceScalarFieldEnum[]
+  }
+
+  /**
    * Permission without action
    */
   export type PermissionDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -19716,6 +20997,1072 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: PermissionInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model PermissionOnResource
+   */
+
+  export type AggregatePermissionOnResource = {
+    _count: PermissionOnResourceCountAggregateOutputType | null
+    _min: PermissionOnResourceMinAggregateOutputType | null
+    _max: PermissionOnResourceMaxAggregateOutputType | null
+  }
+
+  export type PermissionOnResourceMinAggregateOutputType = {
+    id: string | null
+    permissionId: string | null
+    resourceTypeId: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type PermissionOnResourceMaxAggregateOutputType = {
+    id: string | null
+    permissionId: string | null
+    resourceTypeId: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type PermissionOnResourceCountAggregateOutputType = {
+    id: number
+    permissionId: number
+    resourceTypeId: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type PermissionOnResourceMinAggregateInputType = {
+    id?: true
+    permissionId?: true
+    resourceTypeId?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type PermissionOnResourceMaxAggregateInputType = {
+    id?: true
+    permissionId?: true
+    resourceTypeId?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type PermissionOnResourceCountAggregateInputType = {
+    id?: true
+    permissionId?: true
+    resourceTypeId?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type PermissionOnResourceAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which PermissionOnResource to aggregate.
+     */
+    where?: PermissionOnResourceWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PermissionOnResources to fetch.
+     */
+    orderBy?: PermissionOnResourceOrderByWithRelationInput | PermissionOnResourceOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: PermissionOnResourceWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PermissionOnResources from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PermissionOnResources.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned PermissionOnResources
+    **/
+    _count?: true | PermissionOnResourceCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: PermissionOnResourceMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: PermissionOnResourceMaxAggregateInputType
+  }
+
+  export type GetPermissionOnResourceAggregateType<T extends PermissionOnResourceAggregateArgs> = {
+        [P in keyof T & keyof AggregatePermissionOnResource]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregatePermissionOnResource[P]>
+      : GetScalarType<T[P], AggregatePermissionOnResource[P]>
+  }
+
+
+
+
+  export type PermissionOnResourceGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PermissionOnResourceWhereInput
+    orderBy?: PermissionOnResourceOrderByWithAggregationInput | PermissionOnResourceOrderByWithAggregationInput[]
+    by: PermissionOnResourceScalarFieldEnum[] | PermissionOnResourceScalarFieldEnum
+    having?: PermissionOnResourceScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: PermissionOnResourceCountAggregateInputType | true
+    _min?: PermissionOnResourceMinAggregateInputType
+    _max?: PermissionOnResourceMaxAggregateInputType
+  }
+
+  export type PermissionOnResourceGroupByOutputType = {
+    id: string
+    permissionId: string
+    resourceTypeId: string
+    createdAt: Date
+    updatedAt: Date
+    _count: PermissionOnResourceCountAggregateOutputType | null
+    _min: PermissionOnResourceMinAggregateOutputType | null
+    _max: PermissionOnResourceMaxAggregateOutputType | null
+  }
+
+  type GetPermissionOnResourceGroupByPayload<T extends PermissionOnResourceGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<PermissionOnResourceGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof PermissionOnResourceGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], PermissionOnResourceGroupByOutputType[P]>
+            : GetScalarType<T[P], PermissionOnResourceGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type PermissionOnResourceSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    permissionId?: boolean
+    resourceTypeId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    permission?: boolean | PermissionDefaultArgs<ExtArgs>
+    resource?: boolean | ResourceTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["permissionOnResource"]>
+
+  export type PermissionOnResourceSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    permissionId?: boolean
+    resourceTypeId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    permission?: boolean | PermissionDefaultArgs<ExtArgs>
+    resource?: boolean | ResourceTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["permissionOnResource"]>
+
+  export type PermissionOnResourceSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    permissionId?: boolean
+    resourceTypeId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    permission?: boolean | PermissionDefaultArgs<ExtArgs>
+    resource?: boolean | ResourceTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["permissionOnResource"]>
+
+  export type PermissionOnResourceSelectScalar = {
+    id?: boolean
+    permissionId?: boolean
+    resourceTypeId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type PermissionOnResourceOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "permissionId" | "resourceTypeId" | "createdAt" | "updatedAt", ExtArgs["result"]["permissionOnResource"]>
+  export type PermissionOnResourceInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    permission?: boolean | PermissionDefaultArgs<ExtArgs>
+    resource?: boolean | ResourceTypeDefaultArgs<ExtArgs>
+  }
+  export type PermissionOnResourceIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    permission?: boolean | PermissionDefaultArgs<ExtArgs>
+    resource?: boolean | ResourceTypeDefaultArgs<ExtArgs>
+  }
+  export type PermissionOnResourceIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    permission?: boolean | PermissionDefaultArgs<ExtArgs>
+    resource?: boolean | ResourceTypeDefaultArgs<ExtArgs>
+  }
+
+  export type $PermissionOnResourcePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "PermissionOnResource"
+    objects: {
+      permission: Prisma.$PermissionPayload<ExtArgs>
+      resource: Prisma.$ResourceTypePayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      permissionId: string
+      resourceTypeId: string
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["permissionOnResource"]>
+    composites: {}
+  }
+
+  type PermissionOnResourceGetPayload<S extends boolean | null | undefined | PermissionOnResourceDefaultArgs> = $Result.GetResult<Prisma.$PermissionOnResourcePayload, S>
+
+  type PermissionOnResourceCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<PermissionOnResourceFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: PermissionOnResourceCountAggregateInputType | true
+    }
+
+  export interface PermissionOnResourceDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['PermissionOnResource'], meta: { name: 'PermissionOnResource' } }
+    /**
+     * Find zero or one PermissionOnResource that matches the filter.
+     * @param {PermissionOnResourceFindUniqueArgs} args - Arguments to find a PermissionOnResource
+     * @example
+     * // Get one PermissionOnResource
+     * const permissionOnResource = await prisma.permissionOnResource.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends PermissionOnResourceFindUniqueArgs>(args: SelectSubset<T, PermissionOnResourceFindUniqueArgs<ExtArgs>>): Prisma__PermissionOnResourceClient<$Result.GetResult<Prisma.$PermissionOnResourcePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one PermissionOnResource that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {PermissionOnResourceFindUniqueOrThrowArgs} args - Arguments to find a PermissionOnResource
+     * @example
+     * // Get one PermissionOnResource
+     * const permissionOnResource = await prisma.permissionOnResource.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends PermissionOnResourceFindUniqueOrThrowArgs>(args: SelectSubset<T, PermissionOnResourceFindUniqueOrThrowArgs<ExtArgs>>): Prisma__PermissionOnResourceClient<$Result.GetResult<Prisma.$PermissionOnResourcePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first PermissionOnResource that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PermissionOnResourceFindFirstArgs} args - Arguments to find a PermissionOnResource
+     * @example
+     * // Get one PermissionOnResource
+     * const permissionOnResource = await prisma.permissionOnResource.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends PermissionOnResourceFindFirstArgs>(args?: SelectSubset<T, PermissionOnResourceFindFirstArgs<ExtArgs>>): Prisma__PermissionOnResourceClient<$Result.GetResult<Prisma.$PermissionOnResourcePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first PermissionOnResource that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PermissionOnResourceFindFirstOrThrowArgs} args - Arguments to find a PermissionOnResource
+     * @example
+     * // Get one PermissionOnResource
+     * const permissionOnResource = await prisma.permissionOnResource.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends PermissionOnResourceFindFirstOrThrowArgs>(args?: SelectSubset<T, PermissionOnResourceFindFirstOrThrowArgs<ExtArgs>>): Prisma__PermissionOnResourceClient<$Result.GetResult<Prisma.$PermissionOnResourcePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more PermissionOnResources that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PermissionOnResourceFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all PermissionOnResources
+     * const permissionOnResources = await prisma.permissionOnResource.findMany()
+     * 
+     * // Get first 10 PermissionOnResources
+     * const permissionOnResources = await prisma.permissionOnResource.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const permissionOnResourceWithIdOnly = await prisma.permissionOnResource.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends PermissionOnResourceFindManyArgs>(args?: SelectSubset<T, PermissionOnResourceFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PermissionOnResourcePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a PermissionOnResource.
+     * @param {PermissionOnResourceCreateArgs} args - Arguments to create a PermissionOnResource.
+     * @example
+     * // Create one PermissionOnResource
+     * const PermissionOnResource = await prisma.permissionOnResource.create({
+     *   data: {
+     *     // ... data to create a PermissionOnResource
+     *   }
+     * })
+     * 
+     */
+    create<T extends PermissionOnResourceCreateArgs>(args: SelectSubset<T, PermissionOnResourceCreateArgs<ExtArgs>>): Prisma__PermissionOnResourceClient<$Result.GetResult<Prisma.$PermissionOnResourcePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many PermissionOnResources.
+     * @param {PermissionOnResourceCreateManyArgs} args - Arguments to create many PermissionOnResources.
+     * @example
+     * // Create many PermissionOnResources
+     * const permissionOnResource = await prisma.permissionOnResource.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends PermissionOnResourceCreateManyArgs>(args?: SelectSubset<T, PermissionOnResourceCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many PermissionOnResources and returns the data saved in the database.
+     * @param {PermissionOnResourceCreateManyAndReturnArgs} args - Arguments to create many PermissionOnResources.
+     * @example
+     * // Create many PermissionOnResources
+     * const permissionOnResource = await prisma.permissionOnResource.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many PermissionOnResources and only return the `id`
+     * const permissionOnResourceWithIdOnly = await prisma.permissionOnResource.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends PermissionOnResourceCreateManyAndReturnArgs>(args?: SelectSubset<T, PermissionOnResourceCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PermissionOnResourcePayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a PermissionOnResource.
+     * @param {PermissionOnResourceDeleteArgs} args - Arguments to delete one PermissionOnResource.
+     * @example
+     * // Delete one PermissionOnResource
+     * const PermissionOnResource = await prisma.permissionOnResource.delete({
+     *   where: {
+     *     // ... filter to delete one PermissionOnResource
+     *   }
+     * })
+     * 
+     */
+    delete<T extends PermissionOnResourceDeleteArgs>(args: SelectSubset<T, PermissionOnResourceDeleteArgs<ExtArgs>>): Prisma__PermissionOnResourceClient<$Result.GetResult<Prisma.$PermissionOnResourcePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one PermissionOnResource.
+     * @param {PermissionOnResourceUpdateArgs} args - Arguments to update one PermissionOnResource.
+     * @example
+     * // Update one PermissionOnResource
+     * const permissionOnResource = await prisma.permissionOnResource.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends PermissionOnResourceUpdateArgs>(args: SelectSubset<T, PermissionOnResourceUpdateArgs<ExtArgs>>): Prisma__PermissionOnResourceClient<$Result.GetResult<Prisma.$PermissionOnResourcePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more PermissionOnResources.
+     * @param {PermissionOnResourceDeleteManyArgs} args - Arguments to filter PermissionOnResources to delete.
+     * @example
+     * // Delete a few PermissionOnResources
+     * const { count } = await prisma.permissionOnResource.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends PermissionOnResourceDeleteManyArgs>(args?: SelectSubset<T, PermissionOnResourceDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more PermissionOnResources.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PermissionOnResourceUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many PermissionOnResources
+     * const permissionOnResource = await prisma.permissionOnResource.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends PermissionOnResourceUpdateManyArgs>(args: SelectSubset<T, PermissionOnResourceUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more PermissionOnResources and returns the data updated in the database.
+     * @param {PermissionOnResourceUpdateManyAndReturnArgs} args - Arguments to update many PermissionOnResources.
+     * @example
+     * // Update many PermissionOnResources
+     * const permissionOnResource = await prisma.permissionOnResource.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more PermissionOnResources and only return the `id`
+     * const permissionOnResourceWithIdOnly = await prisma.permissionOnResource.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends PermissionOnResourceUpdateManyAndReturnArgs>(args: SelectSubset<T, PermissionOnResourceUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PermissionOnResourcePayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one PermissionOnResource.
+     * @param {PermissionOnResourceUpsertArgs} args - Arguments to update or create a PermissionOnResource.
+     * @example
+     * // Update or create a PermissionOnResource
+     * const permissionOnResource = await prisma.permissionOnResource.upsert({
+     *   create: {
+     *     // ... data to create a PermissionOnResource
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the PermissionOnResource we want to update
+     *   }
+     * })
+     */
+    upsert<T extends PermissionOnResourceUpsertArgs>(args: SelectSubset<T, PermissionOnResourceUpsertArgs<ExtArgs>>): Prisma__PermissionOnResourceClient<$Result.GetResult<Prisma.$PermissionOnResourcePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of PermissionOnResources.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PermissionOnResourceCountArgs} args - Arguments to filter PermissionOnResources to count.
+     * @example
+     * // Count the number of PermissionOnResources
+     * const count = await prisma.permissionOnResource.count({
+     *   where: {
+     *     // ... the filter for the PermissionOnResources we want to count
+     *   }
+     * })
+    **/
+    count<T extends PermissionOnResourceCountArgs>(
+      args?: Subset<T, PermissionOnResourceCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], PermissionOnResourceCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a PermissionOnResource.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PermissionOnResourceAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends PermissionOnResourceAggregateArgs>(args: Subset<T, PermissionOnResourceAggregateArgs>): Prisma.PrismaPromise<GetPermissionOnResourceAggregateType<T>>
+
+    /**
+     * Group by PermissionOnResource.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PermissionOnResourceGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends PermissionOnResourceGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: PermissionOnResourceGroupByArgs['orderBy'] }
+        : { orderBy?: PermissionOnResourceGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, PermissionOnResourceGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetPermissionOnResourceGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the PermissionOnResource model
+   */
+  readonly fields: PermissionOnResourceFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for PermissionOnResource.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__PermissionOnResourceClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    permission<T extends PermissionDefaultArgs<ExtArgs> = {}>(args?: Subset<T, PermissionDefaultArgs<ExtArgs>>): Prisma__PermissionClient<$Result.GetResult<Prisma.$PermissionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    resource<T extends ResourceTypeDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ResourceTypeDefaultArgs<ExtArgs>>): Prisma__ResourceTypeClient<$Result.GetResult<Prisma.$ResourceTypePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the PermissionOnResource model
+   */
+  interface PermissionOnResourceFieldRefs {
+    readonly id: FieldRef<"PermissionOnResource", 'String'>
+    readonly permissionId: FieldRef<"PermissionOnResource", 'String'>
+    readonly resourceTypeId: FieldRef<"PermissionOnResource", 'String'>
+    readonly createdAt: FieldRef<"PermissionOnResource", 'DateTime'>
+    readonly updatedAt: FieldRef<"PermissionOnResource", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * PermissionOnResource findUnique
+   */
+  export type PermissionOnResourceFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PermissionOnResource
+     */
+    select?: PermissionOnResourceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PermissionOnResource
+     */
+    omit?: PermissionOnResourceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PermissionOnResourceInclude<ExtArgs> | null
+    /**
+     * Filter, which PermissionOnResource to fetch.
+     */
+    where: PermissionOnResourceWhereUniqueInput
+  }
+
+  /**
+   * PermissionOnResource findUniqueOrThrow
+   */
+  export type PermissionOnResourceFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PermissionOnResource
+     */
+    select?: PermissionOnResourceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PermissionOnResource
+     */
+    omit?: PermissionOnResourceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PermissionOnResourceInclude<ExtArgs> | null
+    /**
+     * Filter, which PermissionOnResource to fetch.
+     */
+    where: PermissionOnResourceWhereUniqueInput
+  }
+
+  /**
+   * PermissionOnResource findFirst
+   */
+  export type PermissionOnResourceFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PermissionOnResource
+     */
+    select?: PermissionOnResourceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PermissionOnResource
+     */
+    omit?: PermissionOnResourceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PermissionOnResourceInclude<ExtArgs> | null
+    /**
+     * Filter, which PermissionOnResource to fetch.
+     */
+    where?: PermissionOnResourceWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PermissionOnResources to fetch.
+     */
+    orderBy?: PermissionOnResourceOrderByWithRelationInput | PermissionOnResourceOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for PermissionOnResources.
+     */
+    cursor?: PermissionOnResourceWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PermissionOnResources from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PermissionOnResources.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of PermissionOnResources.
+     */
+    distinct?: PermissionOnResourceScalarFieldEnum | PermissionOnResourceScalarFieldEnum[]
+  }
+
+  /**
+   * PermissionOnResource findFirstOrThrow
+   */
+  export type PermissionOnResourceFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PermissionOnResource
+     */
+    select?: PermissionOnResourceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PermissionOnResource
+     */
+    omit?: PermissionOnResourceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PermissionOnResourceInclude<ExtArgs> | null
+    /**
+     * Filter, which PermissionOnResource to fetch.
+     */
+    where?: PermissionOnResourceWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PermissionOnResources to fetch.
+     */
+    orderBy?: PermissionOnResourceOrderByWithRelationInput | PermissionOnResourceOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for PermissionOnResources.
+     */
+    cursor?: PermissionOnResourceWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PermissionOnResources from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PermissionOnResources.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of PermissionOnResources.
+     */
+    distinct?: PermissionOnResourceScalarFieldEnum | PermissionOnResourceScalarFieldEnum[]
+  }
+
+  /**
+   * PermissionOnResource findMany
+   */
+  export type PermissionOnResourceFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PermissionOnResource
+     */
+    select?: PermissionOnResourceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PermissionOnResource
+     */
+    omit?: PermissionOnResourceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PermissionOnResourceInclude<ExtArgs> | null
+    /**
+     * Filter, which PermissionOnResources to fetch.
+     */
+    where?: PermissionOnResourceWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PermissionOnResources to fetch.
+     */
+    orderBy?: PermissionOnResourceOrderByWithRelationInput | PermissionOnResourceOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing PermissionOnResources.
+     */
+    cursor?: PermissionOnResourceWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PermissionOnResources from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PermissionOnResources.
+     */
+    skip?: number
+    distinct?: PermissionOnResourceScalarFieldEnum | PermissionOnResourceScalarFieldEnum[]
+  }
+
+  /**
+   * PermissionOnResource create
+   */
+  export type PermissionOnResourceCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PermissionOnResource
+     */
+    select?: PermissionOnResourceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PermissionOnResource
+     */
+    omit?: PermissionOnResourceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PermissionOnResourceInclude<ExtArgs> | null
+    /**
+     * The data needed to create a PermissionOnResource.
+     */
+    data: XOR<PermissionOnResourceCreateInput, PermissionOnResourceUncheckedCreateInput>
+  }
+
+  /**
+   * PermissionOnResource createMany
+   */
+  export type PermissionOnResourceCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many PermissionOnResources.
+     */
+    data: PermissionOnResourceCreateManyInput | PermissionOnResourceCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * PermissionOnResource createManyAndReturn
+   */
+  export type PermissionOnResourceCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PermissionOnResource
+     */
+    select?: PermissionOnResourceSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the PermissionOnResource
+     */
+    omit?: PermissionOnResourceOmit<ExtArgs> | null
+    /**
+     * The data used to create many PermissionOnResources.
+     */
+    data: PermissionOnResourceCreateManyInput | PermissionOnResourceCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PermissionOnResourceIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * PermissionOnResource update
+   */
+  export type PermissionOnResourceUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PermissionOnResource
+     */
+    select?: PermissionOnResourceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PermissionOnResource
+     */
+    omit?: PermissionOnResourceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PermissionOnResourceInclude<ExtArgs> | null
+    /**
+     * The data needed to update a PermissionOnResource.
+     */
+    data: XOR<PermissionOnResourceUpdateInput, PermissionOnResourceUncheckedUpdateInput>
+    /**
+     * Choose, which PermissionOnResource to update.
+     */
+    where: PermissionOnResourceWhereUniqueInput
+  }
+
+  /**
+   * PermissionOnResource updateMany
+   */
+  export type PermissionOnResourceUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update PermissionOnResources.
+     */
+    data: XOR<PermissionOnResourceUpdateManyMutationInput, PermissionOnResourceUncheckedUpdateManyInput>
+    /**
+     * Filter which PermissionOnResources to update
+     */
+    where?: PermissionOnResourceWhereInput
+    /**
+     * Limit how many PermissionOnResources to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * PermissionOnResource updateManyAndReturn
+   */
+  export type PermissionOnResourceUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PermissionOnResource
+     */
+    select?: PermissionOnResourceSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the PermissionOnResource
+     */
+    omit?: PermissionOnResourceOmit<ExtArgs> | null
+    /**
+     * The data used to update PermissionOnResources.
+     */
+    data: XOR<PermissionOnResourceUpdateManyMutationInput, PermissionOnResourceUncheckedUpdateManyInput>
+    /**
+     * Filter which PermissionOnResources to update
+     */
+    where?: PermissionOnResourceWhereInput
+    /**
+     * Limit how many PermissionOnResources to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PermissionOnResourceIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * PermissionOnResource upsert
+   */
+  export type PermissionOnResourceUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PermissionOnResource
+     */
+    select?: PermissionOnResourceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PermissionOnResource
+     */
+    omit?: PermissionOnResourceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PermissionOnResourceInclude<ExtArgs> | null
+    /**
+     * The filter to search for the PermissionOnResource to update in case it exists.
+     */
+    where: PermissionOnResourceWhereUniqueInput
+    /**
+     * In case the PermissionOnResource found by the `where` argument doesn't exist, create a new PermissionOnResource with this data.
+     */
+    create: XOR<PermissionOnResourceCreateInput, PermissionOnResourceUncheckedCreateInput>
+    /**
+     * In case the PermissionOnResource was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<PermissionOnResourceUpdateInput, PermissionOnResourceUncheckedUpdateInput>
+  }
+
+  /**
+   * PermissionOnResource delete
+   */
+  export type PermissionOnResourceDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PermissionOnResource
+     */
+    select?: PermissionOnResourceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PermissionOnResource
+     */
+    omit?: PermissionOnResourceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PermissionOnResourceInclude<ExtArgs> | null
+    /**
+     * Filter which PermissionOnResource to delete.
+     */
+    where: PermissionOnResourceWhereUniqueInput
+  }
+
+  /**
+   * PermissionOnResource deleteMany
+   */
+  export type PermissionOnResourceDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which PermissionOnResources to delete
+     */
+    where?: PermissionOnResourceWhereInput
+    /**
+     * Limit how many PermissionOnResources to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * PermissionOnResource without action
+   */
+  export type PermissionOnResourceDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PermissionOnResource
+     */
+    select?: PermissionOnResourceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PermissionOnResource
+     */
+    omit?: PermissionOnResourceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PermissionOnResourceInclude<ExtArgs> | null
   }
 
 
@@ -40441,6 +42788,14 @@ export namespace Prisma {
   export type AdminScalarFieldEnum = (typeof AdminScalarFieldEnum)[keyof typeof AdminScalarFieldEnum]
 
 
+  export const ResourceTypeScalarFieldEnum: {
+    resource_id: 'resource_id',
+    resource_name: 'resource_name'
+  };
+
+  export type ResourceTypeScalarFieldEnum = (typeof ResourceTypeScalarFieldEnum)[keyof typeof ResourceTypeScalarFieldEnum]
+
+
   export const AdminRoleScalarFieldEnum: {
     admin_role_id: 'admin_role_id',
     level: 'level',
@@ -40461,6 +42816,17 @@ export namespace Prisma {
   };
 
   export type PermissionScalarFieldEnum = (typeof PermissionScalarFieldEnum)[keyof typeof PermissionScalarFieldEnum]
+
+
+  export const PermissionOnResourceScalarFieldEnum: {
+    id: 'id',
+    permissionId: 'permissionId',
+    resourceTypeId: 'resourceTypeId',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type PermissionOnResourceScalarFieldEnum = (typeof PermissionOnResourceScalarFieldEnum)[keyof typeof PermissionOnResourceScalarFieldEnum]
 
 
   export const AdminRolePermissionScalarFieldEnum: {
@@ -41941,6 +44307,46 @@ export namespace Prisma {
     updatedAt?: DateTimeWithAggregatesFilter<"Admin"> | Date | string
   }
 
+  export type ResourceTypeWhereInput = {
+    AND?: ResourceTypeWhereInput | ResourceTypeWhereInput[]
+    OR?: ResourceTypeWhereInput[]
+    NOT?: ResourceTypeWhereInput | ResourceTypeWhereInput[]
+    resource_id?: StringFilter<"ResourceType"> | string
+    resource_name?: StringFilter<"ResourceType"> | string
+    permissions?: PermissionOnResourceListRelationFilter
+  }
+
+  export type ResourceTypeOrderByWithRelationInput = {
+    resource_id?: SortOrder
+    resource_name?: SortOrder
+    permissions?: PermissionOnResourceOrderByRelationAggregateInput
+  }
+
+  export type ResourceTypeWhereUniqueInput = Prisma.AtLeast<{
+    resource_id?: string
+    resource_name?: string
+    AND?: ResourceTypeWhereInput | ResourceTypeWhereInput[]
+    OR?: ResourceTypeWhereInput[]
+    NOT?: ResourceTypeWhereInput | ResourceTypeWhereInput[]
+    permissions?: PermissionOnResourceListRelationFilter
+  }, "resource_id" | "resource_name">
+
+  export type ResourceTypeOrderByWithAggregationInput = {
+    resource_id?: SortOrder
+    resource_name?: SortOrder
+    _count?: ResourceTypeCountOrderByAggregateInput
+    _max?: ResourceTypeMaxOrderByAggregateInput
+    _min?: ResourceTypeMinOrderByAggregateInput
+  }
+
+  export type ResourceTypeScalarWhereWithAggregatesInput = {
+    AND?: ResourceTypeScalarWhereWithAggregatesInput | ResourceTypeScalarWhereWithAggregatesInput[]
+    OR?: ResourceTypeScalarWhereWithAggregatesInput[]
+    NOT?: ResourceTypeScalarWhereWithAggregatesInput | ResourceTypeScalarWhereWithAggregatesInput[]
+    resource_id?: StringWithAggregatesFilter<"ResourceType"> | string
+    resource_name?: StringWithAggregatesFilter<"ResourceType"> | string
+  }
+
   export type AdminRoleWhereInput = {
     AND?: AdminRoleWhereInput | AdminRoleWhereInput[]
     OR?: AdminRoleWhereInput[]
@@ -42011,6 +44417,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Permission"> | Date | string
     updatedAt?: DateTimeFilter<"Permission"> | Date | string
     adminRoles?: AdminRolePermissionListRelationFilter
+    resources?: PermissionOnResourceListRelationFilter
   }
 
   export type PermissionOrderByWithRelationInput = {
@@ -42020,6 +44427,7 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     adminRoles?: AdminRolePermissionOrderByRelationAggregateInput
+    resources?: PermissionOnResourceOrderByRelationAggregateInput
   }
 
   export type PermissionWhereUniqueInput = Prisma.AtLeast<{
@@ -42032,6 +44440,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Permission"> | Date | string
     updatedAt?: DateTimeFilter<"Permission"> | Date | string
     adminRoles?: AdminRolePermissionListRelationFilter
+    resources?: PermissionOnResourceListRelationFilter
   }, "permission_id" | "permission_name">
 
   export type PermissionOrderByWithAggregationInput = {
@@ -42056,6 +44465,65 @@ export namespace Prisma {
     updatedAt?: DateTimeWithAggregatesFilter<"Permission"> | Date | string
   }
 
+  export type PermissionOnResourceWhereInput = {
+    AND?: PermissionOnResourceWhereInput | PermissionOnResourceWhereInput[]
+    OR?: PermissionOnResourceWhereInput[]
+    NOT?: PermissionOnResourceWhereInput | PermissionOnResourceWhereInput[]
+    id?: StringFilter<"PermissionOnResource"> | string
+    permissionId?: StringFilter<"PermissionOnResource"> | string
+    resourceTypeId?: StringFilter<"PermissionOnResource"> | string
+    createdAt?: DateTimeFilter<"PermissionOnResource"> | Date | string
+    updatedAt?: DateTimeFilter<"PermissionOnResource"> | Date | string
+    permission?: XOR<PermissionScalarRelationFilter, PermissionWhereInput>
+    resource?: XOR<ResourceTypeScalarRelationFilter, ResourceTypeWhereInput>
+  }
+
+  export type PermissionOnResourceOrderByWithRelationInput = {
+    id?: SortOrder
+    permissionId?: SortOrder
+    resourceTypeId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    permission?: PermissionOrderByWithRelationInput
+    resource?: ResourceTypeOrderByWithRelationInput
+  }
+
+  export type PermissionOnResourceWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    permissionId_resourceTypeId?: PermissionOnResourcePermissionIdResourceTypeIdCompoundUniqueInput
+    AND?: PermissionOnResourceWhereInput | PermissionOnResourceWhereInput[]
+    OR?: PermissionOnResourceWhereInput[]
+    NOT?: PermissionOnResourceWhereInput | PermissionOnResourceWhereInput[]
+    permissionId?: StringFilter<"PermissionOnResource"> | string
+    resourceTypeId?: StringFilter<"PermissionOnResource"> | string
+    createdAt?: DateTimeFilter<"PermissionOnResource"> | Date | string
+    updatedAt?: DateTimeFilter<"PermissionOnResource"> | Date | string
+    permission?: XOR<PermissionScalarRelationFilter, PermissionWhereInput>
+    resource?: XOR<ResourceTypeScalarRelationFilter, ResourceTypeWhereInput>
+  }, "id" | "permissionId_resourceTypeId">
+
+  export type PermissionOnResourceOrderByWithAggregationInput = {
+    id?: SortOrder
+    permissionId?: SortOrder
+    resourceTypeId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: PermissionOnResourceCountOrderByAggregateInput
+    _max?: PermissionOnResourceMaxOrderByAggregateInput
+    _min?: PermissionOnResourceMinOrderByAggregateInput
+  }
+
+  export type PermissionOnResourceScalarWhereWithAggregatesInput = {
+    AND?: PermissionOnResourceScalarWhereWithAggregatesInput | PermissionOnResourceScalarWhereWithAggregatesInput[]
+    OR?: PermissionOnResourceScalarWhereWithAggregatesInput[]
+    NOT?: PermissionOnResourceScalarWhereWithAggregatesInput | PermissionOnResourceScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"PermissionOnResource"> | string
+    permissionId?: StringWithAggregatesFilter<"PermissionOnResource"> | string
+    resourceTypeId?: StringWithAggregatesFilter<"PermissionOnResource"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"PermissionOnResource"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"PermissionOnResource"> | Date | string
+  }
+
   export type AdminRolePermissionWhereInput = {
     AND?: AdminRolePermissionWhereInput | AdminRolePermissionWhereInput[]
     OR?: AdminRolePermissionWhereInput[]
@@ -42078,17 +44546,17 @@ export namespace Prisma {
   }
 
   export type AdminRolePermissionWhereUniqueInput = Prisma.AtLeast<{
-    admin_role_id?: string
     permission_id_admin_role_id?: AdminRolePermissionPermission_idAdmin_role_idCompoundUniqueInput
     AND?: AdminRolePermissionWhereInput | AdminRolePermissionWhereInput[]
     OR?: AdminRolePermissionWhereInput[]
     NOT?: AdminRolePermissionWhereInput | AdminRolePermissionWhereInput[]
     permission_id?: StringFilter<"AdminRolePermission"> | string
+    admin_role_id?: StringFilter<"AdminRolePermission"> | string
     createdAt?: DateTimeFilter<"AdminRolePermission"> | Date | string
     updatedAt?: DateTimeFilter<"AdminRolePermission"> | Date | string
     permission?: XOR<PermissionScalarRelationFilter, PermissionWhereInput>
     roleToPermission?: XOR<AdminRoleScalarRelationFilter, AdminRoleWhereInput>
-  }, "permission_id_admin_role_id" | "admin_role_id">
+  }, "permission_id_admin_role_id">
 
   export type AdminRolePermissionOrderByWithAggregationInput = {
     permission_id?: SortOrder
@@ -44386,6 +46854,45 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type ResourceTypeCreateInput = {
+    resource_id?: string
+    resource_name: string
+    permissions?: PermissionOnResourceCreateNestedManyWithoutResourceInput
+  }
+
+  export type ResourceTypeUncheckedCreateInput = {
+    resource_id?: string
+    resource_name: string
+    permissions?: PermissionOnResourceUncheckedCreateNestedManyWithoutResourceInput
+  }
+
+  export type ResourceTypeUpdateInput = {
+    resource_id?: StringFieldUpdateOperationsInput | string
+    resource_name?: StringFieldUpdateOperationsInput | string
+    permissions?: PermissionOnResourceUpdateManyWithoutResourceNestedInput
+  }
+
+  export type ResourceTypeUncheckedUpdateInput = {
+    resource_id?: StringFieldUpdateOperationsInput | string
+    resource_name?: StringFieldUpdateOperationsInput | string
+    permissions?: PermissionOnResourceUncheckedUpdateManyWithoutResourceNestedInput
+  }
+
+  export type ResourceTypeCreateManyInput = {
+    resource_id?: string
+    resource_name: string
+  }
+
+  export type ResourceTypeUpdateManyMutationInput = {
+    resource_id?: StringFieldUpdateOperationsInput | string
+    resource_name?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type ResourceTypeUncheckedUpdateManyInput = {
+    resource_id?: StringFieldUpdateOperationsInput | string
+    resource_name?: StringFieldUpdateOperationsInput | string
+  }
+
   export type AdminRoleCreateInput = {
     admin_role_id?: string
     level: number
@@ -44457,6 +46964,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     adminRoles?: AdminRolePermissionCreateNestedManyWithoutPermissionInput
+    resources?: PermissionOnResourceCreateNestedManyWithoutPermissionInput
   }
 
   export type PermissionUncheckedCreateInput = {
@@ -44466,6 +46974,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     adminRoles?: AdminRolePermissionUncheckedCreateNestedManyWithoutPermissionInput
+    resources?: PermissionOnResourceUncheckedCreateNestedManyWithoutPermissionInput
   }
 
   export type PermissionUpdateInput = {
@@ -44475,6 +46984,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     adminRoles?: AdminRolePermissionUpdateManyWithoutPermissionNestedInput
+    resources?: PermissionOnResourceUpdateManyWithoutPermissionNestedInput
   }
 
   export type PermissionUncheckedUpdateInput = {
@@ -44484,6 +46994,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     adminRoles?: AdminRolePermissionUncheckedUpdateManyWithoutPermissionNestedInput
+    resources?: PermissionOnResourceUncheckedUpdateManyWithoutPermissionNestedInput
   }
 
   export type PermissionCreateManyInput = {
@@ -44506,6 +47017,60 @@ export namespace Prisma {
     permission_id?: StringFieldUpdateOperationsInput | string
     permission_name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PermissionOnResourceCreateInput = {
+    id?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    permission: PermissionCreateNestedOneWithoutResourcesInput
+    resource: ResourceTypeCreateNestedOneWithoutPermissionsInput
+  }
+
+  export type PermissionOnResourceUncheckedCreateInput = {
+    id?: string
+    permissionId: string
+    resourceTypeId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type PermissionOnResourceUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    permission?: PermissionUpdateOneRequiredWithoutResourcesNestedInput
+    resource?: ResourceTypeUpdateOneRequiredWithoutPermissionsNestedInput
+  }
+
+  export type PermissionOnResourceUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    permissionId?: StringFieldUpdateOperationsInput | string
+    resourceTypeId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PermissionOnResourceCreateManyInput = {
+    id?: string
+    permissionId: string
+    resourceTypeId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type PermissionOnResourceUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PermissionOnResourceUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    permissionId?: StringFieldUpdateOperationsInput | string
+    resourceTypeId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -46823,6 +49388,31 @@ export namespace Prisma {
     updatedAt?: SortOrder
   }
 
+  export type PermissionOnResourceListRelationFilter = {
+    every?: PermissionOnResourceWhereInput
+    some?: PermissionOnResourceWhereInput
+    none?: PermissionOnResourceWhereInput
+  }
+
+  export type PermissionOnResourceOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type ResourceTypeCountOrderByAggregateInput = {
+    resource_id?: SortOrder
+    resource_name?: SortOrder
+  }
+
+  export type ResourceTypeMaxOrderByAggregateInput = {
+    resource_id?: SortOrder
+    resource_name?: SortOrder
+  }
+
+  export type ResourceTypeMinOrderByAggregateInput = {
+    resource_id?: SortOrder
+    resource_name?: SortOrder
+  }
+
   export type IntFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel>
     in?: number[] | ListIntFieldRefInput<$PrismaModel>
@@ -46929,6 +49519,40 @@ export namespace Prisma {
   export type PermissionScalarRelationFilter = {
     is?: PermissionWhereInput
     isNot?: PermissionWhereInput
+  }
+
+  export type ResourceTypeScalarRelationFilter = {
+    is?: ResourceTypeWhereInput
+    isNot?: ResourceTypeWhereInput
+  }
+
+  export type PermissionOnResourcePermissionIdResourceTypeIdCompoundUniqueInput = {
+    permissionId: string
+    resourceTypeId: string
+  }
+
+  export type PermissionOnResourceCountOrderByAggregateInput = {
+    id?: SortOrder
+    permissionId?: SortOrder
+    resourceTypeId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type PermissionOnResourceMaxOrderByAggregateInput = {
+    id?: SortOrder
+    permissionId?: SortOrder
+    resourceTypeId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type PermissionOnResourceMinOrderByAggregateInput = {
+    id?: SortOrder
+    permissionId?: SortOrder
+    resourceTypeId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
   }
 
   export type AdminRolePermissionPermission_idAdmin_role_idCompoundUniqueInput = {
@@ -49052,6 +51676,48 @@ export namespace Prisma {
     deleteMany?: WithdrawRequestScalarWhereInput | WithdrawRequestScalarWhereInput[]
   }
 
+  export type PermissionOnResourceCreateNestedManyWithoutResourceInput = {
+    create?: XOR<PermissionOnResourceCreateWithoutResourceInput, PermissionOnResourceUncheckedCreateWithoutResourceInput> | PermissionOnResourceCreateWithoutResourceInput[] | PermissionOnResourceUncheckedCreateWithoutResourceInput[]
+    connectOrCreate?: PermissionOnResourceCreateOrConnectWithoutResourceInput | PermissionOnResourceCreateOrConnectWithoutResourceInput[]
+    createMany?: PermissionOnResourceCreateManyResourceInputEnvelope
+    connect?: PermissionOnResourceWhereUniqueInput | PermissionOnResourceWhereUniqueInput[]
+  }
+
+  export type PermissionOnResourceUncheckedCreateNestedManyWithoutResourceInput = {
+    create?: XOR<PermissionOnResourceCreateWithoutResourceInput, PermissionOnResourceUncheckedCreateWithoutResourceInput> | PermissionOnResourceCreateWithoutResourceInput[] | PermissionOnResourceUncheckedCreateWithoutResourceInput[]
+    connectOrCreate?: PermissionOnResourceCreateOrConnectWithoutResourceInput | PermissionOnResourceCreateOrConnectWithoutResourceInput[]
+    createMany?: PermissionOnResourceCreateManyResourceInputEnvelope
+    connect?: PermissionOnResourceWhereUniqueInput | PermissionOnResourceWhereUniqueInput[]
+  }
+
+  export type PermissionOnResourceUpdateManyWithoutResourceNestedInput = {
+    create?: XOR<PermissionOnResourceCreateWithoutResourceInput, PermissionOnResourceUncheckedCreateWithoutResourceInput> | PermissionOnResourceCreateWithoutResourceInput[] | PermissionOnResourceUncheckedCreateWithoutResourceInput[]
+    connectOrCreate?: PermissionOnResourceCreateOrConnectWithoutResourceInput | PermissionOnResourceCreateOrConnectWithoutResourceInput[]
+    upsert?: PermissionOnResourceUpsertWithWhereUniqueWithoutResourceInput | PermissionOnResourceUpsertWithWhereUniqueWithoutResourceInput[]
+    createMany?: PermissionOnResourceCreateManyResourceInputEnvelope
+    set?: PermissionOnResourceWhereUniqueInput | PermissionOnResourceWhereUniqueInput[]
+    disconnect?: PermissionOnResourceWhereUniqueInput | PermissionOnResourceWhereUniqueInput[]
+    delete?: PermissionOnResourceWhereUniqueInput | PermissionOnResourceWhereUniqueInput[]
+    connect?: PermissionOnResourceWhereUniqueInput | PermissionOnResourceWhereUniqueInput[]
+    update?: PermissionOnResourceUpdateWithWhereUniqueWithoutResourceInput | PermissionOnResourceUpdateWithWhereUniqueWithoutResourceInput[]
+    updateMany?: PermissionOnResourceUpdateManyWithWhereWithoutResourceInput | PermissionOnResourceUpdateManyWithWhereWithoutResourceInput[]
+    deleteMany?: PermissionOnResourceScalarWhereInput | PermissionOnResourceScalarWhereInput[]
+  }
+
+  export type PermissionOnResourceUncheckedUpdateManyWithoutResourceNestedInput = {
+    create?: XOR<PermissionOnResourceCreateWithoutResourceInput, PermissionOnResourceUncheckedCreateWithoutResourceInput> | PermissionOnResourceCreateWithoutResourceInput[] | PermissionOnResourceUncheckedCreateWithoutResourceInput[]
+    connectOrCreate?: PermissionOnResourceCreateOrConnectWithoutResourceInput | PermissionOnResourceCreateOrConnectWithoutResourceInput[]
+    upsert?: PermissionOnResourceUpsertWithWhereUniqueWithoutResourceInput | PermissionOnResourceUpsertWithWhereUniqueWithoutResourceInput[]
+    createMany?: PermissionOnResourceCreateManyResourceInputEnvelope
+    set?: PermissionOnResourceWhereUniqueInput | PermissionOnResourceWhereUniqueInput[]
+    disconnect?: PermissionOnResourceWhereUniqueInput | PermissionOnResourceWhereUniqueInput[]
+    delete?: PermissionOnResourceWhereUniqueInput | PermissionOnResourceWhereUniqueInput[]
+    connect?: PermissionOnResourceWhereUniqueInput | PermissionOnResourceWhereUniqueInput[]
+    update?: PermissionOnResourceUpdateWithWhereUniqueWithoutResourceInput | PermissionOnResourceUpdateWithWhereUniqueWithoutResourceInput[]
+    updateMany?: PermissionOnResourceUpdateManyWithWhereWithoutResourceInput | PermissionOnResourceUpdateManyWithWhereWithoutResourceInput[]
+    deleteMany?: PermissionOnResourceScalarWhereInput | PermissionOnResourceScalarWhereInput[]
+  }
+
   export type AdminCreateNestedManyWithoutAdminRoleInput = {
     create?: XOR<AdminCreateWithoutAdminRoleInput, AdminUncheckedCreateWithoutAdminRoleInput> | AdminCreateWithoutAdminRoleInput[] | AdminUncheckedCreateWithoutAdminRoleInput[]
     connectOrCreate?: AdminCreateOrConnectWithoutAdminRoleInput | AdminCreateOrConnectWithoutAdminRoleInput[]
@@ -49151,11 +51817,25 @@ export namespace Prisma {
     connect?: AdminRolePermissionWhereUniqueInput | AdminRolePermissionWhereUniqueInput[]
   }
 
+  export type PermissionOnResourceCreateNestedManyWithoutPermissionInput = {
+    create?: XOR<PermissionOnResourceCreateWithoutPermissionInput, PermissionOnResourceUncheckedCreateWithoutPermissionInput> | PermissionOnResourceCreateWithoutPermissionInput[] | PermissionOnResourceUncheckedCreateWithoutPermissionInput[]
+    connectOrCreate?: PermissionOnResourceCreateOrConnectWithoutPermissionInput | PermissionOnResourceCreateOrConnectWithoutPermissionInput[]
+    createMany?: PermissionOnResourceCreateManyPermissionInputEnvelope
+    connect?: PermissionOnResourceWhereUniqueInput | PermissionOnResourceWhereUniqueInput[]
+  }
+
   export type AdminRolePermissionUncheckedCreateNestedManyWithoutPermissionInput = {
     create?: XOR<AdminRolePermissionCreateWithoutPermissionInput, AdminRolePermissionUncheckedCreateWithoutPermissionInput> | AdminRolePermissionCreateWithoutPermissionInput[] | AdminRolePermissionUncheckedCreateWithoutPermissionInput[]
     connectOrCreate?: AdminRolePermissionCreateOrConnectWithoutPermissionInput | AdminRolePermissionCreateOrConnectWithoutPermissionInput[]
     createMany?: AdminRolePermissionCreateManyPermissionInputEnvelope
     connect?: AdminRolePermissionWhereUniqueInput | AdminRolePermissionWhereUniqueInput[]
+  }
+
+  export type PermissionOnResourceUncheckedCreateNestedManyWithoutPermissionInput = {
+    create?: XOR<PermissionOnResourceCreateWithoutPermissionInput, PermissionOnResourceUncheckedCreateWithoutPermissionInput> | PermissionOnResourceCreateWithoutPermissionInput[] | PermissionOnResourceUncheckedCreateWithoutPermissionInput[]
+    connectOrCreate?: PermissionOnResourceCreateOrConnectWithoutPermissionInput | PermissionOnResourceCreateOrConnectWithoutPermissionInput[]
+    createMany?: PermissionOnResourceCreateManyPermissionInputEnvelope
+    connect?: PermissionOnResourceWhereUniqueInput | PermissionOnResourceWhereUniqueInput[]
   }
 
   export type AdminRolePermissionUpdateManyWithoutPermissionNestedInput = {
@@ -49172,6 +51852,20 @@ export namespace Prisma {
     deleteMany?: AdminRolePermissionScalarWhereInput | AdminRolePermissionScalarWhereInput[]
   }
 
+  export type PermissionOnResourceUpdateManyWithoutPermissionNestedInput = {
+    create?: XOR<PermissionOnResourceCreateWithoutPermissionInput, PermissionOnResourceUncheckedCreateWithoutPermissionInput> | PermissionOnResourceCreateWithoutPermissionInput[] | PermissionOnResourceUncheckedCreateWithoutPermissionInput[]
+    connectOrCreate?: PermissionOnResourceCreateOrConnectWithoutPermissionInput | PermissionOnResourceCreateOrConnectWithoutPermissionInput[]
+    upsert?: PermissionOnResourceUpsertWithWhereUniqueWithoutPermissionInput | PermissionOnResourceUpsertWithWhereUniqueWithoutPermissionInput[]
+    createMany?: PermissionOnResourceCreateManyPermissionInputEnvelope
+    set?: PermissionOnResourceWhereUniqueInput | PermissionOnResourceWhereUniqueInput[]
+    disconnect?: PermissionOnResourceWhereUniqueInput | PermissionOnResourceWhereUniqueInput[]
+    delete?: PermissionOnResourceWhereUniqueInput | PermissionOnResourceWhereUniqueInput[]
+    connect?: PermissionOnResourceWhereUniqueInput | PermissionOnResourceWhereUniqueInput[]
+    update?: PermissionOnResourceUpdateWithWhereUniqueWithoutPermissionInput | PermissionOnResourceUpdateWithWhereUniqueWithoutPermissionInput[]
+    updateMany?: PermissionOnResourceUpdateManyWithWhereWithoutPermissionInput | PermissionOnResourceUpdateManyWithWhereWithoutPermissionInput[]
+    deleteMany?: PermissionOnResourceScalarWhereInput | PermissionOnResourceScalarWhereInput[]
+  }
+
   export type AdminRolePermissionUncheckedUpdateManyWithoutPermissionNestedInput = {
     create?: XOR<AdminRolePermissionCreateWithoutPermissionInput, AdminRolePermissionUncheckedCreateWithoutPermissionInput> | AdminRolePermissionCreateWithoutPermissionInput[] | AdminRolePermissionUncheckedCreateWithoutPermissionInput[]
     connectOrCreate?: AdminRolePermissionCreateOrConnectWithoutPermissionInput | AdminRolePermissionCreateOrConnectWithoutPermissionInput[]
@@ -49184,6 +51878,48 @@ export namespace Prisma {
     update?: AdminRolePermissionUpdateWithWhereUniqueWithoutPermissionInput | AdminRolePermissionUpdateWithWhereUniqueWithoutPermissionInput[]
     updateMany?: AdminRolePermissionUpdateManyWithWhereWithoutPermissionInput | AdminRolePermissionUpdateManyWithWhereWithoutPermissionInput[]
     deleteMany?: AdminRolePermissionScalarWhereInput | AdminRolePermissionScalarWhereInput[]
+  }
+
+  export type PermissionOnResourceUncheckedUpdateManyWithoutPermissionNestedInput = {
+    create?: XOR<PermissionOnResourceCreateWithoutPermissionInput, PermissionOnResourceUncheckedCreateWithoutPermissionInput> | PermissionOnResourceCreateWithoutPermissionInput[] | PermissionOnResourceUncheckedCreateWithoutPermissionInput[]
+    connectOrCreate?: PermissionOnResourceCreateOrConnectWithoutPermissionInput | PermissionOnResourceCreateOrConnectWithoutPermissionInput[]
+    upsert?: PermissionOnResourceUpsertWithWhereUniqueWithoutPermissionInput | PermissionOnResourceUpsertWithWhereUniqueWithoutPermissionInput[]
+    createMany?: PermissionOnResourceCreateManyPermissionInputEnvelope
+    set?: PermissionOnResourceWhereUniqueInput | PermissionOnResourceWhereUniqueInput[]
+    disconnect?: PermissionOnResourceWhereUniqueInput | PermissionOnResourceWhereUniqueInput[]
+    delete?: PermissionOnResourceWhereUniqueInput | PermissionOnResourceWhereUniqueInput[]
+    connect?: PermissionOnResourceWhereUniqueInput | PermissionOnResourceWhereUniqueInput[]
+    update?: PermissionOnResourceUpdateWithWhereUniqueWithoutPermissionInput | PermissionOnResourceUpdateWithWhereUniqueWithoutPermissionInput[]
+    updateMany?: PermissionOnResourceUpdateManyWithWhereWithoutPermissionInput | PermissionOnResourceUpdateManyWithWhereWithoutPermissionInput[]
+    deleteMany?: PermissionOnResourceScalarWhereInput | PermissionOnResourceScalarWhereInput[]
+  }
+
+  export type PermissionCreateNestedOneWithoutResourcesInput = {
+    create?: XOR<PermissionCreateWithoutResourcesInput, PermissionUncheckedCreateWithoutResourcesInput>
+    connectOrCreate?: PermissionCreateOrConnectWithoutResourcesInput
+    connect?: PermissionWhereUniqueInput
+  }
+
+  export type ResourceTypeCreateNestedOneWithoutPermissionsInput = {
+    create?: XOR<ResourceTypeCreateWithoutPermissionsInput, ResourceTypeUncheckedCreateWithoutPermissionsInput>
+    connectOrCreate?: ResourceTypeCreateOrConnectWithoutPermissionsInput
+    connect?: ResourceTypeWhereUniqueInput
+  }
+
+  export type PermissionUpdateOneRequiredWithoutResourcesNestedInput = {
+    create?: XOR<PermissionCreateWithoutResourcesInput, PermissionUncheckedCreateWithoutResourcesInput>
+    connectOrCreate?: PermissionCreateOrConnectWithoutResourcesInput
+    upsert?: PermissionUpsertWithoutResourcesInput
+    connect?: PermissionWhereUniqueInput
+    update?: XOR<XOR<PermissionUpdateToOneWithWhereWithoutResourcesInput, PermissionUpdateWithoutResourcesInput>, PermissionUncheckedUpdateWithoutResourcesInput>
+  }
+
+  export type ResourceTypeUpdateOneRequiredWithoutPermissionsNestedInput = {
+    create?: XOR<ResourceTypeCreateWithoutPermissionsInput, ResourceTypeUncheckedCreateWithoutPermissionsInput>
+    connectOrCreate?: ResourceTypeCreateOrConnectWithoutPermissionsInput
+    upsert?: ResourceTypeUpsertWithoutPermissionsInput
+    connect?: ResourceTypeWhereUniqueInput
+    update?: XOR<XOR<ResourceTypeUpdateToOneWithWhereWithoutPermissionsInput, ResourceTypeUpdateWithoutPermissionsInput>, ResourceTypeUncheckedUpdateWithoutPermissionsInput>
   }
 
   export type PermissionCreateNestedOneWithoutAdminRolesInput = {
@@ -53836,6 +56572,57 @@ export namespace Prisma {
     data: XOR<WithdrawRequestUpdateManyMutationInput, WithdrawRequestUncheckedUpdateManyWithoutAdminInput>
   }
 
+  export type PermissionOnResourceCreateWithoutResourceInput = {
+    id?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    permission: PermissionCreateNestedOneWithoutResourcesInput
+  }
+
+  export type PermissionOnResourceUncheckedCreateWithoutResourceInput = {
+    id?: string
+    permissionId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type PermissionOnResourceCreateOrConnectWithoutResourceInput = {
+    where: PermissionOnResourceWhereUniqueInput
+    create: XOR<PermissionOnResourceCreateWithoutResourceInput, PermissionOnResourceUncheckedCreateWithoutResourceInput>
+  }
+
+  export type PermissionOnResourceCreateManyResourceInputEnvelope = {
+    data: PermissionOnResourceCreateManyResourceInput | PermissionOnResourceCreateManyResourceInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type PermissionOnResourceUpsertWithWhereUniqueWithoutResourceInput = {
+    where: PermissionOnResourceWhereUniqueInput
+    update: XOR<PermissionOnResourceUpdateWithoutResourceInput, PermissionOnResourceUncheckedUpdateWithoutResourceInput>
+    create: XOR<PermissionOnResourceCreateWithoutResourceInput, PermissionOnResourceUncheckedCreateWithoutResourceInput>
+  }
+
+  export type PermissionOnResourceUpdateWithWhereUniqueWithoutResourceInput = {
+    where: PermissionOnResourceWhereUniqueInput
+    data: XOR<PermissionOnResourceUpdateWithoutResourceInput, PermissionOnResourceUncheckedUpdateWithoutResourceInput>
+  }
+
+  export type PermissionOnResourceUpdateManyWithWhereWithoutResourceInput = {
+    where: PermissionOnResourceScalarWhereInput
+    data: XOR<PermissionOnResourceUpdateManyMutationInput, PermissionOnResourceUncheckedUpdateManyWithoutResourceInput>
+  }
+
+  export type PermissionOnResourceScalarWhereInput = {
+    AND?: PermissionOnResourceScalarWhereInput | PermissionOnResourceScalarWhereInput[]
+    OR?: PermissionOnResourceScalarWhereInput[]
+    NOT?: PermissionOnResourceScalarWhereInput | PermissionOnResourceScalarWhereInput[]
+    id?: StringFilter<"PermissionOnResource"> | string
+    permissionId?: StringFilter<"PermissionOnResource"> | string
+    resourceTypeId?: StringFilter<"PermissionOnResource"> | string
+    createdAt?: DateTimeFilter<"PermissionOnResource"> | Date | string
+    updatedAt?: DateTimeFilter<"PermissionOnResource"> | Date | string
+  }
+
   export type AdminCreateWithoutAdminRoleInput = {
     admin_id?: string
     createdAt?: Date | string
@@ -53961,6 +56748,30 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type PermissionOnResourceCreateWithoutPermissionInput = {
+    id?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    resource: ResourceTypeCreateNestedOneWithoutPermissionsInput
+  }
+
+  export type PermissionOnResourceUncheckedCreateWithoutPermissionInput = {
+    id?: string
+    resourceTypeId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type PermissionOnResourceCreateOrConnectWithoutPermissionInput = {
+    where: PermissionOnResourceWhereUniqueInput
+    create: XOR<PermissionOnResourceCreateWithoutPermissionInput, PermissionOnResourceUncheckedCreateWithoutPermissionInput>
+  }
+
+  export type PermissionOnResourceCreateManyPermissionInputEnvelope = {
+    data: PermissionOnResourceCreateManyPermissionInput | PermissionOnResourceCreateManyPermissionInput[]
+    skipDuplicates?: boolean
+  }
+
   export type AdminRolePermissionUpsertWithWhereUniqueWithoutPermissionInput = {
     where: AdminRolePermissionWhereUniqueInput
     update: XOR<AdminRolePermissionUpdateWithoutPermissionInput, AdminRolePermissionUncheckedUpdateWithoutPermissionInput>
@@ -53977,12 +56788,117 @@ export namespace Prisma {
     data: XOR<AdminRolePermissionUpdateManyMutationInput, AdminRolePermissionUncheckedUpdateManyWithoutPermissionInput>
   }
 
+  export type PermissionOnResourceUpsertWithWhereUniqueWithoutPermissionInput = {
+    where: PermissionOnResourceWhereUniqueInput
+    update: XOR<PermissionOnResourceUpdateWithoutPermissionInput, PermissionOnResourceUncheckedUpdateWithoutPermissionInput>
+    create: XOR<PermissionOnResourceCreateWithoutPermissionInput, PermissionOnResourceUncheckedCreateWithoutPermissionInput>
+  }
+
+  export type PermissionOnResourceUpdateWithWhereUniqueWithoutPermissionInput = {
+    where: PermissionOnResourceWhereUniqueInput
+    data: XOR<PermissionOnResourceUpdateWithoutPermissionInput, PermissionOnResourceUncheckedUpdateWithoutPermissionInput>
+  }
+
+  export type PermissionOnResourceUpdateManyWithWhereWithoutPermissionInput = {
+    where: PermissionOnResourceScalarWhereInput
+    data: XOR<PermissionOnResourceUpdateManyMutationInput, PermissionOnResourceUncheckedUpdateManyWithoutPermissionInput>
+  }
+
+  export type PermissionCreateWithoutResourcesInput = {
+    permission_id?: string
+    permission_name: string
+    description?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    adminRoles?: AdminRolePermissionCreateNestedManyWithoutPermissionInput
+  }
+
+  export type PermissionUncheckedCreateWithoutResourcesInput = {
+    permission_id?: string
+    permission_name: string
+    description?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    adminRoles?: AdminRolePermissionUncheckedCreateNestedManyWithoutPermissionInput
+  }
+
+  export type PermissionCreateOrConnectWithoutResourcesInput = {
+    where: PermissionWhereUniqueInput
+    create: XOR<PermissionCreateWithoutResourcesInput, PermissionUncheckedCreateWithoutResourcesInput>
+  }
+
+  export type ResourceTypeCreateWithoutPermissionsInput = {
+    resource_id?: string
+    resource_name: string
+  }
+
+  export type ResourceTypeUncheckedCreateWithoutPermissionsInput = {
+    resource_id?: string
+    resource_name: string
+  }
+
+  export type ResourceTypeCreateOrConnectWithoutPermissionsInput = {
+    where: ResourceTypeWhereUniqueInput
+    create: XOR<ResourceTypeCreateWithoutPermissionsInput, ResourceTypeUncheckedCreateWithoutPermissionsInput>
+  }
+
+  export type PermissionUpsertWithoutResourcesInput = {
+    update: XOR<PermissionUpdateWithoutResourcesInput, PermissionUncheckedUpdateWithoutResourcesInput>
+    create: XOR<PermissionCreateWithoutResourcesInput, PermissionUncheckedCreateWithoutResourcesInput>
+    where?: PermissionWhereInput
+  }
+
+  export type PermissionUpdateToOneWithWhereWithoutResourcesInput = {
+    where?: PermissionWhereInput
+    data: XOR<PermissionUpdateWithoutResourcesInput, PermissionUncheckedUpdateWithoutResourcesInput>
+  }
+
+  export type PermissionUpdateWithoutResourcesInput = {
+    permission_id?: StringFieldUpdateOperationsInput | string
+    permission_name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    adminRoles?: AdminRolePermissionUpdateManyWithoutPermissionNestedInput
+  }
+
+  export type PermissionUncheckedUpdateWithoutResourcesInput = {
+    permission_id?: StringFieldUpdateOperationsInput | string
+    permission_name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    adminRoles?: AdminRolePermissionUncheckedUpdateManyWithoutPermissionNestedInput
+  }
+
+  export type ResourceTypeUpsertWithoutPermissionsInput = {
+    update: XOR<ResourceTypeUpdateWithoutPermissionsInput, ResourceTypeUncheckedUpdateWithoutPermissionsInput>
+    create: XOR<ResourceTypeCreateWithoutPermissionsInput, ResourceTypeUncheckedCreateWithoutPermissionsInput>
+    where?: ResourceTypeWhereInput
+  }
+
+  export type ResourceTypeUpdateToOneWithWhereWithoutPermissionsInput = {
+    where?: ResourceTypeWhereInput
+    data: XOR<ResourceTypeUpdateWithoutPermissionsInput, ResourceTypeUncheckedUpdateWithoutPermissionsInput>
+  }
+
+  export type ResourceTypeUpdateWithoutPermissionsInput = {
+    resource_id?: StringFieldUpdateOperationsInput | string
+    resource_name?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type ResourceTypeUncheckedUpdateWithoutPermissionsInput = {
+    resource_id?: StringFieldUpdateOperationsInput | string
+    resource_name?: StringFieldUpdateOperationsInput | string
+  }
+
   export type PermissionCreateWithoutAdminRolesInput = {
     permission_id?: string
     permission_name: string
     description?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    resources?: PermissionOnResourceCreateNestedManyWithoutPermissionInput
   }
 
   export type PermissionUncheckedCreateWithoutAdminRolesInput = {
@@ -53991,6 +56907,7 @@ export namespace Prisma {
     description?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    resources?: PermissionOnResourceUncheckedCreateNestedManyWithoutPermissionInput
   }
 
   export type PermissionCreateOrConnectWithoutAdminRolesInput = {
@@ -54038,6 +56955,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    resources?: PermissionOnResourceUpdateManyWithoutPermissionNestedInput
   }
 
   export type PermissionUncheckedUpdateWithoutAdminRolesInput = {
@@ -54046,6 +56964,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    resources?: PermissionOnResourceUncheckedUpdateManyWithoutPermissionNestedInput
   }
 
   export type AdminRoleUpsertWithoutPermissionsInput = {
@@ -57890,6 +60809,34 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type PermissionOnResourceCreateManyResourceInput = {
+    id?: string
+    permissionId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type PermissionOnResourceUpdateWithoutResourceInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    permission?: PermissionUpdateOneRequiredWithoutResourcesNestedInput
+  }
+
+  export type PermissionOnResourceUncheckedUpdateWithoutResourceInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    permissionId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PermissionOnResourceUncheckedUpdateManyWithoutResourceInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    permissionId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type AdminCreateManyAdminRoleInput = {
     admin_id?: string
     user_id: string
@@ -57952,6 +60899,13 @@ export namespace Prisma {
     updatedAt?: Date | string
   }
 
+  export type PermissionOnResourceCreateManyPermissionInput = {
+    id?: string
+    resourceTypeId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
   export type AdminRolePermissionUpdateWithoutPermissionInput = {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -57966,6 +60920,27 @@ export namespace Prisma {
 
   export type AdminRolePermissionUncheckedUpdateManyWithoutPermissionInput = {
     admin_role_id?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PermissionOnResourceUpdateWithoutPermissionInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    resource?: ResourceTypeUpdateOneRequiredWithoutPermissionsNestedInput
+  }
+
+  export type PermissionOnResourceUncheckedUpdateWithoutPermissionInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    resourceTypeId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PermissionOnResourceUncheckedUpdateManyWithoutPermissionInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    resourceTypeId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }

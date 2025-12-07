@@ -4,10 +4,7 @@ import payOS from '../lib/payos';
 import { CreatePaymentParams, PayOSWebhookBody, PayOSWebhookData } from '../types/payos';
 
 export const PaymentService = {
-    // 1. Hàm tạo Payment Link
     createPaymentLink: async (userId: string, courseId: string): Promise<string> => {
-        
-        // Kiểm tra khóa học
         const course = await prisma.course.findUnique({ where: { course_id: courseId } });
         if (!course) throw new Error("Khóa học không tồn tại");
 
@@ -215,20 +212,16 @@ export const PaymentService = {
                 }
         });
 
-        console.log(`🎉 Webhook xử lý thành công cho orderCode: ${orderCode}`);
         return webhookData;
     },
 
     // 3. Hàm hủy thanh toán
     cancelPayment: async (orderCode: number): Promise<void> => {
-        console.log(`🔍 Hủy đơn hàng: ${orderCode}`);
-
         const transaction = await prisma.transaction.findUnique({
             where: { payment_code: BigInt(orderCode) }
         });
 
         if (!transaction) {
-            console.log(`❌ Không tìm thấy đơn hàng mã ${orderCode}`);
             throw new Error('Không tìm thấy giao dịch');
         }
 
@@ -238,9 +231,6 @@ export const PaymentService = {
                 where: { transaction_id: transaction.transaction_id },
                 data: { status: TransactionStatus.Cancel }
             });
-            console.log(`✅ Đã cập nhật trạng thái hủy cho đơn hàng ${orderCode}`);
-        } else {
-            console.log(`⚠️ Đơn hàng ${orderCode} đã có trạng thái ${transaction.status}, không cập nhật`);
         }
     }
 };

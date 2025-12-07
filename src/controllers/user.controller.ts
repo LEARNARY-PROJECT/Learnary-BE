@@ -10,7 +10,8 @@ import {
     getRecentlyActiveUsers,
     getInactiveUsers,
     uploadAvatarToS3,
-    getFullUserProfile
+    getFullUserProfile,
+    getUsersExceptAdmins,
 } from '../services/user.service';
 import { JwtPayLoad } from '../middlewares/auth.middleware';
 
@@ -28,6 +29,15 @@ export const create = async (req: Request, res: Response) => {
 export const getAll = async (_req: Request, res: Response) => {
     try {
         const users = await getAllUsers();
+        res.status(200).json(users);
+    } catch (err) {
+        console.error("Get user by id error", err);
+        res.status(500).json({ error: 'Failed to fetch users.' });
+    }
+};
+export const getUserExceptAdmin = async (_req: Request, res: Response) => {
+    try {
+        const users = await getUsersExceptAdmins();
         res.status(200).json(users);
     } catch (err) {
         console.error("Get user by id error", err);
@@ -105,7 +115,6 @@ export const updateUserRole = async (req: Request, res: Response) => {
 
 export const updateUserInformation: RequestHandler = async (req, res) => {
     try {
-        
         const userId = req.params.id.trim();
         const jwtPayload: JwtPayLoad = req.jwtPayload!;
         const jwtId = jwtPayload.id.trim();
@@ -120,9 +129,9 @@ export const updateUserInformation: RequestHandler = async (req, res) => {
             address: req.body.address,
             avatar: req.body.avatar,
             bio: req.body.bio,
-            city: req.body.city,
+            city: req.body.city || "",
             country: req.body.country,
-            nation: req.body.nation,
+            nation: req.body.nation || "",
             dateOfBirth: req.body.dateOfBirth,
         };
         const updatedUser = await editUserInformation(userId, updateData);

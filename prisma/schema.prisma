@@ -88,6 +88,7 @@ enum GroupType {
   Combo
   Group
 }
+
 model User {
   user_id     String    @id @default(uuid()) @db.Char(50)
   email       String    @unique @db.Char(50)
@@ -340,7 +341,13 @@ model Admin {
   @@index([admin_role_id], name: "idx_admin_role")
   @@map("admins")
 }
+model ResourceType {
+  resource_id String @id @default(uuid()) @db.Char(50)
+  resource_name String @unique
+  permissions PermissionOnResource[]
 
+  @@map("resource_types")
+}
 model AdminRole {
   admin_role_id String @id @default(uuid()) @db.Char(50)
 
@@ -354,7 +361,6 @@ model AdminRole {
 
   @@map("admin_roles")
 }
-
 model Permission {
   permission_id String @id @default(uuid()) @db.Char(50)
 
@@ -364,13 +370,30 @@ model Permission {
   updatedAt       DateTime @updatedAt
 
   adminRoles AdminRolePermission[] @relation("PermissionToAdminRole")
+  resources  PermissionOnResource[]
 
   @@map("permissions")
+}
+model PermissionOnResource {
+  id             String @id @default(uuid())
+  permissionId   String @db.Char(50)
+  resourceTypeId String @db.Char(50)
+
+  permission Permission   @relation(fields: [permissionId], references: [permission_id], onDelete: Cascade)
+  resource   ResourceType @relation(fields: [resourceTypeId], references: [resource_id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([permissionId, resourceTypeId])
+  @@index([permissionId], name: "idx_por_permission")
+  @@index([resourceTypeId], name: "idx_por_resource")
+  @@map("permission_on_resources")
 }
 
 model AdminRolePermission {
   permission_id String @default(uuid()) @db.Char(50)
-  admin_role_id String @unique @db.Char(50)
+  admin_role_id String @db.Char(50)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -399,13 +422,13 @@ model AccountSecurity {
 }
 model Group {
   group_id String @id @db.Char(50) @default(uuid())
+  
   name String 
   description String
   type GroupType @default(Group)
   discount Decimal @db.Decimal(5,2)
 
   hasCourseGroup CourseGroup[]
-
 
   createdAt DateTime @default(now())
   updateAt DateTime @updatedAt

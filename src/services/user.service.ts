@@ -65,6 +65,16 @@ export const getAllUsers = async (): Promise<User[]> => {
   const users = await prisma.user.findMany();
   return users;
 };
+export const getUsersExceptAdmins = async (): Promise<User[]> => {
+  const users = await prisma.user.findMany({
+    where : {
+      NOT : {
+        role:'ADMIN'
+      }
+    }
+  });
+  return users;
+};
 export const getAllAdmin = async (): Promise<User[]> => {
   const admins = await prisma.user.findMany({
     where: {

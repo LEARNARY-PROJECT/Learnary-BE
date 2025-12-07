@@ -3,6 +3,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import { setupSwagger } from "./docs/swagger";
 import { createDefaultUserIfNoneExists } from "./services/user.service";
+import { seedResourceTypes } from "./services/resourceType.service";
 import authRoutes from "./routes/auth.routes";
 import userRoutes from "./routes/user.routes";
 import courseRoutes from "./routes/course.routes";
@@ -33,6 +34,10 @@ import answerRoutes from "./routes/answer.routes";
 import submissionRoutes from "./routes/submission.routes";
 import paymentRoutes from "./routes/payment.routes";
 import withdrawRoutes from "./routes/withdraw.routes";
+import resourceTypeRoutes from "./routes/resourceType.routes";
+import permissionOnResourceRoutes from "./routes/permissionOnResource.routes";
+import groupRoutes from "./routes/group.routes";
+import courseGroupRoutes from "./routes/courseGroup.routes";
 import passport from "passport";
 import "./lib/passport";
 import cookieParser from "cookie-parser";
@@ -52,13 +57,13 @@ app.use(
     origin: (origin, callback) => {
       // Cho phép requests không có origin (webhooks, Postman)
       if (!origin) return callback(null, true);
-      
+
       // Cho phép các origin trong whitelist
       if (allowedOrigins.includes(origin)) return callback(null, true);
-      
+
       // Cho phép tất cả PayOS domains
       if (origin.includes('payos.vn')) return callback(null, true);
-      
+
       // Block các domain khác
       callback(new Error('Not allowed by CORS'));
     },
@@ -85,6 +90,10 @@ app.use("/api", adminRoutes);
 app.use("/api", adminRoleRoutes);
 app.use("/api", permissionRoutes);
 app.use("/api", adminRolePermissionRoutes);
+app.use("/api", resourceTypeRoutes);
+app.use("/api", permissionOnResourceRoutes);
+app.use("/api", groupRoutes);
+app.use("/api", courseGroupRoutes);
 app.use("/api", accountSecurityRoutes);
 app.use("/api", instructorSpecializationsRoutes);
 app.use("/api", specializationRoutes);
@@ -107,7 +116,7 @@ app.use("/api", submissionRoutes);
 app.get("/", (_, res) => {
   const environment = process.env.NODE_ENV || 'development';
   const isDevelopment = environment === 'development';
-  
+
   res.json({
     status: "running",
     message: "Backend đang chạy rất bình tĩnh và bình thường 🚀",
@@ -129,15 +138,18 @@ app.get("/", (_, res) => {
     }
   });
 });
-
+async function repareResourceSystem() {
+  await createDefaultUserIfNoneExists();
+  await seedResourceTypes();
+}
 async function startServer() {
   try {
     console.log(`\n🚀 Starting server...`);
     console.log(`📦 Environment: ${process.env.NODE_ENV || 'development'}`);
     console.log(`🔌 Database: ${isDevelopment ? 'LOCAL' : 'PRODUCTION'}`);
-    
-    // await createDefaultUserIfNoneExists();
     console.log("✅ Database connection successful");
+
+    repareResourceSystem();
 
     setupSwagger(app);
 
@@ -151,14 +163,6 @@ async function startServer() {
     process.exit(1);
   }
 }
-createDefaultUserIfNoneExists()
-  .then(() => {
-    console.log(
-      "Backend Service is ready!"
-    );
-  })
-  .catch((err) => {
-    console.error("Error creating default user", err);
-  });
+
 startServer();
 export default app;

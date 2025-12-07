@@ -3,7 +3,6 @@ import { Course, CourseStatus } from '../generated/prisma'
 import { moveVideosToPermanent, deleteVideos } from './videoLesson.service';
 import type { CourseCreateDto, ChapterDto, LessonDto, QuizDto, QuestionDto, OptionDto } from '../types/course';
 import { CreateSlug, checkExistingSlug } from "../utils/slug";
-
 export const getCourseBySlug = async (slugs: string): Promise<Course> => {
   if (!slugs) throw new Error('Không tìm thấy slug truyền vào!')
   const course = await prisma.course.findFirst({
@@ -82,7 +81,6 @@ export const getAllCourses = async () => {
   });
 };
 
-
 export const getCourseById = (course_id: string) =>
   prisma.course.findUnique({
     where: { course_id },
@@ -125,7 +123,12 @@ export const getCoursesByInstructorId = async (userId: string) => {
   return await prisma.course.findMany({
     where: { instructor_id: instructor.instructor_id },
     orderBy: { updatedAt: 'desc' },
-    include: { _count: { select: { chapter: true } } },
+    include: { 
+      _count: { 
+        select: { chapter: true } 
+      },
+      level:true
+    },
   });
 };
 
