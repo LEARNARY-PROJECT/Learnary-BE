@@ -424,7 +424,8 @@ model AccountSecurity {
 }
 
 model Group {
-  group_id    String    @id @default(uuid()) @db.Char(50)
+  group_id String @id @default(uuid()) @db.Char(50)
+
   name        String
   description String
   type        GroupType @default(Group)
