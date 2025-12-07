@@ -39,7 +39,7 @@ export const createUser = async (
   email: string,
   password: string,
   fullName: string
-): Promise<User & { learner: Learner } & { wallet: Wallet}> => {
+): Promise<User & { learner: Learner }> => {
   const hashedPassword = await bcryptjs.hash(password, 10);
   return await prisma.$transaction(async (tx) => {
     //2 query chạy trong cùng 1 transaction, hoặc là cả 2 thành công, hoặc là cả 2 đều không thành công và sẽ được rollback, tx là biến đại diện của 1 cụm chứa 2 query này. Vì vậy ngay bên dưới khai báo tx.table là đại diện cho các query có ở cùng 1 transaction
@@ -56,13 +56,8 @@ export const createUser = async (
         user_id: user.user_id,
       }
     })
-    const wallet = await tx.wallet.create({
-      data: {
-        user_id: user.user_id,
-        balance: 0
-      }
-    })
-    return { ...user, learner, wallet }
+    // Learner không cần ví - chỉ Instructor mới cần ví để nhận tiền
+    return { ...user, learner }
   });
 };
 
