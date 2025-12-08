@@ -16,7 +16,7 @@ export const generateAccessToken = (user: User): string => {
   const payload = {
     id: user.user_id, email: user.email, role: user.role, fullName: user.fullName, avatar:user.avatar
   };
-  return jwt.sign(payload, JWT_SECRET, { expiresIn: '15m' });
+  return jwt.sign(payload, JWT_SECRET, { expiresIn: '5m' });
 };
 
 export const generateRefreshToken = (user: User): string => {

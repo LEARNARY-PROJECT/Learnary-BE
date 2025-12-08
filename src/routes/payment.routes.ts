@@ -93,4 +93,55 @@ router.post(
   PaymentController.cancelPayment
 );
 
+/**
+ * @openapi
+ * /api/payment/create-combo-link:
+ *   post:
+ *     summary: Create a PayOS payment link for combo/group
+ *     tags: [Payment]
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - userId
+ *               - groupId
+ *             properties:
+ *               userId:
+ *                 type: string
+ *                 description: ID of the user buying the combo
+ *               groupId:
+ *                 type: string
+ *                 description: ID of the combo/group
+ *     responses:
+ *       200:
+ *         description: Combo payment link created successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 checkoutUrl:
+ *                   type: string
+ *                   description: URL to redirect user to PayOS
+ *       400:
+ *         description: Invalid input or missing fields
+ *       401:
+ *         description: Unauthorized
+ *       404:
+ *         description: Combo or User not found
+ *       500:
+ *         description: Internal Server Error
+ */
+router.post(
+  '/payment/create-combo-link',
+  // authenticate,
+  // authorizeRoles("LEARNER", "ADMIN"),
+  PaymentController.createComboPaymentLink
+);
+
 export default router;
