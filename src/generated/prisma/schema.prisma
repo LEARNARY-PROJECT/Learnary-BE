@@ -108,6 +108,8 @@ model User {
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
 
+  chaptersProgress          ChapterProgress[]
+  lessonsProgress           LessonProgress[]
   feedbacks                 Feedback[]
   learner                   Learner?
   instructor                Instructor?
@@ -141,8 +143,8 @@ model Learner {
   updatedAt DateTime @updatedAt
   createAt  DateTime @default(now())
 
-  user            User             @relation(fields: [user_id], references: [user_id], onDelete: Cascade)
   learner_courses LearnerCourses[]
+  user            User             @relation(fields: [user_id], references: [user_id], onDelete: Cascade)
 
   @@map("learners")
 }
@@ -499,10 +501,12 @@ model Course {
 model Category {
   category_id String @id @default(uuid()) @db.Char(50)
 
-  category_name String   @unique @db.VarChar(255)
-  slug          String?  @db.Char(255)
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+  is_verified   Boolean @default(false)
+  category_name String  @unique @db.VarChar(255)
+  slug          String? @db.Char(255)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   courses Course[]
 
@@ -557,9 +561,10 @@ model Chapter {
   createAt      DateTime @default(now())
   updatedAt     DateTime @updatedAt
 
-  belongCourse Course   @relation(fields: [course_id], references: [course_id], onDelete: Cascade)
-  lessons      Lesson[]
-  quiz         Quiz?
+  belongChapterProgress ChapterProgress[]
+  belongCourse          Course            @relation(fields: [course_id], references: [course_id], onDelete: Cascade)
+  lessons               Lesson[]
+  quiz                  Quiz?
 
   @@index([course_id], name: "idx_section_course")
   @@index([course_id, order_index], name: "idx_section_order")
@@ -572,16 +577,16 @@ model Lesson {
 
   title       String  @db.VarChar(255)
   video_url   String? @db.VarChar(255)
-  isCompleted Boolean @default(false)
+  order_index Int     @default(0)
   duration    String  @db.VarChar(100)
   slug        String  @db.Char(50)
-  order_index Int     @default(0)
 
   createAt  DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  belongChapter Chapter @relation(fields: [chapter_id], references: [chapter_id], onDelete: Cascade)
-  notes         Note[]
+  belongLessonsProgress LessonProgress[]
+  belongChapter         Chapter          @relation(fields: [chapter_id], references: [chapter_id], onDelete: Cascade)
+  notes                 Note[]
 
   @@index([chapter_id], name: "idx_lesson_section")
   @@index([chapter_id, order_index], name: "idx_lesson_order")
@@ -645,18 +650,51 @@ model Feedback {
 }
 
 model Quiz {
-  quiz_id    String   @id @default(uuid()) @db.Char(50)
-  chapter_id String   @unique @db.Char(50)
-  title      String   @db.VarChar(100)
-  slug       String   @db.Char(50)
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
+  quiz_id    String @id @default(uuid()) @db.Char(50)
+  chapter_id String @unique @db.Char(50)
+
+  is_completed Boolean @default(false)
+  title        String  @db.VarChar(100)
+  slug         String  @db.Char(50)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   belongChapter Chapter      @relation(fields: [chapter_id], references: [chapter_id], onDelete: Cascade)
   questions     Question[]
   submissions   Submission[]
 
   @@map("quizzes")
+}
+
+model LessonProgress {
+  user_id   String @db.Char(50)
+  lesson_id String @db.Char(50)
+
+  is_completed Boolean   @default(false)
+  completed_at DateTime?
+
+  user   User   @relation(fields: [user_id], references: [user_id])
+  lesson Lesson @relation(fields: [lesson_id], references: [lesson_id])
+
+  @@id([user_id, lesson_id])
+  @@unique([user_id, lesson_id])
+  @@map("lesson_progress")
+}
+
+model ChapterProgress {
+  user_id    String @db.Char(50)
+  chapter_id String @db.Char(50)
+
+  is_completed Boolean   @default(false)
+  completed_at DateTime?
+
+  user    User    @relation(fields: [user_id], references: [user_id])
+  chapter Chapter @relation(fields: [chapter_id], references: [chapter_id])
+
+  @@id([user_id, chapter_id])
+  @@unique([user_id, chapter_id])
+  @@map("chapter_progress")
 }
 
 model Question {

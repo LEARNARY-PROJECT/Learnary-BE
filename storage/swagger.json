@@ -2470,6 +2470,178 @@
         }
       }
     },
+    "/api/chapter-progress/complete": {
+      "post": {
+        "summary": "Mark a chapter as completed",
+        "tags": [
+          "ChapterProgress"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "chapter_id"
+                ],
+                "properties": {
+                  "chapter_id": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Chapter marked as completed"
+          }
+        }
+      }
+    },
+    "/api/chapter-progress/incomplete": {
+      "post": {
+        "summary": "Mark a chapter as incomplete",
+        "tags": [
+          "ChapterProgress"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "chapter_id"
+                ],
+                "properties": {
+                  "chapter_id": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Chapter marked as incomplete"
+          }
+        }
+      }
+    },
+    "/api/chapter-progress/my": {
+      "get": {
+        "summary": "Get all chapter progress for current user",
+        "tags": [
+          "ChapterProgress"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User chapter progress"
+          }
+        }
+      }
+    },
+    "/api/chapter-progress/course/{course_id}": {
+      "get": {
+        "summary": "Get chapter progress for a specific course",
+        "tags": [
+          "ChapterProgress"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "course_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Course chapter progress"
+          }
+        }
+      }
+    },
+    "/api/chapter-progress/{chapter_id}": {
+      "get": {
+        "summary": "Get progress for a specific chapter",
+        "tags": [
+          "ChapterProgress"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "chapter_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Chapter progress"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete chapter progress",
+        "tags": [
+          "ChapterProgress"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "chapter_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Progress deleted"
+          }
+        }
+      }
+    },
     "/api/citizen-ids-confirms": {
       "post": {
         "summary": "Create a new citizen ids confirm",
@@ -4756,6 +4928,178 @@
           },
           "404": {
             "description": "Lesson not found or has no video"
+          }
+        }
+      }
+    },
+    "/api/lesson-progress/complete": {
+      "post": {
+        "summary": "Mark a lesson as completed",
+        "tags": [
+          "LessonProgress"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "lesson_id"
+                ],
+                "properties": {
+                  "lesson_id": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Lesson marked as completed"
+          }
+        }
+      }
+    },
+    "/api/lesson-progress/incomplete": {
+      "post": {
+        "summary": "Mark a lesson as incomplete",
+        "tags": [
+          "LessonProgress"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "lesson_id"
+                ],
+                "properties": {
+                  "lesson_id": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Lesson marked as incomplete"
+          }
+        }
+      }
+    },
+    "/api/lesson-progress/my": {
+      "get": {
+        "summary": "Get all lesson progress for current user",
+        "tags": [
+          "LessonProgress"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User lesson progress"
+          }
+        }
+      }
+    },
+    "/api/lesson-progress/course/{course_id}": {
+      "get": {
+        "summary": "Get lesson progress for a specific course",
+        "tags": [
+          "LessonProgress"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "course_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Course lesson progress"
+          }
+        }
+      }
+    },
+    "/api/lesson-progress/{lesson_id}": {
+      "get": {
+        "summary": "Get progress for a specific lesson",
+        "tags": [
+          "LessonProgress"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "lesson_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lesson progress"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete lesson progress",
+        "tags": [
+          "LessonProgress"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "lesson_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Progress deleted"
           }
         }
       }

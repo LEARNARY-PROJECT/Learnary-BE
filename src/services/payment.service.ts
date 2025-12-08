@@ -64,14 +64,9 @@ export const PaymentService = {
 
     // 2. Hàm xử lý Webhook
     processWebhook: async (webhookBody: PayOSWebhookBody): Promise<PayOSWebhookData> => {
-    
-        console.log("🔔 Webhook nhận được:", JSON.stringify(webhookBody, null, 2));
-        
         // 1. Xác thực và lấy mã đơn
         const webhookData = await payOS.webhooks.verify(webhookBody);
         const orderCode = webhookData.orderCode;
-
-        console.log(`🔍 Đang tìm đơn hàng: ${orderCode} trong Database...`);
 
         // 2. Mở Transaction
         await prisma.$transaction(async (tx) => {
@@ -84,11 +79,8 @@ export const PaymentService = {
 
                 // Nếu KHÔNG tìm thấy (VD: do PayOS test fake data 123)
                 if (!transaction) {
-                    console.log(`❌ Không tìm thấy đơn hàng mã ${orderCode}. Bỏ qua cập nhật.`);
                     return; // Dừng luôn, không làm gì cả, không báo lỗi
                 }
-
-                console.log(`✅ Tìm thấy transaction:`, transaction);
 
                 // Nếu tìm thấy -> Thì mới Update
                 const updatedTrans = await tx.transaction.update({
@@ -96,11 +88,8 @@ export const PaymentService = {
                     data: { status: TransactionStatus.Success }
                 });
 
-                console.log("✅ Đã cập nhật trạng thái transaction thành công:", updatedTrans.transaction_id);
-
                 // ⚠️ KIỂM TRA course_id trước khi tiếp tục
                 if (!updatedTrans.course_id) {
-                    console.log(`❌ Transaction không có course_id, bỏ qua enrollment`);
                     return;
                 }
 
@@ -108,8 +97,6 @@ export const PaymentService = {
                 const learner = await tx.learner.findUnique({
                     where: { user_id: updatedTrans.user_id }
                 });
-
-                console.log(`🔍 Tìm learner với user_id: ${updatedTrans.user_id}`, learner);
 
                 if (learner) {
                     // Kiểm tra trùng lặp lần cuối
@@ -122,12 +109,10 @@ export const PaymentService = {
                         }
                     });
 
-                    console.log(`🔍 Kiểm tra learner đã enroll chưa:`, exists);
-
                     if (!exists) {
                         // ⚠️ QUAN TRỌNG: Dùng 'tx.learnerCourses.create' thay vì hàm bên ngoài
                         // Để đảm bảo nằm chung trong transaction
-                        const enrolled = await tx.learnerCourses.create({
+                        await tx.learnerCourses.create({
                             data: {
                                 learner_id: learner.learner_id,
                                 course_id: updatedTrans.course_id, // TypeScript giờ biết nó không null
@@ -139,18 +124,12 @@ export const PaymentService = {
                                 enrolledAt: new Date()
                             }
                         });
-                        console.log(`✅ Đã tạo learnerCourses:`, enrolled);
-                    } else {
-                        console.log(`⚠️ Learner đã enroll khóa học này rồi, bỏ qua.`);
                     }
-                } else {
-                    console.log(`❌ Không tìm thấy learner với user_id: ${updatedTrans.user_id}`);
                 }
 
                 // ===== PHẦN CỘNG TIỀN CHO GIẢNG VIÊN =====
                 const course = transaction.course; 
                 if (!course) {
-                    console.log(`❌ Không tìm thấy thông tin khóa học`);
                     return;
                 }
 
@@ -165,8 +144,6 @@ export const PaymentService = {
                     const platformFee = originalPrice * 0.1;
                     const instructorAmount = originalPrice * 0.9; 
 
-                    console.log(`💰 Tính toán: Giá ${originalPrice}đ - Phí 10% (${platformFee}đ) = GV nhận ${instructorAmount}đ`);
-
                     // Tìm ví giảng viên (hoặc tạo mới nếu chưa có)
                     let instructorWallet = await tx.wallet.findUnique({
                         where: { user_id: instructor.user_id }
@@ -180,7 +157,6 @@ export const PaymentService = {
                                 balance: new Prisma.Decimal(0)
                             }
                         });
-                        console.log(`✅ Đã tạo ví mới cho GV: ${instructorWallet.wallet_id}`);
                     }
 
                     // Cộng tiền vào ví
@@ -205,10 +181,6 @@ export const PaymentService = {
                             payment_code: BigInt(Date.now() + Math.floor(Math.random()*10000)) 
                         }
                     });
-
-                    console.log(`✅ Đã cộng ${instructorAmount}đ vào ví GV ${instructor.user.fullName}`);
-                } else {
-                    console.log(`⚠️ Không tìm thấy giảng viên của khóa học này`);
                 }
         });
 

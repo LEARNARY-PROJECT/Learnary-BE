@@ -27,6 +27,7 @@ const router = express.Router();
  *         description: Unauthorized
  */
 router.post("/chapters", authenticate, authorizeRoles("INSTRUCTOR","ADMIN"), create);
+router.post("/chapters/handleMarkChapter", authenticate, authorizeRoles("INSTRUCTOR","ADMIN"), create);
 
 /**
  * @openapi

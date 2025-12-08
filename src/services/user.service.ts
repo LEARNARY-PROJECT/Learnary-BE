@@ -7,7 +7,6 @@ import { PutObjectCommand, DeleteObjectCommand } from '@aws-sdk/client-s3';
 import path from 'path';
 import { sliceHalfUserId } from "../utils/commons";
 export const createDefaultUserIfNoneExists = async () => {
-  // Kiểm tra xem admin đã tồn tại chưa
   const existingAdmin = await prisma.user.findUnique({
     where: { email: "admin@example.com" }
   });
