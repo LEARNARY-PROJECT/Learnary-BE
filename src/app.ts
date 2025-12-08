@@ -143,8 +143,8 @@ app.get("/", (_, res) => {
   });
 });
 async function repareResourceSystem() {
-  await createDefaultUserIfNoneExists();
   await seedResourceTypes();
+  await createDefaultUserIfNoneExists();
 }
 async function startServer() {
   try {

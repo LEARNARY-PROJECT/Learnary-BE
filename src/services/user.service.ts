@@ -6,32 +6,106 @@ import { S3_BUCKET_NAME, s3Client } from '../config/s3.config';
 import { PutObjectCommand, DeleteObjectCommand } from '@aws-sdk/client-s3';
 import path from 'path';
 import { sliceHalfUserId } from "../utils/commons";
+
 export const createDefaultUserIfNoneExists = async () => {
-  const existingAdmin = await prisma.user.findUnique({
-    where: { email: "admin@example.com" }
+  const existingSuperAdmin = await prisma.user.findUnique({
+    where: { email: "superadmin@admin.com" }
   });
 
-  if (existingAdmin) {
-    console.log("Default admin user already exists");
+  if (existingSuperAdmin) {
     return;
   }
 
-  const adminCount = await prisma.user.count({
-    where: { role: "ADMIN" }
-  });
-
-  if (adminCount === 0) {
-    const hashedPassword = await bcryptjs.hash("admin123", 10);
-    await prisma.user.create({
-      data: {
-        email: "admin@example.com",
-        password: hashedPassword,
-        fullName: "Admin User",
-        role: "ADMIN",
-      },
+  await prisma.$transaction(async (tx) => {
+    let allResource = await tx.resourceType.findUnique({
+      where: { resource_name: "ALL" }
     });
-    console.log("Default admin user created");
-  }
+
+    if (!allResource) {
+      allResource = await tx.resourceType.create({
+        data: { resource_name: "ALL" }
+      });
+    }
+
+    let superPermission = await tx.permission.findUnique({
+      where: { permission_name: "Super Permission" }
+    });
+
+    if (!superPermission) {
+      superPermission = await tx.permission.create({
+        data: {
+          permission_name: "Super Permission",
+          description: "Full access to all resources"
+        }
+      });
+    }
+
+    const existingPermissionOnResource = await tx.permissionOnResource.findUnique({
+      where: {
+        permissionId_resourceTypeId: {
+          permissionId: superPermission.permission_id,
+          resourceTypeId: allResource.resource_id
+        }
+      }
+    });
+
+    if (!existingPermissionOnResource) {
+      await tx.permissionOnResource.create({
+        data: {
+          permissionId: superPermission.permission_id,
+          resourceTypeId: allResource.resource_id
+        }
+      });
+    }
+
+    let superAdminRole = await tx.adminRole.findUnique({
+      where: { role_name: "Super Admin" }
+    });
+
+    if (!superAdminRole) {
+      superAdminRole = await tx.adminRole.create({
+        data: {
+          role_name: "Super Admin",
+          level: 1
+        }
+      });
+    }
+
+    const existingAdminRolePermission = await tx.adminRolePermission.findUnique({
+      where: {
+        permission_id_admin_role_id: {
+          permission_id: superPermission.permission_id,
+          admin_role_id: superAdminRole.admin_role_id
+        }
+      }
+    });
+
+    if (!existingAdminRolePermission) {
+      await tx.adminRolePermission.create({
+        data: {
+          permission_id: superPermission.permission_id,
+          admin_role_id: superAdminRole.admin_role_id
+        }
+      });
+    }
+
+    const hashedPassword = await bcryptjs.hash("123456", 10);
+    const superAdminUser = await tx.user.create({
+      data: {
+        email: "superadmin@admin.com",
+        password: hashedPassword,
+        fullName: "Super Admin",
+        role: "ADMIN"
+      }
+    });
+
+    await tx.admin.create({
+      data: {
+        user_id: superAdminUser.user_id,
+        admin_role_id: superAdminRole.admin_role_id
+      }
+    });
+  });
 };
 
 export const createUser = async (
