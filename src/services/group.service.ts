@@ -41,7 +41,8 @@ export const getAllGroups = async () => {
               course_id: true,
               title: true,
               thumbnail: true,
-              price: true
+              price: true,
+              status: true
             }
           }
         },
@@ -110,7 +111,8 @@ export const getGroupsByType = async (type: GroupType) => {
               course_id: true,
               title: true,
               thumbnail: true,
-              price: true
+              price: true,
+              status: true
             }
           }
         },

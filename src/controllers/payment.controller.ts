@@ -68,5 +68,25 @@ export const PaymentController = {
             const err = error as Error;
             return res.status(500).json({ error: err.message });
         }
+    },
+
+    // 4. API Tạo Link Thanh Toán Combo
+    createComboPaymentLink: async (req: Request, res: Response) => {
+        try {
+            const { userId, groupId } = req.body as { userId: string, groupId: string };
+            if (!userId || !groupId) {
+                return res.status(400).json({ 
+                    error: "Thiếu thông tin userId hoặc groupId" 
+                });
+            }
+            const checkoutUrl = await PaymentService.createComboPaymentLink(userId, groupId);
+
+            return res.json({ checkoutUrl });
+
+        } catch (error) {
+            const err = error as Error;
+            console.error("Error creating combo payment link:", err.message);
+            return res.status(500).json({ error: err.message });
+        }
     }
 };
