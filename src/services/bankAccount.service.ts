@@ -42,3 +42,33 @@ export const getBankById = async (id: string): Promise<BankAccount | null> => {
     where: { bank_id: id },
   });
 };
+
+export const getBankByInstructorId = async (instructor_id: string): Promise<BankAccount | null> => {
+  if (!instructor_id) {
+    throw new Error("Missing field required: instructor_id");
+  }
+  return prisma.bankAccount.findUnique({
+    where: { instructor_id },
+  });
+};
+
+export const updateBankByInstructorId = async (
+  instructor_id: string, 
+  data: Omit<Partial<BankAccount>, 'bank_id' | 'instructor_id' | 'created_at' | 'updated_at'>
+): Promise<BankAccount> => {
+  if (!instructor_id) {
+    throw new Error("Missing field required: instructor_id");
+  }
+  
+  // Upsert: Nếu chưa có thì tạo mới, nếu có rồi thì cập nhật
+  return prisma.bankAccount.upsert({
+    where: { instructor_id },
+    update: data,
+    create: {
+      instructor_id,
+      bank_name: data.bank_name || '',
+      account_number: data.account_number || '',
+      account_holder_name: data.account_holder_name || ''
+    }
+  });
+};

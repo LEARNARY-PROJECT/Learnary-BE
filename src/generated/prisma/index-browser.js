@@ -511,7 +511,8 @@ exports.QualificationType = exports.$Enums.QualificationType = {
 exports.TransactionType = exports.$Enums.TransactionType = {
   Withdraw: 'Withdraw',
   Deposit: 'Deposit',
-  Pay: 'Pay'
+  Pay: 'Pay',
+  Refund: 'Refund'
 };
 
 exports.TransactionMethod = exports.$Enums.TransactionMethod = {
@@ -524,7 +525,8 @@ exports.TransactionMethod = exports.$Enums.TransactionMethod = {
 exports.TransactionStatus = exports.$Enums.TransactionStatus = {
   Pending: 'Pending',
   Success: 'Success',
-  Cancel: 'Cancel'
+  Cancel: 'Cancel',
+  Refund: 'Refund'
 };
 
 exports.TransactionNote = exports.$Enums.TransactionNote = {

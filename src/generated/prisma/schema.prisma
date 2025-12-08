@@ -54,6 +54,7 @@ enum TransactionType {
   Withdraw
   Deposit
   Pay
+  Refund
 }
 
 enum TransactionMethod {
@@ -67,6 +68,7 @@ enum TransactionStatus {
   Pending
   Success
   Cancel
+  Refund
 }
 
 enum WithdrawStatus {
@@ -286,7 +288,7 @@ model Wallet {
 
 model Transaction {
   transaction_id String  @id @default(uuid()) @db.Char(50)
-  course_id      String  @db.Char(50)
+  course_id      String? @db.Char(50)
   user_id        String  @db.Char(50)
   wallet_id      String? @db.Char(50)
   payment_code   BigInt  @unique
@@ -305,7 +307,7 @@ model Transaction {
   createdAt        DateTime          @default(now())
   updatedAt        DateTime          @updatedAt
 
-  course Course  @relation(fields: [course_id], references: [course_id])
+  course Course? @relation(fields: [course_id], references: [course_id])
   user   User    @relation(fields: [user_id], references: [user_id], onDelete: Cascade)
   wallet Wallet? @relation(fields: [wallet_id], references: [wallet_id])
 
@@ -422,7 +424,8 @@ model AccountSecurity {
 }
 
 model Group {
-  group_id    String    @id @default(uuid()) @db.Char(50)
+  group_id String @id @default(uuid()) @db.Char(50)
+
   name        String
   description String
   type        GroupType @default(Group)

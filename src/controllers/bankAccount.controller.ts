@@ -4,7 +4,9 @@ import {
     updateBankAccount,
     deleteBankAccount,
     getAllBankAccount,
-    getBankById
+    getBankById,
+    getBankByInstructorId,
+    updateBankByInstructorId
 } from '../services/bankAccount.service'
 import { BankAccount } from '../generated/prisma'
 
@@ -122,6 +124,66 @@ export const getUserBankAccount: RequestHandler = async (req, res) => {
         console.error("Get bank account error:", e);
         res.status(500).json({ 
             error: 'Failed to get bank account.',
+            details: e.message
+        });
+    }
+};
+
+export const getBankAccountByInstructorId: RequestHandler = async (req, res) => {
+    const instructor_id = req.params.instructor_id;
+    
+    if (!instructor_id) {
+        res.status(400).json({ error: "Missing instructor_id in params" });
+        return;
+    }
+    
+    try {
+        const bankAccount = await getBankByInstructorId(instructor_id);
+        
+        if (!bankAccount) {
+            res.status(404).json({ error: "Bank account not found for this instructor" });
+            return;
+        }
+        
+        res.status(200).json({
+            message: "Bank account retrieved successfully",
+            data: bankAccount
+        });
+    } catch (error) {
+        const e = error as Error;
+        console.error("Get bank account by instructor error:", e);
+        res.status(500).json({ 
+            error: 'Failed to get bank account.',
+            details: e.message
+        });
+    }
+};
+
+export const updateBankAccountByInstructorId: RequestHandler = async (req, res) => {
+    const instructor_id = req.params.instructor_id;
+    const data: Partial<updateBankData> = req.body;
+    
+    if (!instructor_id) {
+        res.status(400).json({ error: "Missing instructor_id in params!" });
+        return;
+    }
+    
+    if (!data || Object.keys(data).length === 0) {
+        res.status(400).json({ error: "No data provided for update!" });
+        return;
+    }
+    
+    try {
+        const updatedBank = await updateBankByInstructorId(instructor_id, data);
+        res.status(200).json({
+            message: 'Bank account updated successfully',
+            data: updatedBank
+        });
+    } catch (error) {
+        const e = error as Error;
+        console.error("Update bank by instructor error:", e);
+        res.status(500).json({ 
+            error: 'Failed to update bank information.',
             details: e.message
         });
     }

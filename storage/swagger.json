@@ -2059,6 +2059,95 @@
         }
       }
     },
+    "/api/bank-account/{instructor_id}": {
+      "get": {
+        "summary": "Get bank account by instructor ID",
+        "tags": [
+          "BankAccount"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "instructor_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Instructor ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Bank account details"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Bank account not found"
+          }
+        }
+      },
+      "patch": {
+        "summary": "Update bank account by instructor ID",
+        "tags": [
+          "BankAccount"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "instructor_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Instructor ID"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "bank_name": {
+                    "type": "string"
+                  },
+                  "account_number": {
+                    "type": "string"
+                  },
+                  "account_holder_name": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Bank account updated successfully"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Bank account not found"
+          }
+        }
+      }
+    },
     "/api/categories": {
       "post": {
         "summary": "Create a new category",
@@ -7230,6 +7319,136 @@
             "description": "Wallet not found"
           }
         }
+      }
+    },
+    "/api/withdraw/request": {
+      "post": {
+        "summary": "Giảng viên tạo yêu cầu rút tiền",
+        "tags": [
+          "Withdraw"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "userId",
+                  "amount",
+                  "note"
+                ],
+                "properties": {
+                  "userId": {
+                    "type": "string"
+                  },
+                  "amount": {
+                    "type": "number"
+                  },
+                  "note": {
+                    "type": "string",
+                    "description": "Số tài khoản ngân hàng, tên ngân hàng..."
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/withdraw/approve": {
+      "post": {
+        "summary": "Admin duyệt hoặc từ chối yêu cầu rút tiền",
+        "tags": [
+          "Withdraw"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "adminId",
+                  "requestId",
+                  "action",
+                  "note"
+                ],
+                "properties": {
+                  "adminId": {
+                    "type": "string"
+                  },
+                  "requestId": {
+                    "type": "string"
+                  },
+                  "action": {
+                    "type": "string",
+                    "enum": [
+                      "APPROVE",
+                      "REJECT"
+                    ]
+                  },
+                  "note": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/transactions": {
+      "get": {
+        "summary": "Admin lấy tất cả giao dịch",
+        "tags": [
+          "Admin",
+          "Transactions"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/api/withdraw/requests": {
+      "get": {
+        "summary": "Admin lấy danh sách withdraw requests",
+        "tags": [
+          "Admin",
+          "Withdraw"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "status",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "Pending",
+                "Success",
+                "Rejected"
+              ]
+            },
+            "description": "Filter by status (optional)"
+          }
+        ]
       }
     }
   },

@@ -42,7 +42,7 @@ export const PaymentController = {
             // PayOS yêu cầu phản hồi nhanh, nếu không nó sẽ gửi lại nhiều lần
             return res.json({ success: true, message: "Webhook processed successfully" });
         } catch (error) {
-            const err = error as any;
+            const err = error as Error;
             
             // Nếu lỗi chữ ký -> Trả về 400 để PayOS biết
             // Nếu lỗi DB -> Vẫn có thể trả về 200 (success: false) để tránh PayOS spam retry (Tùy chiến lược của bạn)

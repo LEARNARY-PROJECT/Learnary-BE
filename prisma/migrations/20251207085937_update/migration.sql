@@ -20,13 +20,13 @@ CREATE TYPE "CourseStatus" AS ENUM ('Draft', 'Published', 'Pending', 'Archived')
 CREATE TYPE "LanguageOptions" AS ENUM ('English', 'Vietnamese');
 
 -- CreateEnum
-CREATE TYPE "TransactionType" AS ENUM ('Withdraw', 'Deposit', 'Pay');
+CREATE TYPE "TransactionType" AS ENUM ('Withdraw', 'Deposit', 'Pay', 'Refund');
 
 -- CreateEnum
 CREATE TYPE "TransactionMethod" AS ENUM ('Credit_Card', 'Voucher', 'Bank_Transfer', 'PayPal');
 
 -- CreateEnum
-CREATE TYPE "TransactionStatus" AS ENUM ('Pending', 'Success', 'Cancel');
+CREATE TYPE "TransactionStatus" AS ENUM ('Pending', 'Success', 'Cancel', 'Refund');
 
 -- CreateEnum
 CREATE TYPE "WithdrawStatus" AS ENUM ('Success', 'Pending', 'Rejected');
@@ -36,9 +36,6 @@ CREATE TYPE "TransactionNote" AS ENUM ('User_Pay', 'Pay_For_Instructor');
 
 -- CreateEnum
 CREATE TYPE "GroupType" AS ENUM ('Combo', 'Group');
-
--- CreateEnum
-CREATE TYPE "ResourceType" AS ENUM ('COURSE', 'INSTRUCTOR', 'CATEGORY', 'USER', 'TRANSACTION', 'ALL');
 
 -- CreateTable
 CREATE TABLE "users" (
@@ -176,7 +173,7 @@ CREATE TABLE "wallets" (
 -- CreateTable
 CREATE TABLE "transactions" (
     "transaction_id" CHAR(50) NOT NULL,
-    "course_id" CHAR(50) NOT NULL,
+    "course_id" CHAR(50),
     "user_id" CHAR(50) NOT NULL,
     "wallet_id" CHAR(50),
     "payment_code" BIGINT NOT NULL,
@@ -209,11 +206,18 @@ CREATE TABLE "admins" (
 );
 
 -- CreateTable
+CREATE TABLE "resource_types" (
+    "resource_id" CHAR(50) NOT NULL,
+    "resource_name" TEXT NOT NULL,
+
+    CONSTRAINT "resource_types_pkey" PRIMARY KEY ("resource_id")
+);
+
+-- CreateTable
 CREATE TABLE "admin_roles" (
     "admin_role_id" CHAR(50) NOT NULL,
     "level" INTEGER NOT NULL,
     "role_name" VARCHAR(255) NOT NULL,
-    "resource_type" "ResourceType" NOT NULL DEFAULT 'ALL',
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
@@ -229,6 +233,17 @@ CREATE TABLE "permissions" (
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "permissions_pkey" PRIMARY KEY ("permission_id")
+);
+
+-- CreateTable
+CREATE TABLE "permission_on_resources" (
+    "id" TEXT NOT NULL,
+    "permissionId" CHAR(50) NOT NULL,
+    "resourceTypeId" CHAR(50) NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "permission_on_resources_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -623,13 +638,22 @@ CREATE UNIQUE INDEX "admins_user_id_key" ON "admins"("user_id");
 CREATE INDEX "idx_admin_role" ON "admins"("admin_role_id");
 
 -- CreateIndex
+CREATE UNIQUE INDEX "resource_types_resource_name_key" ON "resource_types"("resource_name");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "admin_roles_role_name_key" ON "admin_roles"("role_name");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "permissions_permission_name_key" ON "permissions"("permission_name");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "admin_role_permissions_admin_role_id_key" ON "admin_role_permissions"("admin_role_id");
+CREATE INDEX "idx_por_permission" ON "permission_on_resources"("permissionId");
+
+-- CreateIndex
+CREATE INDEX "idx_por_resource" ON "permission_on_resources"("resourceTypeId");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "permission_on_resources_permissionId_resourceTypeId_key" ON "permission_on_resources"("permissionId", "resourceTypeId");
 
 -- CreateIndex
 CREATE INDEX "idx_arp_role" ON "admin_role_permissions"("admin_role_id");
@@ -806,7 +830,7 @@ ALTER TABLE "bank_account" ADD CONSTRAINT "bank_account_instructor_id_fkey" FORE
 ALTER TABLE "wallets" ADD CONSTRAINT "wallets_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "users"("user_id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "transactions" ADD CONSTRAINT "transactions_course_id_fkey" FOREIGN KEY ("course_id") REFERENCES "courses"("course_id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "transactions" ADD CONSTRAINT "transactions_course_id_fkey" FOREIGN KEY ("course_id") REFERENCES "courses"("course_id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "transactions" ADD CONSTRAINT "transactions_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "users"("user_id") ON DELETE CASCADE ON UPDATE CASCADE;
@@ -819,6 +843,12 @@ ALTER TABLE "admins" ADD CONSTRAINT "admins_user_id_fkey" FOREIGN KEY ("user_id"
 
 -- AddForeignKey
 ALTER TABLE "admins" ADD CONSTRAINT "admins_admin_role_id_fkey" FOREIGN KEY ("admin_role_id") REFERENCES "admin_roles"("admin_role_id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "permission_on_resources" ADD CONSTRAINT "permission_on_resources_permissionId_fkey" FOREIGN KEY ("permissionId") REFERENCES "permissions"("permission_id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "permission_on_resources" ADD CONSTRAINT "permission_on_resources_resourceTypeId_fkey" FOREIGN KEY ("resourceTypeId") REFERENCES "resource_types"("resource_id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "admin_role_permissions" ADD CONSTRAINT "admin_role_permissions_permission_id_fkey" FOREIGN KEY ("permission_id") REFERENCES "permissions"("permission_id") ON DELETE RESTRICT ON UPDATE CASCADE;

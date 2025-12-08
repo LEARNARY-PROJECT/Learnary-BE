@@ -4,7 +4,9 @@ import {
     getAllBank,
     getUserBankAccount,
     updateBankInformation,
-    deleteBank
+    deleteBank,
+    getBankAccountByInstructorId,
+    updateBankAccountByInstructorId
 } from '../controllers/bankAccount.controller';
 import { authenticate, authorizeRoles } from '../middlewares/auth.middleware';
 
@@ -157,5 +159,68 @@ router.patch('/bank-accounts/:bank_id', authenticate, authorizeRoles('INSTRUCTOR
  *         description: Bank account not found
  */
 router.delete('/bank-accounts/:bank_id', authenticate, authorizeRoles('INSTRUCTOR', 'ADMIN'), deleteBank);
+
+/**
+ * @openapi
+ * /api/bank-account/{instructor_id}:
+ *   get:
+ *     summary: Get bank account by instructor ID
+ *     tags: [BankAccount]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: instructor_id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: Instructor ID
+ *     responses:
+ *       200:
+ *         description: Bank account details
+ *       404:
+ *         description: Bank account not found
+ *       401:
+ *         description: Unauthorized
+ */
+router.get('/bank-account/:instructor_id', authenticate, authorizeRoles('INSTRUCTOR', 'ADMIN'), getBankAccountByInstructorId);
+
+/**
+ * @openapi
+ * /api/bank-account/{instructor_id}:
+ *   patch:
+ *     summary: Update bank account by instructor ID
+ *     tags: [BankAccount]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: instructor_id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: Instructor ID
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               bank_name:
+ *                 type: string
+ *               account_number:
+ *                 type: string
+ *               account_holder_name:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Bank account updated successfully
+ *       401:
+ *         description: Unauthorized
+ *       404:
+ *         description: Bank account not found
+ */
+router.patch('/bank-account/:instructor_id', authenticate, authorizeRoles('INSTRUCTOR'), updateBankAccountByInstructorId);
 
 export default router;

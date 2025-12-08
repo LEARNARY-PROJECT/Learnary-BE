@@ -33,6 +33,7 @@ import optionsRoutes from "./routes/options.routes";
 import answerRoutes from "./routes/answer.routes";
 import submissionRoutes from "./routes/submission.routes";
 import paymentRoutes from "./routes/payment.routes";
+import withdrawRoutes from "./routes/withdraw.routes";
 import resourceTypeRoutes from "./routes/resourceType.routes";
 import permissionOnResourceRoutes from "./routes/permissionOnResource.routes";
 import groupRoutes from "./routes/group.routes";
@@ -79,6 +80,7 @@ app.use(passport.initialize());
 //Routes
 app.use("/api/auth", authRoutes);
 app.use("/api", paymentRoutes); // Mount payment TRƯỚC course để tránh bị authenticate global
+app.use("/api", withdrawRoutes);
 app.use("/api", userRoutes);
 app.use("/api", courseRoutes);
 app.use("/api", feedbackRoutes);
