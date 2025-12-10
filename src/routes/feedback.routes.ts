@@ -1,5 +1,5 @@
 import express from 'express';
-import { authenticate } from '../middlewares/auth.middleware';
+import { authenticate, optionalAuthenticate } from '../middlewares/auth.middleware';
 import { createFeedback, getFeedbackByCourse } from '../controllers/feedback.controller';
 const router = express.Router();
 

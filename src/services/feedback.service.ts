@@ -6,6 +6,15 @@ export const createFeedback = async (data: {
     rating: number;
     comment: string;
 }) => {
+    const checkExistingFeedback = await prisma.feedback.findUnique({
+        where: {
+            course_id:data.course_id,
+            user_id:data.user_id
+        }
+    })
+    if(checkExistingFeedback) {
+        throw new Error("You already feedback on this course")
+    }
     return await prisma.feedback.create({
         data: {
             user_id:data.user_id,
@@ -23,8 +32,13 @@ export const getFeedbackByCourse = async (course_id: string) => {
             user: {
                 select: {
                     user_id: true,
+                    fullName: true,
+                    avatar: true,
                 },
             },
         },
+        orderBy: {
+            createdAt: 'desc'
+        }
     });
 };

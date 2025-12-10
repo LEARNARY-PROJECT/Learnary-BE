@@ -5,7 +5,7 @@ import type { Role, Wallet } from '../generated/prisma'
 import { S3_BUCKET_NAME, s3Client } from '../config/s3.config';
 import { PutObjectCommand, DeleteObjectCommand } from '@aws-sdk/client-s3';
 import path from 'path';
-import { sliceHalfUserId } from "../utils/commons";
+import { sliceHalfId } from "../utils/commons";
 
 export const createDefaultUserIfNoneExists = async () => {
   const existingSuperAdmin = await prisma.user.findUnique({
@@ -252,7 +252,7 @@ export const uploadAvatarToS3 = async (userId: string, file: Express.Multer.File
   if (!user) {
     throw new Error("User not found")
   }
-  const halfUserId = sliceHalfUserId(userId)
+  const halfUserId = sliceHalfId(userId)
   // 1 user = 1 link url avatar 
   const fileExtension = path.extname(file.originalname)
   const fileName = `${halfUserId}${fileExtension}`
@@ -326,7 +326,22 @@ export const getInactiveUsers = async (daysAgo: number = 30): Promise<User[]> =>
     },
   });
 };
-
+export const getUserIdByEmail = async (email:string) => {
+  if(!email) return null
+  try {
+    const user = await prisma.user.findUnique({
+      where: {
+        email,
+      },
+      select: {
+        user_id:true
+      }
+    })
+    return user?.user_id
+  } catch (error) {
+    return null
+  }
+}
 export const getFullUserProfile = async (userId: string) => {
   return prisma.user.findUnique({
     where: { user_id: userId },

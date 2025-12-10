@@ -7,7 +7,12 @@ import {
   registerUser,
   generateAccessToken,
   generateRefreshToken,
+  changePassword,
+  getOtpRecovery,
+  verifyTokenWhenRecoveryPassword,
+  recoveryPassword,
 } from '../services/auth.service';
+import { failure } from '../utils/response';
 
 const setRefreshTokenCookie = (res: Response, token: string): void => {
   res.cookie('refresh_token', token, {
@@ -17,6 +22,79 @@ const setRefreshTokenCookie = (res: Response, token: string): void => {
     maxAge: 60 * 60 * 1000 * 3, // 3 giờ (khớp với hạn token)
   });
 };
+export const changePasswordC = async (req:Request,res:Response) => {
+  try {
+    const user_id = req.jwtPayload?.id
+    const { oldPassword, newPassword } = req.body 
+    if(!user_id || !oldPassword || !newPassword) {
+      res.status(500).json("Missing field required")
+      return
+    }
+    await changePassword(user_id,oldPassword, newPassword)
+    res.status(200).json({ 
+      message: "Password changed successfully" 
+    })
+  } catch (errors) {
+    const error = errors as Error;
+    res.status(500).json({ error: error.message });
+  }
+}
+export const forgotPassword = async (req: Request, res: Response) => {
+  try {
+    const { email } = req.body;
+    if (!email) {
+      res.status(400).json({ error: "Email is required" });
+      return;
+    }
+    
+    await getOtpRecovery(email);
+    res.status(200).json({ 
+      message: "OTP has been sent to your email" 
+    });
+  } catch (error) {
+    const err = error as Error;
+    res.status(500).json({ error: err.message });
+  }
+}
+export const verifyOTP = async (req: Request, res: Response) => {
+  try {
+    const { email, otp } = req.body;
+    if (!email || !otp) {
+      res.status(400).json({ error: "Email and OTP are required" });
+      return;
+    }
+    await verifyTokenWhenRecoveryPassword(email, otp);
+    res.status(200).json({ 
+      message: "OTP verified successfully" 
+    });
+  } catch (error) {
+    const err = error as Error;
+    res.status(400).json({ error: err.message });
+  }
+}
+
+export const resetPassword = async (req: Request, res: Response) => {
+  try {
+    const { email, newPassword } = req.body;
+    if (!email || !newPassword) {
+      res.status(400).json({ error: "Email and new password are required" });
+      return;
+    }
+
+    if (newPassword.length < 6) {
+      res.status(400).json({ error: "Password must be at least 6 characters long" });
+      return;
+    }
+    
+    await recoveryPassword(email, newPassword);
+    res.status(200).json({ 
+      message: "Password reset successfully" 
+    });
+  } catch (error) {
+    const err = error as Error;
+    res.status(500).json({ error: err.message });
+  }
+}
 
 export const register = async (req: Request, res: Response): Promise<void> => {
   try {
