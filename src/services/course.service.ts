@@ -40,6 +40,7 @@ export const getCourseBySlug = async (slugs: string): Promise<Course> => {
         }
       },
       feedbacks:true,
+      learnerCourses:true,
     }
   })
   if (!course) throw new Error('Không tìm thấy khóa học với slug này!')
