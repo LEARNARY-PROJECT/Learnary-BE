@@ -31,7 +31,7 @@ model User {
   accountSecurities         AccountSecurity?
   admin                     Admin?
   chaptersProgress          ChapterProgress[]
-  feedbacks                 Feedback?
+  feedbacks                 Feedback[]
   instructor_qualifications InstructorQualifications[]
   instructor                Instructor?
   learner                   Learner?
@@ -367,7 +367,7 @@ model Course {
   category           Category         @relation(fields: [category_id], references: [category_id], onDelete: Cascade)
   instructor         Instructor       @relation(fields: [instructor_id], references: [instructor_id], onDelete: Cascade)
   level              Level            @relation(fields: [level_id], references: [level_id], onDelete: Cascade)
-  feedbacks          Feedback?
+  feedbacks          Feedback[]
   learnerCourses     LearnerCourses[]
   transaction        Transaction[]
 
@@ -498,8 +498,8 @@ model WithdrawRequest {
 
 model Feedback {
   id        String   @id @default(uuid()) @db.Char(50)
-  course_id String   @unique @db.Char(50)
-  user_id   String   @unique @db.Char(50)
+  course_id String   @db.Char(50)
+  user_id   String   @db.Char(50)
   rating    Int
   comment   String?  @db.VarChar(255)
   createdAt DateTime @default(now())

@@ -4116,6 +4116,7 @@ export namespace Prisma {
 
   export type UserCountOutputType = {
     chaptersProgress: number
+    feedbacks: number
     instructor_qualifications: number
     lessonsProgress: number
     note: number
@@ -4127,6 +4128,7 @@ export namespace Prisma {
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     chaptersProgress?: boolean | UserCountOutputTypeCountChaptersProgressArgs
+    feedbacks?: boolean | UserCountOutputTypeCountFeedbacksArgs
     instructor_qualifications?: boolean | UserCountOutputTypeCountInstructor_qualificationsArgs
     lessonsProgress?: boolean | UserCountOutputTypeCountLessonsProgressArgs
     note?: boolean | UserCountOutputTypeCountNoteArgs
@@ -4152,6 +4154,13 @@ export namespace Prisma {
    */
   export type UserCountOutputTypeCountChaptersProgressArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: ChapterProgressWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountFeedbacksArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: FeedbackWhereInput
   }
 
   /**
@@ -4535,6 +4544,7 @@ export namespace Prisma {
   export type CourseCountOutputType = {
     chapter: number
     inCourseGroups: number
+    feedbacks: number
     learnerCourses: number
     transaction: number
   }
@@ -4542,6 +4552,7 @@ export namespace Prisma {
   export type CourseCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     chapter?: boolean | CourseCountOutputTypeCountChapterArgs
     inCourseGroups?: boolean | CourseCountOutputTypeCountInCourseGroupsArgs
+    feedbacks?: boolean | CourseCountOutputTypeCountFeedbacksArgs
     learnerCourses?: boolean | CourseCountOutputTypeCountLearnerCoursesArgs
     transaction?: boolean | CourseCountOutputTypeCountTransactionArgs
   }
@@ -4569,6 +4580,13 @@ export namespace Prisma {
    */
   export type CourseCountOutputTypeCountInCourseGroupsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: CourseGroupWhereInput
+  }
+
+  /**
+   * CourseCountOutputType without action
+   */
+  export type CourseCountOutputTypeCountFeedbacksArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: FeedbackWhereInput
   }
 
   /**
@@ -5260,7 +5278,7 @@ export namespace Prisma {
       accountSecurities: Prisma.$AccountSecurityPayload<ExtArgs> | null
       admin: Prisma.$AdminPayload<ExtArgs> | null
       chaptersProgress: Prisma.$ChapterProgressPayload<ExtArgs>[]
-      feedbacks: Prisma.$FeedbackPayload<ExtArgs> | null
+      feedbacks: Prisma.$FeedbackPayload<ExtArgs>[]
       instructor_qualifications: Prisma.$InstructorQualificationsPayload<ExtArgs>[]
       instructor: Prisma.$InstructorPayload<ExtArgs> | null
       learner: Prisma.$LearnerPayload<ExtArgs> | null
@@ -5689,7 +5707,7 @@ export namespace Prisma {
     accountSecurities<T extends User$accountSecuritiesArgs<ExtArgs> = {}>(args?: Subset<T, User$accountSecuritiesArgs<ExtArgs>>): Prisma__AccountSecurityClient<$Result.GetResult<Prisma.$AccountSecurityPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     admin<T extends User$adminArgs<ExtArgs> = {}>(args?: Subset<T, User$adminArgs<ExtArgs>>): Prisma__AdminClient<$Result.GetResult<Prisma.$AdminPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     chaptersProgress<T extends User$chaptersProgressArgs<ExtArgs> = {}>(args?: Subset<T, User$chaptersProgressArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ChapterProgressPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    feedbacks<T extends User$feedbacksArgs<ExtArgs> = {}>(args?: Subset<T, User$feedbacksArgs<ExtArgs>>): Prisma__FeedbackClient<$Result.GetResult<Prisma.$FeedbackPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    feedbacks<T extends User$feedbacksArgs<ExtArgs> = {}>(args?: Subset<T, User$feedbacksArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FeedbackPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     instructor_qualifications<T extends User$instructor_qualificationsArgs<ExtArgs> = {}>(args?: Subset<T, User$instructor_qualificationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$InstructorQualificationsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     instructor<T extends User$instructorArgs<ExtArgs> = {}>(args?: Subset<T, User$instructorArgs<ExtArgs>>): Prisma__InstructorClient<$Result.GetResult<Prisma.$InstructorPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     learner<T extends User$learnerArgs<ExtArgs> = {}>(args?: Subset<T, User$learnerArgs<ExtArgs>>): Prisma__LearnerClient<$Result.GetResult<Prisma.$LearnerPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
@@ -6214,6 +6232,11 @@ export namespace Prisma {
      */
     include?: FeedbackInclude<ExtArgs> | null
     where?: FeedbackWhereInput
+    orderBy?: FeedbackOrderByWithRelationInput | FeedbackOrderByWithRelationInput[]
+    cursor?: FeedbackWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: FeedbackScalarFieldEnum | FeedbackScalarFieldEnum[]
   }
 
   /**
@@ -27111,7 +27134,7 @@ export namespace Prisma {
       category: Prisma.$CategoryPayload<ExtArgs>
       instructor: Prisma.$InstructorPayload<ExtArgs>
       level: Prisma.$LevelPayload<ExtArgs>
-      feedbacks: Prisma.$FeedbackPayload<ExtArgs> | null
+      feedbacks: Prisma.$FeedbackPayload<ExtArgs>[]
       learnerCourses: Prisma.$LearnerCoursesPayload<ExtArgs>[]
       transaction: Prisma.$TransactionPayload<ExtArgs>[]
     }
@@ -27533,7 +27556,7 @@ export namespace Prisma {
     category<T extends CategoryDefaultArgs<ExtArgs> = {}>(args?: Subset<T, CategoryDefaultArgs<ExtArgs>>): Prisma__CategoryClient<$Result.GetResult<Prisma.$CategoryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     instructor<T extends InstructorDefaultArgs<ExtArgs> = {}>(args?: Subset<T, InstructorDefaultArgs<ExtArgs>>): Prisma__InstructorClient<$Result.GetResult<Prisma.$InstructorPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     level<T extends LevelDefaultArgs<ExtArgs> = {}>(args?: Subset<T, LevelDefaultArgs<ExtArgs>>): Prisma__LevelClient<$Result.GetResult<Prisma.$LevelPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    feedbacks<T extends Course$feedbacksArgs<ExtArgs> = {}>(args?: Subset<T, Course$feedbacksArgs<ExtArgs>>): Prisma__FeedbackClient<$Result.GetResult<Prisma.$FeedbackPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    feedbacks<T extends Course$feedbacksArgs<ExtArgs> = {}>(args?: Subset<T, Course$feedbacksArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FeedbackPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     learnerCourses<T extends Course$learnerCoursesArgs<ExtArgs> = {}>(args?: Subset<T, Course$learnerCoursesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LearnerCoursesPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     transaction<T extends Course$transactionArgs<ExtArgs> = {}>(args?: Subset<T, Course$transactionArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TransactionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
@@ -28043,6 +28066,11 @@ export namespace Prisma {
      */
     include?: FeedbackInclude<ExtArgs> | null
     where?: FeedbackWhereInput
+    orderBy?: FeedbackOrderByWithRelationInput | FeedbackOrderByWithRelationInput[]
+    cursor?: FeedbackWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: FeedbackScalarFieldEnum | FeedbackScalarFieldEnum[]
   }
 
   /**
@@ -45810,7 +45838,7 @@ export namespace Prisma {
     accountSecurities?: XOR<AccountSecurityNullableScalarRelationFilter, AccountSecurityWhereInput> | null
     admin?: XOR<AdminNullableScalarRelationFilter, AdminWhereInput> | null
     chaptersProgress?: ChapterProgressListRelationFilter
-    feedbacks?: XOR<FeedbackNullableScalarRelationFilter, FeedbackWhereInput> | null
+    feedbacks?: FeedbackListRelationFilter
     instructor_qualifications?: InstructorQualificationsListRelationFilter
     instructor?: XOR<InstructorNullableScalarRelationFilter, InstructorWhereInput> | null
     learner?: XOR<LearnerNullableScalarRelationFilter, LearnerWhereInput> | null
@@ -45846,7 +45874,7 @@ export namespace Prisma {
     accountSecurities?: AccountSecurityOrderByWithRelationInput
     admin?: AdminOrderByWithRelationInput
     chaptersProgress?: ChapterProgressOrderByRelationAggregateInput
-    feedbacks?: FeedbackOrderByWithRelationInput
+    feedbacks?: FeedbackOrderByRelationAggregateInput
     instructor_qualifications?: InstructorQualificationsOrderByRelationAggregateInput
     instructor?: InstructorOrderByWithRelationInput
     learner?: LearnerOrderByWithRelationInput
@@ -45885,7 +45913,7 @@ export namespace Prisma {
     accountSecurities?: XOR<AccountSecurityNullableScalarRelationFilter, AccountSecurityWhereInput> | null
     admin?: XOR<AdminNullableScalarRelationFilter, AdminWhereInput> | null
     chaptersProgress?: ChapterProgressListRelationFilter
-    feedbacks?: XOR<FeedbackNullableScalarRelationFilter, FeedbackWhereInput> | null
+    feedbacks?: FeedbackListRelationFilter
     instructor_qualifications?: InstructorQualificationsListRelationFilter
     instructor?: XOR<InstructorNullableScalarRelationFilter, InstructorWhereInput> | null
     learner?: XOR<LearnerNullableScalarRelationFilter, LearnerWhereInput> | null
@@ -47220,7 +47248,7 @@ export namespace Prisma {
     category?: XOR<CategoryScalarRelationFilter, CategoryWhereInput>
     instructor?: XOR<InstructorScalarRelationFilter, InstructorWhereInput>
     level?: XOR<LevelScalarRelationFilter, LevelWhereInput>
-    feedbacks?: XOR<FeedbackNullableScalarRelationFilter, FeedbackWhereInput> | null
+    feedbacks?: FeedbackListRelationFilter
     learnerCourses?: LearnerCoursesListRelationFilter
     transaction?: TransactionListRelationFilter
   }
@@ -47249,7 +47277,7 @@ export namespace Prisma {
     category?: CategoryOrderByWithRelationInput
     instructor?: InstructorOrderByWithRelationInput
     level?: LevelOrderByWithRelationInput
-    feedbacks?: FeedbackOrderByWithRelationInput
+    feedbacks?: FeedbackOrderByRelationAggregateInput
     learnerCourses?: LearnerCoursesOrderByRelationAggregateInput
     transaction?: TransactionOrderByRelationAggregateInput
   }
@@ -47281,7 +47309,7 @@ export namespace Prisma {
     category?: XOR<CategoryScalarRelationFilter, CategoryWhereInput>
     instructor?: XOR<InstructorScalarRelationFilter, InstructorWhereInput>
     level?: XOR<LevelScalarRelationFilter, LevelWhereInput>
-    feedbacks?: XOR<FeedbackNullableScalarRelationFilter, FeedbackWhereInput> | null
+    feedbacks?: FeedbackListRelationFilter
     learnerCourses?: LearnerCoursesListRelationFilter
     transaction?: TransactionListRelationFilter
   }, "course_id" | "slug">
@@ -47860,19 +47888,19 @@ export namespace Prisma {
 
   export type FeedbackWhereUniqueInput = Prisma.AtLeast<{
     id?: string
-    course_id?: string
-    user_id?: string
     course_id_user_id?: FeedbackCourse_idUser_idCompoundUniqueInput
     AND?: FeedbackWhereInput | FeedbackWhereInput[]
     OR?: FeedbackWhereInput[]
     NOT?: FeedbackWhereInput | FeedbackWhereInput[]
+    course_id?: StringFilter<"Feedback"> | string
+    user_id?: StringFilter<"Feedback"> | string
     rating?: IntFilter<"Feedback"> | number
     comment?: StringNullableFilter<"Feedback"> | string | null
     createdAt?: DateTimeFilter<"Feedback"> | Date | string
     updatedAt?: DateTimeFilter<"Feedback"> | Date | string
     course?: XOR<CourseScalarRelationFilter, CourseWhereInput>
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
-  }, "id" | "course_id" | "user_id" | "course_id_user_id">
+  }, "id" | "course_id_user_id">
 
   export type FeedbackOrderByWithAggregationInput = {
     id?: SortOrder
@@ -48391,7 +48419,7 @@ export namespace Prisma {
     accountSecurities?: AccountSecurityCreateNestedOneWithoutUserInput
     admin?: AdminCreateNestedOneWithoutUserInput
     chaptersProgress?: ChapterProgressCreateNestedManyWithoutUserInput
-    feedbacks?: FeedbackCreateNestedOneWithoutUserInput
+    feedbacks?: FeedbackCreateNestedManyWithoutUserInput
     instructor_qualifications?: InstructorQualificationsCreateNestedManyWithoutUserInput
     instructor?: InstructorCreateNestedOneWithoutUserInput
     learner?: LearnerCreateNestedOneWithoutUserInput
@@ -48427,7 +48455,7 @@ export namespace Prisma {
     accountSecurities?: AccountSecurityUncheckedCreateNestedOneWithoutUserInput
     admin?: AdminUncheckedCreateNestedOneWithoutUserInput
     chaptersProgress?: ChapterProgressUncheckedCreateNestedManyWithoutUserInput
-    feedbacks?: FeedbackUncheckedCreateNestedOneWithoutUserInput
+    feedbacks?: FeedbackUncheckedCreateNestedManyWithoutUserInput
     instructor_qualifications?: InstructorQualificationsUncheckedCreateNestedManyWithoutUserInput
     instructor?: InstructorUncheckedCreateNestedOneWithoutUserInput
     learner?: LearnerUncheckedCreateNestedOneWithoutUserInput
@@ -48463,7 +48491,7 @@ export namespace Prisma {
     accountSecurities?: AccountSecurityUpdateOneWithoutUserNestedInput
     admin?: AdminUpdateOneWithoutUserNestedInput
     chaptersProgress?: ChapterProgressUpdateManyWithoutUserNestedInput
-    feedbacks?: FeedbackUpdateOneWithoutUserNestedInput
+    feedbacks?: FeedbackUpdateManyWithoutUserNestedInput
     instructor_qualifications?: InstructorQualificationsUpdateManyWithoutUserNestedInput
     instructor?: InstructorUpdateOneWithoutUserNestedInput
     learner?: LearnerUpdateOneWithoutUserNestedInput
@@ -48499,7 +48527,7 @@ export namespace Prisma {
     accountSecurities?: AccountSecurityUncheckedUpdateOneWithoutUserNestedInput
     admin?: AdminUncheckedUpdateOneWithoutUserNestedInput
     chaptersProgress?: ChapterProgressUncheckedUpdateManyWithoutUserNestedInput
-    feedbacks?: FeedbackUncheckedUpdateOneWithoutUserNestedInput
+    feedbacks?: FeedbackUncheckedUpdateManyWithoutUserNestedInput
     instructor_qualifications?: InstructorQualificationsUncheckedUpdateManyWithoutUserNestedInput
     instructor?: InstructorUncheckedUpdateOneWithoutUserNestedInput
     learner?: LearnerUncheckedUpdateOneWithoutUserNestedInput
@@ -49889,7 +49917,7 @@ export namespace Prisma {
     category: CategoryCreateNestedOneWithoutCoursesInput
     instructor: InstructorCreateNestedOneWithoutCoursesInput
     level: LevelCreateNestedOneWithoutCourseInput
-    feedbacks?: FeedbackCreateNestedOneWithoutCourseInput
+    feedbacks?: FeedbackCreateNestedManyWithoutCourseInput
     learnerCourses?: LearnerCoursesCreateNestedManyWithoutCourseInput
     transaction?: TransactionCreateNestedManyWithoutCourseInput
   }
@@ -49915,7 +49943,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     chapter?: ChapterUncheckedCreateNestedManyWithoutBelongCourseInput
     inCourseGroups?: CourseGroupUncheckedCreateNestedManyWithoutBelongToCourseInput
-    feedbacks?: FeedbackUncheckedCreateNestedOneWithoutCourseInput
+    feedbacks?: FeedbackUncheckedCreateNestedManyWithoutCourseInput
     learnerCourses?: LearnerCoursesUncheckedCreateNestedManyWithoutCourseInput
     transaction?: TransactionUncheckedCreateNestedManyWithoutCourseInput
   }
@@ -49941,7 +49969,7 @@ export namespace Prisma {
     category?: CategoryUpdateOneRequiredWithoutCoursesNestedInput
     instructor?: InstructorUpdateOneRequiredWithoutCoursesNestedInput
     level?: LevelUpdateOneRequiredWithoutCourseNestedInput
-    feedbacks?: FeedbackUpdateOneWithoutCourseNestedInput
+    feedbacks?: FeedbackUpdateManyWithoutCourseNestedInput
     learnerCourses?: LearnerCoursesUpdateManyWithoutCourseNestedInput
     transaction?: TransactionUpdateManyWithoutCourseNestedInput
   }
@@ -49967,7 +49995,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     chapter?: ChapterUncheckedUpdateManyWithoutBelongCourseNestedInput
     inCourseGroups?: CourseGroupUncheckedUpdateManyWithoutBelongToCourseNestedInput
-    feedbacks?: FeedbackUncheckedUpdateOneWithoutCourseNestedInput
+    feedbacks?: FeedbackUncheckedUpdateManyWithoutCourseNestedInput
     learnerCourses?: LearnerCoursesUncheckedUpdateManyWithoutCourseNestedInput
     transaction?: TransactionUncheckedUpdateManyWithoutCourseNestedInput
   }
@@ -51157,9 +51185,10 @@ export namespace Prisma {
     none?: ChapterProgressWhereInput
   }
 
-  export type FeedbackNullableScalarRelationFilter = {
-    is?: FeedbackWhereInput | null
-    isNot?: FeedbackWhereInput | null
+  export type FeedbackListRelationFilter = {
+    every?: FeedbackWhereInput
+    some?: FeedbackWhereInput
+    none?: FeedbackWhereInput
   }
 
   export type InstructorQualificationsListRelationFilter = {
@@ -51225,6 +51254,10 @@ export namespace Prisma {
   }
 
   export type ChapterProgressOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type FeedbackOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -53184,10 +53217,11 @@ export namespace Prisma {
     connect?: ChapterProgressWhereUniqueInput | ChapterProgressWhereUniqueInput[]
   }
 
-  export type FeedbackCreateNestedOneWithoutUserInput = {
-    create?: XOR<FeedbackCreateWithoutUserInput, FeedbackUncheckedCreateWithoutUserInput>
-    connectOrCreate?: FeedbackCreateOrConnectWithoutUserInput
-    connect?: FeedbackWhereUniqueInput
+  export type FeedbackCreateNestedManyWithoutUserInput = {
+    create?: XOR<FeedbackCreateWithoutUserInput, FeedbackUncheckedCreateWithoutUserInput> | FeedbackCreateWithoutUserInput[] | FeedbackUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: FeedbackCreateOrConnectWithoutUserInput | FeedbackCreateOrConnectWithoutUserInput[]
+    createMany?: FeedbackCreateManyUserInputEnvelope
+    connect?: FeedbackWhereUniqueInput | FeedbackWhereUniqueInput[]
   }
 
   export type InstructorQualificationsCreateNestedManyWithoutUserInput = {
@@ -53276,10 +53310,11 @@ export namespace Prisma {
     connect?: ChapterProgressWhereUniqueInput | ChapterProgressWhereUniqueInput[]
   }
 
-  export type FeedbackUncheckedCreateNestedOneWithoutUserInput = {
-    create?: XOR<FeedbackCreateWithoutUserInput, FeedbackUncheckedCreateWithoutUserInput>
-    connectOrCreate?: FeedbackCreateOrConnectWithoutUserInput
-    connect?: FeedbackWhereUniqueInput
+  export type FeedbackUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<FeedbackCreateWithoutUserInput, FeedbackUncheckedCreateWithoutUserInput> | FeedbackCreateWithoutUserInput[] | FeedbackUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: FeedbackCreateOrConnectWithoutUserInput | FeedbackCreateOrConnectWithoutUserInput[]
+    createMany?: FeedbackCreateManyUserInputEnvelope
+    connect?: FeedbackWhereUniqueInput | FeedbackWhereUniqueInput[]
   }
 
   export type InstructorQualificationsUncheckedCreateNestedManyWithoutUserInput = {
@@ -53407,14 +53442,18 @@ export namespace Prisma {
     deleteMany?: ChapterProgressScalarWhereInput | ChapterProgressScalarWhereInput[]
   }
 
-  export type FeedbackUpdateOneWithoutUserNestedInput = {
-    create?: XOR<FeedbackCreateWithoutUserInput, FeedbackUncheckedCreateWithoutUserInput>
-    connectOrCreate?: FeedbackCreateOrConnectWithoutUserInput
-    upsert?: FeedbackUpsertWithoutUserInput
-    disconnect?: FeedbackWhereInput | boolean
-    delete?: FeedbackWhereInput | boolean
-    connect?: FeedbackWhereUniqueInput
-    update?: XOR<XOR<FeedbackUpdateToOneWithWhereWithoutUserInput, FeedbackUpdateWithoutUserInput>, FeedbackUncheckedUpdateWithoutUserInput>
+  export type FeedbackUpdateManyWithoutUserNestedInput = {
+    create?: XOR<FeedbackCreateWithoutUserInput, FeedbackUncheckedCreateWithoutUserInput> | FeedbackCreateWithoutUserInput[] | FeedbackUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: FeedbackCreateOrConnectWithoutUserInput | FeedbackCreateOrConnectWithoutUserInput[]
+    upsert?: FeedbackUpsertWithWhereUniqueWithoutUserInput | FeedbackUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: FeedbackCreateManyUserInputEnvelope
+    set?: FeedbackWhereUniqueInput | FeedbackWhereUniqueInput[]
+    disconnect?: FeedbackWhereUniqueInput | FeedbackWhereUniqueInput[]
+    delete?: FeedbackWhereUniqueInput | FeedbackWhereUniqueInput[]
+    connect?: FeedbackWhereUniqueInput | FeedbackWhereUniqueInput[]
+    update?: FeedbackUpdateWithWhereUniqueWithoutUserInput | FeedbackUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: FeedbackUpdateManyWithWhereWithoutUserInput | FeedbackUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: FeedbackScalarWhereInput | FeedbackScalarWhereInput[]
   }
 
   export type InstructorQualificationsUpdateManyWithoutUserNestedInput = {
@@ -53579,14 +53618,18 @@ export namespace Prisma {
     deleteMany?: ChapterProgressScalarWhereInput | ChapterProgressScalarWhereInput[]
   }
 
-  export type FeedbackUncheckedUpdateOneWithoutUserNestedInput = {
-    create?: XOR<FeedbackCreateWithoutUserInput, FeedbackUncheckedCreateWithoutUserInput>
-    connectOrCreate?: FeedbackCreateOrConnectWithoutUserInput
-    upsert?: FeedbackUpsertWithoutUserInput
-    disconnect?: FeedbackWhereInput | boolean
-    delete?: FeedbackWhereInput | boolean
-    connect?: FeedbackWhereUniqueInput
-    update?: XOR<XOR<FeedbackUpdateToOneWithWhereWithoutUserInput, FeedbackUpdateWithoutUserInput>, FeedbackUncheckedUpdateWithoutUserInput>
+  export type FeedbackUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<FeedbackCreateWithoutUserInput, FeedbackUncheckedCreateWithoutUserInput> | FeedbackCreateWithoutUserInput[] | FeedbackUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: FeedbackCreateOrConnectWithoutUserInput | FeedbackCreateOrConnectWithoutUserInput[]
+    upsert?: FeedbackUpsertWithWhereUniqueWithoutUserInput | FeedbackUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: FeedbackCreateManyUserInputEnvelope
+    set?: FeedbackWhereUniqueInput | FeedbackWhereUniqueInput[]
+    disconnect?: FeedbackWhereUniqueInput | FeedbackWhereUniqueInput[]
+    delete?: FeedbackWhereUniqueInput | FeedbackWhereUniqueInput[]
+    connect?: FeedbackWhereUniqueInput | FeedbackWhereUniqueInput[]
+    update?: FeedbackUpdateWithWhereUniqueWithoutUserInput | FeedbackUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: FeedbackUpdateManyWithWhereWithoutUserInput | FeedbackUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: FeedbackScalarWhereInput | FeedbackScalarWhereInput[]
   }
 
   export type InstructorQualificationsUncheckedUpdateManyWithoutUserNestedInput = {
@@ -54848,10 +54891,11 @@ export namespace Prisma {
     connect?: LevelWhereUniqueInput
   }
 
-  export type FeedbackCreateNestedOneWithoutCourseInput = {
-    create?: XOR<FeedbackCreateWithoutCourseInput, FeedbackUncheckedCreateWithoutCourseInput>
-    connectOrCreate?: FeedbackCreateOrConnectWithoutCourseInput
-    connect?: FeedbackWhereUniqueInput
+  export type FeedbackCreateNestedManyWithoutCourseInput = {
+    create?: XOR<FeedbackCreateWithoutCourseInput, FeedbackUncheckedCreateWithoutCourseInput> | FeedbackCreateWithoutCourseInput[] | FeedbackUncheckedCreateWithoutCourseInput[]
+    connectOrCreate?: FeedbackCreateOrConnectWithoutCourseInput | FeedbackCreateOrConnectWithoutCourseInput[]
+    createMany?: FeedbackCreateManyCourseInputEnvelope
+    connect?: FeedbackWhereUniqueInput | FeedbackWhereUniqueInput[]
   }
 
   export type LearnerCoursesCreateNestedManyWithoutCourseInput = {
@@ -54882,10 +54926,11 @@ export namespace Prisma {
     connect?: CourseGroupWhereUniqueInput | CourseGroupWhereUniqueInput[]
   }
 
-  export type FeedbackUncheckedCreateNestedOneWithoutCourseInput = {
-    create?: XOR<FeedbackCreateWithoutCourseInput, FeedbackUncheckedCreateWithoutCourseInput>
-    connectOrCreate?: FeedbackCreateOrConnectWithoutCourseInput
-    connect?: FeedbackWhereUniqueInput
+  export type FeedbackUncheckedCreateNestedManyWithoutCourseInput = {
+    create?: XOR<FeedbackCreateWithoutCourseInput, FeedbackUncheckedCreateWithoutCourseInput> | FeedbackCreateWithoutCourseInput[] | FeedbackUncheckedCreateWithoutCourseInput[]
+    connectOrCreate?: FeedbackCreateOrConnectWithoutCourseInput | FeedbackCreateOrConnectWithoutCourseInput[]
+    createMany?: FeedbackCreateManyCourseInputEnvelope
+    connect?: FeedbackWhereUniqueInput | FeedbackWhereUniqueInput[]
   }
 
   export type LearnerCoursesUncheckedCreateNestedManyWithoutCourseInput = {
@@ -54962,14 +55007,18 @@ export namespace Prisma {
     update?: XOR<XOR<LevelUpdateToOneWithWhereWithoutCourseInput, LevelUpdateWithoutCourseInput>, LevelUncheckedUpdateWithoutCourseInput>
   }
 
-  export type FeedbackUpdateOneWithoutCourseNestedInput = {
-    create?: XOR<FeedbackCreateWithoutCourseInput, FeedbackUncheckedCreateWithoutCourseInput>
-    connectOrCreate?: FeedbackCreateOrConnectWithoutCourseInput
-    upsert?: FeedbackUpsertWithoutCourseInput
-    disconnect?: FeedbackWhereInput | boolean
-    delete?: FeedbackWhereInput | boolean
-    connect?: FeedbackWhereUniqueInput
-    update?: XOR<XOR<FeedbackUpdateToOneWithWhereWithoutCourseInput, FeedbackUpdateWithoutCourseInput>, FeedbackUncheckedUpdateWithoutCourseInput>
+  export type FeedbackUpdateManyWithoutCourseNestedInput = {
+    create?: XOR<FeedbackCreateWithoutCourseInput, FeedbackUncheckedCreateWithoutCourseInput> | FeedbackCreateWithoutCourseInput[] | FeedbackUncheckedCreateWithoutCourseInput[]
+    connectOrCreate?: FeedbackCreateOrConnectWithoutCourseInput | FeedbackCreateOrConnectWithoutCourseInput[]
+    upsert?: FeedbackUpsertWithWhereUniqueWithoutCourseInput | FeedbackUpsertWithWhereUniqueWithoutCourseInput[]
+    createMany?: FeedbackCreateManyCourseInputEnvelope
+    set?: FeedbackWhereUniqueInput | FeedbackWhereUniqueInput[]
+    disconnect?: FeedbackWhereUniqueInput | FeedbackWhereUniqueInput[]
+    delete?: FeedbackWhereUniqueInput | FeedbackWhereUniqueInput[]
+    connect?: FeedbackWhereUniqueInput | FeedbackWhereUniqueInput[]
+    update?: FeedbackUpdateWithWhereUniqueWithoutCourseInput | FeedbackUpdateWithWhereUniqueWithoutCourseInput[]
+    updateMany?: FeedbackUpdateManyWithWhereWithoutCourseInput | FeedbackUpdateManyWithWhereWithoutCourseInput[]
+    deleteMany?: FeedbackScalarWhereInput | FeedbackScalarWhereInput[]
   }
 
   export type LearnerCoursesUpdateManyWithoutCourseNestedInput = {
@@ -55028,14 +55077,18 @@ export namespace Prisma {
     deleteMany?: CourseGroupScalarWhereInput | CourseGroupScalarWhereInput[]
   }
 
-  export type FeedbackUncheckedUpdateOneWithoutCourseNestedInput = {
-    create?: XOR<FeedbackCreateWithoutCourseInput, FeedbackUncheckedCreateWithoutCourseInput>
-    connectOrCreate?: FeedbackCreateOrConnectWithoutCourseInput
-    upsert?: FeedbackUpsertWithoutCourseInput
-    disconnect?: FeedbackWhereInput | boolean
-    delete?: FeedbackWhereInput | boolean
-    connect?: FeedbackWhereUniqueInput
-    update?: XOR<XOR<FeedbackUpdateToOneWithWhereWithoutCourseInput, FeedbackUpdateWithoutCourseInput>, FeedbackUncheckedUpdateWithoutCourseInput>
+  export type FeedbackUncheckedUpdateManyWithoutCourseNestedInput = {
+    create?: XOR<FeedbackCreateWithoutCourseInput, FeedbackUncheckedCreateWithoutCourseInput> | FeedbackCreateWithoutCourseInput[] | FeedbackUncheckedCreateWithoutCourseInput[]
+    connectOrCreate?: FeedbackCreateOrConnectWithoutCourseInput | FeedbackCreateOrConnectWithoutCourseInput[]
+    upsert?: FeedbackUpsertWithWhereUniqueWithoutCourseInput | FeedbackUpsertWithWhereUniqueWithoutCourseInput[]
+    createMany?: FeedbackCreateManyCourseInputEnvelope
+    set?: FeedbackWhereUniqueInput | FeedbackWhereUniqueInput[]
+    disconnect?: FeedbackWhereUniqueInput | FeedbackWhereUniqueInput[]
+    delete?: FeedbackWhereUniqueInput | FeedbackWhereUniqueInput[]
+    connect?: FeedbackWhereUniqueInput | FeedbackWhereUniqueInput[]
+    update?: FeedbackUpdateWithWhereUniqueWithoutCourseInput | FeedbackUpdateWithWhereUniqueWithoutCourseInput[]
+    updateMany?: FeedbackUpdateManyWithWhereWithoutCourseInput | FeedbackUpdateManyWithWhereWithoutCourseInput[]
+    deleteMany?: FeedbackScalarWhereInput | FeedbackScalarWhereInput[]
   }
 
   export type LearnerCoursesUncheckedUpdateManyWithoutCourseNestedInput = {
@@ -56487,6 +56540,11 @@ export namespace Prisma {
     create: XOR<FeedbackCreateWithoutUserInput, FeedbackUncheckedCreateWithoutUserInput>
   }
 
+  export type FeedbackCreateManyUserInputEnvelope = {
+    data: FeedbackCreateManyUserInput | FeedbackCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
   export type InstructorQualificationsCreateWithoutUserInput = {
     instructor_qualification_id?: string
     type?: $Enums.QualificationType
@@ -56880,33 +56938,33 @@ export namespace Prisma {
     completed_at?: DateTimeNullableFilter<"ChapterProgress"> | Date | string | null
   }
 
-  export type FeedbackUpsertWithoutUserInput = {
+  export type FeedbackUpsertWithWhereUniqueWithoutUserInput = {
+    where: FeedbackWhereUniqueInput
     update: XOR<FeedbackUpdateWithoutUserInput, FeedbackUncheckedUpdateWithoutUserInput>
     create: XOR<FeedbackCreateWithoutUserInput, FeedbackUncheckedCreateWithoutUserInput>
-    where?: FeedbackWhereInput
   }
 
-  export type FeedbackUpdateToOneWithWhereWithoutUserInput = {
-    where?: FeedbackWhereInput
+  export type FeedbackUpdateWithWhereUniqueWithoutUserInput = {
+    where: FeedbackWhereUniqueInput
     data: XOR<FeedbackUpdateWithoutUserInput, FeedbackUncheckedUpdateWithoutUserInput>
   }
 
-  export type FeedbackUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    rating?: IntFieldUpdateOperationsInput | number
-    comment?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    course?: CourseUpdateOneRequiredWithoutFeedbacksNestedInput
+  export type FeedbackUpdateManyWithWhereWithoutUserInput = {
+    where: FeedbackScalarWhereInput
+    data: XOR<FeedbackUpdateManyMutationInput, FeedbackUncheckedUpdateManyWithoutUserInput>
   }
 
-  export type FeedbackUncheckedUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    course_id?: StringFieldUpdateOperationsInput | string
-    rating?: IntFieldUpdateOperationsInput | number
-    comment?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  export type FeedbackScalarWhereInput = {
+    AND?: FeedbackScalarWhereInput | FeedbackScalarWhereInput[]
+    OR?: FeedbackScalarWhereInput[]
+    NOT?: FeedbackScalarWhereInput | FeedbackScalarWhereInput[]
+    id?: StringFilter<"Feedback"> | string
+    course_id?: StringFilter<"Feedback"> | string
+    user_id?: StringFilter<"Feedback"> | string
+    rating?: IntFilter<"Feedback"> | number
+    comment?: StringNullableFilter<"Feedback"> | string | null
+    createdAt?: DateTimeFilter<"Feedback"> | Date | string
+    updatedAt?: DateTimeFilter<"Feedback"> | Date | string
   }
 
   export type InstructorQualificationsUpsertWithWhereUniqueWithoutUserInput = {
@@ -57276,7 +57334,7 @@ export namespace Prisma {
     accountSecurities?: AccountSecurityCreateNestedOneWithoutUserInput
     admin?: AdminCreateNestedOneWithoutUserInput
     chaptersProgress?: ChapterProgressCreateNestedManyWithoutUserInput
-    feedbacks?: FeedbackCreateNestedOneWithoutUserInput
+    feedbacks?: FeedbackCreateNestedManyWithoutUserInput
     instructor_qualifications?: InstructorQualificationsCreateNestedManyWithoutUserInput
     instructor?: InstructorCreateNestedOneWithoutUserInput
     lessonsProgress?: LessonProgressCreateNestedManyWithoutUserInput
@@ -57311,7 +57369,7 @@ export namespace Prisma {
     accountSecurities?: AccountSecurityUncheckedCreateNestedOneWithoutUserInput
     admin?: AdminUncheckedCreateNestedOneWithoutUserInput
     chaptersProgress?: ChapterProgressUncheckedCreateNestedManyWithoutUserInput
-    feedbacks?: FeedbackUncheckedCreateNestedOneWithoutUserInput
+    feedbacks?: FeedbackUncheckedCreateNestedManyWithoutUserInput
     instructor_qualifications?: InstructorQualificationsUncheckedCreateNestedManyWithoutUserInput
     instructor?: InstructorUncheckedCreateNestedOneWithoutUserInput
     lessonsProgress?: LessonProgressUncheckedCreateNestedManyWithoutUserInput
@@ -57394,7 +57452,7 @@ export namespace Prisma {
     accountSecurities?: AccountSecurityUpdateOneWithoutUserNestedInput
     admin?: AdminUpdateOneWithoutUserNestedInput
     chaptersProgress?: ChapterProgressUpdateManyWithoutUserNestedInput
-    feedbacks?: FeedbackUpdateOneWithoutUserNestedInput
+    feedbacks?: FeedbackUpdateManyWithoutUserNestedInput
     instructor_qualifications?: InstructorQualificationsUpdateManyWithoutUserNestedInput
     instructor?: InstructorUpdateOneWithoutUserNestedInput
     lessonsProgress?: LessonProgressUpdateManyWithoutUserNestedInput
@@ -57429,7 +57487,7 @@ export namespace Prisma {
     accountSecurities?: AccountSecurityUncheckedUpdateOneWithoutUserNestedInput
     admin?: AdminUncheckedUpdateOneWithoutUserNestedInput
     chaptersProgress?: ChapterProgressUncheckedUpdateManyWithoutUserNestedInput
-    feedbacks?: FeedbackUncheckedUpdateOneWithoutUserNestedInput
+    feedbacks?: FeedbackUncheckedUpdateManyWithoutUserNestedInput
     instructor_qualifications?: InstructorQualificationsUncheckedUpdateManyWithoutUserNestedInput
     instructor?: InstructorUncheckedUpdateOneWithoutUserNestedInput
     lessonsProgress?: LessonProgressUncheckedUpdateManyWithoutUserNestedInput
@@ -57513,7 +57571,7 @@ export namespace Prisma {
     inCourseGroups?: CourseGroupCreateNestedManyWithoutBelongToCourseInput
     category: CategoryCreateNestedOneWithoutCoursesInput
     level: LevelCreateNestedOneWithoutCourseInput
-    feedbacks?: FeedbackCreateNestedOneWithoutCourseInput
+    feedbacks?: FeedbackCreateNestedManyWithoutCourseInput
     learnerCourses?: LearnerCoursesCreateNestedManyWithoutCourseInput
     transaction?: TransactionCreateNestedManyWithoutCourseInput
   }
@@ -57538,7 +57596,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     chapter?: ChapterUncheckedCreateNestedManyWithoutBelongCourseInput
     inCourseGroups?: CourseGroupUncheckedCreateNestedManyWithoutBelongToCourseInput
-    feedbacks?: FeedbackUncheckedCreateNestedOneWithoutCourseInput
+    feedbacks?: FeedbackUncheckedCreateNestedManyWithoutCourseInput
     learnerCourses?: LearnerCoursesUncheckedCreateNestedManyWithoutCourseInput
     transaction?: TransactionUncheckedCreateNestedManyWithoutCourseInput
   }
@@ -57639,7 +57697,7 @@ export namespace Prisma {
     accountSecurities?: AccountSecurityCreateNestedOneWithoutUserInput
     admin?: AdminCreateNestedOneWithoutUserInput
     chaptersProgress?: ChapterProgressCreateNestedManyWithoutUserInput
-    feedbacks?: FeedbackCreateNestedOneWithoutUserInput
+    feedbacks?: FeedbackCreateNestedManyWithoutUserInput
     instructor_qualifications?: InstructorQualificationsCreateNestedManyWithoutUserInput
     learner?: LearnerCreateNestedOneWithoutUserInput
     lessonsProgress?: LessonProgressCreateNestedManyWithoutUserInput
@@ -57674,7 +57732,7 @@ export namespace Prisma {
     accountSecurities?: AccountSecurityUncheckedCreateNestedOneWithoutUserInput
     admin?: AdminUncheckedCreateNestedOneWithoutUserInput
     chaptersProgress?: ChapterProgressUncheckedCreateNestedManyWithoutUserInput
-    feedbacks?: FeedbackUncheckedCreateNestedOneWithoutUserInput
+    feedbacks?: FeedbackUncheckedCreateNestedManyWithoutUserInput
     instructor_qualifications?: InstructorQualificationsUncheckedCreateNestedManyWithoutUserInput
     learner?: LearnerUncheckedCreateNestedOneWithoutUserInput
     lessonsProgress?: LessonProgressUncheckedCreateNestedManyWithoutUserInput
@@ -57872,7 +57930,7 @@ export namespace Prisma {
     accountSecurities?: AccountSecurityUpdateOneWithoutUserNestedInput
     admin?: AdminUpdateOneWithoutUserNestedInput
     chaptersProgress?: ChapterProgressUpdateManyWithoutUserNestedInput
-    feedbacks?: FeedbackUpdateOneWithoutUserNestedInput
+    feedbacks?: FeedbackUpdateManyWithoutUserNestedInput
     instructor_qualifications?: InstructorQualificationsUpdateManyWithoutUserNestedInput
     learner?: LearnerUpdateOneWithoutUserNestedInput
     lessonsProgress?: LessonProgressUpdateManyWithoutUserNestedInput
@@ -57907,7 +57965,7 @@ export namespace Prisma {
     accountSecurities?: AccountSecurityUncheckedUpdateOneWithoutUserNestedInput
     admin?: AdminUncheckedUpdateOneWithoutUserNestedInput
     chaptersProgress?: ChapterProgressUncheckedUpdateManyWithoutUserNestedInput
-    feedbacks?: FeedbackUncheckedUpdateOneWithoutUserNestedInput
+    feedbacks?: FeedbackUncheckedUpdateManyWithoutUserNestedInput
     instructor_qualifications?: InstructorQualificationsUncheckedUpdateManyWithoutUserNestedInput
     learner?: LearnerUncheckedUpdateOneWithoutUserNestedInput
     lessonsProgress?: LessonProgressUncheckedUpdateManyWithoutUserNestedInput
@@ -58190,7 +58248,7 @@ export namespace Prisma {
     accountSecurities?: AccountSecurityCreateNestedOneWithoutUserInput
     admin?: AdminCreateNestedOneWithoutUserInput
     chaptersProgress?: ChapterProgressCreateNestedManyWithoutUserInput
-    feedbacks?: FeedbackCreateNestedOneWithoutUserInput
+    feedbacks?: FeedbackCreateNestedManyWithoutUserInput
     instructor_qualifications?: InstructorQualificationsCreateNestedManyWithoutUserInput
     instructor?: InstructorCreateNestedOneWithoutUserInput
     learner?: LearnerCreateNestedOneWithoutUserInput
@@ -58225,7 +58283,7 @@ export namespace Prisma {
     accountSecurities?: AccountSecurityUncheckedCreateNestedOneWithoutUserInput
     admin?: AdminUncheckedCreateNestedOneWithoutUserInput
     chaptersProgress?: ChapterProgressUncheckedCreateNestedManyWithoutUserInput
-    feedbacks?: FeedbackUncheckedCreateNestedOneWithoutUserInput
+    feedbacks?: FeedbackUncheckedCreateNestedManyWithoutUserInput
     instructor_qualifications?: InstructorQualificationsUncheckedCreateNestedManyWithoutUserInput
     instructor?: InstructorUncheckedCreateNestedOneWithoutUserInput
     learner?: LearnerUncheckedCreateNestedOneWithoutUserInput
@@ -58320,7 +58378,7 @@ export namespace Prisma {
     accountSecurities?: AccountSecurityUpdateOneWithoutUserNestedInput
     admin?: AdminUpdateOneWithoutUserNestedInput
     chaptersProgress?: ChapterProgressUpdateManyWithoutUserNestedInput
-    feedbacks?: FeedbackUpdateOneWithoutUserNestedInput
+    feedbacks?: FeedbackUpdateManyWithoutUserNestedInput
     instructor_qualifications?: InstructorQualificationsUpdateManyWithoutUserNestedInput
     instructor?: InstructorUpdateOneWithoutUserNestedInput
     learner?: LearnerUpdateOneWithoutUserNestedInput
@@ -58355,7 +58413,7 @@ export namespace Prisma {
     accountSecurities?: AccountSecurityUncheckedUpdateOneWithoutUserNestedInput
     admin?: AdminUncheckedUpdateOneWithoutUserNestedInput
     chaptersProgress?: ChapterProgressUncheckedUpdateManyWithoutUserNestedInput
-    feedbacks?: FeedbackUncheckedUpdateOneWithoutUserNestedInput
+    feedbacks?: FeedbackUncheckedUpdateManyWithoutUserNestedInput
     instructor_qualifications?: InstructorQualificationsUncheckedUpdateManyWithoutUserNestedInput
     instructor?: InstructorUncheckedUpdateOneWithoutUserNestedInput
     learner?: LearnerUncheckedUpdateOneWithoutUserNestedInput
@@ -58516,7 +58574,7 @@ export namespace Prisma {
     accountSecurities?: AccountSecurityCreateNestedOneWithoutUserInput
     admin?: AdminCreateNestedOneWithoutUserInput
     chaptersProgress?: ChapterProgressCreateNestedManyWithoutUserInput
-    feedbacks?: FeedbackCreateNestedOneWithoutUserInput
+    feedbacks?: FeedbackCreateNestedManyWithoutUserInput
     instructor?: InstructorCreateNestedOneWithoutUserInput
     learner?: LearnerCreateNestedOneWithoutUserInput
     lessonsProgress?: LessonProgressCreateNestedManyWithoutUserInput
@@ -58551,7 +58609,7 @@ export namespace Prisma {
     accountSecurities?: AccountSecurityUncheckedCreateNestedOneWithoutUserInput
     admin?: AdminUncheckedCreateNestedOneWithoutUserInput
     chaptersProgress?: ChapterProgressUncheckedCreateNestedManyWithoutUserInput
-    feedbacks?: FeedbackUncheckedCreateNestedOneWithoutUserInput
+    feedbacks?: FeedbackUncheckedCreateNestedManyWithoutUserInput
     instructor?: InstructorUncheckedCreateNestedOneWithoutUserInput
     learner?: LearnerUncheckedCreateNestedOneWithoutUserInput
     lessonsProgress?: LessonProgressUncheckedCreateNestedManyWithoutUserInput
@@ -58672,7 +58730,7 @@ export namespace Prisma {
     accountSecurities?: AccountSecurityUpdateOneWithoutUserNestedInput
     admin?: AdminUpdateOneWithoutUserNestedInput
     chaptersProgress?: ChapterProgressUpdateManyWithoutUserNestedInput
-    feedbacks?: FeedbackUpdateOneWithoutUserNestedInput
+    feedbacks?: FeedbackUpdateManyWithoutUserNestedInput
     instructor?: InstructorUpdateOneWithoutUserNestedInput
     learner?: LearnerUpdateOneWithoutUserNestedInput
     lessonsProgress?: LessonProgressUpdateManyWithoutUserNestedInput
@@ -58707,7 +58765,7 @@ export namespace Prisma {
     accountSecurities?: AccountSecurityUncheckedUpdateOneWithoutUserNestedInput
     admin?: AdminUncheckedUpdateOneWithoutUserNestedInput
     chaptersProgress?: ChapterProgressUncheckedUpdateManyWithoutUserNestedInput
-    feedbacks?: FeedbackUncheckedUpdateOneWithoutUserNestedInput
+    feedbacks?: FeedbackUncheckedUpdateManyWithoutUserNestedInput
     instructor?: InstructorUncheckedUpdateOneWithoutUserNestedInput
     learner?: LearnerUncheckedUpdateOneWithoutUserNestedInput
     lessonsProgress?: LessonProgressUncheckedUpdateManyWithoutUserNestedInput
@@ -58860,7 +58918,7 @@ export namespace Prisma {
     accountSecurities?: AccountSecurityCreateNestedOneWithoutUserInput
     admin?: AdminCreateNestedOneWithoutUserInput
     chaptersProgress?: ChapterProgressCreateNestedManyWithoutUserInput
-    feedbacks?: FeedbackCreateNestedOneWithoutUserInput
+    feedbacks?: FeedbackCreateNestedManyWithoutUserInput
     instructor_qualifications?: InstructorQualificationsCreateNestedManyWithoutUserInput
     instructor?: InstructorCreateNestedOneWithoutUserInput
     learner?: LearnerCreateNestedOneWithoutUserInput
@@ -58895,7 +58953,7 @@ export namespace Prisma {
     accountSecurities?: AccountSecurityUncheckedCreateNestedOneWithoutUserInput
     admin?: AdminUncheckedCreateNestedOneWithoutUserInput
     chaptersProgress?: ChapterProgressUncheckedCreateNestedManyWithoutUserInput
-    feedbacks?: FeedbackUncheckedCreateNestedOneWithoutUserInput
+    feedbacks?: FeedbackUncheckedCreateNestedManyWithoutUserInput
     instructor_qualifications?: InstructorQualificationsUncheckedCreateNestedManyWithoutUserInput
     instructor?: InstructorUncheckedCreateNestedOneWithoutUserInput
     learner?: LearnerUncheckedCreateNestedOneWithoutUserInput
@@ -58962,7 +59020,7 @@ export namespace Prisma {
     accountSecurities?: AccountSecurityUpdateOneWithoutUserNestedInput
     admin?: AdminUpdateOneWithoutUserNestedInput
     chaptersProgress?: ChapterProgressUpdateManyWithoutUserNestedInput
-    feedbacks?: FeedbackUpdateOneWithoutUserNestedInput
+    feedbacks?: FeedbackUpdateManyWithoutUserNestedInput
     instructor_qualifications?: InstructorQualificationsUpdateManyWithoutUserNestedInput
     instructor?: InstructorUpdateOneWithoutUserNestedInput
     learner?: LearnerUpdateOneWithoutUserNestedInput
@@ -58997,7 +59055,7 @@ export namespace Prisma {
     accountSecurities?: AccountSecurityUncheckedUpdateOneWithoutUserNestedInput
     admin?: AdminUncheckedUpdateOneWithoutUserNestedInput
     chaptersProgress?: ChapterProgressUncheckedUpdateManyWithoutUserNestedInput
-    feedbacks?: FeedbackUncheckedUpdateOneWithoutUserNestedInput
+    feedbacks?: FeedbackUncheckedUpdateManyWithoutUserNestedInput
     instructor_qualifications?: InstructorQualificationsUncheckedUpdateManyWithoutUserNestedInput
     instructor?: InstructorUncheckedUpdateOneWithoutUserNestedInput
     learner?: LearnerUncheckedUpdateOneWithoutUserNestedInput
@@ -59030,7 +59088,7 @@ export namespace Prisma {
     category: CategoryCreateNestedOneWithoutCoursesInput
     instructor: InstructorCreateNestedOneWithoutCoursesInput
     level: LevelCreateNestedOneWithoutCourseInput
-    feedbacks?: FeedbackCreateNestedOneWithoutCourseInput
+    feedbacks?: FeedbackCreateNestedManyWithoutCourseInput
     learnerCourses?: LearnerCoursesCreateNestedManyWithoutCourseInput
   }
 
@@ -59055,7 +59113,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     chapter?: ChapterUncheckedCreateNestedManyWithoutBelongCourseInput
     inCourseGroups?: CourseGroupUncheckedCreateNestedManyWithoutBelongToCourseInput
-    feedbacks?: FeedbackUncheckedCreateNestedOneWithoutCourseInput
+    feedbacks?: FeedbackUncheckedCreateNestedManyWithoutCourseInput
     learnerCourses?: LearnerCoursesUncheckedCreateNestedManyWithoutCourseInput
   }
 
@@ -59087,7 +59145,7 @@ export namespace Prisma {
     accountSecurities?: AccountSecurityCreateNestedOneWithoutUserInput
     admin?: AdminCreateNestedOneWithoutUserInput
     chaptersProgress?: ChapterProgressCreateNestedManyWithoutUserInput
-    feedbacks?: FeedbackCreateNestedOneWithoutUserInput
+    feedbacks?: FeedbackCreateNestedManyWithoutUserInput
     instructor_qualifications?: InstructorQualificationsCreateNestedManyWithoutUserInput
     instructor?: InstructorCreateNestedOneWithoutUserInput
     learner?: LearnerCreateNestedOneWithoutUserInput
@@ -59122,7 +59180,7 @@ export namespace Prisma {
     accountSecurities?: AccountSecurityUncheckedCreateNestedOneWithoutUserInput
     admin?: AdminUncheckedCreateNestedOneWithoutUserInput
     chaptersProgress?: ChapterProgressUncheckedCreateNestedManyWithoutUserInput
-    feedbacks?: FeedbackUncheckedCreateNestedOneWithoutUserInput
+    feedbacks?: FeedbackUncheckedCreateNestedManyWithoutUserInput
     instructor_qualifications?: InstructorQualificationsUncheckedCreateNestedManyWithoutUserInput
     instructor?: InstructorUncheckedCreateNestedOneWithoutUserInput
     learner?: LearnerUncheckedCreateNestedOneWithoutUserInput
@@ -59192,7 +59250,7 @@ export namespace Prisma {
     category?: CategoryUpdateOneRequiredWithoutCoursesNestedInput
     instructor?: InstructorUpdateOneRequiredWithoutCoursesNestedInput
     level?: LevelUpdateOneRequiredWithoutCourseNestedInput
-    feedbacks?: FeedbackUpdateOneWithoutCourseNestedInput
+    feedbacks?: FeedbackUpdateManyWithoutCourseNestedInput
     learnerCourses?: LearnerCoursesUpdateManyWithoutCourseNestedInput
   }
 
@@ -59217,7 +59275,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     chapter?: ChapterUncheckedUpdateManyWithoutBelongCourseNestedInput
     inCourseGroups?: CourseGroupUncheckedUpdateManyWithoutBelongToCourseNestedInput
-    feedbacks?: FeedbackUncheckedUpdateOneWithoutCourseNestedInput
+    feedbacks?: FeedbackUncheckedUpdateManyWithoutCourseNestedInput
     learnerCourses?: LearnerCoursesUncheckedUpdateManyWithoutCourseNestedInput
   }
 
@@ -59255,7 +59313,7 @@ export namespace Prisma {
     accountSecurities?: AccountSecurityUpdateOneWithoutUserNestedInput
     admin?: AdminUpdateOneWithoutUserNestedInput
     chaptersProgress?: ChapterProgressUpdateManyWithoutUserNestedInput
-    feedbacks?: FeedbackUpdateOneWithoutUserNestedInput
+    feedbacks?: FeedbackUpdateManyWithoutUserNestedInput
     instructor_qualifications?: InstructorQualificationsUpdateManyWithoutUserNestedInput
     instructor?: InstructorUpdateOneWithoutUserNestedInput
     learner?: LearnerUpdateOneWithoutUserNestedInput
@@ -59290,7 +59348,7 @@ export namespace Prisma {
     accountSecurities?: AccountSecurityUncheckedUpdateOneWithoutUserNestedInput
     admin?: AdminUncheckedUpdateOneWithoutUserNestedInput
     chaptersProgress?: ChapterProgressUncheckedUpdateManyWithoutUserNestedInput
-    feedbacks?: FeedbackUncheckedUpdateOneWithoutUserNestedInput
+    feedbacks?: FeedbackUncheckedUpdateManyWithoutUserNestedInput
     instructor_qualifications?: InstructorQualificationsUncheckedUpdateManyWithoutUserNestedInput
     instructor?: InstructorUncheckedUpdateOneWithoutUserNestedInput
     learner?: LearnerUncheckedUpdateOneWithoutUserNestedInput
@@ -59374,7 +59432,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     accountSecurities?: AccountSecurityCreateNestedOneWithoutUserInput
     chaptersProgress?: ChapterProgressCreateNestedManyWithoutUserInput
-    feedbacks?: FeedbackCreateNestedOneWithoutUserInput
+    feedbacks?: FeedbackCreateNestedManyWithoutUserInput
     instructor_qualifications?: InstructorQualificationsCreateNestedManyWithoutUserInput
     instructor?: InstructorCreateNestedOneWithoutUserInput
     learner?: LearnerCreateNestedOneWithoutUserInput
@@ -59409,7 +59467,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     accountSecurities?: AccountSecurityUncheckedCreateNestedOneWithoutUserInput
     chaptersProgress?: ChapterProgressUncheckedCreateNestedManyWithoutUserInput
-    feedbacks?: FeedbackUncheckedCreateNestedOneWithoutUserInput
+    feedbacks?: FeedbackUncheckedCreateNestedManyWithoutUserInput
     instructor_qualifications?: InstructorQualificationsUncheckedCreateNestedManyWithoutUserInput
     instructor?: InstructorUncheckedCreateNestedOneWithoutUserInput
     learner?: LearnerUncheckedCreateNestedOneWithoutUserInput
@@ -59545,7 +59603,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accountSecurities?: AccountSecurityUpdateOneWithoutUserNestedInput
     chaptersProgress?: ChapterProgressUpdateManyWithoutUserNestedInput
-    feedbacks?: FeedbackUpdateOneWithoutUserNestedInput
+    feedbacks?: FeedbackUpdateManyWithoutUserNestedInput
     instructor_qualifications?: InstructorQualificationsUpdateManyWithoutUserNestedInput
     instructor?: InstructorUpdateOneWithoutUserNestedInput
     learner?: LearnerUpdateOneWithoutUserNestedInput
@@ -59580,7 +59638,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accountSecurities?: AccountSecurityUncheckedUpdateOneWithoutUserNestedInput
     chaptersProgress?: ChapterProgressUncheckedUpdateManyWithoutUserNestedInput
-    feedbacks?: FeedbackUncheckedUpdateOneWithoutUserNestedInput
+    feedbacks?: FeedbackUncheckedUpdateManyWithoutUserNestedInput
     instructor_qualifications?: InstructorQualificationsUncheckedUpdateManyWithoutUserNestedInput
     instructor?: InstructorUncheckedUpdateOneWithoutUserNestedInput
     learner?: LearnerUncheckedUpdateOneWithoutUserNestedInput
@@ -60071,7 +60129,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     admin?: AdminCreateNestedOneWithoutUserInput
     chaptersProgress?: ChapterProgressCreateNestedManyWithoutUserInput
-    feedbacks?: FeedbackCreateNestedOneWithoutUserInput
+    feedbacks?: FeedbackCreateNestedManyWithoutUserInput
     instructor_qualifications?: InstructorQualificationsCreateNestedManyWithoutUserInput
     instructor?: InstructorCreateNestedOneWithoutUserInput
     learner?: LearnerCreateNestedOneWithoutUserInput
@@ -60106,7 +60164,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     admin?: AdminUncheckedCreateNestedOneWithoutUserInput
     chaptersProgress?: ChapterProgressUncheckedCreateNestedManyWithoutUserInput
-    feedbacks?: FeedbackUncheckedCreateNestedOneWithoutUserInput
+    feedbacks?: FeedbackUncheckedCreateNestedManyWithoutUserInput
     instructor_qualifications?: InstructorQualificationsUncheckedCreateNestedManyWithoutUserInput
     instructor?: InstructorUncheckedCreateNestedOneWithoutUserInput
     learner?: LearnerUncheckedCreateNestedOneWithoutUserInput
@@ -60157,7 +60215,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     admin?: AdminUpdateOneWithoutUserNestedInput
     chaptersProgress?: ChapterProgressUpdateManyWithoutUserNestedInput
-    feedbacks?: FeedbackUpdateOneWithoutUserNestedInput
+    feedbacks?: FeedbackUpdateManyWithoutUserNestedInput
     instructor_qualifications?: InstructorQualificationsUpdateManyWithoutUserNestedInput
     instructor?: InstructorUpdateOneWithoutUserNestedInput
     learner?: LearnerUpdateOneWithoutUserNestedInput
@@ -60192,7 +60250,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     admin?: AdminUncheckedUpdateOneWithoutUserNestedInput
     chaptersProgress?: ChapterProgressUncheckedUpdateManyWithoutUserNestedInput
-    feedbacks?: FeedbackUncheckedUpdateOneWithoutUserNestedInput
+    feedbacks?: FeedbackUncheckedUpdateManyWithoutUserNestedInput
     instructor_qualifications?: InstructorQualificationsUncheckedUpdateManyWithoutUserNestedInput
     instructor?: InstructorUncheckedUpdateOneWithoutUserNestedInput
     learner?: LearnerUncheckedUpdateOneWithoutUserNestedInput
@@ -60276,7 +60334,7 @@ export namespace Prisma {
     category: CategoryCreateNestedOneWithoutCoursesInput
     instructor: InstructorCreateNestedOneWithoutCoursesInput
     level: LevelCreateNestedOneWithoutCourseInput
-    feedbacks?: FeedbackCreateNestedOneWithoutCourseInput
+    feedbacks?: FeedbackCreateNestedManyWithoutCourseInput
     learnerCourses?: LearnerCoursesCreateNestedManyWithoutCourseInput
     transaction?: TransactionCreateNestedManyWithoutCourseInput
   }
@@ -60301,7 +60359,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     chapter?: ChapterUncheckedCreateNestedManyWithoutBelongCourseInput
-    feedbacks?: FeedbackUncheckedCreateNestedOneWithoutCourseInput
+    feedbacks?: FeedbackUncheckedCreateNestedManyWithoutCourseInput
     learnerCourses?: LearnerCoursesUncheckedCreateNestedManyWithoutCourseInput
     transaction?: TransactionUncheckedCreateNestedManyWithoutCourseInput
   }
@@ -60367,7 +60425,7 @@ export namespace Prisma {
     category?: CategoryUpdateOneRequiredWithoutCoursesNestedInput
     instructor?: InstructorUpdateOneRequiredWithoutCoursesNestedInput
     level?: LevelUpdateOneRequiredWithoutCourseNestedInput
-    feedbacks?: FeedbackUpdateOneWithoutCourseNestedInput
+    feedbacks?: FeedbackUpdateManyWithoutCourseNestedInput
     learnerCourses?: LearnerCoursesUpdateManyWithoutCourseNestedInput
     transaction?: TransactionUpdateManyWithoutCourseNestedInput
   }
@@ -60392,7 +60450,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     chapter?: ChapterUncheckedUpdateManyWithoutBelongCourseNestedInput
-    feedbacks?: FeedbackUncheckedUpdateOneWithoutCourseNestedInput
+    feedbacks?: FeedbackUncheckedUpdateManyWithoutCourseNestedInput
     learnerCourses?: LearnerCoursesUncheckedUpdateManyWithoutCourseNestedInput
     transaction?: TransactionUncheckedUpdateManyWithoutCourseNestedInput
   }
@@ -60580,6 +60638,11 @@ export namespace Prisma {
   export type FeedbackCreateOrConnectWithoutCourseInput = {
     where: FeedbackWhereUniqueInput
     create: XOR<FeedbackCreateWithoutCourseInput, FeedbackUncheckedCreateWithoutCourseInput>
+  }
+
+  export type FeedbackCreateManyCourseInputEnvelope = {
+    data: FeedbackCreateManyCourseInput | FeedbackCreateManyCourseInput[]
+    skipDuplicates?: boolean
   }
 
   export type LearnerCoursesCreateWithoutCourseInput = {
@@ -60803,33 +60866,20 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type FeedbackUpsertWithoutCourseInput = {
+  export type FeedbackUpsertWithWhereUniqueWithoutCourseInput = {
+    where: FeedbackWhereUniqueInput
     update: XOR<FeedbackUpdateWithoutCourseInput, FeedbackUncheckedUpdateWithoutCourseInput>
     create: XOR<FeedbackCreateWithoutCourseInput, FeedbackUncheckedCreateWithoutCourseInput>
-    where?: FeedbackWhereInput
   }
 
-  export type FeedbackUpdateToOneWithWhereWithoutCourseInput = {
-    where?: FeedbackWhereInput
+  export type FeedbackUpdateWithWhereUniqueWithoutCourseInput = {
+    where: FeedbackWhereUniqueInput
     data: XOR<FeedbackUpdateWithoutCourseInput, FeedbackUncheckedUpdateWithoutCourseInput>
   }
 
-  export type FeedbackUpdateWithoutCourseInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    rating?: IntFieldUpdateOperationsInput | number
-    comment?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    user?: UserUpdateOneRequiredWithoutFeedbacksNestedInput
-  }
-
-  export type FeedbackUncheckedUpdateWithoutCourseInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    user_id?: StringFieldUpdateOperationsInput | string
-    rating?: IntFieldUpdateOperationsInput | number
-    comment?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  export type FeedbackUpdateManyWithWhereWithoutCourseInput = {
+    where: FeedbackScalarWhereInput
+    data: XOR<FeedbackUpdateManyMutationInput, FeedbackUncheckedUpdateManyWithoutCourseInput>
   }
 
   export type LearnerCoursesUpsertWithWhereUniqueWithoutCourseInput = {
@@ -60884,7 +60934,7 @@ export namespace Prisma {
     inCourseGroups?: CourseGroupCreateNestedManyWithoutBelongToCourseInput
     instructor: InstructorCreateNestedOneWithoutCoursesInput
     level: LevelCreateNestedOneWithoutCourseInput
-    feedbacks?: FeedbackCreateNestedOneWithoutCourseInput
+    feedbacks?: FeedbackCreateNestedManyWithoutCourseInput
     learnerCourses?: LearnerCoursesCreateNestedManyWithoutCourseInput
     transaction?: TransactionCreateNestedManyWithoutCourseInput
   }
@@ -60909,7 +60959,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     chapter?: ChapterUncheckedCreateNestedManyWithoutBelongCourseInput
     inCourseGroups?: CourseGroupUncheckedCreateNestedManyWithoutBelongToCourseInput
-    feedbacks?: FeedbackUncheckedCreateNestedOneWithoutCourseInput
+    feedbacks?: FeedbackUncheckedCreateNestedManyWithoutCourseInput
     learnerCourses?: LearnerCoursesUncheckedCreateNestedManyWithoutCourseInput
     transaction?: TransactionUncheckedCreateNestedManyWithoutCourseInput
   }
@@ -60960,7 +61010,7 @@ export namespace Prisma {
     inCourseGroups?: CourseGroupCreateNestedManyWithoutBelongToCourseInput
     category: CategoryCreateNestedOneWithoutCoursesInput
     instructor: InstructorCreateNestedOneWithoutCoursesInput
-    feedbacks?: FeedbackCreateNestedOneWithoutCourseInput
+    feedbacks?: FeedbackCreateNestedManyWithoutCourseInput
     learnerCourses?: LearnerCoursesCreateNestedManyWithoutCourseInput
     transaction?: TransactionCreateNestedManyWithoutCourseInput
   }
@@ -60985,7 +61035,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     chapter?: ChapterUncheckedCreateNestedManyWithoutBelongCourseInput
     inCourseGroups?: CourseGroupUncheckedCreateNestedManyWithoutBelongToCourseInput
-    feedbacks?: FeedbackUncheckedCreateNestedOneWithoutCourseInput
+    feedbacks?: FeedbackUncheckedCreateNestedManyWithoutCourseInput
     learnerCourses?: LearnerCoursesUncheckedCreateNestedManyWithoutCourseInput
     transaction?: TransactionUncheckedCreateNestedManyWithoutCourseInput
   }
@@ -61037,7 +61087,7 @@ export namespace Prisma {
     category: CategoryCreateNestedOneWithoutCoursesInput
     instructor: InstructorCreateNestedOneWithoutCoursesInput
     level: LevelCreateNestedOneWithoutCourseInput
-    feedbacks?: FeedbackCreateNestedOneWithoutCourseInput
+    feedbacks?: FeedbackCreateNestedManyWithoutCourseInput
     transaction?: TransactionCreateNestedManyWithoutCourseInput
   }
 
@@ -61062,7 +61112,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     chapter?: ChapterUncheckedCreateNestedManyWithoutBelongCourseInput
     inCourseGroups?: CourseGroupUncheckedCreateNestedManyWithoutBelongToCourseInput
-    feedbacks?: FeedbackUncheckedCreateNestedOneWithoutCourseInput
+    feedbacks?: FeedbackUncheckedCreateNestedManyWithoutCourseInput
     transaction?: TransactionUncheckedCreateNestedManyWithoutCourseInput
   }
 
@@ -61124,7 +61174,7 @@ export namespace Prisma {
     category?: CategoryUpdateOneRequiredWithoutCoursesNestedInput
     instructor?: InstructorUpdateOneRequiredWithoutCoursesNestedInput
     level?: LevelUpdateOneRequiredWithoutCourseNestedInput
-    feedbacks?: FeedbackUpdateOneWithoutCourseNestedInput
+    feedbacks?: FeedbackUpdateManyWithoutCourseNestedInput
     transaction?: TransactionUpdateManyWithoutCourseNestedInput
   }
 
@@ -61149,7 +61199,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     chapter?: ChapterUncheckedUpdateManyWithoutBelongCourseNestedInput
     inCourseGroups?: CourseGroupUncheckedUpdateManyWithoutBelongToCourseNestedInput
-    feedbacks?: FeedbackUncheckedUpdateOneWithoutCourseNestedInput
+    feedbacks?: FeedbackUncheckedUpdateManyWithoutCourseNestedInput
     transaction?: TransactionUncheckedUpdateManyWithoutCourseNestedInput
   }
 
@@ -61222,7 +61272,7 @@ export namespace Prisma {
     category: CategoryCreateNestedOneWithoutCoursesInput
     instructor: InstructorCreateNestedOneWithoutCoursesInput
     level: LevelCreateNestedOneWithoutCourseInput
-    feedbacks?: FeedbackCreateNestedOneWithoutCourseInput
+    feedbacks?: FeedbackCreateNestedManyWithoutCourseInput
     learnerCourses?: LearnerCoursesCreateNestedManyWithoutCourseInput
     transaction?: TransactionCreateNestedManyWithoutCourseInput
   }
@@ -61247,7 +61297,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     inCourseGroups?: CourseGroupUncheckedCreateNestedManyWithoutBelongToCourseInput
-    feedbacks?: FeedbackUncheckedCreateNestedOneWithoutCourseInput
+    feedbacks?: FeedbackUncheckedCreateNestedManyWithoutCourseInput
     learnerCourses?: LearnerCoursesUncheckedCreateNestedManyWithoutCourseInput
     transaction?: TransactionUncheckedCreateNestedManyWithoutCourseInput
   }
@@ -61367,7 +61417,7 @@ export namespace Prisma {
     category?: CategoryUpdateOneRequiredWithoutCoursesNestedInput
     instructor?: InstructorUpdateOneRequiredWithoutCoursesNestedInput
     level?: LevelUpdateOneRequiredWithoutCourseNestedInput
-    feedbacks?: FeedbackUpdateOneWithoutCourseNestedInput
+    feedbacks?: FeedbackUpdateManyWithoutCourseNestedInput
     learnerCourses?: LearnerCoursesUpdateManyWithoutCourseNestedInput
     transaction?: TransactionUpdateManyWithoutCourseNestedInput
   }
@@ -61392,7 +61442,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     inCourseGroups?: CourseGroupUncheckedUpdateManyWithoutBelongToCourseNestedInput
-    feedbacks?: FeedbackUncheckedUpdateOneWithoutCourseNestedInput
+    feedbacks?: FeedbackUncheckedUpdateManyWithoutCourseNestedInput
     learnerCourses?: LearnerCoursesUncheckedUpdateManyWithoutCourseNestedInput
     transaction?: TransactionUncheckedUpdateManyWithoutCourseNestedInput
   }
@@ -61655,7 +61705,7 @@ export namespace Prisma {
     accountSecurities?: AccountSecurityCreateNestedOneWithoutUserInput
     admin?: AdminCreateNestedOneWithoutUserInput
     chaptersProgress?: ChapterProgressCreateNestedManyWithoutUserInput
-    feedbacks?: FeedbackCreateNestedOneWithoutUserInput
+    feedbacks?: FeedbackCreateNestedManyWithoutUserInput
     instructor_qualifications?: InstructorQualificationsCreateNestedManyWithoutUserInput
     instructor?: InstructorCreateNestedOneWithoutUserInput
     learner?: LearnerCreateNestedOneWithoutUserInput
@@ -61690,7 +61740,7 @@ export namespace Prisma {
     accountSecurities?: AccountSecurityUncheckedCreateNestedOneWithoutUserInput
     admin?: AdminUncheckedCreateNestedOneWithoutUserInput
     chaptersProgress?: ChapterProgressUncheckedCreateNestedManyWithoutUserInput
-    feedbacks?: FeedbackUncheckedCreateNestedOneWithoutUserInput
+    feedbacks?: FeedbackUncheckedCreateNestedManyWithoutUserInput
     instructor_qualifications?: InstructorQualificationsUncheckedCreateNestedManyWithoutUserInput
     instructor?: InstructorUncheckedCreateNestedOneWithoutUserInput
     learner?: LearnerUncheckedCreateNestedOneWithoutUserInput
@@ -61778,7 +61828,7 @@ export namespace Prisma {
     accountSecurities?: AccountSecurityUpdateOneWithoutUserNestedInput
     admin?: AdminUpdateOneWithoutUserNestedInput
     chaptersProgress?: ChapterProgressUpdateManyWithoutUserNestedInput
-    feedbacks?: FeedbackUpdateOneWithoutUserNestedInput
+    feedbacks?: FeedbackUpdateManyWithoutUserNestedInput
     instructor_qualifications?: InstructorQualificationsUpdateManyWithoutUserNestedInput
     instructor?: InstructorUpdateOneWithoutUserNestedInput
     learner?: LearnerUpdateOneWithoutUserNestedInput
@@ -61813,7 +61863,7 @@ export namespace Prisma {
     accountSecurities?: AccountSecurityUncheckedUpdateOneWithoutUserNestedInput
     admin?: AdminUncheckedUpdateOneWithoutUserNestedInput
     chaptersProgress?: ChapterProgressUncheckedUpdateManyWithoutUserNestedInput
-    feedbacks?: FeedbackUncheckedUpdateOneWithoutUserNestedInput
+    feedbacks?: FeedbackUncheckedUpdateManyWithoutUserNestedInput
     instructor_qualifications?: InstructorQualificationsUncheckedUpdateManyWithoutUserNestedInput
     instructor?: InstructorUncheckedUpdateOneWithoutUserNestedInput
     learner?: LearnerUncheckedUpdateOneWithoutUserNestedInput
@@ -61871,7 +61921,7 @@ export namespace Prisma {
     accountSecurities?: AccountSecurityCreateNestedOneWithoutUserInput
     admin?: AdminCreateNestedOneWithoutUserInput
     chaptersProgress?: ChapterProgressCreateNestedManyWithoutUserInput
-    feedbacks?: FeedbackCreateNestedOneWithoutUserInput
+    feedbacks?: FeedbackCreateNestedManyWithoutUserInput
     instructor_qualifications?: InstructorQualificationsCreateNestedManyWithoutUserInput
     instructor?: InstructorCreateNestedOneWithoutUserInput
     learner?: LearnerCreateNestedOneWithoutUserInput
@@ -61906,7 +61956,7 @@ export namespace Prisma {
     accountSecurities?: AccountSecurityUncheckedCreateNestedOneWithoutUserInput
     admin?: AdminUncheckedCreateNestedOneWithoutUserInput
     chaptersProgress?: ChapterProgressUncheckedCreateNestedManyWithoutUserInput
-    feedbacks?: FeedbackUncheckedCreateNestedOneWithoutUserInput
+    feedbacks?: FeedbackUncheckedCreateNestedManyWithoutUserInput
     instructor_qualifications?: InstructorQualificationsUncheckedCreateNestedManyWithoutUserInput
     instructor?: InstructorUncheckedCreateNestedOneWithoutUserInput
     learner?: LearnerUncheckedCreateNestedOneWithoutUserInput
@@ -61986,7 +62036,7 @@ export namespace Prisma {
     accountSecurities?: AccountSecurityUpdateOneWithoutUserNestedInput
     admin?: AdminUpdateOneWithoutUserNestedInput
     chaptersProgress?: ChapterProgressUpdateManyWithoutUserNestedInput
-    feedbacks?: FeedbackUpdateOneWithoutUserNestedInput
+    feedbacks?: FeedbackUpdateManyWithoutUserNestedInput
     instructor_qualifications?: InstructorQualificationsUpdateManyWithoutUserNestedInput
     instructor?: InstructorUpdateOneWithoutUserNestedInput
     learner?: LearnerUpdateOneWithoutUserNestedInput
@@ -62021,7 +62071,7 @@ export namespace Prisma {
     accountSecurities?: AccountSecurityUncheckedUpdateOneWithoutUserNestedInput
     admin?: AdminUncheckedUpdateOneWithoutUserNestedInput
     chaptersProgress?: ChapterProgressUncheckedUpdateManyWithoutUserNestedInput
-    feedbacks?: FeedbackUncheckedUpdateOneWithoutUserNestedInput
+    feedbacks?: FeedbackUncheckedUpdateManyWithoutUserNestedInput
     instructor_qualifications?: InstructorQualificationsUncheckedUpdateManyWithoutUserNestedInput
     instructor?: InstructorUncheckedUpdateOneWithoutUserNestedInput
     learner?: LearnerUncheckedUpdateOneWithoutUserNestedInput
@@ -62525,7 +62575,7 @@ export namespace Prisma {
     accountSecurities?: AccountSecurityCreateNestedOneWithoutUserInput
     admin?: AdminCreateNestedOneWithoutUserInput
     chaptersProgress?: ChapterProgressCreateNestedManyWithoutUserInput
-    feedbacks?: FeedbackCreateNestedOneWithoutUserInput
+    feedbacks?: FeedbackCreateNestedManyWithoutUserInput
     instructor_qualifications?: InstructorQualificationsCreateNestedManyWithoutUserInput
     instructor?: InstructorCreateNestedOneWithoutUserInput
     learner?: LearnerCreateNestedOneWithoutUserInput
@@ -62560,7 +62610,7 @@ export namespace Prisma {
     accountSecurities?: AccountSecurityUncheckedCreateNestedOneWithoutUserInput
     admin?: AdminUncheckedCreateNestedOneWithoutUserInput
     chaptersProgress?: ChapterProgressUncheckedCreateNestedManyWithoutUserInput
-    feedbacks?: FeedbackUncheckedCreateNestedOneWithoutUserInput
+    feedbacks?: FeedbackUncheckedCreateNestedManyWithoutUserInput
     instructor_qualifications?: InstructorQualificationsUncheckedCreateNestedManyWithoutUserInput
     instructor?: InstructorUncheckedCreateNestedOneWithoutUserInput
     learner?: LearnerUncheckedCreateNestedOneWithoutUserInput
@@ -62648,7 +62698,7 @@ export namespace Prisma {
     accountSecurities?: AccountSecurityUpdateOneWithoutUserNestedInput
     admin?: AdminUpdateOneWithoutUserNestedInput
     chaptersProgress?: ChapterProgressUpdateManyWithoutUserNestedInput
-    feedbacks?: FeedbackUpdateOneWithoutUserNestedInput
+    feedbacks?: FeedbackUpdateManyWithoutUserNestedInput
     instructor_qualifications?: InstructorQualificationsUpdateManyWithoutUserNestedInput
     instructor?: InstructorUpdateOneWithoutUserNestedInput
     learner?: LearnerUpdateOneWithoutUserNestedInput
@@ -62683,7 +62733,7 @@ export namespace Prisma {
     accountSecurities?: AccountSecurityUncheckedUpdateOneWithoutUserNestedInput
     admin?: AdminUncheckedUpdateOneWithoutUserNestedInput
     chaptersProgress?: ChapterProgressUncheckedUpdateManyWithoutUserNestedInput
-    feedbacks?: FeedbackUncheckedUpdateOneWithoutUserNestedInput
+    feedbacks?: FeedbackUncheckedUpdateManyWithoutUserNestedInput
     instructor_qualifications?: InstructorQualificationsUncheckedUpdateManyWithoutUserNestedInput
     instructor?: InstructorUncheckedUpdateOneWithoutUserNestedInput
     learner?: LearnerUncheckedUpdateOneWithoutUserNestedInput
@@ -62744,7 +62794,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     accountSecurities?: AccountSecurityCreateNestedOneWithoutUserInput
     admin?: AdminCreateNestedOneWithoutUserInput
-    feedbacks?: FeedbackCreateNestedOneWithoutUserInput
+    feedbacks?: FeedbackCreateNestedManyWithoutUserInput
     instructor_qualifications?: InstructorQualificationsCreateNestedManyWithoutUserInput
     instructor?: InstructorCreateNestedOneWithoutUserInput
     learner?: LearnerCreateNestedOneWithoutUserInput
@@ -62779,7 +62829,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     accountSecurities?: AccountSecurityUncheckedCreateNestedOneWithoutUserInput
     admin?: AdminUncheckedCreateNestedOneWithoutUserInput
-    feedbacks?: FeedbackUncheckedCreateNestedOneWithoutUserInput
+    feedbacks?: FeedbackUncheckedCreateNestedManyWithoutUserInput
     instructor_qualifications?: InstructorQualificationsUncheckedCreateNestedManyWithoutUserInput
     instructor?: InstructorUncheckedCreateNestedOneWithoutUserInput
     learner?: LearnerUncheckedCreateNestedOneWithoutUserInput
@@ -62863,7 +62913,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accountSecurities?: AccountSecurityUpdateOneWithoutUserNestedInput
     admin?: AdminUpdateOneWithoutUserNestedInput
-    feedbacks?: FeedbackUpdateOneWithoutUserNestedInput
+    feedbacks?: FeedbackUpdateManyWithoutUserNestedInput
     instructor_qualifications?: InstructorQualificationsUpdateManyWithoutUserNestedInput
     instructor?: InstructorUpdateOneWithoutUserNestedInput
     learner?: LearnerUpdateOneWithoutUserNestedInput
@@ -62898,7 +62948,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accountSecurities?: AccountSecurityUncheckedUpdateOneWithoutUserNestedInput
     admin?: AdminUncheckedUpdateOneWithoutUserNestedInput
-    feedbacks?: FeedbackUncheckedUpdateOneWithoutUserNestedInput
+    feedbacks?: FeedbackUncheckedUpdateManyWithoutUserNestedInput
     instructor_qualifications?: InstructorQualificationsUncheckedUpdateManyWithoutUserNestedInput
     instructor?: InstructorUncheckedUpdateOneWithoutUserNestedInput
     learner?: LearnerUncheckedUpdateOneWithoutUserNestedInput
@@ -63437,7 +63487,7 @@ export namespace Prisma {
     accountSecurities?: AccountSecurityCreateNestedOneWithoutUserInput
     admin?: AdminCreateNestedOneWithoutUserInput
     chaptersProgress?: ChapterProgressCreateNestedManyWithoutUserInput
-    feedbacks?: FeedbackCreateNestedOneWithoutUserInput
+    feedbacks?: FeedbackCreateNestedManyWithoutUserInput
     instructor_qualifications?: InstructorQualificationsCreateNestedManyWithoutUserInput
     instructor?: InstructorCreateNestedOneWithoutUserInput
     learner?: LearnerCreateNestedOneWithoutUserInput
@@ -63472,7 +63522,7 @@ export namespace Prisma {
     accountSecurities?: AccountSecurityUncheckedCreateNestedOneWithoutUserInput
     admin?: AdminUncheckedCreateNestedOneWithoutUserInput
     chaptersProgress?: ChapterProgressUncheckedCreateNestedManyWithoutUserInput
-    feedbacks?: FeedbackUncheckedCreateNestedOneWithoutUserInput
+    feedbacks?: FeedbackUncheckedCreateNestedManyWithoutUserInput
     instructor_qualifications?: InstructorQualificationsUncheckedCreateNestedManyWithoutUserInput
     instructor?: InstructorUncheckedCreateNestedOneWithoutUserInput
     learner?: LearnerUncheckedCreateNestedOneWithoutUserInput
@@ -63572,7 +63622,7 @@ export namespace Prisma {
     accountSecurities?: AccountSecurityUpdateOneWithoutUserNestedInput
     admin?: AdminUpdateOneWithoutUserNestedInput
     chaptersProgress?: ChapterProgressUpdateManyWithoutUserNestedInput
-    feedbacks?: FeedbackUpdateOneWithoutUserNestedInput
+    feedbacks?: FeedbackUpdateManyWithoutUserNestedInput
     instructor_qualifications?: InstructorQualificationsUpdateManyWithoutUserNestedInput
     instructor?: InstructorUpdateOneWithoutUserNestedInput
     learner?: LearnerUpdateOneWithoutUserNestedInput
@@ -63607,7 +63657,7 @@ export namespace Prisma {
     accountSecurities?: AccountSecurityUncheckedUpdateOneWithoutUserNestedInput
     admin?: AdminUncheckedUpdateOneWithoutUserNestedInput
     chaptersProgress?: ChapterProgressUncheckedUpdateManyWithoutUserNestedInput
-    feedbacks?: FeedbackUncheckedUpdateOneWithoutUserNestedInput
+    feedbacks?: FeedbackUncheckedUpdateManyWithoutUserNestedInput
     instructor_qualifications?: InstructorQualificationsUncheckedUpdateManyWithoutUserNestedInput
     instructor?: InstructorUncheckedUpdateOneWithoutUserNestedInput
     learner?: LearnerUncheckedUpdateOneWithoutUserNestedInput
@@ -63623,6 +63673,15 @@ export namespace Prisma {
     chapter_id: string
     is_completed?: boolean
     completed_at?: Date | string | null
+  }
+
+  export type FeedbackCreateManyUserInput = {
+    id?: string
+    course_id: string
+    rating: number
+    comment?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
   }
 
   export type InstructorQualificationsCreateManyUserInput = {
@@ -63720,6 +63779,33 @@ export namespace Prisma {
     chapter_id?: StringFieldUpdateOperationsInput | string
     is_completed?: BoolFieldUpdateOperationsInput | boolean
     completed_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type FeedbackUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    rating?: IntFieldUpdateOperationsInput | number
+    comment?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    course?: CourseUpdateOneRequiredWithoutFeedbacksNestedInput
+  }
+
+  export type FeedbackUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    course_id?: StringFieldUpdateOperationsInput | string
+    rating?: IntFieldUpdateOperationsInput | number
+    comment?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type FeedbackUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    course_id?: StringFieldUpdateOperationsInput | string
+    rating?: IntFieldUpdateOperationsInput | number
+    comment?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type InstructorQualificationsUpdateWithoutUserInput = {
@@ -64069,7 +64155,7 @@ export namespace Prisma {
     inCourseGroups?: CourseGroupUpdateManyWithoutBelongToCourseNestedInput
     category?: CategoryUpdateOneRequiredWithoutCoursesNestedInput
     level?: LevelUpdateOneRequiredWithoutCourseNestedInput
-    feedbacks?: FeedbackUpdateOneWithoutCourseNestedInput
+    feedbacks?: FeedbackUpdateManyWithoutCourseNestedInput
     learnerCourses?: LearnerCoursesUpdateManyWithoutCourseNestedInput
     transaction?: TransactionUpdateManyWithoutCourseNestedInput
   }
@@ -64094,7 +64180,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     chapter?: ChapterUncheckedUpdateManyWithoutBelongCourseNestedInput
     inCourseGroups?: CourseGroupUncheckedUpdateManyWithoutBelongToCourseNestedInput
-    feedbacks?: FeedbackUncheckedUpdateOneWithoutCourseNestedInput
+    feedbacks?: FeedbackUncheckedUpdateManyWithoutCourseNestedInput
     learnerCourses?: LearnerCoursesUncheckedUpdateManyWithoutCourseNestedInput
     transaction?: TransactionUncheckedUpdateManyWithoutCourseNestedInput
   }
@@ -64594,6 +64680,15 @@ export namespace Prisma {
     updateAt?: Date | string
   }
 
+  export type FeedbackCreateManyCourseInput = {
+    id?: string
+    user_id: string
+    rating: number
+    comment?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
   export type LearnerCoursesCreateManyCourseInput = {
     learner_id: string
     status?: $Enums.CourseEnrollmentStatus
@@ -64675,6 +64770,33 @@ export namespace Prisma {
     order_index?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updateAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type FeedbackUpdateWithoutCourseInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    rating?: IntFieldUpdateOperationsInput | number
+    comment?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutFeedbacksNestedInput
+  }
+
+  export type FeedbackUncheckedUpdateWithoutCourseInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    user_id?: StringFieldUpdateOperationsInput | string
+    rating?: IntFieldUpdateOperationsInput | number
+    comment?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type FeedbackUncheckedUpdateManyWithoutCourseInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    user_id?: StringFieldUpdateOperationsInput | string
+    rating?: IntFieldUpdateOperationsInput | number
+    comment?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type LearnerCoursesUpdateWithoutCourseInput = {
@@ -64813,7 +64935,7 @@ export namespace Prisma {
     inCourseGroups?: CourseGroupUpdateManyWithoutBelongToCourseNestedInput
     instructor?: InstructorUpdateOneRequiredWithoutCoursesNestedInput
     level?: LevelUpdateOneRequiredWithoutCourseNestedInput
-    feedbacks?: FeedbackUpdateOneWithoutCourseNestedInput
+    feedbacks?: FeedbackUpdateManyWithoutCourseNestedInput
     learnerCourses?: LearnerCoursesUpdateManyWithoutCourseNestedInput
     transaction?: TransactionUpdateManyWithoutCourseNestedInput
   }
@@ -64838,7 +64960,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     chapter?: ChapterUncheckedUpdateManyWithoutBelongCourseNestedInput
     inCourseGroups?: CourseGroupUncheckedUpdateManyWithoutBelongToCourseNestedInput
-    feedbacks?: FeedbackUncheckedUpdateOneWithoutCourseNestedInput
+    feedbacks?: FeedbackUncheckedUpdateManyWithoutCourseNestedInput
     learnerCourses?: LearnerCoursesUncheckedUpdateManyWithoutCourseNestedInput
     transaction?: TransactionUncheckedUpdateManyWithoutCourseNestedInput
   }
@@ -64903,7 +65025,7 @@ export namespace Prisma {
     inCourseGroups?: CourseGroupUpdateManyWithoutBelongToCourseNestedInput
     category?: CategoryUpdateOneRequiredWithoutCoursesNestedInput
     instructor?: InstructorUpdateOneRequiredWithoutCoursesNestedInput
-    feedbacks?: FeedbackUpdateOneWithoutCourseNestedInput
+    feedbacks?: FeedbackUpdateManyWithoutCourseNestedInput
     learnerCourses?: LearnerCoursesUpdateManyWithoutCourseNestedInput
     transaction?: TransactionUpdateManyWithoutCourseNestedInput
   }
@@ -64928,7 +65050,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     chapter?: ChapterUncheckedUpdateManyWithoutBelongCourseNestedInput
     inCourseGroups?: CourseGroupUncheckedUpdateManyWithoutBelongToCourseNestedInput
-    feedbacks?: FeedbackUncheckedUpdateOneWithoutCourseNestedInput
+    feedbacks?: FeedbackUncheckedUpdateManyWithoutCourseNestedInput
     learnerCourses?: LearnerCoursesUncheckedUpdateManyWithoutCourseNestedInput
     transaction?: TransactionUncheckedUpdateManyWithoutCourseNestedInput
   }

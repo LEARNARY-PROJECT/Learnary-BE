@@ -8,8 +8,10 @@ export const createFeedback = async (data: {
 }) => {
     const checkExistingFeedback = await prisma.feedback.findUnique({
         where: {
-            course_id:data.course_id,
-            user_id:data.user_id
+            course_id_user_id: {
+                course_id: data.course_id,
+                user_id: data.user_id
+            }
         }
     })
     if(checkExistingFeedback) {
