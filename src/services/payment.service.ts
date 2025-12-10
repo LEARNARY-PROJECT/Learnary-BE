@@ -88,6 +88,138 @@ export const PaymentService = {
                     data: { status: TransactionStatus.Success }
                 });
 
+                console.log("✅ Đã cập nhật trạng thái transaction thành công:", updatedTrans.transaction_id);
+
+                // ⚠️ KIỂM TRA: Đây là thanh toán combo hay khóa học đơn?
+                const isComboPayment = !updatedTrans.course_id && updatedTrans.description?.includes('combo');
+                
+                if (isComboPayment) {
+                    // XỬ LÝ THANH TOÁN COMBO
+                    console.log("💼 Đây là thanh toán combo, bắt đầu enroll tất cả khóa học...");
+                    
+                    // Lấy group_id từ description (format: "Thanh toán combo: {name}")
+                    // Hoặc có thể lưu group_id vào field khác trong transaction
+                    // Tạm thời tìm combo qua description
+                    const groupMatches = await tx.group.findMany({
+                        include: {
+                            hasCourseGroup: {   
+                                include: {
+                                    belongToCourse: true
+                                }
+                            }
+                        }
+                    });
+
+                    let targetGroup = null;
+                    for (const group of groupMatches) {
+                        if (updatedTrans.description?.includes(group.name)) {
+                            targetGroup = group;
+                            break;
+                        }
+                    }
+
+                    if (!targetGroup) {
+                        console.log("❌ Không tìm thấy combo từ description");
+                        return;
+                    }
+
+                    console.log(`✅ Tìm thấy combo: ${targetGroup.name} với ${targetGroup.hasCourseGroup.length} khóa học`);
+
+                    // Tìm learner
+                    const learner = await tx.learner.findUnique({
+                        where: { user_id: updatedTrans.user_id }
+                    });
+
+                    if (!learner) {
+                        console.log(`❌ Không tìm thấy learner với user_id: ${updatedTrans.user_id}`);
+                        return;
+                    }
+
+                    // Enroll tất cả khóa học trong combo
+                    for (const cg of targetGroup.hasCourseGroup) {
+                        const exists = await tx.learnerCourses.findUnique({
+                            where: { 
+                                learner_id_course_id: { 
+                                    learner_id: learner.learner_id, 
+                                    course_id: cg.course_id
+                                } 
+                            }
+                        });
+
+                        if (!exists) {
+                            await tx.learnerCourses.create({
+                                data: {
+                                    learner_id: learner.learner_id,
+                                    course_id: cg.course_id,
+                                    status: CourseEnrollmentStatus.Enrolled,
+                                    progress: new Prisma.Decimal(0),
+                                    rating: 0,
+                                    feedback: '',
+                                    completedAt: new Date(0),
+                                    enrolledAt: new Date()
+                                }
+                            });
+                            console.log(`✅ Đã enroll khóa học: ${cg.belongToCourse.title}`);
+                        }
+                    }
+
+                    // Cộng tiền cho giảng viên của từng khóa học
+                    const totalPrice = Number(updatedTrans.amount);
+                    const pricePerCourse = totalPrice / targetGroup.hasCourseGroup.length;
+
+                    for (const cg of targetGroup.hasCourseGroup) {
+                        const instructor = await tx.instructor.findUnique({
+                            where: { instructor_id: cg.belongToCourse.instructor_id },
+                            include: { user: true }
+                        });
+
+                        if (instructor && instructor.user) {
+                            const platformFee = pricePerCourse * 0.1;
+                            const instructorAmount = pricePerCourse * 0.9;
+
+                            let instructorWallet = await tx.wallet.findUnique({
+                                where: { user_id: instructor.user_id }
+                            });
+
+                            if (!instructorWallet) {
+                                instructorWallet = await tx.wallet.create({
+                                    data: {
+                                        user_id: instructor.user_id,
+                                        balance: new Prisma.Decimal(0)
+                                    }
+                                });
+                            }
+
+                            await tx.wallet.update({
+                                where: { wallet_id: instructorWallet.wallet_id },
+                                data: { balance: { increment: instructorAmount } }
+                            });
+
+                            await tx.transaction.create({
+                                data: {
+                                    user_id: instructor.user_id,
+                                    wallet_id: instructorWallet.wallet_id,
+                                    course_id: cg.course_id,
+                                    amount: new Prisma.Decimal(instructorAmount),
+                                    currency: 'VND',
+                                    transaction_type: TransactionType.Deposit,
+                                    payment_method: TransactionMethod.Bank_Transfer,
+                                    status: TransactionStatus.Success,
+                                    note: TransactionNote.Pay_For_Instructor,
+                                    description: `Doanh thu combo "${targetGroup.name}" - Khóa: ${cg.belongToCourse.title}`,
+                                    payment_code: BigInt(Date.now() + Math.floor(Math.random()*10000))
+                                }
+                            });
+
+                            console.log(`✅ Đã cộng ${instructorAmount}đ vào ví GV ${instructor.user.fullName} cho khóa ${cg.belongToCourse.title}`);
+                        }
+                    }
+
+                    console.log("✅ Hoàn tất xử lý thanh toán combo!");
+                    return; // Kết thúc xử lý combo
+                }
+
+                // XỬ LÝ THANH TOÁN KHÓA HỌC ĐƠN (code gốc)
                 // ⚠️ KIỂM TRA course_id trước khi tiếp tục
                 if (!updatedTrans.course_id) {
                     return;
@@ -204,5 +336,87 @@ export const PaymentService = {
                 data: { status: TransactionStatus.Cancel }
             });
         }
+    },
+
+    // 4. Hàm tạo link thanh toán cho Combo
+    createComboPaymentLink: async (userId: string, groupId: string): Promise<string> => {
+        // Lấy thông tin combo/group
+        const group = await prisma.group.findUnique({ 
+            where: { group_id: groupId },
+            include: {
+                hasCourseGroup: {
+                    include: {
+                        belongToCourse: true
+                    }
+                }
+            }
+        });
+
+        if (!group) throw new Error("Combo không tồn tại");
+        if (!group.hasCourseGroup || group.hasCourseGroup.length === 0) {
+            throw new Error("Combo không có khóa học nào");
+        }
+
+        // Tính tổng giá gốc
+        const totalOriginalPrice = group.hasCourseGroup.reduce((sum, cg) => {
+            return sum + Number(cg.belongToCourse.price);
+        }, 0);
+
+        // Tính giá sau giảm
+        const discountedPrice = Math.round(totalOriginalPrice * (1 - Number(group.discount) / 100));
+
+        const orderCode = Number(String(Date.now()).slice(-6));
+
+        // Kiểm tra xem user đã mua combo chưa
+        const learner = await prisma.learner.findUnique({ where: { user_id: userId } });
+        
+        if (learner) {
+            // Kiểm tra xem đã mua tất cả khóa học trong combo chưa
+            for (const cg of group.hasCourseGroup) {
+                const alreadyEnrolled = await prisma.learnerCourses.findUnique({
+                    where: {
+                        learner_id_course_id: {
+                            learner_id: learner.learner_id,
+                            course_id: cg.course_id
+                        }
+                    }
+                });
+
+                if (alreadyEnrolled) {
+                    throw new Error(`Bạn đã sở hữu khóa học "${cg.belongToCourse.title}" trong combo này rồi!`);
+                }
+            }
+        }
+
+        // Tạo Transaction cho combo
+        await prisma.transaction.create({
+            data: {
+                user_id: userId,
+                course_id: null, // Combo không có course_id cụ thể
+                wallet_id: null,
+                amount: new Prisma.Decimal(discountedPrice),
+                currency: 'VND',
+                payment_method: TransactionMethod.Bank_Transfer,
+                transaction_type: TransactionType.Pay,
+                status: TransactionStatus.Pending,
+                note: TransactionNote.User_Pay,
+                description: `Thanh toán combo: ${group.name}`,
+                payment_code: BigInt(orderCode)
+            }
+        });
+
+        // Tạo body gửi sang PayOS
+        const paymentBody: CreatePaymentParams = {
+            orderCode: orderCode,
+            amount: discountedPrice,
+            description: "Thanh toan combo",
+            cancelUrl: `${process.env.FRONTEND_URL || 'http://localhost:3000'}/payment/cancel`,
+            returnUrl: `${process.env.FRONTEND_URL || 'http://localhost:3000'}/payment/success`
+        };
+
+        // Gọi PayOS
+        const response = await payOS.paymentRequests.create(paymentBody);
+        
+        return response.checkoutUrl;
     }
 };
