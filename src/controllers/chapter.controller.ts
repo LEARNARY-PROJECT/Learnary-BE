@@ -25,6 +25,14 @@ export const getById = async (req: Request, res: Response) => {
     res.status(500).json(failure("Failed to fetch chapter", e.message));
   }
 };
+// export const handMarkChapter = async (req:Request,res:Response) => {
+//   try {
+//       const chapterId = req.body 
+//       if()
+//   } catch (error) {
+//     res.status(500).json(failure("Failed to fetch chapter"));
+//   }
+// }
 
 export const getAll = async (_: Request, res: Response) => {
   try {

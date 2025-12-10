@@ -16,6 +16,38 @@ export const getLearnerCourseById = async (learner_id: string, course_id: string
     }
   });
 };
+export const getLearnerIdByUserId = (user_id:string) => {
+  return prisma.user.findUnique({
+    where: {
+      user_id:user_id
+    },
+    select: {
+      learner: {
+        select: {
+          learner_id:true
+        }
+      }
+    }
+  })
+} 
+export const VerifyLearnerCourse = async (user_id:string, course_id:string) => {
+  const learnerData = await getLearnerIdByUserId(user_id)
+  if(!learnerData) {
+    return null;
+  }
+  const learner_ids = learnerData.learner?.learner_id
+  if(!learner_ids) {
+    return null
+  }
+  return prisma.learnerCourses.findUnique({
+    where: {
+      learner_id_course_id : {
+        learner_id:learner_ids,
+        course_id:course_id
+      }
+    }
+  })
+}
 
 export const getAllLearnerCourses = async () => {
   return prisma.learnerCourses.findMany();

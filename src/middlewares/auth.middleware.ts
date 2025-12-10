@@ -40,8 +40,14 @@ export function authenticate(req: Request, res: Response, next: NextFunction): v
 export function optionalAuthenticate(req: Request, res: Response, next: NextFunction): void {
     const authHeader = req.headers.authorization;
 
-    if (!authHeader || !authHeader.startsWith('Bearer ')) {
-        // Không có token -> Cứ cho qua
+    if (!authHeader) {
+        // Không có header Authorization -> Cho qua
+        next();
+        return;
+    }
+
+    if (!authHeader.startsWith('Bearer ')) {
+        // Có header nhưng sai format -> Vẫn cho qua (không block)
         next();
         return;
     }

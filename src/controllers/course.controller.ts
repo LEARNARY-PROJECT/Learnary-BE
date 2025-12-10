@@ -1,6 +1,8 @@
 import { Request, Response, NextFunction } from 'express';
 import * as courseService from '../services/course.service';
 import prisma from "../lib/client";
+import { getInstructorByUserId, verifyInstructor } from '../services/instructor.service';
+import { error } from 'console';
 
 
 export const createDraft = async (req: Request, res: Response): Promise<void> => {
@@ -27,35 +29,35 @@ export const createDraft = async (req: Request, res: Response): Promise<void> =>
 export const getAll = async (_: Request, res: Response): Promise<void> => {
   try {
     const courses = await courseService.getAllCourses();
-    
+
     res.status(200).json({
-        success: true,
-        data: courses
+      success: true,
+      data: courses
     });
   } catch (error) {
     console.error("Error fetching admin courses:", error);
-    res.status(500).json({ 
-        message: 'Lấy danh sách khóa học thất bại', 
-        error: (error as Error).message 
+    res.status(500).json({
+      message: 'Lấy danh sách khóa học thất bại',
+      error: (error as Error).message
     });
   }
 };
-export const getCourseBySlug = async(req:Request, res:Response): Promise<void> => {
+export const getCourseBySlug = async (req: Request, res: Response): Promise<void> => {
   try {
     const slug = req.params.slug;
-    if(!slug) {
-      res.status(500).json({message:"Không thấy slug để truy vấn!"})
+    if (!slug) {
+      res.status(500).json({ message: "Không thấy slug để truy vấn!" })
       return
     }
     const course = await courseService.getCourseBySlug(slug);
-    if(!course) {
-      res.status(404).json({message:"Không thấy course với slug này!"})
+    if (!course) {
+      res.status(404).json({ message: "Không thấy course với slug này!" })
       return
     }
     res.status(200).json(course);
   } catch (error) {
-     console.error("Error in getById:", error);
-     res.status(500).json({ message: 'Lỗi khi lấy course id từ slug!', error: (error as Error).message });
+    console.error("Error in getById:", error);
+    res.status(500).json({ message: 'Lỗi khi lấy course id từ slug!', error: (error as Error).message });
   }
 }
 export const getById = async (req: Request, res: Response): Promise<void> => {
@@ -133,7 +135,6 @@ export const remove = async (req: Request, res: Response): Promise<void> => {
     }
 
     const isAdmin = user.role === 'ADMIN';
-    /* const isOwner = course.instructor_id === user.id; */
 
     if (!isAdmin/*  && !isOwner */) {
       res.status(403).json({ message: 'Bạn không có quyền xóa khóa học này.' });
@@ -201,8 +202,8 @@ export const reject = async (req: Request, res: Response): Promise<void> => {
   try {
     const { reason } = req.body;
     if (!reason || reason.trim() === '') {
-       res.status(400).json({ message: 'Vui lòng cung cấp lý do từ chối.' });
-       return;
+      res.status(400).json({ message: 'Vui lòng cung cấp lý do từ chối.' });
+      return;
     }
     const course = await courseService.rejectCourse(req.params.id, reason);
     res.json(course);
@@ -210,3 +211,33 @@ export const reject = async (req: Request, res: Response): Promise<void> => {
     res.status(500).json({ message: 'Từ chối khóa học thất bại', error: (error as Error).message });
   }
 };
+
+export const updateThumbnail = async (req: Request, res: Response) => {
+  try {
+    if (!req.file) {
+      res.status(400).json({ error: "No file selected" });
+      return;
+    }
+    const user_id = req.jwtPayload?.id;
+    const course_id = req.body.course_id;
+    if (!user_id) {
+      res.status(500).json({ message: "Không thể xác minh instructor" })
+      return
+    }
+    const instructor_id = getInstructorByUserId(user_id)
+    if (!instructor_id) {
+      res.status(500).json({ message: "Bạn không phải là giảng viên"})
+      return
+    }
+    if (!course_id|| !user_id || !req.file) {
+      res.status(404).json({ message: 'Thiếu dữ liệu truyền vào cần thiết!' });
+    }
+    const course = await courseService.uploadNewThumbnailToS3(user_id, course_id, req.file);
+    if (!course) {
+      res.status(500).json({ message: 'Cập nhật khóa học thất bại' });
+    }
+    res.json(course);
+  } catch (error) {
+    res.status(500).json({ message: 'Update thumbnail thất bại!', error: (error as Error).message });
+  }
+}

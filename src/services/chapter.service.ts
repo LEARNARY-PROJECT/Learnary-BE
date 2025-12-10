@@ -1,10 +1,9 @@
 import prisma from "../lib/client";
-import { Chapter } from'../generated/prisma'
+import { Chapter } from '../generated/prisma'
 
 export const createChapter = async (data: Omit<Chapter, 'chapter_id' | 'createAt' | 'updatedAt'>) => {
   return prisma.chapter.create({ data });
 };
-
 export const getChapterById = async (chapter_id: string) => {
   return prisma.chapter.findUnique({ where: { chapter_id } });
 };

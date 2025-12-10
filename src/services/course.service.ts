@@ -1,38 +1,45 @@
+import { Instructor } from './../generated/prisma/index.d';
 import prisma from "../lib/client";
 import { Course, CourseStatus } from '../generated/prisma'
 import { moveVideosToPermanent, deleteVideos } from './videoLesson.service';
 import type { CourseCreateDto, ChapterDto, LessonDto, QuizDto, QuestionDto, OptionDto } from '../types/course';
 import { CreateSlug, checkExistingSlug } from "../utils/slug";
+import { sliceHalfId } from "../utils/commons";
+import path from "path";
+import { S3_BUCKET_NAME, s3Client } from "../config/s3.config";
+import { PutObjectCommand } from "@aws-sdk/client-s3";
+import { getInstructorByUserId } from './instructor.service';
 export const getCourseBySlug = async (slugs: string): Promise<Course> => {
   if (!slugs) throw new Error('Không tìm thấy slug truyền vào!')
   const course = await prisma.course.findFirst({
     where: {
       slug: slugs
-    }, 
+    },
     include: {
-      category:true,
-      level:true,
+      category: true,
+      level: true,
       instructor: {
         include: {
-          user:true,
+          user: true,
         }
       },
       chapter: {
         include: {
-          lessons:true,
+          lessons: true,
           quiz: {
             include: {
-              questions:{
+              questions: {
                 include: {
-                  options:true,
-                  answers:true,
+                  options: true,
+                  answers: true,
                 }
               },
-              submissions:true
+              submissions: true
             }
           },
         }
-      }
+      },
+      feedbacks:true,
     }
   })
   if (!course) throw new Error('Không tìm thấy khóa học với slug này!')
@@ -74,8 +81,8 @@ export const getAllCourses = async () => {
         select: { learnerCourses: true }
       }
     },
-    
-    orderBy: { 
+
+    orderBy: {
       createdAt: 'desc' // Khóa học mới nhất lên đầu
     }
   });
@@ -112,7 +119,7 @@ export const getCourseById = (course_id: string) =>
       },
       feedbacks: true,
     },
-});
+  });
 
 export const getCoursesByInstructorId = async (userId: string) => {
   const instructor = await prisma.instructor.findUnique({
@@ -123,11 +130,11 @@ export const getCoursesByInstructorId = async (userId: string) => {
   return await prisma.course.findMany({
     where: { instructor_id: instructor.instructor_id },
     orderBy: { updatedAt: 'desc' },
-    include: { 
-      _count: { 
-        select: { chapter: true } 
+    include: {
+      _count: {
+        select: { chapter: true }
       },
-      level:true
+      level: true
     },
   });
 };
@@ -276,7 +283,6 @@ export const createDraftCourse = async (
     },
   });
 }
-
 
 export const updateDraftCourse = async (
   courseId: string,
@@ -482,11 +488,7 @@ export const getPendingCourses = () =>
     orderBy: { updatedAt: 'asc' },
   });
 
-/**
- * Approve course: Move videos from temporary_videos to videos folder
- */
 export const approveCourse = async (courseId: string) => {
-  // Get all lessons with temporary video URLs
   const course = await prisma.course.findUnique({
     where: { course_id: courseId, status: CourseStatus.Pending },
     include: {
@@ -582,3 +584,56 @@ export const rejectCourse = async (courseId: string, reason: string) => {
     return updatedCourse;
   });
 };
+export const updateThumbnail = async (
+  courseId: string,
+  userId: string,
+  thumbnailUrl: string,
+) => {
+  const instructorId = await getInstructorByUserId(userId);
+  if (!instructorId) {
+    throw new Error("Can not find instructor id with this user id")
+  }
+  const course = await getCourseById(courseId);
+  if (!course) {
+    throw new Error("Can not find course!")
+  }
+  return prisma.course.update({
+    where: {
+      course_id: courseId,
+    },
+    data: {
+      thumbnail: thumbnailUrl
+    }
+  })
+}
+export const uploadNewThumbnailToS3 = async (userId: string, courseId: string, file: Express.Multer.File | undefined) => {
+  if (!courseId || !file) {
+    throw new Error("Missing course id or file!")
+  }
+  const maxSize = 10 * 1024 * 1024 //10mb
+  const allowedType = ["image/jpg", "image/png"]
+  if (file.size > maxSize) {
+    throw new Error("File is not fit with required (>10MB)")
+  }
+  if (!allowedType.includes(file.mimetype)) {
+    throw new Error("File is not fit with required (ext file)")
+  }
+  const halfCourseId = sliceHalfId(courseId);
+  const fileExtension = path.extname(file.originalname).trim()
+  const fileName = `${halfCourseId}`
+  const s3Key = `thumbnail/${fileName}${fileExtension}`
+  try {
+    const uploadThumbnailParams = {
+      Bucket: S3_BUCKET_NAME,
+      Key: s3Key,
+      Body: file.buffer,
+      ContentType: file.mimetype
+    }
+    await s3Client.send(new PutObjectCommand(uploadThumbnailParams))
+    const thumbnailUrl = `https://${S3_BUCKET_NAME}.s3.amazonaws.com/${s3Key}`
+    const updatedThumbnail = await updateThumbnail(courseId, userId, thumbnailUrl);
+    return updatedThumbnail;
+  } catch (error) {
+    throw new Error("Error while compare URL thumbnail")
+  }
+}
