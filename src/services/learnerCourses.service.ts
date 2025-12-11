@@ -102,12 +102,24 @@ export const getCoursesByLearnerId = async (learner_id: string) => {
 };
 
 export const getCoursesByLearnerUserId = async (user_id: string) => {
-  const learner = await prisma.learner.findUnique({
+  let learner = await prisma.learner.findUnique({
     where: { user_id }
   });
 
   if (!learner) {
-    throw new Error('Learner not found');
+    // Auto-create learner if doesn't exist for LEARNER role users
+    const user = await prisma.user.findUnique({
+      where: { user_id },
+      select: { role: true }
+    });
+
+    if (user && user.role === 'LEARNER') {
+      learner = await prisma.learner.create({
+        data: { user_id }
+      });
+    } else {
+      throw new Error('Learner not found');
+    }
   }
 
   return getCoursesByLearnerId(learner.learner_id);

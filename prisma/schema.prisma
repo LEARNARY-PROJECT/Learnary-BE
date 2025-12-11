@@ -41,6 +41,8 @@ model User {
   instructor_qualifications InstructorQualifications[]
   specializations           Specialization[]
   withdraw_request          WithdrawRequest[]
+  lessonProgress            LessonProgress[]
+  chapterProgress           ChapterProgress[]
 
   @@index([email], name: "idx_user_email")
   @@index([role], name: "idx_user_role")
@@ -473,9 +475,10 @@ model Chapter {
   createAt      DateTime @default(now())
   updatedAt     DateTime @updatedAt
 
-  belongCourse Course   @relation(fields: [course_id], references: [course_id], onDelete: Cascade)
-  lessons      Lesson[]
-  quiz         Quiz?
+  belongCourse     Course             @relation(fields: [course_id], references: [course_id], onDelete: Cascade)
+  lessons          Lesson[]
+  quiz             Quiz?
+  chapterProgress  ChapterProgress[]
 
   @@index([course_id], name: "idx_section_course")
   @@index([course_id, order_index], name: "idx_section_order")
@@ -496,12 +499,41 @@ model Lesson {
   createAt  DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  belongChapter Chapter @relation(fields: [chapter_id], references: [chapter_id], onDelete: Cascade)
-  notes         Note[]
+  belongChapter    Chapter           @relation(fields: [chapter_id], references: [chapter_id], onDelete: Cascade)
+  notes            Note[]
+  lessonProgress   LessonProgress[]
 
   @@index([chapter_id], name: "idx_lesson_section")
   @@index([chapter_id, order_index], name: "idx_lesson_order")
   @@map("lessons")
+}
+
+model LessonProgress {
+  id           String    @id @default(uuid())
+  user_id      String    @db.Char(50)
+  lesson_id    String    @db.Char(50)
+  is_completed Boolean   @default(false)
+  completed_at DateTime?
+
+  user   User   @relation(fields: [user_id], references: [user_id], onDelete: Restrict)
+  lesson Lesson @relation(fields: [lesson_id], references: [lesson_id], onDelete: Restrict)
+
+  @@unique([user_id, lesson_id])
+  @@map("LessonProgress")
+}
+
+model ChapterProgress {
+  id           String    @id @default(uuid())
+  user_id      String    @db.Char(50)
+  chapter_id   String    @db.Char(50)
+  is_completed Boolean   @default(false)
+  completed_at DateTime?
+
+  user    User    @relation(fields: [user_id], references: [user_id], onDelete: Restrict)
+  chapter Chapter @relation(fields: [chapter_id], references: [chapter_id], onDelete: Restrict)
+
+  @@unique([user_id, chapter_id])
+  @@map("ChapterProgress")
 }
 
 model Note {
