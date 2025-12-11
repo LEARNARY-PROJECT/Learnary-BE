@@ -3456,6 +3456,154 @@
         }
       }
     },
+    "/api/favorites/add": {
+      "post": {
+        "summary": "Add a course to favorites",
+        "tags": [
+          "Favorites"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "userId",
+                  "courseId"
+                ],
+                "properties": {
+                  "userId": {
+                    "type": "string"
+                  },
+                  "courseId": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Added to favorites successfully"
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/favorites/remove": {
+      "delete": {
+        "summary": "Remove a course from favorites",
+        "tags": [
+          "Favorites"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "userId",
+                  "courseId"
+                ],
+                "properties": {
+                  "userId": {
+                    "type": "string"
+                  },
+                  "courseId": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Removed from favorites successfully"
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/favorites/{userId}": {
+      "get": {
+        "summary": "Get all favorite courses of a user",
+        "tags": [
+          "Favorites"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "userId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of favorite courses"
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/favorites/check/{userId}/{courseId}": {
+      "get": {
+        "summary": "Check if a course is in user's favorites",
+        "tags": [
+          "Favorites"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "userId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "courseId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Check result"
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
     "/api/feedbacks/{courseId}": {
       "get": {
         "summary": "Get feedback for a specific course",
@@ -4516,6 +4664,101 @@
           },
           "401": {
             "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/instructor/stats/overview/{userId}": {
+      "get": {
+        "summary": "Lấy tổng quan thống kê của giảng viên",
+        "tags": [
+          "Instructor Stats"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Thống kê tổng quan"
+          },
+          "400": {
+            "description": "Thiếu thông tin userId"
+          },
+          "500": {
+            "description": "Lỗi server"
+          }
+        }
+      }
+    },
+    "/api/instructor/stats/revenue/{userId}": {
+      "get": {
+        "summary": "Lấy doanh thu theo tháng (7 tháng gần nhất)",
+        "tags": [
+          "Instructor Stats"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Dữ liệu doanh thu theo tháng"
+          },
+          "400": {
+            "description": "Thiếu thông tin userId"
+          },
+          "500": {
+            "description": "Lỗi server"
+          }
+        }
+      }
+    },
+    "/api/instructor/stats/enrollments/{userId}": {
+      "get": {
+        "summary": "Lấy các đăng ký khóa học gần đây",
+        "tags": [
+          "Instructor Stats"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 5
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Danh sách đăng ký gần đây"
+          },
+          "400": {
+            "description": "Thiếu thông tin userId"
+          },
+          "500": {
+            "description": "Lỗi server"
           }
         }
       }
