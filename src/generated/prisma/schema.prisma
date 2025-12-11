@@ -8,85 +8,6 @@ datasource db {
   provider = "postgresql"
 }
 
-enum Role {
-  LEARNER
-  INSTRUCTOR
-  ADMIN
-}
-
-enum Status {
-  Active
-  Inactive
-  Suspended
-}
-
-enum ApprovalStatus {
-  Pending
-  Approved
-  Rejected
-}
-
-enum QualificationType {
-  Degree
-  Certificate
-}
-
-enum CourseEnrollmentStatus {
-  Enrolled
-  Completed
-  Cancelled
-  Progressing
-}
-
-enum CourseStatus {
-  Draft
-  Published
-  Pending
-  Archived
-}
-
-enum LanguageOptions {
-  English
-  Vietnamese
-}
-
-enum TransactionType {
-  Withdraw
-  Deposit
-  Pay
-  Refund
-}
-
-enum TransactionMethod {
-  Credit_Card
-  Voucher
-  Bank_Transfer
-  PayPal
-}
-
-enum TransactionStatus {
-  Pending
-  Success
-  Cancel
-  Refund
-}
-
-enum WithdrawStatus {
-  Success
-  Pending
-  Rejected
-}
-
-enum TransactionNote {
-  User_Pay
-  Pay_For_Instructor
-}
-
-enum GroupType {
-  Combo
-  Group
-}
-
 model User {
   user_id     String    @id @default(uuid()) @db.Char(50)
   email       String    @unique @db.Char(50)
@@ -288,11 +209,11 @@ model Wallet {
 }
 
 model Transaction {
-  transaction_id String  @id @default(uuid()) @db.Char(50)
+  transaction_id String @id @default(uuid()) @db.Char(50)
   course_id      String? @db.Char(50)
-  user_id        String  @db.Char(50)
+  user_id        String @db.Char(50)
   wallet_id      String? @db.Char(50)
-  payment_code   BigInt  @unique
+  payment_code   BigInt @unique
 
   transaction_type TransactionType
   commission_rate  Decimal?          @db.Decimal(5, 2)
@@ -308,7 +229,7 @@ model Transaction {
   createdAt        DateTime          @default(now())
   updatedAt        DateTime          @updatedAt
 
-  course Course? @relation(fields: [course_id], references: [course_id])
+  course Course?  @relation(fields: [course_id], references: [course_id])
   user   User    @relation(fields: [user_id], references: [user_id], onDelete: Cascade)
   wallet Wallet? @relation(fields: [wallet_id], references: [wallet_id])
 
@@ -332,27 +253,25 @@ model Admin {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  user                       User                        @relation(fields: [user_id], references: [user_id], onDelete: Cascade)
-  adminRole                  AdminRole                   @relation(fields: [admin_role_id], references: [admin_role_id])
-  instructorSpecializations  InstructorSpecializations[]
+  user                      User                        @relation(fields: [user_id], references: [user_id], onDelete: Cascade)
+  adminRole                 AdminRole                   @relation(fields: [admin_role_id], references: [admin_role_id])
+  instructorSpecializations InstructorSpecializations[]
   withdraw_request_processed WithdrawRequest[]
 
   @@index([admin_role_id], name: "idx_admin_role")
   @@map("admins")
 }
-
 model ResourceType {
-  resource_id   String                 @id @default(uuid()) @db.Char(50)
-  resource_name String                 @unique
-  permissions   PermissionOnResource[]
+  resource_id String @id @default(uuid()) @db.Char(50)
+  resource_name String @unique
+  permissions PermissionOnResource[]
 
   @@map("resource_types")
 }
-
 model AdminRole {
   admin_role_id String @id @default(uuid()) @db.Char(50)
 
-  level     Int
+  level Int
   role_name String   @unique @db.VarChar(255)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -362,7 +281,6 @@ model AdminRole {
 
   @@map("admin_roles")
 }
-
 model Permission {
   permission_id String @id @default(uuid()) @db.Char(50)
 
@@ -371,12 +289,11 @@ model Permission {
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
 
-  adminRoles AdminRolePermission[]  @relation("PermissionToAdminRole")
+  adminRoles AdminRolePermission[] @relation("PermissionToAdminRole")
   resources  PermissionOnResource[]
 
   @@map("permissions")
 }
-
 model PermissionOnResource {
   id             String @id @default(uuid())
   permissionId   String @db.Char(50)
@@ -402,7 +319,7 @@ model AdminRolePermission {
   updatedAt DateTime @updatedAt
 
   permission       Permission @relation("PermissionToAdminRole", fields: [permission_id], references: [permission_id])
-  roleToPermission AdminRole  @relation("RoleToPermission", fields: [admin_role_id], references: [admin_role_id])
+  roleToPermission AdminRole @relation("RoleToPermission", fields: [admin_role_id], references: [admin_role_id])
 
   @@id([permission_id, admin_role_id])
   @@index([admin_role_id], name: "idx_arp_role")
@@ -410,46 +327,43 @@ model AdminRolePermission {
 }
 
 model AccountSecurity {
-  account_security_id   String    @id @default(uuid()) @db.Char(50)
-  user_id               String    @unique @db.Char(50)
-  email_verified        Boolean   @default(false)
-  failed_login_attempts Int       @db.Integer
-  verification_token    String?   @db.VarChar(255)
+  account_security_id   String   @id @default(uuid()) @db.Char(50)
+  user_id               String   @unique @db.Char(50)
+  email_verified        Boolean  @default(false)
+  failed_login_attempts Int      @db.Integer
+  verification_token    String?  @db.VarChar(255)
   token_expires_at      DateTime?
-  createdAt             DateTime  @default(now())
-  updatedAt             DateTime  @updatedAt
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
 
   user User @relation(fields: [user_id], references: [user_id], onDelete: Cascade)
 
   @@map("account_securities")
 }
-
 model Group {
-  group_id String @id @default(uuid()) @db.Char(50)
-
-  name        String
+  group_id String @id @db.Char(50) @default(uuid())
+  
+  name String 
   description String
-  type        GroupType @default(Group)
-  discount    Decimal   @db.Decimal(5, 2)
+  type GroupType @default(Group)
+  discount Decimal @db.Decimal(5,2)
 
   hasCourseGroup CourseGroup[]
 
   createdAt DateTime @default(now())
-  updateAt  DateTime @updatedAt
-
+  updateAt DateTime @updatedAt
   @@map("groups")
 }
-
 model CourseGroup {
-  group_id    String @db.Char(50)
-  course_id   String @db.Char(50)
+  group_id String  @db.Char(50) 
+  course_id String  @db.Char(50) 
   order_index Int
 
-  belongToGroup  Group  @relation(fields: [group_id], references: [group_id], onDelete: Cascade, onUpdate: Cascade)
-  belongToCourse Course @relation(fields: [course_id], references: [course_id], onDelete: Cascade, onUpdate: Cascade)
+  belongToGroup Group @relation(fields: [group_id],references: [group_id],onDelete: Cascade, onUpdate: Cascade)
+  belongToCourse Course @relation(fields: [course_id],references: [course_id],onDelete: Cascade, onUpdate: Cascade)
 
   createdAt DateTime @default(now())
-  updateAt  DateTime @updatedAt
+  updateAt DateTime @updatedAt
 
   @@id([course_id, group_id])
   @@map("course_groups")
@@ -604,25 +518,23 @@ model Note {
 
   @@map("notes")
 }
-
 model WithdrawRequest {
   withdraw_request_id String @id @default(ulid()) @db.Char(50)
-  user_id             String
-  admin_id            String
+  user_id String 
+  admin_id String 
 
-  status  WithdrawStatus @default(Pending)
-  note    String         @db.VarChar(255)
-  balance Decimal        @db.Decimal(10, 2)
+  status WithdrawStatus @default(Pending)
+  note String @db.VarChar(255)
+  balance Decimal @db.Decimal(10,2)
 
-  belongUser User  @relation(fields: [user_id], references: [user_id], onDelete: Cascade, onUpdate: Cascade)
-  admin      Admin @relation(fields: [admin_id], references: [admin_id], onDelete: Cascade, onUpdate: Cascade)
+  belongUser User @relation(fields: [user_id],references: [user_id],onDelete: Cascade,onUpdate: Cascade)
+  admin Admin @relation(fields: [admin_id],references: [admin_id],onDelete: Cascade,onUpdate: Cascade)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   @@map("withdraw_requests")
 }
-
 model Feedback {
   id        String  @id @default(uuid()) @db.Char(50)
   course_id String  @unique @db.Char(50)
@@ -724,6 +636,7 @@ model Submission {
   updatedAt    DateTime @updatedAt
   submittedAt  DateTime @default(now())
 
+
   belongQuiz Quiz     @relation(fields: [quiz_id], references: [quiz_id], onDelete: Cascade)
   belongUser User     @relation(fields: [user_id], references: [user_id], onDelete: Cascade)
   answer     Answer[]
@@ -749,4 +662,83 @@ model Favorite {
   @@index([learner_id], name: "idx_favorite_learner")
   @@index([course_id], name: "idx_favorite_course")
   @@map("favorites")
+}
+
+enum Role {
+  LEARNER
+  INSTRUCTOR
+  ADMIN
+}
+
+enum Status {
+  Active
+  Inactive
+  Suspended
+}
+
+enum ApprovalStatus {
+  Pending
+  Approved
+  Rejected
+}
+
+enum QualificationType {
+  Degree
+  Certificate
+}
+
+enum CourseEnrollmentStatus {
+  Enrolled
+  Completed
+  Cancelled
+  Progressing
+}
+
+enum CourseStatus {
+  Draft
+  Published
+  Pending
+  Archived
+}
+
+enum LanguageOptions {
+  English
+  Vietnamese
+}
+
+enum TransactionType {
+  Withdraw
+  Deposit
+  Pay
+  Refund
+}
+
+enum TransactionMethod {
+  Credit_Card
+  Voucher
+  Bank_Transfer
+  PayPal
+}
+
+enum TransactionStatus {
+  Pending
+  Success
+  Cancel
+  Refund
+}
+
+enum WithdrawStatus {
+  Success
+  Pending
+  Rejected
+}
+
+enum TransactionNote {
+  User_Pay
+  Pay_For_Instructor
+}
+
+enum GroupType {
+  Combo
+  Group
 }

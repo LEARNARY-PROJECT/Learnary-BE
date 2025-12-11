@@ -1,6 +1,6 @@
 import express from "express";
 import { authenticate, authorizeRoles } from "../middlewares/auth.middleware";
-import { create, getAll, getById, update, remove, getCoursesByLearner, getMyCourses } from "../controllers/learnerCourses.controller";
+import { create, getAll, getById, update, remove, getCoursesByLearner, getMyCourses, verifyLearnerCourseC } from "../controllers/learnerCourses.controller";
 
 const router = express.Router();
 
@@ -41,7 +41,7 @@ router.get("/learner-courses/my-courses", authenticate, getMyCourses);
  *         description: Missing learner_id
  */
 router.get("/learner-courses/learner/:learner_id", authenticate, authorizeRoles("ADMIN"), getCoursesByLearner);
-
+router.get("/learner-courses/verifyLearnerCourse/:id",authenticate,verifyLearnerCourseC);
 /**
  * @openapi
  * /api/leanrer-courses:

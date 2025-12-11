@@ -40,11 +40,26 @@ export const getAll = async (_: Request, res: Response) => {
     res.status(500).json(failure("Failed to fetch leanrerCourses", e.message));
   }
 };
-
+export const verifyLearnerCourseC = async (req: Request, res: Response) => {
+  try {
+    const course_id = req.params.id
+    if(!course_id || !req.jwtPayload) {
+      return res.status(404).json(failure("Missing field required"))
+    } 
+    const learnerCourse = await LearnerCoursesService.VerifyLearnerCourse(req.jwtPayload?.id, course_id);
+    if(learnerCourse) {
+      return res.status(200).json(success(learnerCourse,"Accepted."))
+    } else { 
+      return res.status(403).json(failure("You don't have permission to access this course!"))
+    }
+  } catch (error) {
+    const e = error as Error;
+    res.status(500).json(failure("Failed to fetch leanrerCourses", e.message));
+  }
+}
 export const getCoursesByLearner = async (req: Request, res: Response) => {
   try {
     const { learner_id } = req.params;
-    
     if (!learner_id) {
       return res.status(400).json(failure("learner_id is required"));
     }

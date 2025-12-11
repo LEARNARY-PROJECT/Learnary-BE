@@ -53,7 +53,6 @@ export const sendOTPEmail = async (userId: string): Promise<string> => {
   });
 
   await sendVerificationEmail(user.email, otp);
-
   return otp; 
 };
 
@@ -144,6 +143,8 @@ export const verifyEmailWithToken = async (userId: string, token: string): Promi
 
   return updatedUser;
 };
+
+
 
 export const verifyEmail = async (userId: string): Promise<User> => {
   const user = await getUserById(userId);

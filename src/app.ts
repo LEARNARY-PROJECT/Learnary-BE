@@ -40,6 +40,8 @@ import groupRoutes from "./routes/group.routes";
 import courseGroupRoutes from "./routes/courseGroup.routes";
 import favoriteRoutes from "./routes/favorite.routes";
 import instructorStatsRoutes from "./routes/instructorStats.routes";
+import lessonProgressRoutes from "./routes/lessonProgress.routes";
+import chapterProgressRoutes from "./routes/chapterProgress.routes";
 import passport from "passport";
 import "./lib/passport";
 import cookieParser from "cookie-parser";
@@ -110,6 +112,8 @@ app.use("/api", levelRoutes);
 app.use("/api", learnerCoursesRoutes);
 app.use("/api", chapterRoutes);
 app.use("/api", lessonRoutes);
+app.use("/api", lessonProgressRoutes);
+app.use("/api", chapterProgressRoutes);
 app.use("/api", noteRoutes);
 app.use("/api", quizRoutes);
 app.use("/api", questionRoutes);
@@ -143,8 +147,8 @@ app.get("/", (_, res) => {
   });
 });
 async function repareResourceSystem() {
-  await createDefaultUserIfNoneExists();
   await seedResourceTypes();
+  await createDefaultUserIfNoneExists();
 }
 async function startServer() {
   try {

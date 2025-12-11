@@ -5,34 +5,107 @@ import type { Role, Wallet } from '../generated/prisma'
 import { S3_BUCKET_NAME, s3Client } from '../config/s3.config';
 import { PutObjectCommand, DeleteObjectCommand } from '@aws-sdk/client-s3';
 import path from 'path';
-import { sliceHalfUserId } from "../utils/commons";
+import { sliceHalfId } from "../utils/commons";
+
 export const createDefaultUserIfNoneExists = async () => {
-  // Kiểm tra xem admin đã tồn tại chưa
-  const existingAdmin = await prisma.user.findUnique({
-    where: { email: "admin@example.com" }
+  const existingSuperAdmin = await prisma.user.findUnique({
+    where: { email: "superadmin@admin.com" }
   });
 
-  if (existingAdmin) {
-    console.log("Default admin user already exists");
+  if (existingSuperAdmin) {
     return;
   }
 
-  const adminCount = await prisma.user.count({
-    where: { role: "ADMIN" }
-  });
-
-  if (adminCount === 0) {
-    const hashedPassword = await bcryptjs.hash("admin123", 10);
-    await prisma.user.create({
-      data: {
-        email: "admin@example.com",
-        password: hashedPassword,
-        fullName: "Admin User",
-        role: "ADMIN",
-      },
+  await prisma.$transaction(async (tx) => {
+    let allResource = await tx.resourceType.findUnique({
+      where: { resource_name: "ALL" }
     });
-    console.log("Default admin user created");
-  }
+
+    if (!allResource) {
+      allResource = await tx.resourceType.create({
+        data: { resource_name: "ALL" }
+      });
+    }
+
+    let superPermission = await tx.permission.findUnique({
+      where: { permission_name: "Super Permission" }
+    });
+
+    if (!superPermission) {
+      superPermission = await tx.permission.create({
+        data: {
+          permission_name: "Super Permission",
+          description: "Full access to all resources"
+        }
+      });
+    }
+
+    const existingPermissionOnResource = await tx.permissionOnResource.findUnique({
+      where: {
+        permissionId_resourceTypeId: {
+          permissionId: superPermission.permission_id,
+          resourceTypeId: allResource.resource_id
+        }
+      }
+    });
+
+    if (!existingPermissionOnResource) {
+      await tx.permissionOnResource.create({
+        data: {
+          permissionId: superPermission.permission_id,
+          resourceTypeId: allResource.resource_id
+        }
+      });
+    }
+
+    let superAdminRole = await tx.adminRole.findUnique({
+      where: { role_name: "Super Admin" }
+    });
+
+    if (!superAdminRole) {
+      superAdminRole = await tx.adminRole.create({
+        data: {
+          role_name: "Super Admin",
+          level: 1
+        }
+      });
+    }
+
+    const existingAdminRolePermission = await tx.adminRolePermission.findUnique({
+      where: {
+        permission_id_admin_role_id: {
+          permission_id: superPermission.permission_id,
+          admin_role_id: superAdminRole.admin_role_id
+        }
+      }
+    });
+
+    if (!existingAdminRolePermission) {
+      await tx.adminRolePermission.create({
+        data: {
+          permission_id: superPermission.permission_id,
+          admin_role_id: superAdminRole.admin_role_id
+        }
+      });
+    }
+
+    const hashedPassword = await bcryptjs.hash("123456", 10);
+    const superAdminUser = await tx.user.create({
+      data: {
+        email: "superadmin@admin.com",
+        password: hashedPassword,
+        fullName: "Super Admin",
+        role: "ADMIN"
+      }
+    });
+
+    await tx.admin.create({
+      data: {
+        user_id: superAdminUser.user_id,
+        admin_role_id: superAdminRole.admin_role_id
+      }
+    });
+  });
 };
 
 export const createUser = async (
@@ -179,7 +252,7 @@ export const uploadAvatarToS3 = async (userId: string, file: Express.Multer.File
   if (!user) {
     throw new Error("User not found")
   }
-  const halfUserId = sliceHalfUserId(userId)
+  const halfUserId = sliceHalfId(userId)
   // 1 user = 1 link url avatar 
   const fileExtension = path.extname(file.originalname)
   const fileName = `${halfUserId}${fileExtension}`
@@ -253,7 +326,22 @@ export const getInactiveUsers = async (daysAgo: number = 30): Promise<User[]> =>
     },
   });
 };
-
+export const getUserIdByEmail = async (email:string) => {
+  if(!email) return null
+  try {
+    const user = await prisma.user.findUnique({
+      where: {
+        email,
+      },
+      select: {
+        user_id:true
+      }
+    })
+    return user?.user_id
+  } catch (error) {
+    return null
+  }
+}
 export const getFullUserProfile = async (userId: string) => {
   return prisma.user.findUnique({
     where: { user_id: userId },

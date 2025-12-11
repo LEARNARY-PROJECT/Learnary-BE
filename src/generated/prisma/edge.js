@@ -318,7 +318,8 @@ exports.Prisma.CategoryScalarFieldEnum = {
   category_name: 'category_name',
   slug: 'slug',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  is_verified: 'is_verified'
 };
 
 exports.Prisma.LevelScalarFieldEnum = {
@@ -356,7 +357,6 @@ exports.Prisma.LessonScalarFieldEnum = {
   chapter_id: 'chapter_id',
   title: 'title',
   video_url: 'video_url',
-  isCompleted: 'isCompleted',
   duration: 'duration',
   slug: 'slug',
   order_index: 'order_index',
@@ -400,7 +400,22 @@ exports.Prisma.QuizScalarFieldEnum = {
   title: 'title',
   slug: 'slug',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  is_completed: 'is_completed'
+};
+
+exports.Prisma.LessonProgressScalarFieldEnum = {
+  user_id: 'user_id',
+  lesson_id: 'lesson_id',
+  is_completed: 'is_completed',
+  completed_at: 'completed_at'
+};
+
+exports.Prisma.ChapterProgressScalarFieldEnum = {
+  user_id: 'user_id',
+  chapter_id: 'chapter_id',
+  is_completed: 'is_completed',
+  completed_at: 'completed_at'
 };
 
 exports.Prisma.QuestionScalarFieldEnum = {
@@ -573,6 +588,8 @@ exports.Prisma.ModelName = {
   WithdrawRequest: 'WithdrawRequest',
   Feedback: 'Feedback',
   Quiz: 'Quiz',
+  LessonProgress: 'LessonProgress',
+  ChapterProgress: 'ChapterProgress',
   Question: 'Question',
   Options: 'Options',
   Answer: 'Answer',

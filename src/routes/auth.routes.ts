@@ -1,7 +1,18 @@
 // src/routes/auth.route.ts
 import express from 'express';
 import passport from 'passport';
-import { register, login, handleGoogleCallback,handleRefreshToken, handleLogout } from '../controllers/auth.controller';
+import { 
+  register, 
+  login, 
+  handleGoogleCallback,
+  handleRefreshToken, 
+  handleLogout, 
+  changePasswordC,
+  forgotPassword,
+  verifyOTP,
+  resetPassword
+} from '../controllers/auth.controller';
+import { authenticate } from '../middlewares/auth.middleware';
 
 const router = express.Router();
 
@@ -86,6 +97,101 @@ router.get(
   })
 );
 
+/**
+ * @openapi
+ * /api/auth/forgot-password:
+ *   post:
+ *     summary: Send OTP to email for password recovery
+ *     tags: [Auth]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - email
+ *             properties:
+ *               email:
+ *                 type: string
+ *                 example: user@example.com
+ *     responses:
+ *       200:
+ *         description: OTP sent successfully
+ *       400:
+ *         description: Email is required
+ *       500:
+ *         description: Error sending OTP
+ */
+router.post('/forgot-password', forgotPassword);
+
+/**
+ * @openapi
+ * /api/auth/verify-otp:
+ *   post:
+ *     summary: Verify OTP for password recovery
+ *     tags: [Auth]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - email
+ *               - otp
+ *             properties:
+ *               email:
+ *                 type: string
+ *                 example: user@example.com
+ *               otp:
+ *                 type: string
+ *                 example: "123456"
+ *     responses:
+ *       200:
+ *         description: OTP verified successfully
+ *       400:
+ *         description: Invalid or expired OTP
+ */
+router.post('/verify-otp', verifyOTP);
+
+/**
+ * @openapi
+ * /api/auth/reset-password:
+ *   post:
+ *     summary: Reset password after OTP verification
+ *     tags: [Auth]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - email
+ *               - newPassword
+ *             properties:
+ *               email:
+ *                 type: string
+ *                 example: user@example.com
+ *               newPassword:
+ *                 type: string
+ *                 example: newsecurepassword123
+ *     responses:
+ *       200:
+ *         description: Password reset successfully
+ *       400:
+ *         description: Invalid request
+ *       500:
+ *         description: Error resetting password
+ */
+router.post('/reset-password', resetPassword);
+
+router.put(
+  '/changePassword',
+  authenticate,
+  changePasswordC,
+)
 /**
  * @openapi
  * /api/auth/google/callback:

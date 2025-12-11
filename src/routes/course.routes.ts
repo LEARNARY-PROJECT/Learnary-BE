@@ -1,6 +1,7 @@
 import express from 'express';
 import { authenticate, authorizeRoles, optionalAuthenticate } from '../middlewares/auth.middleware';
 import * as ControllerCourse from '../controllers/course.controller';
+import upload from '../config/multer.config';
 
 const router = express.Router();
 /**
@@ -242,7 +243,12 @@ router.post(
   ControllerCourse.submitApproval,
 );
 
-
+router.put(
+  '/courses/updateThumbnail',
+  upload.single('file'),
+  authorizeRoles("ADMIN","INSTRUCTOR"),
+  ControllerCourse.updateThumbnail
+)
 /**
  * @openapi
  * /api/courses/admin/approve/{id}:
