@@ -143,6 +143,7 @@ model Learner {
 
   user            User             @relation(fields: [user_id], references: [user_id], onDelete: Cascade)
   learner_courses LearnerCourses[]
+  favorites       Favorite[]
 
   @@map("learners")
 }
@@ -479,6 +480,7 @@ model Course {
   learnerCourses LearnerCourses[]
   chapter        Chapter[]
   inCourseGroups CourseGroup[]
+  favorites      Favorite[]
   level          Level            @relation(fields: [level_id], references: [level_id], onDelete: Cascade)
   category       Category         @relation(fields: [category_id], references: [category_id], onDelete: Cascade)
   instructor     Instructor       @relation(fields: [instructor_id], references: [instructor_id], onDelete: Cascade)
@@ -732,4 +734,19 @@ model Submission {
   @@index([quiz_id, user_id], name: "idx_submission_unique")
   @@index([submittedAt], name: "idx_submission_date")
   @@map("submissions")
+}
+
+model Favorite {
+  favorite_id String   @id @default(uuid()) @db.Char(50)
+  learner_id  String   @db.Char(50)
+  course_id   String   @db.Char(50)
+  createdAt   DateTime @default(now())
+
+  learner Learner @relation(fields: [learner_id], references: [learner_id], onDelete: Cascade)
+  course  Course  @relation(fields: [course_id], references: [course_id], onDelete: Cascade)
+
+  @@unique([learner_id, course_id])
+  @@index([learner_id], name: "idx_favorite_learner")
+  @@index([course_id], name: "idx_favorite_course")
+  @@map("favorites")
 }

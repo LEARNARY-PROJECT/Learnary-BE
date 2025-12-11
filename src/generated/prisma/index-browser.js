@@ -471,6 +471,13 @@ exports.Prisma.SubmissionScalarFieldEnum = {
   submittedAt: 'submittedAt'
 };
 
+exports.Prisma.FavoriteScalarFieldEnum = {
+  favorite_id: 'favorite_id',
+  learner_id: 'learner_id',
+  course_id: 'course_id',
+  createdAt: 'createdAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -597,7 +604,8 @@ exports.Prisma.ModelName = {
   Question: 'Question',
   Options: 'Options',
   Answer: 'Answer',
-  Submission: 'Submission'
+  Submission: 'Submission',
+  Favorite: 'Favorite'
 };
 
 /**
