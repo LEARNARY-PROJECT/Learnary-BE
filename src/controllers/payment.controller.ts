@@ -18,8 +18,6 @@ export const PaymentController = {
 
         } catch (error) {
             const err = error as Error;
-            console.error("Error creating payment link:", err.message);
-            
             // Trả về 400 nếu lỗi do logic (ví dụ: đã mua rồi), 500 nếu lỗi hệ thống
             return res.status(500).json({ error: err.message });
         }
