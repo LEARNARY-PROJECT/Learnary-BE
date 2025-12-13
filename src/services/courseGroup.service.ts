@@ -103,7 +103,28 @@ export const getCoursesByGroupId = async (groupId: string) => {
     }
   });
 };
-
+export const findCourseInGroupService = async (courseId:string) => {
+  if(!courseId) {
+    throw new Error("Not found this course")
+  }
+  try {
+    return await prisma.courseGroup.findMany({
+      where: {
+        course_id:courseId.trim()
+      },
+      include: {
+        belongToGroup: {
+          select: {
+            group_id:true
+          }
+        }
+      }
+    })
+  } catch (error) {
+    console.log(error)
+    return
+  }
+}
 export const updateCourseOrderInGroup = async (
   groupId: string,
   courseId: string,

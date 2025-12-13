@@ -1,6 +1,20 @@
 import { Request, Response } from 'express';
 import * as CourseGroupService from '../services/courseGroup.service';
+import { failure, success } from '../utils/response';
 
+export const findCourseInGroupController = async (req: Request, res: Response) => {
+  try {
+    const course_id = req.params.course_id;
+    if(!course_id) {
+      return res.status(500).json(failure("Missing field required"))
+    }
+    const data = await CourseGroupService.findCourseInGroupService(course_id);
+    return res.status(200).json(success(data))
+  } catch (error) {
+    const err = error as Error;
+    return res.status(500).json({ error: err.message });
+  }
+}
 export const addCourseToGroup = async (req: Request, res: Response) => {
   try {
     const { group_id, course_id, order_index } = req.body;
