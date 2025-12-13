@@ -1,6 +1,6 @@
 import express from 'express';
 import * as CourseGroupController from '../controllers/courseGroup.controller';
-import { authenticate, authorizeRoles } from '../middlewares/auth.middleware';
+import { authenticate, authorizeRoles, optionalAuthenticate } from '../middlewares/auth.middleware';
 
 const router = express.Router();
 
@@ -22,6 +22,7 @@ const router = express.Router();
  */
 router.get(
   '/course-groups/:groupId/courses',
+  optionalAuthenticate,
   CourseGroupController.getCoursesByGroupId
 );
 router.get(

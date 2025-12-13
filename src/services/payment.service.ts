@@ -8,6 +8,12 @@ export const PaymentService = {
         const course = await prisma.course.findUnique({ where: { course_id: courseId } });
         if (!course) throw new Error("Khóa học không tồn tại");
 
+        // Kiểm tra xem người mua có phải là giảng viên của khóa học không
+        const instructor = await prisma.instructor.findUnique({ where: { user_id: userId } });
+        if (instructor && instructor.instructor_id === course.instructor_id) {
+            throw new Error("Bạn không thể mua khóa học của chính mình!");
+        }
+
         // PayOS yêu cầu orderCode là number (nhỏ hơn 9 triệu tỷ)
         const orderCode = Number(String(Date.now()).slice(-6)); 
 

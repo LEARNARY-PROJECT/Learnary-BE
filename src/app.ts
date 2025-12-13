@@ -86,6 +86,8 @@ app.use("/api/auth", authRoutes);
 app.use("/api", paymentRoutes); // Mount payment TRƯỚC course để tránh bị authenticate global
 app.use("/api", withdrawRoutes);
 app.use("/api", userRoutes);
+app.use("/api", courseGroupRoutes);
+app.use("/api", groupRoutes);
 app.use("/api", courseRoutes);
 app.use("/api", feedbackRoutes);
 app.use("/api", learnerRoutes);
@@ -97,8 +99,6 @@ app.use("/api", permissionRoutes);
 app.use("/api", adminRolePermissionRoutes);
 app.use("/api", resourceTypeRoutes);
 app.use("/api", permissionOnResourceRoutes);
-app.use("/api", groupRoutes);
-app.use("/api", courseGroupRoutes);
 app.use("/api", favoriteRoutes);
 app.use("/api", accountSecurityRoutes);
 app.use("/api", instructorSpecializationsRoutes);
