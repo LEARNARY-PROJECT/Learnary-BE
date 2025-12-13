@@ -380,8 +380,8 @@ model Course {
   status             CourseStatus    @default(Draft)
   title              String          @db.VarChar(255)
   slug               String?         @unique @db.VarChar(255)
-  requirement        String?         @db.VarChar(255)
-  description        String          @db.VarChar(255)
+  requirement        String?         @db.Text
+  description        String          @db.Text
   thumbnail          String          @db.VarChar(255)
   admin_note         String?         @db.VarChar(255)
   price              Decimal         @db.Decimal(10, 2)
@@ -519,7 +519,7 @@ model LessonProgress {
   lesson Lesson @relation(fields: [lesson_id], references: [lesson_id], onDelete: Restrict)
 
   @@unique([user_id, lesson_id])
-  @@map("LessonProgress")
+  @@map("lesson_progress")
 }
 
 model ChapterProgress {
@@ -533,7 +533,7 @@ model ChapterProgress {
   chapter Chapter @relation(fields: [chapter_id], references: [chapter_id], onDelete: Restrict)
 
   @@unique([user_id, chapter_id])
-  @@map("ChapterProgress")
+  @@map("chapter_progress")
 }
 
 model Note {

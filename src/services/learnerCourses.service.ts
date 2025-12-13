@@ -91,6 +91,11 @@ export const getCoursesByLearnerId = async (learner_id: string) => {
                 }
               }
             }
+          },
+          chapter : {
+            include : {
+              lessons:true
+            }
           }
         }
       }
@@ -105,14 +110,11 @@ export const getCoursesByLearnerUserId = async (user_id: string) => {
   let learner = await prisma.learner.findUnique({
     where: { user_id }
   });
-
   if (!learner) {
-    // Auto-create learner if doesn't exist for LEARNER role users
     const user = await prisma.user.findUnique({
       where: { user_id },
       select: { role: true }
     });
-
     if (user && user.role === 'LEARNER') {
       learner = await prisma.learner.create({
         data: { user_id }

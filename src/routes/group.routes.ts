@@ -1,6 +1,6 @@
 import express from 'express';
 import * as GroupController from '../controllers/group.controller';
-import { authenticate, authorizeRoles } from '../middlewares/auth.middleware';
+import { authenticate, authorizeRoles, optionalAuthenticate } from '../middlewares/auth.middleware';
 
 const router = express.Router();
 
@@ -38,6 +38,7 @@ router.get(
  */
 router.get(
   '/groups/type/:type',
+  optionalAuthenticate,
   GroupController.getGroupsByType
 );
 

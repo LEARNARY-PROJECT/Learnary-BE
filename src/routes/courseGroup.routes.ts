@@ -24,7 +24,11 @@ router.get(
   '/course-groups/:groupId/courses',
   CourseGroupController.getCoursesByGroupId
 );
-
+router.get(
+  '/course-groups/find-group-of-course/:course_id',
+  authenticate,
+  CourseGroupController.findCourseInGroupController
+)
 /**
  * @openapi
  * /api/course-groups:
