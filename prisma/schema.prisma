@@ -43,6 +43,10 @@ model User {
   withdraw_request          WithdrawRequest[]
   lessonProgress            LessonProgress[]
   chapterProgress           ChapterProgress[]
+  conversationsAsUser1      Conversation[]            @relation("User1Conversations")
+  conversationsAsUser2      Conversation[]            @relation("User2Conversations")
+  sentMessages              Message[]                 @relation("SentMessages")
+  receivedMessages          Message[]                 @relation("ReceivedMessages")
 
   @@index([email], name: "idx_user_email")
   @@index([role], name: "idx_user_role")
@@ -773,4 +777,44 @@ enum TransactionNote {
 enum GroupType {
   Combo
   Group
+}
+
+model Conversation {
+  conversation_id String   @id @default(uuid()) @db.Char(50)
+  user1_id        String   @db.Char(50)
+  user2_id        String   @db.Char(50)
+  last_message_at DateTime @default(now())
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  user1    User      @relation("User1Conversations", fields: [user1_id], references: [user_id], onDelete: Cascade)
+  user2    User      @relation("User2Conversations", fields: [user2_id], references: [user_id], onDelete: Cascade)
+  messages Message[]
+
+  @@unique([user1_id, user2_id], name: "unique_conversation")
+  @@index([user1_id], name: "idx_user1")
+  @@index([user2_id], name: "idx_user2")
+  @@index([last_message_at], name: "idx_last_message")
+  @@map("conversations")
+}
+
+model Message {
+  message_id      String   @id @default(uuid()) @db.Char(50)
+  conversation_id String   @db.Char(50)
+  sender_id       String   @db.Char(50)
+  receiver_id     String   @db.Char(50)
+  message_text    String   @db.Text
+  is_read         Boolean  @default(false)
+  read_at         DateTime?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  conversation Conversation @relation(fields: [conversation_id], references: [conversation_id], onDelete: Cascade)
+  sender       User         @relation("SentMessages", fields: [sender_id], references: [user_id], onDelete: Cascade)
+  receiver     User         @relation("ReceivedMessages", fields: [receiver_id], references: [user_id], onDelete: Cascade)
+
+  @@index([conversation_id], name: "idx_conversation")
+  @@index([sender_id], name: "idx_sender")
+  @@index([createdAt], name: "idx_created_at")
+  @@map("messages")
 }
