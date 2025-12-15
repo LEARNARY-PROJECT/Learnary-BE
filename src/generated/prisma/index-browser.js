@@ -494,6 +494,27 @@ exports.Prisma.FavoriteScalarFieldEnum = {
   createdAt: 'createdAt'
 };
 
+exports.Prisma.ConversationScalarFieldEnum = {
+  conversation_id: 'conversation_id',
+  user1_id: 'user1_id',
+  user2_id: 'user2_id',
+  last_message_at: 'last_message_at',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.MessageScalarFieldEnum = {
+  message_id: 'message_id',
+  conversation_id: 'conversation_id',
+  sender_id: 'sender_id',
+  receiver_id: 'receiver_id',
+  message_text: 'message_text',
+  is_read: 'is_read',
+  read_at: 'read_at',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -623,7 +644,9 @@ exports.Prisma.ModelName = {
   Options: 'Options',
   Answer: 'Answer',
   Submission: 'Submission',
-  Favorite: 'Favorite'
+  Favorite: 'Favorite',
+  Conversation: 'Conversation',
+  Message: 'Message'
 };
 
 /**
