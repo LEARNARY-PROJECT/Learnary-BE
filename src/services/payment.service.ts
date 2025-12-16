@@ -93,16 +93,11 @@ export const PaymentService = {
                     where: { transaction_id: transaction.transaction_id }, // Update theo ID cho chắc
                     data: { status: TransactionStatus.Success }
                 });
-
-                console.log("✅ Đã cập nhật trạng thái transaction thành công:", updatedTrans.transaction_id);
-
                 // ⚠️ KIỂM TRA: Đây là thanh toán combo hay khóa học đơn?
                 const isComboPayment = !updatedTrans.course_id && updatedTrans.description?.includes('combo');
                 
                 if (isComboPayment) {
                     // XỬ LÝ THANH TOÁN COMBO
-                    console.log("💼 Đây là thanh toán combo, bắt đầu enroll tất cả khóa học...");
-                    
                     // Lấy group_id từ description (format: "Thanh toán combo: {name}")
                     // Hoặc có thể lưu group_id vào field khác trong transaction
                     // Tạm thời tìm combo qua description
@@ -125,19 +120,14 @@ export const PaymentService = {
                     }
 
                     if (!targetGroup) {
-                        console.log("❌ Không tìm thấy combo từ description");
                         return;
                     }
-
-                    console.log(`✅ Tìm thấy combo: ${targetGroup.name} với ${targetGroup.hasCourseGroup.length} khóa học`);
-
                     // Tìm learner
                     const learner = await tx.learner.findUnique({
                         where: { user_id: updatedTrans.user_id }
                     });
 
                     if (!learner) {
-                        console.log(`❌ Không tìm thấy learner với user_id: ${updatedTrans.user_id}`);
                         return;
                     }
 
@@ -165,7 +155,6 @@ export const PaymentService = {
                                     enrolledAt: new Date()
                                 }
                             });
-                            console.log(`✅ Đã enroll khóa học: ${cg.belongToCourse.title}`);
                         }
                     }
 
@@ -216,12 +205,8 @@ export const PaymentService = {
                                     payment_code: BigInt(Date.now() + Math.floor(Math.random()*10000))
                                 }
                             });
-
-                            console.log(`✅ Đã cộng ${instructorAmount}đ vào ví GV ${instructor.user.fullName} cho khóa ${cg.belongToCourse.title}`);
                         }
                     }
-
-                    console.log("✅ Hoàn tất xử lý thanh toán combo!");
                     return; // Kết thúc xử lý combo
                 }
 

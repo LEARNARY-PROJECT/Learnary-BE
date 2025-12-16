@@ -1,9 +1,11 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
+import http from "http";
 import { setupSwagger } from "./docs/swagger";
 import { createDefaultUserIfNoneExists } from "./services/user.service";
 import { seedResourceTypes } from "./services/resourceType.service";
+import { initializeSocket } from "./socket";
 import authRoutes from "./routes/auth.routes";
 import userRoutes from "./routes/user.routes";
 import courseRoutes from "./routes/course.routes";
@@ -42,6 +44,8 @@ import favoriteRoutes from "./routes/favorite.routes";
 import instructorStatsRoutes from "./routes/instructorStats.routes";
 import lessonProgressRoutes from "./routes/lessonProgress.routes";
 import chapterProgressRoutes from "./routes/chapterProgress.routes";
+import conversationRoutes from "./routes/conversation.routes";
+import messageRoutes from "./routes/message.routes";
 import passport from "passport";
 import "./lib/passport";
 import cookieParser from "cookie-parser";
@@ -49,6 +53,7 @@ import cookieParser from "cookie-parser";
 dotenv.config();
 
 const app = express();
+const server = http.createServer(app);
 const port = process.env.PORT || 4000;
 const isDevelopment = process.env.NODE_ENV === 'development';
 const allowedOrigins = process.env.CORS_ORIGIN
@@ -83,7 +88,9 @@ app.use(passport.initialize());
 
 //Routes
 app.use("/api/auth", authRoutes);
-app.use("/api", paymentRoutes); // Mount payment TRƯỚC course để tránh bị authenticate global
+app.use("/api", conversationRoutes);
+app.use("/api", messageRoutes);
+app.use("/api", paymentRoutes);
 app.use("/api", withdrawRoutes);
 app.use("/api", userRoutes);
 app.use("/api", courseGroupRoutes);
@@ -120,6 +127,8 @@ app.use("/api", questionRoutes);
 app.use("/api", optionsRoutes);
 app.use("/api", answerRoutes);
 app.use("/api", submissionRoutes);
+app.use("/api", conversationRoutes);
+app.use("/api", messageRoutes);
 
 app.get("/", (_, res) => {
   const environment = process.env.NODE_ENV || 'development';
@@ -161,9 +170,13 @@ async function startServer() {
 
     setupSwagger(app);
 
-    app.listen(port, () => {
+    initializeSocket(server);
+    console.log("✅ Socket.io initialized");
+
+    server.listen(port, () => {
       console.log(`\n✅ Server is running on http://localhost:${port}`);
       console.log(`📚 Swagger UI: http://localhost:${port}/api-docs`);
+      console.log(`🔌 Socket.io ready for connections`);
       console.log(`🎉 Backend Service is fully ready!\n`);
     });
   } catch (err) {
