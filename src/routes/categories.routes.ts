@@ -1,5 +1,5 @@
 import express from "express";
-import { authenticate, authorizeRoles } from "../middlewares/auth.middleware";
+import { authenticate, authorizeRoles, optionalAuthenticate } from "../middlewares/auth.middleware";
 import { create, getAll, getById, update, remove } from "../controllers/categories.controller";
 
 const router = express.Router();
@@ -42,7 +42,7 @@ router.post("/categories/create", authenticate, authorizeRoles("ADMIN","LEARNER"
  *       401:
  *         description: Unauthorized
  */
-router.get("/categories", authenticate, authorizeRoles("ADMIN", "LEARNER","INSTRUCTOR"), getAll);
+router.get("/categories", optionalAuthenticate, getAll);
 
 /**
  * @openapi
