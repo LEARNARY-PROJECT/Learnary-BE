@@ -128,9 +128,20 @@ export const getAllInstructorQualifications = async (filters?: {
           user: {
             select: {
               fullName: true,
-              email: true
+              email: true,
+              avatar: true, // Thêm avatar
+              phone: true
             }
           }
+        }
+      },
+      user: {
+        select: {
+          fullName: true,
+          email: true,
+          avatar: true,
+          phone: true,
+          bio: true // Thêm bio nếu cần
         }
       },
       specialization: true
