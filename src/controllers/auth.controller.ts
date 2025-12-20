@@ -12,7 +12,7 @@ import {
   verifyTokenWhenRecoveryPassword,
   recoveryPassword,
 } from '../services/auth.service';
-import { failure } from '../utils/response';
+import { AppError } from '../utils/custom-error';
 
 const setRefreshTokenCookie = (res: Response, token: string): void => {
   res.cookie('refresh_token', token, {
@@ -22,23 +22,35 @@ const setRefreshTokenCookie = (res: Response, token: string): void => {
     maxAge: 60 * 60 * 1000 * 3, // 3 giờ (khớp với hạn token)
   });
 };
-export const changePasswordC = async (req:Request,res:Response) => {
+export const changePasswordC = async (req: Request, res: Response) => {
   try {
-    const user_id = req.jwtPayload?.id
-    const { oldPassword, newPassword } = req.body 
-    if(!user_id || !oldPassword || !newPassword) {
-      res.status(500).json("Missing field required")
-      return
+    const user_id = req.jwtPayload?.id;
+    const { oldPassword, newPassword } = req.body;
+    if (!user_id || !oldPassword || !newPassword) {
+      res.status(400).json({ 
+        error: "Missing field required" 
+      });
+      return;
     }
-    await changePassword(user_id,oldPassword, newPassword)
+    await changePassword(user_id, oldPassword, newPassword);
     res.status(200).json({ 
       message: "Password changed successfully" 
-    })
+    });
   } catch (errors) {
     const error = errors as Error;
-    res.status(500).json({ error: error.message });
+    if (error instanceof AppError) {
+      res.status(error.statusCode).json({ 
+        error: error.message 
+      });
+    } else {
+      console.error("Unexpected error:", error);
+      res.status(500).json({ 
+        error: "Internal server error" 
+      });
+    }
   }
-}
+};
+
 export const forgotPassword = async (req: Request, res: Response) => {
   try {
     const { email } = req.body;

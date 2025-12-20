@@ -6,7 +6,8 @@ import jwt from 'jsonwebtoken';
 import { profile } from 'node:console';
 import { Profile } from 'passport-google-oauth20';
 import { sendOTPEmail } from './accountSecurity.service';
-
+import { userInfo } from 'node:os';
+import { AppError } from '../utils/custom-error';
 const JWT_SECRET = process.env.JWT_SECRET;
 const REFRESH_SECRET = process.env.REFRESH_SECRET;
 
@@ -20,29 +21,39 @@ export const generateAccessToken = (user: User): string => {
   return jwt.sign(payload, JWT_SECRET, { expiresIn: '5m' });
 };
 export const changePassword = async (user_id: string, oldPassword: string, newPassword: string) => {
-  if (!user_id || !newPassword) throw new Error("Missing field required")
-  if (newPassword.length < 6) throw new Error("New password must more than 6 character")
-  const userInfor = await getUserById(user_id);
-  if (!userInfor) throw new Error("Can not find user")
-  try {
-    const checkOldPassword: boolean = oldPassword === userInfor.password
-    if (checkOldPassword) {
-      const hashedPassword = await bcryptjs.hash(newPassword, 10)
-      return prisma.user.update({
-        where: {
-          user_id: userInfor.user_id
-        },
-        data: {
-          password: hashedPassword
-        }
-      })
-    } else {
-      throw new Error("Old password is wrong")
-    }
-  } catch (error) {
-    throw new Error("Error while changing password!")
+  if (!user_id || !newPassword || !oldPassword) {
+    throw new AppError("Missing field required", 400);
   }
-}
+  user_id = user_id.trim();
+  newPassword = newPassword.trim();
+  oldPassword = oldPassword.trim();
+  if (newPassword.length < 6) {
+    throw new AppError("New password must be more than 6 characters", 400);
+  }
+  const userInfor = await getUserById(user_id);
+  if (!userInfor) {
+    throw new AppError("Cannot find user", 404);
+  }
+  if (!userInfor.password) {
+    throw new AppError("Cannot find old password", 400);
+  }
+  const checkOldPassword = await bcryptjs.compare(oldPassword, userInfor.password);
+  if (!checkOldPassword) {
+    throw new AppError("Old password is incorrect", 401);
+  }
+  if (oldPassword === newPassword) {
+    throw new AppError("New password cannot be the same as old password", 400);
+  }
+  const hashedPassword = await bcryptjs.hash(newPassword, 10);
+  return prisma.user.update({
+    where: {
+      user_id: userInfor.user_id
+    },
+    data: {
+      password: hashedPassword
+    }
+  });
+};
 export const getOtpRecovery = async (email: string) => {
   if (!email) throw new Error("Missing field required")
   try {
@@ -56,7 +67,7 @@ export const getOtpRecovery = async (email: string) => {
 }
 export const verifyTokenWhenRecoveryPassword = async (email: string, token: string): Promise<User> => {
   const userId = await getUserIdByEmail(email);
-  if(!userId) throw new Error("Not found user")
+  if (!userId) throw new Error("Not found user")
   const user = await getUserById(userId);
   if (!user) {
     throw new Error('User not found');
