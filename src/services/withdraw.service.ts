@@ -1,5 +1,7 @@
 import { Prisma, WithdrawStatus, TransactionStatus, TransactionType, TransactionMethod, TransactionNote } from '../generated/prisma'; 
 import prisma from '../lib/client';
+import { sendNoticeWithdrawApproved, sendNoticeWithdrawRejected } from './email.service';
+import { getUserById } from './user.service';
 
 export const WithdrawService = {
     
@@ -63,18 +65,14 @@ export const WithdrawService = {
     // 2. ADMIN DUYỆT / TỪ CHỐI
     // =========================================================
     processWithdrawRequest: async (adminId: string, requestId: string, action: 'APPROVE' | 'REJECT', adminNote: string) => {
-        
         return await prisma.$transaction(async (tx) => {
             const request = await tx.withdrawRequest.findUnique({
                 where: { withdraw_request_id: requestId }
             });
-
             if (!request || request.status !== WithdrawStatus.Pending) {
                 throw new Error("Yêu cầu không hợp lệ");
             }
-
             const amount = Number(request.balance);
-
             if (action === 'APPROVE') {
                 // --- DUYỆT ---
                 await tx.withdrawRequest.update({
@@ -86,7 +84,7 @@ export const WithdrawService = {
                 });
 
                 // Cập nhật Transaction status thành Success
-                await tx.transaction.updateMany({
+                const updatedTransaction = await tx.transaction.updateMany({
                     where: {
                         user_id: request.user_id,
                         transaction_type: TransactionType.Withdraw,
@@ -97,6 +95,30 @@ export const WithdrawService = {
                         status: TransactionStatus.Success
                     }
                 });
+                
+                const user = await tx.user.findUnique({
+                    where: { user_id: request.user_id }
+                });
+                
+                const transaction = await tx.transaction.findFirst({
+                    where: {
+                        user_id: request.user_id,
+                        transaction_type: TransactionType.Withdraw,
+                        description: `Yêu cầu rút tiền #${requestId}`,
+                        status: TransactionStatus.Success
+                    }
+                });
+                
+                const updatedRequest = await tx.withdrawRequest.findUnique({
+                    where: { withdraw_request_id: requestId }
+                });
+                if (user && transaction && updatedRequest) {
+                    sendNoticeWithdrawApproved({
+                        user,
+                        transaction,
+                        request: updatedRequest
+                    }).catch(err => console.error('Email error:', err));
+                }
             } else {
                 // --- TỪ CHỐI (HOÀN TIỀN) ---
                 await tx.withdrawRequest.update({
@@ -136,7 +158,7 @@ export const WithdrawService = {
                 });
 
                 // Tạo Transaction mới với type Refund
-                await tx.transaction.create({
+                const refundTransaction = await tx.transaction.create({
                     data: {
                         user_id: request.user_id,
                         wallet_id: wallet.wallet_id,
@@ -151,6 +173,20 @@ export const WithdrawService = {
                         payment_code: BigInt(Date.now())
                     }
                 });
+                const user = await tx.user.findUnique({
+                    where: { user_id: request.user_id }
+                });
+                
+                const updatedRequest = await tx.withdrawRequest.findUnique({
+                    where: { withdraw_request_id: requestId }
+                });
+                if (user && refundTransaction && updatedRequest) {
+                    sendNoticeWithdrawRejected({
+                        user,
+                        transaction: refundTransaction,
+                        request: updatedRequest
+                    }).catch(err => console.error('Email error:', err));
+                }
             }
 
             return { success: true };

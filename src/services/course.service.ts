@@ -9,6 +9,7 @@ import path from "path";
 import { S3_BUCKET_NAME, s3Client } from "../config/s3.config";
 import { PutObjectCommand } from "@aws-sdk/client-s3";
 import { getInstructorByUserId } from './instructor.service';
+import { sendNoticeCourseApproved, sendNoticeCourseRejected } from './email.service';
 export const getCourseBySlug = async (slugs: string): Promise<Course> => {
   if (!slugs) throw new Error('Không tìm thấy slug truyền vào!')
   const course = await prisma.course.findFirst({
@@ -538,6 +539,20 @@ export const approveCourse = async (courseId: string) => {
         data: { video_url: newUrls[i] }
       });
     }
+    const instructor = await tx.instructor.findUnique({
+      where: { instructor_id: updatedCourse.instructor_id },
+      include: { user: true }
+    });
+    if (instructor && instructor.user) {
+      sendNoticeCourseApproved({
+        instructorName: instructor.user.fullName || instructor.user.fullName || 'Giảng viên',
+        instructorEmail: instructor.user.email,
+        courseName: updatedCourse.title,
+        courseDescription: updatedCourse.description || undefined,
+        coursePrice: Number(updatedCourse.price),
+        approvedAt: new Date()
+      }).catch(err => console.error('Email error:', err));
+    }
     return updatedCourse;
   });
 };
@@ -546,6 +561,11 @@ export const rejectCourse = async (courseId: string, reason: string) => {
   const course = await prisma.course.findUnique({
     where: { course_id: courseId, status: CourseStatus.Pending },
     include: {
+      instructor: {
+        include: {
+          user: true
+        }
+      },
       chapter: {
         include: {
           lessons: { select: { lesson_id: true, video_url: true } }
@@ -581,6 +601,17 @@ export const rejectCourse = async (courseId: string, reason: string) => {
         where: { lesson_id: lessonId },
         data: { video_url: null }
       });
+    }
+    if (course.instructor && course.instructor.user) {
+      sendNoticeCourseRejected({
+        instructorName: course.instructor.user.fullName || 'Giảng viên',
+        instructorEmail: course.instructor.user.email,
+        courseName: course.title,
+        courseDescription: course.description || undefined,
+        coursePrice: Number(course.price),
+        rejectionReason: reason,
+        rejectedAt: new Date()
+      }).catch(err => console.error('Error sending course rejection email:', err));
     }
     return updatedCourse;
   });
