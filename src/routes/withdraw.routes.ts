@@ -34,7 +34,7 @@ const router = express.Router();
 router.post(
     '/withdraw/request',
     authenticate,
-    authorizeRoles("INSTRUCTOR"), // Chỉ Giảng viên mới được rút
+    authorizeRoles("INSTRUCTOR"),
     WithdrawController.createRequest
 );
 
@@ -71,14 +71,14 @@ router.post(
 router.post(
     '/withdraw/approve',
     authenticate,
-    authorizeRoles("ADMIN"), // Chỉ Admin mới được duyệt
+    authorizeRoles("ADMIN"), 
     WithdrawController.approveRequest
 );
 
 router.get(
     '/wallet/info', 
     // authenticate, 
-    WithdrawController.getWallet // Đảm bảo Controller có hàm này
+    WithdrawController.getWallet 
 );
 
 /**

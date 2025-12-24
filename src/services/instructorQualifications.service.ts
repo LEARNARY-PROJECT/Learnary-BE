@@ -2,6 +2,7 @@ import prisma from "../lib/client";
 import { InstructorQualifications, QualificationType, ApprovalStatus } from '../generated/prisma'
 import { uploadQualificationImages, deleteQualificationImages, deleteSingleQualificationImage } from "./qualificationImage.service";
 import { validateQualificationDates, toStartOfDay, getTodayStartOfDay } from "../utils/dateUtils";
+import { sendNoticeApprovedInstructor, sendNoticeRejectedInstructor } from "./email.service";
 
 export const createInstructorQualifications = async (
   data: Omit<InstructorQualifications, 'instructor_qualification_id' | 'createdAt' | 'updateAt' | 'qualification_images' | 'instructor_id'> & { 
@@ -240,13 +241,11 @@ export const approveQualification = async (instructor_qualification_id: string, 
   }
 
   return prisma.$transaction(async (tx) => {
-    // 1. Get or create Admin record for current user
     let admin = await tx.admin.findUnique({
       where: { user_id: currentUserId }
     });
 
     if (!admin) {
-      // Find or create default Admin role
       let adminRole = await tx.adminRole.findFirst({
         where: { role_name: 'Admin' }
       });
@@ -267,8 +266,6 @@ export const approveQualification = async (instructor_qualification_id: string, 
         }
       });
     }
-
-    // 2. Get or create Instructor
     let instructor = await tx.instructor.findUnique({
       where: { user_id: qualification.user_id }
     });
@@ -320,16 +317,15 @@ export const approveQualification = async (instructor_qualification_id: string, 
     });
 
     if (!existingLink) {
-      // Create link with valid admin_id from Admin table
       await tx.instructorSpecializations.create({
         data: {
           instructor_id: instructor.instructor_id,
           specialization_id: qualification.specialization_id,
-          admin_id: admin.admin_id  // Use admin.admin_id instead of user_id
+          admin_id: admin.admin_id  
         }
       });
     }
-
+    sendNoticeApprovedInstructor(qualification.user)
     return updatedQualification;
   });
 };
@@ -341,7 +337,8 @@ export const rejectQualification = async (instructor_qualification_id: string): 
   const qualification = await prisma.instructorQualifications.findUnique({
     where: { instructor_qualification_id },
     include: {
-      specialization: true
+      specialization: true,
+      user: true
     }
   });
   if (!qualification) {
@@ -380,6 +377,11 @@ export const rejectQualification = async (instructor_qualification_id: string): 
         });
       }
     }
+    
+    sendNoticeRejectedInstructor(qualification.user).catch(err => 
+      console.error('Error sending instructor rejection email:', err)
+    );
+    
     return rejectedQualification;
   });
 };

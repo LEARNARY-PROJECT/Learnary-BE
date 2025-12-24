@@ -3,7 +3,21 @@ import { authenticate, authorizeRoles, optionalAuthenticate } from "../middlewar
 import { create, getAll, getById, update, remove } from "../controllers/categories.controller";
 
 const router = express.Router();
-
+/**
+ * @openapi
+ * /api/categories:
+ *   get:
+ *     summary: Get all categories
+ *     tags: [Categories]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: List of categories
+ *       401:
+ *         description: Unauthorized
+ */
+router.get("/categories", optionalAuthenticate, getAll);
 /**
  * @openapi
  * /api/categories:
@@ -27,22 +41,6 @@ const router = express.Router();
  *         description: Unauthorized
  */
 router.post("/categories/create", authenticate, authorizeRoles("ADMIN","LEARNER","INSTRUCTOR"), create);
-
-/**
- * @openapi
- * /api/categories:
- *   get:
- *     summary: Get all categories
- *     tags: [Categories]
- *     security:
- *       - bearerAuth: []
- *     responses:
- *       200:
- *         description: List of categories
- *       401:
- *         description: Unauthorized
- */
-router.get("/categories", optionalAuthenticate, getAll);
 
 /**
  * @openapi

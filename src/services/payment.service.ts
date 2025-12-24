@@ -2,6 +2,7 @@ import { TransactionStatus, TransactionType, TransactionMethod, TransactionNote,
 import prisma from '../lib/client';
 import payOS from '../lib/payos';
 import { CreatePaymentParams, PayOSWebhookBody, PayOSWebhookData } from '../types/payos';
+import { sendConfirmedEnrolledCourse } from './email.service';
 
 export const PaymentService = {
     createPaymentLink: async (userId: string, courseId: string): Promise<string> => {
@@ -227,18 +228,16 @@ export const PaymentService = {
                         where: { 
                             learner_id_course_id: { 
                                 learner_id: learner.learner_id, 
-                                course_id: updatedTrans.course_id // Đã chắc chắn không null ở đây
+                                course_id: updatedTrans.course_id 
                             } 
                         }
                     });
 
                     if (!exists) {
-                        // ⚠️ QUAN TRỌNG: Dùng 'tx.learnerCourses.create' thay vì hàm bên ngoài
-                        // Để đảm bảo nằm chung trong transaction
                         await tx.learnerCourses.create({
                             data: {
                                 learner_id: learner.learner_id,
-                                course_id: updatedTrans.course_id, // TypeScript giờ biết nó không null
+                                course_id: updatedTrans.course_id, 
                                 status: CourseEnrollmentStatus.Enrolled,
                                 progress: new Prisma.Decimal(0),
                                 rating: 0,
@@ -247,6 +246,20 @@ export const PaymentService = {
                                 enrolledAt: new Date()
                             }
                         });
+                        const user = await tx.user.findUnique({
+                            where: { user_id: updatedTrans.user_id },
+                            select: { email: true, fullName: true }
+                        });
+                        if (user && transaction.course) {
+                            sendConfirmedEnrolledCourse({
+                                orderCode: String(orderCode),
+                                courseName: transaction.course.title,
+                                coursePrice: Number(transaction.course.price),
+                                transactionDate: webhookData.transactionDateTime,
+                                buyerEmail: user.email,
+                                buyerName: user.fullName || 'Học viên'
+                            }).catch(err => console.error('Email error:', err));
+                        }
                     }
                 }
 

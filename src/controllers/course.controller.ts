@@ -29,7 +29,6 @@ export const createDraft = async (req: Request, res: Response): Promise<void> =>
 export const getAll = async (_: Request, res: Response): Promise<void> => {
   try {
     const courses = await courseService.getAllCourses();
-
     res.status(200).json({
       success: true,
       data: courses

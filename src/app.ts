@@ -49,6 +49,7 @@ import messageRoutes from "./routes/message.routes";
 import passport from "passport";
 import "./lib/passport";
 import cookieParser from "cookie-parser";
+import { seedCategories } from "./services/categories.service";
 
 dotenv.config();
 
@@ -158,6 +159,7 @@ app.get("/", (_, res) => {
 async function repareResourceSystem() {
   await seedResourceTypes();
   await createDefaultUserIfNoneExists();
+  await seedCategories();
 }
 async function startServer() {
   try {

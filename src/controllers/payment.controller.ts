@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { PaymentService } from '../services/payment.service';
-import { PayOSWebhookBody } from '../types/payos'; // Đảm bảo đường dẫn import đúng
+import { PayOSWebhookBody } from '../types/payos'; 
 
 export const PaymentController = {
     // 1. API Tạo Link Thanh Toán
