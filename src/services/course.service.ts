@@ -73,19 +73,17 @@ export const getAllCourses = async () => {
       },
       chapter: {
         include: { lessons: true }
+
       },
       feedbacks: true,
-      // Lấy tên Danh mục
       category: true,
-
-      // Đếm số lượng học viên đã tham gia
+      level:true,
       _count: {
-        select: { learnerCourses: true }
-      }
+        select: { learnerCourses: true, feedbacks:true },
+      },
     },
-
     orderBy: {
-      createdAt: 'desc' // Khóa học mới nhất lên đầu
+      createdAt: 'desc' 
     }
   });
 };
