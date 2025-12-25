@@ -56,6 +56,38 @@ router.post("/lesson-progress/incomplete", authenticate, LessonProgressControlle
 
 /**
  * @openapi
+ * /api/lesson-progress/watch-time:
+ *   post:
+ *     summary: Update lesson watch time
+ *     tags: [LessonProgress]
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - lesson_id
+ *               - last_watch_time
+ *             properties:
+ *               lesson_id:
+ *                 type: string
+ *               last_watch_time:
+ *                 type: number
+ *                 description: Current watch time in seconds
+ *               max_watch_time:
+ *                 type: number
+ *                 description: Maximum watch time reached (optional)
+ *     responses:
+ *       200:
+ *         description: Watch time updated
+ */
+router.post("/lesson-progress/watch-time", authenticate, LessonProgressController.updateWatchTime);
+
+/**
+ * @openapi
  * /api/lesson-progress/my:
  *   get:
  *     summary: Get all lesson progress for current user

@@ -34449,14 +34449,28 @@ export namespace Prisma {
 
   export type AggregateLessonProgress = {
     _count: LessonProgressCountAggregateOutputType | null
+    _avg: LessonProgressAvgAggregateOutputType | null
+    _sum: LessonProgressSumAggregateOutputType | null
     _min: LessonProgressMinAggregateOutputType | null
     _max: LessonProgressMaxAggregateOutputType | null
+  }
+
+  export type LessonProgressAvgAggregateOutputType = {
+    last_watch_time: number | null
+    max_watch_time: number | null
+  }
+
+  export type LessonProgressSumAggregateOutputType = {
+    last_watch_time: number | null
+    max_watch_time: number | null
   }
 
   export type LessonProgressMinAggregateOutputType = {
     id: string | null
     user_id: string | null
     lesson_id: string | null
+    last_watch_time: number | null
+    max_watch_time: number | null
     is_completed: boolean | null
     completed_at: Date | null
   }
@@ -34465,6 +34479,8 @@ export namespace Prisma {
     id: string | null
     user_id: string | null
     lesson_id: string | null
+    last_watch_time: number | null
+    max_watch_time: number | null
     is_completed: boolean | null
     completed_at: Date | null
   }
@@ -34473,16 +34489,30 @@ export namespace Prisma {
     id: number
     user_id: number
     lesson_id: number
+    last_watch_time: number
+    max_watch_time: number
     is_completed: number
     completed_at: number
     _all: number
   }
 
 
+  export type LessonProgressAvgAggregateInputType = {
+    last_watch_time?: true
+    max_watch_time?: true
+  }
+
+  export type LessonProgressSumAggregateInputType = {
+    last_watch_time?: true
+    max_watch_time?: true
+  }
+
   export type LessonProgressMinAggregateInputType = {
     id?: true
     user_id?: true
     lesson_id?: true
+    last_watch_time?: true
+    max_watch_time?: true
     is_completed?: true
     completed_at?: true
   }
@@ -34491,6 +34521,8 @@ export namespace Prisma {
     id?: true
     user_id?: true
     lesson_id?: true
+    last_watch_time?: true
+    max_watch_time?: true
     is_completed?: true
     completed_at?: true
   }
@@ -34499,6 +34531,8 @@ export namespace Prisma {
     id?: true
     user_id?: true
     lesson_id?: true
+    last_watch_time?: true
+    max_watch_time?: true
     is_completed?: true
     completed_at?: true
     _all?: true
@@ -34542,6 +34576,18 @@ export namespace Prisma {
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
+     * Select which fields to average
+    **/
+    _avg?: LessonProgressAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: LessonProgressSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
      * Select which fields to find the minimum value
     **/
     _min?: LessonProgressMinAggregateInputType
@@ -34572,6 +34618,8 @@ export namespace Prisma {
     take?: number
     skip?: number
     _count?: LessonProgressCountAggregateInputType | true
+    _avg?: LessonProgressAvgAggregateInputType
+    _sum?: LessonProgressSumAggregateInputType
     _min?: LessonProgressMinAggregateInputType
     _max?: LessonProgressMaxAggregateInputType
   }
@@ -34580,9 +34628,13 @@ export namespace Prisma {
     id: string
     user_id: string
     lesson_id: string
+    last_watch_time: number
+    max_watch_time: number
     is_completed: boolean
     completed_at: Date | null
     _count: LessonProgressCountAggregateOutputType | null
+    _avg: LessonProgressAvgAggregateOutputType | null
+    _sum: LessonProgressSumAggregateOutputType | null
     _min: LessonProgressMinAggregateOutputType | null
     _max: LessonProgressMaxAggregateOutputType | null
   }
@@ -34605,6 +34657,8 @@ export namespace Prisma {
     id?: boolean
     user_id?: boolean
     lesson_id?: boolean
+    last_watch_time?: boolean
+    max_watch_time?: boolean
     is_completed?: boolean
     completed_at?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
@@ -34615,6 +34669,8 @@ export namespace Prisma {
     id?: boolean
     user_id?: boolean
     lesson_id?: boolean
+    last_watch_time?: boolean
+    max_watch_time?: boolean
     is_completed?: boolean
     completed_at?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
@@ -34625,6 +34681,8 @@ export namespace Prisma {
     id?: boolean
     user_id?: boolean
     lesson_id?: boolean
+    last_watch_time?: boolean
+    max_watch_time?: boolean
     is_completed?: boolean
     completed_at?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
@@ -34635,11 +34693,13 @@ export namespace Prisma {
     id?: boolean
     user_id?: boolean
     lesson_id?: boolean
+    last_watch_time?: boolean
+    max_watch_time?: boolean
     is_completed?: boolean
     completed_at?: boolean
   }
 
-  export type LessonProgressOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "user_id" | "lesson_id" | "is_completed" | "completed_at", ExtArgs["result"]["lessonProgress"]>
+  export type LessonProgressOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "user_id" | "lesson_id" | "last_watch_time" | "max_watch_time" | "is_completed" | "completed_at", ExtArgs["result"]["lessonProgress"]>
   export type LessonProgressInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
     lesson?: boolean | LessonDefaultArgs<ExtArgs>
@@ -34663,6 +34723,8 @@ export namespace Prisma {
       id: string
       user_id: string
       lesson_id: string
+      last_watch_time: number
+      max_watch_time: number
       is_completed: boolean
       completed_at: Date | null
     }, ExtArgs["result"]["lessonProgress"]>
@@ -35093,6 +35155,8 @@ export namespace Prisma {
     readonly id: FieldRef<"LessonProgress", 'String'>
     readonly user_id: FieldRef<"LessonProgress", 'String'>
     readonly lesson_id: FieldRef<"LessonProgress", 'String'>
+    readonly last_watch_time: FieldRef<"LessonProgress", 'Float'>
+    readonly max_watch_time: FieldRef<"LessonProgress", 'Float'>
     readonly is_completed: FieldRef<"LessonProgress", 'Boolean'>
     readonly completed_at: FieldRef<"LessonProgress", 'DateTime'>
   }
@@ -49247,6 +49311,8 @@ export namespace Prisma {
     id: 'id',
     user_id: 'user_id',
     lesson_id: 'lesson_id',
+    last_watch_time: 'last_watch_time',
+    max_watch_time: 'max_watch_time',
     is_completed: 'is_completed',
     completed_at: 'completed_at'
   };
@@ -49680,20 +49746,6 @@ export namespace Prisma {
 
 
   /**
-   * Reference to a field of type 'WithdrawStatus'
-   */
-  export type EnumWithdrawStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'WithdrawStatus'>
-    
-
-
-  /**
-   * Reference to a field of type 'WithdrawStatus[]'
-   */
-  export type ListEnumWithdrawStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'WithdrawStatus[]'>
-    
-
-
-  /**
    * Reference to a field of type 'Float'
    */
   export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
@@ -49704,6 +49756,20 @@ export namespace Prisma {
    * Reference to a field of type 'Float[]'
    */
   export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'WithdrawStatus'
+   */
+  export type EnumWithdrawStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'WithdrawStatus'>
+    
+
+
+  /**
+   * Reference to a field of type 'WithdrawStatus[]'
+   */
+  export type ListEnumWithdrawStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'WithdrawStatus[]'>
     
   /**
    * Deep Input Types
@@ -51644,6 +51710,8 @@ export namespace Prisma {
     id?: StringFilter<"LessonProgress"> | string
     user_id?: StringFilter<"LessonProgress"> | string
     lesson_id?: StringFilter<"LessonProgress"> | string
+    last_watch_time?: FloatFilter<"LessonProgress"> | number
+    max_watch_time?: FloatFilter<"LessonProgress"> | number
     is_completed?: BoolFilter<"LessonProgress"> | boolean
     completed_at?: DateTimeNullableFilter<"LessonProgress"> | Date | string | null
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
@@ -51654,6 +51722,8 @@ export namespace Prisma {
     id?: SortOrder
     user_id?: SortOrder
     lesson_id?: SortOrder
+    last_watch_time?: SortOrder
+    max_watch_time?: SortOrder
     is_completed?: SortOrder
     completed_at?: SortOrderInput | SortOrder
     user?: UserOrderByWithRelationInput
@@ -51668,6 +51738,8 @@ export namespace Prisma {
     NOT?: LessonProgressWhereInput | LessonProgressWhereInput[]
     user_id?: StringFilter<"LessonProgress"> | string
     lesson_id?: StringFilter<"LessonProgress"> | string
+    last_watch_time?: FloatFilter<"LessonProgress"> | number
+    max_watch_time?: FloatFilter<"LessonProgress"> | number
     is_completed?: BoolFilter<"LessonProgress"> | boolean
     completed_at?: DateTimeNullableFilter<"LessonProgress"> | Date | string | null
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
@@ -51678,11 +51750,15 @@ export namespace Prisma {
     id?: SortOrder
     user_id?: SortOrder
     lesson_id?: SortOrder
+    last_watch_time?: SortOrder
+    max_watch_time?: SortOrder
     is_completed?: SortOrder
     completed_at?: SortOrderInput | SortOrder
     _count?: LessonProgressCountOrderByAggregateInput
+    _avg?: LessonProgressAvgOrderByAggregateInput
     _max?: LessonProgressMaxOrderByAggregateInput
     _min?: LessonProgressMinOrderByAggregateInput
+    _sum?: LessonProgressSumOrderByAggregateInput
   }
 
   export type LessonProgressScalarWhereWithAggregatesInput = {
@@ -51692,6 +51768,8 @@ export namespace Prisma {
     id?: StringWithAggregatesFilter<"LessonProgress"> | string
     user_id?: StringWithAggregatesFilter<"LessonProgress"> | string
     lesson_id?: StringWithAggregatesFilter<"LessonProgress"> | string
+    last_watch_time?: FloatWithAggregatesFilter<"LessonProgress"> | number
+    max_watch_time?: FloatWithAggregatesFilter<"LessonProgress"> | number
     is_completed?: BoolWithAggregatesFilter<"LessonProgress"> | boolean
     completed_at?: DateTimeNullableWithAggregatesFilter<"LessonProgress"> | Date | string | null
   }
@@ -54590,6 +54668,8 @@ export namespace Prisma {
 
   export type LessonProgressCreateInput = {
     id?: string
+    last_watch_time?: number
+    max_watch_time?: number
     is_completed?: boolean
     completed_at?: Date | string | null
     user: UserCreateNestedOneWithoutLessonProgressInput
@@ -54600,12 +54680,16 @@ export namespace Prisma {
     id?: string
     user_id: string
     lesson_id: string
+    last_watch_time?: number
+    max_watch_time?: number
     is_completed?: boolean
     completed_at?: Date | string | null
   }
 
   export type LessonProgressUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
+    last_watch_time?: FloatFieldUpdateOperationsInput | number
+    max_watch_time?: FloatFieldUpdateOperationsInput | number
     is_completed?: BoolFieldUpdateOperationsInput | boolean
     completed_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     user?: UserUpdateOneRequiredWithoutLessonProgressNestedInput
@@ -54616,6 +54700,8 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     user_id?: StringFieldUpdateOperationsInput | string
     lesson_id?: StringFieldUpdateOperationsInput | string
+    last_watch_time?: FloatFieldUpdateOperationsInput | number
+    max_watch_time?: FloatFieldUpdateOperationsInput | number
     is_completed?: BoolFieldUpdateOperationsInput | boolean
     completed_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
@@ -54624,12 +54710,16 @@ export namespace Prisma {
     id?: string
     user_id: string
     lesson_id: string
+    last_watch_time?: number
+    max_watch_time?: number
     is_completed?: boolean
     completed_at?: Date | string | null
   }
 
   export type LessonProgressUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
+    last_watch_time?: FloatFieldUpdateOperationsInput | number
+    max_watch_time?: FloatFieldUpdateOperationsInput | number
     is_completed?: BoolFieldUpdateOperationsInput | boolean
     completed_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
@@ -54638,6 +54728,8 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     user_id?: StringFieldUpdateOperationsInput | string
     lesson_id?: StringFieldUpdateOperationsInput | string
+    last_watch_time?: FloatFieldUpdateOperationsInput | number
+    max_watch_time?: FloatFieldUpdateOperationsInput | number
     is_completed?: BoolFieldUpdateOperationsInput | boolean
     completed_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
@@ -57169,6 +57261,17 @@ export namespace Prisma {
     order_index?: SortOrder
   }
 
+  export type FloatFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel>
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatFilter<$PrismaModel> | number
+  }
+
   export type LessonScalarRelationFilter = {
     is?: LessonWhereInput
     isNot?: LessonWhereInput
@@ -57183,14 +57286,23 @@ export namespace Prisma {
     id?: SortOrder
     user_id?: SortOrder
     lesson_id?: SortOrder
+    last_watch_time?: SortOrder
+    max_watch_time?: SortOrder
     is_completed?: SortOrder
     completed_at?: SortOrder
+  }
+
+  export type LessonProgressAvgOrderByAggregateInput = {
+    last_watch_time?: SortOrder
+    max_watch_time?: SortOrder
   }
 
   export type LessonProgressMaxOrderByAggregateInput = {
     id?: SortOrder
     user_id?: SortOrder
     lesson_id?: SortOrder
+    last_watch_time?: SortOrder
+    max_watch_time?: SortOrder
     is_completed?: SortOrder
     completed_at?: SortOrder
   }
@@ -57199,8 +57311,31 @@ export namespace Prisma {
     id?: SortOrder
     user_id?: SortOrder
     lesson_id?: SortOrder
+    last_watch_time?: SortOrder
+    max_watch_time?: SortOrder
     is_completed?: SortOrder
     completed_at?: SortOrder
+  }
+
+  export type LessonProgressSumOrderByAggregateInput = {
+    last_watch_time?: SortOrder
+    max_watch_time?: SortOrder
+  }
+
+  export type FloatWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel>
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedFloatFilter<$PrismaModel>
+    _min?: NestedFloatFilter<$PrismaModel>
+    _max?: NestedFloatFilter<$PrismaModel>
   }
 
   export type ChapterProgressUser_idChapter_idCompoundUniqueInput = {
@@ -60223,6 +60358,14 @@ export namespace Prisma {
     connect?: LessonWhereUniqueInput
   }
 
+  export type FloatFieldUpdateOperationsInput = {
+    set?: number
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
+  }
+
   export type UserUpdateOneRequiredWithoutLessonProgressNestedInput = {
     create?: XOR<UserCreateWithoutLessonProgressInput, UserUncheckedCreateWithoutLessonProgressInput>
     connectOrCreate?: UserCreateOrConnectWithoutLessonProgressInput
@@ -61318,6 +61461,22 @@ export namespace Prisma {
     _max?: NestedEnumCourseEnrollmentStatusFilter<$PrismaModel>
   }
 
+  export type NestedFloatWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel>
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedFloatFilter<$PrismaModel>
+    _min?: NestedFloatFilter<$PrismaModel>
+    _max?: NestedFloatFilter<$PrismaModel>
+  }
+
   export type NestedEnumWithdrawStatusFilter<$PrismaModel = never> = {
     equals?: $Enums.WithdrawStatus | EnumWithdrawStatusFieldRefInput<$PrismaModel>
     in?: $Enums.WithdrawStatus[] | ListEnumWithdrawStatusFieldRefInput<$PrismaModel>
@@ -61700,6 +61859,8 @@ export namespace Prisma {
 
   export type LessonProgressCreateWithoutUserInput = {
     id?: string
+    last_watch_time?: number
+    max_watch_time?: number
     is_completed?: boolean
     completed_at?: Date | string | null
     lesson: LessonCreateNestedOneWithoutLessonProgressInput
@@ -61708,6 +61869,8 @@ export namespace Prisma {
   export type LessonProgressUncheckedCreateWithoutUserInput = {
     id?: string
     lesson_id: string
+    last_watch_time?: number
+    max_watch_time?: number
     is_completed?: boolean
     completed_at?: Date | string | null
   }
@@ -62264,6 +62427,8 @@ export namespace Prisma {
     id?: StringFilter<"LessonProgress"> | string
     user_id?: StringFilter<"LessonProgress"> | string
     lesson_id?: StringFilter<"LessonProgress"> | string
+    last_watch_time?: FloatFilter<"LessonProgress"> | number
+    max_watch_time?: FloatFilter<"LessonProgress"> | number
     is_completed?: BoolFilter<"LessonProgress"> | boolean
     completed_at?: DateTimeNullableFilter<"LessonProgress"> | Date | string | null
   }
@@ -66914,6 +67079,8 @@ export namespace Prisma {
 
   export type LessonProgressCreateWithoutLessonInput = {
     id?: string
+    last_watch_time?: number
+    max_watch_time?: number
     is_completed?: boolean
     completed_at?: Date | string | null
     user: UserCreateNestedOneWithoutLessonProgressInput
@@ -66922,6 +67089,8 @@ export namespace Prisma {
   export type LessonProgressUncheckedCreateWithoutLessonInput = {
     id?: string
     user_id: string
+    last_watch_time?: number
+    max_watch_time?: number
     is_completed?: boolean
     completed_at?: Date | string | null
   }
@@ -70164,6 +70333,8 @@ export namespace Prisma {
   export type LessonProgressCreateManyUserInput = {
     id?: string
     lesson_id: string
+    last_watch_time?: number
+    max_watch_time?: number
     is_completed?: boolean
     completed_at?: Date | string | null
   }
@@ -70467,6 +70638,8 @@ export namespace Prisma {
 
   export type LessonProgressUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
+    last_watch_time?: FloatFieldUpdateOperationsInput | number
+    max_watch_time?: FloatFieldUpdateOperationsInput | number
     is_completed?: BoolFieldUpdateOperationsInput | boolean
     completed_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     lesson?: LessonUpdateOneRequiredWithoutLessonProgressNestedInput
@@ -70475,6 +70648,8 @@ export namespace Prisma {
   export type LessonProgressUncheckedUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     lesson_id?: StringFieldUpdateOperationsInput | string
+    last_watch_time?: FloatFieldUpdateOperationsInput | number
+    max_watch_time?: FloatFieldUpdateOperationsInput | number
     is_completed?: BoolFieldUpdateOperationsInput | boolean
     completed_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
@@ -70482,6 +70657,8 @@ export namespace Prisma {
   export type LessonProgressUncheckedUpdateManyWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     lesson_id?: StringFieldUpdateOperationsInput | string
+    last_watch_time?: FloatFieldUpdateOperationsInput | number
+    max_watch_time?: FloatFieldUpdateOperationsInput | number
     is_completed?: BoolFieldUpdateOperationsInput | boolean
     completed_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
@@ -71842,6 +72019,8 @@ export namespace Prisma {
   export type LessonProgressCreateManyLessonInput = {
     id?: string
     user_id: string
+    last_watch_time?: number
+    max_watch_time?: number
     is_completed?: boolean
     completed_at?: Date | string | null
   }
@@ -71872,6 +72051,8 @@ export namespace Prisma {
 
   export type LessonProgressUpdateWithoutLessonInput = {
     id?: StringFieldUpdateOperationsInput | string
+    last_watch_time?: FloatFieldUpdateOperationsInput | number
+    max_watch_time?: FloatFieldUpdateOperationsInput | number
     is_completed?: BoolFieldUpdateOperationsInput | boolean
     completed_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     user?: UserUpdateOneRequiredWithoutLessonProgressNestedInput
@@ -71880,6 +72061,8 @@ export namespace Prisma {
   export type LessonProgressUncheckedUpdateWithoutLessonInput = {
     id?: StringFieldUpdateOperationsInput | string
     user_id?: StringFieldUpdateOperationsInput | string
+    last_watch_time?: FloatFieldUpdateOperationsInput | number
+    max_watch_time?: FloatFieldUpdateOperationsInput | number
     is_completed?: BoolFieldUpdateOperationsInput | boolean
     completed_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
@@ -71887,6 +72070,8 @@ export namespace Prisma {
   export type LessonProgressUncheckedUpdateManyWithoutLessonInput = {
     id?: StringFieldUpdateOperationsInput | string
     user_id?: StringFieldUpdateOperationsInput | string
+    last_watch_time?: FloatFieldUpdateOperationsInput | number
+    max_watch_time?: FloatFieldUpdateOperationsInput | number
     is_completed?: BoolFieldUpdateOperationsInput | boolean
     completed_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }

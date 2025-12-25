@@ -107,6 +107,36 @@ export const getCourseProgress = async (req: Request, res: Response) => {
   }
 };
 
+export const updateWatchTime = async (req: Request, res: Response) => {
+  try {
+    const user_id = req.jwtPayload?.id;
+    const { lesson_id, last_watch_time, max_watch_time } = req.body;
+    if (!user_id) {
+      return res.status(401).json(failure("Unauthorized"));
+    }
+
+    if (!lesson_id) {
+      return res.status(400).json(failure("lesson_id is required"));
+    }
+
+    if (last_watch_time === undefined) {
+      return res.status(400).json(failure("last_watch_time is required"));
+    }
+
+    const progress = await LessonProgressService.updateLessonWatchTime(
+      user_id, 
+      lesson_id, 
+      last_watch_time, 
+      max_watch_time
+    );
+
+    res.json(success(progress, "Watch time updated"));
+  } catch (err) {
+    const e = err as Error;
+    res.status(500).json(failure("Failed to update watch time", e.message));
+  }
+};
+
 export const remove = async (req: Request, res: Response) => {
   try {
     const user_id = req.jwtPayload?.id;
