@@ -6,6 +6,8 @@ import { S3_BUCKET_NAME, s3Client } from '../config/s3.config';
 import { PutObjectCommand, DeleteObjectCommand } from '@aws-sdk/client-s3';
 import path from 'path';
 import { sliceHalfId } from "../utils/commons";
+import { AppError } from "../utils/custom-error";
+import { PrismaClientKnownRequestError } from "../generated/prisma/runtime/client";
 
 export const createDefaultUserIfNoneExists = async () => {
   const existingSuperAdmin = await prisma.user.findUnique({
@@ -140,9 +142,9 @@ export const getAllUsers = async (): Promise<User[]> => {
 };
 export const getUsersExceptAdmins = async (): Promise<User[]> => {
   const users = await prisma.user.findMany({
-    where : {
-      NOT : {
-        role:'ADMIN'
+    where: {
+      NOT: {
+        role: 'ADMIN'
       }
     }
   });
@@ -163,7 +165,7 @@ export const getUserById = async (id: string): Promise<User | null> => {
       user_id: id,
     },
     include: {
-      accountSecurities:true
+      accountSecurities: true
     }
   });
   return user;
@@ -193,7 +195,7 @@ export interface UpdateUserData {
   address?: string;
   avatar?: string;
   bio?: string;
-  country?:string;
+  country?: string;
   dateOfBirth?: Date | string;
   city?: string;
   nation?: string;
@@ -205,39 +207,51 @@ export const editUserInformation = async (id: string, data: UpdateUserData): Pro
   });
 
   if (!existingUser) {
-    throw new Error('User not found');
+    throw new AppError("User Not Found", 404)
   }
-  const updateData: Partial<UpdateUserData> = {...data};
-  if(updateData.dateOfBirth) {
+  const updateData: Partial<UpdateUserData> = { ...data };
+  if (updateData.dateOfBirth) {
     const date = new Date(updateData.dateOfBirth);
-    if(!isNaN(date.getTime())) {
-      updateData.dateOfBirth=date.toISOString();
+    if (!isNaN(date.getTime())) {
+      updateData.dateOfBirth = date.toISOString();
     } else {
       delete updateData.dateOfBirth;
     }
   }
-  const updatedUser = await prisma.user.update({
-    where: { user_id: id },
-    data: updateData,
-  });
-  return updatedUser;
+  try {
+    const updatedUser = await prisma.user.update({
+      where: { user_id: id },
+      data: updateData,
+    });
+    return updatedUser;
+  } catch (error) {
+    if(error instanceof PrismaClientKnownRequestError) {
+      switch(error.code) {
+        case 'P2002':
+          throw new AppError("Số điện thoại này đã được sử dụng", 409)
+        case 'P2025':
+          throw new AppError("User not found", 404)
+      }
+    }
+    throw error
+  }
 };
 
 export const updateAvatar = async (userId: string, url: string): Promise<User> => {
   if (typeof userId !== "string" || typeof url !== "string") {
     throw new Error("Error: User Id and Url must be strings.");
   }
-  
+
   const user = await getUserById(userId);
   if (!user) {
     throw new Error("Error: This user does not exist!");
   }
-  
+
   const updatedUser = await prisma.user.update({
     where: { user_id: userId },
     data: { avatar: url }
   });
-  
+
   return updatedUser;
 };
 
@@ -258,10 +272,10 @@ export const uploadAvatarToS3 = async (userId: string, file: Express.Multer.File
   const fileName = `${halfUserId}${fileExtension}`
   const s3Key = `avatar/${fileName}`
   try {
-    if(user.avatar) {
+    if (user.avatar) {
       const oldAvatarUrl = user.avatar;
-      const oldS3Key = oldAvatarUrl.replace(`https://${S3_BUCKET_NAME}.s3.amazonaws.com/`,'');
-      if(oldS3Key !== s3Key) {
+      const oldS3Key = oldAvatarUrl.replace(`https://${S3_BUCKET_NAME}.s3.amazonaws.com/`, '');
+      if (oldS3Key !== s3Key) {
         try {
           await s3Client.send(new DeleteObjectCommand({
             Bucket: S3_BUCKET_NAME,
@@ -285,7 +299,7 @@ export const uploadAvatarToS3 = async (userId: string, file: Express.Multer.File
   try {
     await s3Client.send(new PutObjectCommand(uploadParams))
     const avatarUrl = `https://${S3_BUCKET_NAME}.s3.amazonaws.com/${s3Key}`
-    
+
     const updatedUser = await updateAvatar(userId, avatarUrl)
     return updatedUser
   } catch (error) {
@@ -326,15 +340,15 @@ export const getInactiveUsers = async (daysAgo: number = 30): Promise<User[]> =>
     },
   });
 };
-export const getUserIdByEmail = async (email:string) => {
-  if(!email) return null
+export const getUserIdByEmail = async (email: string) => {
+  if (!email) return null
   try {
     const user = await prisma.user.findUnique({
       where: {
         email,
       },
       select: {
-        user_id:true
+        user_id: true
       }
     })
     return user?.user_id

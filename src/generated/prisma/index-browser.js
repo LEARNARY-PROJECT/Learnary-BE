@@ -396,6 +396,8 @@ exports.Prisma.LessonProgressScalarFieldEnum = {
   id: 'id',
   user_id: 'user_id',
   lesson_id: 'lesson_id',
+  last_watch_time: 'last_watch_time',
+  max_watch_time: 'max_watch_time',
   is_completed: 'is_completed',
   completed_at: 'completed_at'
 };

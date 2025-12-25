@@ -1,4 +1,5 @@
 import prisma from "../lib/client";
+import { AppError } from "../utils/custom-error";
 
 export const markLessonComplete = async (user_id: string, lesson_id: string) => {
   return prisma.lessonProgress.upsert({
@@ -43,6 +44,10 @@ export const markLessonIncomplete = async (user_id: string, lesson_id: string) =
 };
 
 export const getLessonProgress = async (user_id: string, lesson_id: string) => {
+  if(!lesson_id || !user_id) {
+    throw new AppError("Missing field required", 404)
+  }
+  
   return prisma.lessonProgress.findUnique({
     where: {
       user_id_lesson_id: {
@@ -122,6 +127,46 @@ export const getCourseProgressByUser = async (user_id: string, course_id: string
       { lesson: { belongChapter: { order_index: 'asc' } } },
       { lesson: { order_index: 'asc' } }
     ]
+  });
+};
+
+export const updateLessonWatchTime = async (
+  user_id: string, 
+  lesson_id: string, 
+  last_watch_time: number, 
+  max_watch_time?: number
+) => {
+  const currentProgress = await prisma.lessonProgress.findUnique({
+    where: {
+      user_id_lesson_id: {
+        user_id,
+        lesson_id
+      }
+    },
+    select: { max_watch_time: true }
+  });
+  const newMaxWatchTime = max_watch_time !== undefined 
+    ? Math.max(max_watch_time, currentProgress?.max_watch_time || 0)
+    : Math.max(last_watch_time, currentProgress?.max_watch_time || 0);
+
+  return prisma.lessonProgress.upsert({
+    where: {
+      user_id_lesson_id: {
+        user_id,
+        lesson_id
+      }
+    },
+    update: {
+      last_watch_time,
+      max_watch_time: newMaxWatchTime
+    },
+    create: {
+      user_id,
+      lesson_id,
+      last_watch_time,
+      max_watch_time: newMaxWatchTime,
+      is_completed: false
+    }
   });
 };
 
