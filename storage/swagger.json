@@ -2270,6 +2270,25 @@
       }
     },
     "/api/categories": {
+      "get": {
+        "summary": "Get all categories",
+        "tags": [
+          "Categories"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of categories"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      },
       "post": {
         "summary": "Create a new category",
         "tags": [
@@ -2296,25 +2315,6 @@
           },
           "400": {
             "description": "Invalid input"
-          },
-          "401": {
-            "description": "Unauthorized"
-          }
-        }
-      },
-      "get": {
-        "summary": "Get all categories",
-        "tags": [
-          "Categories"
-        ],
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "List of categories"
           },
           "401": {
             "description": "Unauthorized"
@@ -5510,6 +5510,51 @@
         "responses": {
           "200": {
             "description": "Lesson marked as incomplete"
+          }
+        }
+      }
+    },
+    "/api/lesson-progress/watch-time": {
+      "post": {
+        "summary": "Update lesson watch time",
+        "tags": [
+          "LessonProgress"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "lesson_id",
+                  "last_watch_time"
+                ],
+                "properties": {
+                  "lesson_id": {
+                    "type": "string"
+                  },
+                  "last_watch_time": {
+                    "type": "number",
+                    "description": "Current watch time in seconds"
+                  },
+                  "max_watch_time": {
+                    "type": "number",
+                    "description": "Maximum watch time reached (optional)"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Watch time updated"
           }
         }
       }

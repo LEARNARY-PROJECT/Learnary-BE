@@ -14,6 +14,8 @@ import {
     getUsersExceptAdmins,
 } from '../services/user.service';
 import { JwtPayLoad } from '../middlewares/auth.middleware';
+import { AppError } from '../utils/custom-error';
+import { error } from 'console';
 
 export const create = async (req: Request, res: Response) => {
     try {
@@ -118,7 +120,7 @@ export const updateUserInformation: RequestHandler = async (req, res) => {
         const userId = req.params.id.trim();
         const jwtPayload: JwtPayLoad = req.jwtPayload!;
         const jwtId = jwtPayload.id.trim();
-        
+
         if (jwtId !== userId && jwtPayload.role !== 'ADMIN') {
             res.status(403).json({ error: 'Forbidden: You can only update your own information' });
             return;
@@ -140,13 +142,11 @@ export const updateUserInformation: RequestHandler = async (req, res) => {
             user: updatedUser
         });
     } catch (err) {
-        const e = err as Error;
-        console.error("Update user information error:", e);
-        if (e.message === 'User not found') {
-            res.status(404).json({ error: 'User not found' });
+        if (err instanceof AppError) {
+            res.status(err.statusCode).json({ error: err.message })
             return;
         }
-        res.status(500).json({ error: 'Failed to update user information' });
+        res.status(500).json({error: 'Failed to update user'})
     }
 };
 export const uploadAvatar: RequestHandler = async (req, res) => {
@@ -173,9 +173,9 @@ export const uploadAvatar: RequestHandler = async (req, res) => {
             res.status(404).json({ error: 'User not found' });
             return;
         }
-        res.status(500).json({ 
+        res.status(500).json({
             error: 'Server error during upload',
-            details: e.message 
+            details: e.message
         });
     }
 };

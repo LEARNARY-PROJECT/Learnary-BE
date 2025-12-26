@@ -520,11 +520,13 @@ model Lesson {
 }
 
 model LessonProgress {
-  id           String    @id @default(uuid())
-  user_id      String    @db.Char(50)
-  lesson_id    String    @db.Char(50)
-  is_completed Boolean   @default(false)
-  completed_at DateTime?
+  id              String    @id @default(uuid())
+  user_id         String    @db.Char(50)
+  lesson_id       String    @db.Char(50)
+  last_watch_time Float     @default(0)
+  max_watch_time  Float     @default(0)
+  is_completed    Boolean   @default(false)
+  completed_at    DateTime?
 
   user   User   @relation(fields: [user_id], references: [user_id], onDelete: Restrict)
   lesson Lesson @relation(fields: [lesson_id], references: [lesson_id], onDelete: Restrict)

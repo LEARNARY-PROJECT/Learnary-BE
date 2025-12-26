@@ -22,7 +22,6 @@ export const sendOTPEmail = async (userId: string): Promise<string> => {
   if (!user) {
     throw new Error('User not found');
   }
-
   if (!user.email) {
     throw new Error('User email not found');
   }
