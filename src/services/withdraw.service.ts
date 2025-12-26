@@ -17,7 +17,7 @@ export const WithdrawService = {
             
             const currentBalance = Number(wallet.balance);
             if (currentBalance < amount) throw new Error("Số dư không đủ");
-            if (amount < 5000) throw new Error("Tối thiểu rút 50.000đ");
+            if (amount < 50000) throw new Error("Tối thiểu rút 50.000đ");
 
             // B. Trừ tiền ví ngay lập tức (Tạm giữ)
             await tx.wallet.update({
