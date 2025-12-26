@@ -12,9 +12,9 @@ export const PaymentController = {
                     error: "Thiếu thông tin userId hoặc courseId" 
                 });
             }
-            const checkoutUrl = await PaymentService.createPaymentLink(userId, courseId);
+            const { qrCode, orderCode, amount } = await PaymentService.createPaymentLink(userId, courseId);
 
-            return res.json({ checkoutUrl });
+            return res.json({ qrCode, orderCode, amount });
 
         } catch (error) {
             const err = error as Error;
@@ -77,14 +77,33 @@ export const PaymentController = {
                     error: "Thiếu thông tin userId hoặc groupId" 
                 });
             }
-            const checkoutUrl = await PaymentService.createComboPaymentLink(userId, groupId);
+            const { qrCode, orderCode, amount } = await PaymentService.createComboPaymentLink(userId, groupId);
 
-            return res.json({ checkoutUrl });
+            return res.json({ qrCode, orderCode, amount });
 
         } catch (error) {
             const err = error as Error;
             console.error("Error creating combo payment link:", err.message);
             return res.status(500).json({ error: err.message });
+        }
+    },
+
+    // 5. API kiểm tra trạng thái giao dịch
+    getPaymentStatus: async (req: Request, res: Response) => {
+        try {
+            const orderCode = req.query.orderCode;
+            if (!orderCode) {
+                return res.status(400).json({ error: "Thiếu orderCode" });
+            }
+            const transaction = await require('../lib/client').default.transaction.findUnique({
+                where: { payment_code: BigInt(orderCode as string) }
+            });
+            if (!transaction) {
+                return res.status(404).json({ error: "Không tìm thấy giao dịch" });
+            }
+            return res.json({ status: transaction.status });
+        } catch (error) {
+            return res.status(500).json({ error: (error as Error).message });
         }
     }
 };

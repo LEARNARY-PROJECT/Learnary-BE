@@ -296,6 +296,16 @@ export const updateDraftCourse = async (
   });
 
   if (!course) throw new Error('Khóa học không tồn tại.');
+
+  // Nếu Published chỉ cho phép cập nhật giá
+  if (course.status === CourseStatus.Published) {
+    return await prisma.course.update({
+      where: { course_id: courseId },
+      data: { price: data.price },
+    });
+  }
+
+  // Nếu Draft thì giữ logic cũ
   if (course.status !== CourseStatus.Draft) {
     throw new Error('Khóa học này đã được gửi duyệt, không thể lưu nháp.');
   }
@@ -379,7 +389,8 @@ export const submitCourseForApproval = async (
     where: { course_id: courseId, instructor_id: instructorId },
   });
   if (!course) throw new Error('Khóa học không tồn tại.');
-  if (course.status !== CourseStatus.Draft) {
+  // Cho phép gửi duyệt lại nếu là Draft hoặc Archived (bị từ chối)
+  if (course.status !== CourseStatus.Draft && course.status !== CourseStatus.Archived) {
     throw new Error('Khóa học này đã được gửi duyệt.');
   }
   const allChaptersHaveLessons = (data.chapter || []).every((c) => c.lessons && c.lessons.length > 0);
@@ -470,7 +481,7 @@ export const submitCourseForApproval = async (
 
   return await prisma.course.update({
     where: { course_id: courseId },
-    data: { status: CourseStatus.Pending },
+    data: { status: CourseStatus.Pending, admin_note: null }, // reset admin_note khi gửi duyệt lại
   });
 };
 

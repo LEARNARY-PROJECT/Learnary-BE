@@ -6531,6 +6531,52 @@
         }
       }
     },
+    "/api/payment/status": {
+      "get": {
+        "summary": "Get payment transaction status",
+        "tags": [
+          "Payment"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "orderCode",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Order code from PayOS"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Payment status returned",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "description": "Transaction status"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Missing orderCode"
+          },
+          "404": {
+            "description": "Transaction not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
     "/api/permissions": {
       "post": {
         "summary": "Create a new permission",

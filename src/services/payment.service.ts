@@ -4,7 +4,7 @@ import payOS from '../lib/payos';
 import { CreatePaymentParams, PayOSWebhookBody, PayOSWebhookData } from '../types/payos';
 
 export const PaymentService = {
-    createPaymentLink: async (userId: string, courseId: string): Promise<string> => {
+    createPaymentLink: async (userId: string, courseId: string): Promise<{ qrCode: string, orderCode: number, amount: number}> => {
         const course = await prisma.course.findUnique({ where: { course_id: courseId } });
         if (!course) throw new Error("Khóa học không tồn tại");
 
@@ -64,8 +64,7 @@ export const PaymentService = {
 
         // Gọi PayOS
         const response = await payOS.paymentRequests.create(paymentBody);
-        
-        return response.checkoutUrl; 
+        return { qrCode: response.qrCode, orderCode, amount: Number(response.amount) };
     },
 
     // 2. Hàm xử lý Webhook
@@ -330,7 +329,7 @@ export const PaymentService = {
     },
 
     // 4. Hàm tạo link thanh toán cho Combo
-    createComboPaymentLink: async (userId: string, groupId: string): Promise<string> => {
+    createComboPaymentLink: async (userId: string, groupId: string): Promise<{ qrCode: string, orderCode: number, amount: number }> => {
         // Lấy thông tin combo/group
         const group = await prisma.group.findUnique({ 
             where: { group_id: groupId },
@@ -407,7 +406,37 @@ export const PaymentService = {
 
         // Gọi PayOS
         const response = await payOS.paymentRequests.create(paymentBody);
-        
-        return response.checkoutUrl;
+        return { qrCode: response.qrCode, orderCode, amount: Number(response.amount)};
+    },
+
+    // Cronjob: Tự động hủy các giao dịch Pending quá 1 phút
+    autoCancelExpiredTransactions: async () => {
+        const oneMinuteAgo = new Date(Date.now() - 60 * 1000);
+        const expiredTransactions = await prisma.transaction.findMany({
+            where: {
+                status: TransactionStatus.Pending,
+                createdAt: { lt: oneMinuteAgo }
+            }
+        });
+        for (const tx of expiredTransactions) {
+            await prisma.transaction.update({
+                where: { transaction_id: tx.transaction_id },
+                data: { status: TransactionStatus.Cancel }
+            });
+        }
+        return expiredTransactions.length;
     }
+    
 };
+
+// Tự động hủy các giao dịch Pending quá han
+if (process.env.NODE_ENV !== 'test') {
+    setInterval(() => {
+        PaymentService.autoCancelExpiredTransactions()
+            .then(count => {
+                if (count > 0) console.log(`Đã hủy ${count} giao dịch quá hạn.`);
+            })
+            .catch(err => console.error('Auto cancel error:', err));
+    }, 10000);
+}
+
