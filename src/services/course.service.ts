@@ -296,11 +296,14 @@ export const updateDraftCourse = async (
 
   if (!course) throw new Error('Khóa học không tồn tại.');
 
-  // Nếu Published chỉ cho phép cập nhật giá
+  // Nếu Published chỉ cho phép cập nhật giá và cấp độ
   if (course.status === CourseStatus.Published) {
     return await prisma.course.update({
       where: { course_id: courseId },
-      data: { price: data.price },
+      data: {
+        price: data.price,
+        level_id: data.level_id?.trim(),
+      },
     });
   }
 
@@ -500,8 +503,9 @@ export const getPendingCourses = () =>
   });
 
 export const approveCourse = async (courseId: string) => {
+  // Cho phép duyệt nếu là Pending hoặc Archived (bị từ chối trong vòng 3 ngày)
   const course = await prisma.course.findUnique({
-    where: { course_id: courseId, status: CourseStatus.Pending },
+    where: { course_id: courseId },
     include: {
       chapter: {
         include: {
@@ -512,7 +516,21 @@ export const approveCourse = async (courseId: string) => {
   });
 
   if (!course) {
-    throw new Error('Course not found or not pending');
+    throw new Error('Course not found');
+  }
+
+  // Nếu bị từ chối, chỉ cho phép duyệt lại trong 3 ngày kể từ rejectedAt
+  if (course.status === 'Archived') {
+    if (!course.rejectedAt) throw new Error('Thiếu thông tin thời gian bị từ chối');
+    const now = new Date();
+    const rejectedAt = new Date(course.rejectedAt);
+    const diffMs = now.getTime() - rejectedAt.getTime();
+    const diffDays = diffMs / (1000 * 60 * 60 * 24);
+    if (diffDays > 3) {
+      throw new Error('Khóa học đã bị từ chối quá 3 ngày, không thể duyệt lại.');
+    }
+  } else if (course.status !== 'Pending') {
+    throw new Error('Chỉ có thể duyệt khóa học ở trạng thái chờ duyệt hoặc vừa bị từ chối.');
   }
 
   const videoUpdates: { lessonId: string; oldUrl: string }[] = [];
@@ -538,7 +556,7 @@ export const approveCourse = async (courseId: string) => {
   return prisma.$transaction(async (tx) => {
     const updatedCourse = await tx.course.update({
       where: { course_id: courseId },
-      data: { status: CourseStatus.Published },
+      data: { status: CourseStatus.Published, rejectedAt: null }, // reset rejectedAt khi duyệt lại
     });
 
     // cập nhật lại url mới vào db
@@ -603,7 +621,7 @@ export const rejectCourse = async (courseId: string, reason: string) => {
   return prisma.$transaction(async (tx) => {
     const updatedCourse = await tx.course.update({
       where: { course_id: courseId },
-      data: { status: CourseStatus.Archived, admin_note: reason },
+      data: { status: CourseStatus.Archived, admin_note: reason, rejectedAt: new Date() },
     });
     for (const lessonId of lessonIds) {
       await tx.lesson.update({

@@ -338,7 +338,8 @@ exports.Prisma.CourseScalarFieldEnum = {
   tag: 'tag',
   available_language: 'available_language',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  rejectedAt: 'rejectedAt'
 };
 
 exports.Prisma.CategoryScalarFieldEnum = {
