@@ -401,6 +401,7 @@ model Course {
   available_language LanguageOptions @default(Vietnamese)
   createdAt          DateTime        @default(now())
   updatedAt          DateTime        @updatedAt
+  rejectedAt         DateTime?       @db.Timestamp(6)
 
   feedbacks      Feedback[]
   learnerCourses LearnerCourses[]

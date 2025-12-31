@@ -27310,6 +27310,7 @@ export namespace Prisma {
     available_language: $Enums.LanguageOptions | null
     createdAt: Date | null
     updatedAt: Date | null
+    rejectedAt: Date | null
   }
 
   export type CourseMaxAggregateOutputType = {
@@ -27331,6 +27332,7 @@ export namespace Prisma {
     available_language: $Enums.LanguageOptions | null
     createdAt: Date | null
     updatedAt: Date | null
+    rejectedAt: Date | null
   }
 
   export type CourseCountAggregateOutputType = {
@@ -27352,6 +27354,7 @@ export namespace Prisma {
     available_language: number
     createdAt: number
     updatedAt: number
+    rejectedAt: number
     _all: number
   }
 
@@ -27383,6 +27386,7 @@ export namespace Prisma {
     available_language?: true
     createdAt?: true
     updatedAt?: true
+    rejectedAt?: true
   }
 
   export type CourseMaxAggregateInputType = {
@@ -27404,6 +27408,7 @@ export namespace Prisma {
     available_language?: true
     createdAt?: true
     updatedAt?: true
+    rejectedAt?: true
   }
 
   export type CourseCountAggregateInputType = {
@@ -27425,6 +27430,7 @@ export namespace Prisma {
     available_language?: true
     createdAt?: true
     updatedAt?: true
+    rejectedAt?: true
     _all?: true
   }
 
@@ -27533,6 +27539,7 @@ export namespace Prisma {
     available_language: $Enums.LanguageOptions
     createdAt: Date
     updatedAt: Date
+    rejectedAt: Date | null
     _count: CourseCountAggregateOutputType | null
     _avg: CourseAvgAggregateOutputType | null
     _sum: CourseSumAggregateOutputType | null
@@ -27573,6 +27580,7 @@ export namespace Prisma {
     available_language?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    rejectedAt?: boolean
     feedbacks?: boolean | Course$feedbacksArgs<ExtArgs>
     learnerCourses?: boolean | Course$learnerCoursesArgs<ExtArgs>
     chapter?: boolean | Course$chapterArgs<ExtArgs>
@@ -27604,6 +27612,7 @@ export namespace Prisma {
     available_language?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    rejectedAt?: boolean
     level?: boolean | LevelDefaultArgs<ExtArgs>
     category?: boolean | CategoryDefaultArgs<ExtArgs>
     instructor?: boolean | InstructorDefaultArgs<ExtArgs>
@@ -27628,6 +27637,7 @@ export namespace Prisma {
     available_language?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    rejectedAt?: boolean
     level?: boolean | LevelDefaultArgs<ExtArgs>
     category?: boolean | CategoryDefaultArgs<ExtArgs>
     instructor?: boolean | InstructorDefaultArgs<ExtArgs>
@@ -27652,9 +27662,10 @@ export namespace Prisma {
     available_language?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    rejectedAt?: boolean
   }
 
-  export type CourseOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"course_id" | "category_id" | "level_id" | "instructor_id" | "status" | "title" | "slug" | "requirement" | "description" | "thumbnail" | "admin_note" | "price" | "sale_off" | "hot" | "tag" | "available_language" | "createdAt" | "updatedAt", ExtArgs["result"]["course"]>
+  export type CourseOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"course_id" | "category_id" | "level_id" | "instructor_id" | "status" | "title" | "slug" | "requirement" | "description" | "thumbnail" | "admin_note" | "price" | "sale_off" | "hot" | "tag" | "available_language" | "createdAt" | "updatedAt" | "rejectedAt", ExtArgs["result"]["course"]>
   export type CourseInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     feedbacks?: boolean | Course$feedbacksArgs<ExtArgs>
     learnerCourses?: boolean | Course$learnerCoursesArgs<ExtArgs>
@@ -27710,6 +27721,7 @@ export namespace Prisma {
       available_language: $Enums.LanguageOptions
       createdAt: Date
       updatedAt: Date
+      rejectedAt: Date | null
     }, ExtArgs["result"]["course"]>
     composites: {}
   }
@@ -28160,6 +28172,7 @@ export namespace Prisma {
     readonly available_language: FieldRef<"Course", 'LanguageOptions'>
     readonly createdAt: FieldRef<"Course", 'DateTime'>
     readonly updatedAt: FieldRef<"Course", 'DateTime'>
+    readonly rejectedAt: FieldRef<"Course", 'DateTime'>
   }
     
 
@@ -49254,7 +49267,8 @@ export namespace Prisma {
     tag: 'tag',
     available_language: 'available_language',
     createdAt: 'createdAt',
-    updatedAt: 'updatedAt'
+    updatedAt: 'updatedAt',
+    rejectedAt: 'rejectedAt'
   };
 
   export type CourseScalarFieldEnum = (typeof CourseScalarFieldEnum)[keyof typeof CourseScalarFieldEnum]
@@ -51240,6 +51254,7 @@ export namespace Prisma {
     available_language?: EnumLanguageOptionsFilter<"Course"> | $Enums.LanguageOptions
     createdAt?: DateTimeFilter<"Course"> | Date | string
     updatedAt?: DateTimeFilter<"Course"> | Date | string
+    rejectedAt?: DateTimeNullableFilter<"Course"> | Date | string | null
     feedbacks?: FeedbackListRelationFilter
     learnerCourses?: LearnerCoursesListRelationFilter
     chapter?: ChapterListRelationFilter
@@ -51270,6 +51285,7 @@ export namespace Prisma {
     available_language?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    rejectedAt?: SortOrderInput | SortOrder
     feedbacks?: FeedbackOrderByRelationAggregateInput
     learnerCourses?: LearnerCoursesOrderByRelationAggregateInput
     chapter?: ChapterOrderByRelationAggregateInput
@@ -51303,6 +51319,7 @@ export namespace Prisma {
     available_language?: EnumLanguageOptionsFilter<"Course"> | $Enums.LanguageOptions
     createdAt?: DateTimeFilter<"Course"> | Date | string
     updatedAt?: DateTimeFilter<"Course"> | Date | string
+    rejectedAt?: DateTimeNullableFilter<"Course"> | Date | string | null
     feedbacks?: FeedbackListRelationFilter
     learnerCourses?: LearnerCoursesListRelationFilter
     chapter?: ChapterListRelationFilter
@@ -51333,6 +51350,7 @@ export namespace Prisma {
     available_language?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    rejectedAt?: SortOrderInput | SortOrder
     _count?: CourseCountOrderByAggregateInput
     _avg?: CourseAvgOrderByAggregateInput
     _max?: CourseMaxOrderByAggregateInput
@@ -51362,6 +51380,7 @@ export namespace Prisma {
     available_language?: EnumLanguageOptionsWithAggregatesFilter<"Course"> | $Enums.LanguageOptions
     createdAt?: DateTimeWithAggregatesFilter<"Course"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Course"> | Date | string
+    rejectedAt?: DateTimeNullableWithAggregatesFilter<"Course"> | Date | string | null
   }
 
   export type CategoryWhereInput = {
@@ -54151,6 +54170,7 @@ export namespace Prisma {
     available_language?: $Enums.LanguageOptions
     createdAt?: Date | string
     updatedAt?: Date | string
+    rejectedAt?: Date | string | null
     feedbacks?: FeedbackCreateNestedManyWithoutCourseInput
     learnerCourses?: LearnerCoursesCreateNestedManyWithoutCourseInput
     chapter?: ChapterCreateNestedManyWithoutBelongCourseInput
@@ -54181,6 +54201,7 @@ export namespace Prisma {
     available_language?: $Enums.LanguageOptions
     createdAt?: Date | string
     updatedAt?: Date | string
+    rejectedAt?: Date | string | null
     feedbacks?: FeedbackUncheckedCreateNestedManyWithoutCourseInput
     learnerCourses?: LearnerCoursesUncheckedCreateNestedManyWithoutCourseInput
     chapter?: ChapterUncheckedCreateNestedManyWithoutBelongCourseInput
@@ -54205,6 +54226,7 @@ export namespace Prisma {
     available_language?: EnumLanguageOptionsFieldUpdateOperationsInput | $Enums.LanguageOptions
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    rejectedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     feedbacks?: FeedbackUpdateManyWithoutCourseNestedInput
     learnerCourses?: LearnerCoursesUpdateManyWithoutCourseNestedInput
     chapter?: ChapterUpdateManyWithoutBelongCourseNestedInput
@@ -54235,6 +54257,7 @@ export namespace Prisma {
     available_language?: EnumLanguageOptionsFieldUpdateOperationsInput | $Enums.LanguageOptions
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    rejectedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     feedbacks?: FeedbackUncheckedUpdateManyWithoutCourseNestedInput
     learnerCourses?: LearnerCoursesUncheckedUpdateManyWithoutCourseNestedInput
     chapter?: ChapterUncheckedUpdateManyWithoutBelongCourseNestedInput
@@ -54262,6 +54285,7 @@ export namespace Prisma {
     available_language?: $Enums.LanguageOptions
     createdAt?: Date | string
     updatedAt?: Date | string
+    rejectedAt?: Date | string | null
   }
 
   export type CourseUpdateManyMutationInput = {
@@ -54280,6 +54304,7 @@ export namespace Prisma {
     available_language?: EnumLanguageOptionsFieldUpdateOperationsInput | $Enums.LanguageOptions
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    rejectedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type CourseUncheckedUpdateManyInput = {
@@ -54301,6 +54326,7 @@ export namespace Prisma {
     available_language?: EnumLanguageOptionsFieldUpdateOperationsInput | $Enums.LanguageOptions
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    rejectedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type CategoryCreateInput = {
@@ -56973,6 +56999,7 @@ export namespace Prisma {
     available_language?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    rejectedAt?: SortOrder
   }
 
   export type CourseAvgOrderByAggregateInput = {
@@ -56998,6 +57025,7 @@ export namespace Prisma {
     available_language?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    rejectedAt?: SortOrder
   }
 
   export type CourseMinOrderByAggregateInput = {
@@ -57019,6 +57047,7 @@ export namespace Prisma {
     available_language?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    rejectedAt?: SortOrder
   }
 
   export type CourseSumOrderByAggregateInput = {
@@ -63076,6 +63105,7 @@ export namespace Prisma {
     available_language?: $Enums.LanguageOptions
     createdAt?: Date | string
     updatedAt?: Date | string
+    rejectedAt?: Date | string | null
     feedbacks?: FeedbackCreateNestedManyWithoutCourseInput
     learnerCourses?: LearnerCoursesCreateNestedManyWithoutCourseInput
     chapter?: ChapterCreateNestedManyWithoutBelongCourseInput
@@ -63104,6 +63134,7 @@ export namespace Prisma {
     available_language?: $Enums.LanguageOptions
     createdAt?: Date | string
     updatedAt?: Date | string
+    rejectedAt?: Date | string | null
     feedbacks?: FeedbackUncheckedCreateNestedManyWithoutCourseInput
     learnerCourses?: LearnerCoursesUncheckedCreateNestedManyWithoutCourseInput
     chapter?: ChapterUncheckedCreateNestedManyWithoutBelongCourseInput
@@ -63353,6 +63384,7 @@ export namespace Prisma {
     available_language?: EnumLanguageOptionsFilter<"Course"> | $Enums.LanguageOptions
     createdAt?: DateTimeFilter<"Course"> | Date | string
     updatedAt?: DateTimeFilter<"Course"> | Date | string
+    rejectedAt?: DateTimeNullableFilter<"Course"> | Date | string | null
   }
 
   export type SpecializationCreateWithoutSpecializationInput = {
@@ -64509,6 +64541,7 @@ export namespace Prisma {
     available_language?: $Enums.LanguageOptions
     createdAt?: Date | string
     updatedAt?: Date | string
+    rejectedAt?: Date | string | null
     feedbacks?: FeedbackCreateNestedManyWithoutCourseInput
     learnerCourses?: LearnerCoursesCreateNestedManyWithoutCourseInput
     chapter?: ChapterCreateNestedManyWithoutBelongCourseInput
@@ -64538,6 +64571,7 @@ export namespace Prisma {
     available_language?: $Enums.LanguageOptions
     createdAt?: Date | string
     updatedAt?: Date | string
+    rejectedAt?: Date | string | null
     feedbacks?: FeedbackUncheckedCreateNestedManyWithoutCourseInput
     learnerCourses?: LearnerCoursesUncheckedCreateNestedManyWithoutCourseInput
     chapter?: ChapterUncheckedCreateNestedManyWithoutBelongCourseInput
@@ -64681,6 +64715,7 @@ export namespace Prisma {
     available_language?: EnumLanguageOptionsFieldUpdateOperationsInput | $Enums.LanguageOptions
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    rejectedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     feedbacks?: FeedbackUpdateManyWithoutCourseNestedInput
     learnerCourses?: LearnerCoursesUpdateManyWithoutCourseNestedInput
     chapter?: ChapterUpdateManyWithoutBelongCourseNestedInput
@@ -64710,6 +64745,7 @@ export namespace Prisma {
     available_language?: EnumLanguageOptionsFieldUpdateOperationsInput | $Enums.LanguageOptions
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    rejectedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     feedbacks?: FeedbackUncheckedUpdateManyWithoutCourseNestedInput
     learnerCourses?: LearnerCoursesUncheckedUpdateManyWithoutCourseNestedInput
     chapter?: ChapterUncheckedUpdateManyWithoutBelongCourseNestedInput
@@ -65833,6 +65869,7 @@ export namespace Prisma {
     available_language?: $Enums.LanguageOptions
     createdAt?: Date | string
     updatedAt?: Date | string
+    rejectedAt?: Date | string | null
     feedbacks?: FeedbackCreateNestedManyWithoutCourseInput
     learnerCourses?: LearnerCoursesCreateNestedManyWithoutCourseInput
     chapter?: ChapterCreateNestedManyWithoutBelongCourseInput
@@ -65862,6 +65899,7 @@ export namespace Prisma {
     available_language?: $Enums.LanguageOptions
     createdAt?: Date | string
     updatedAt?: Date | string
+    rejectedAt?: Date | string | null
     feedbacks?: FeedbackUncheckedCreateNestedManyWithoutCourseInput
     learnerCourses?: LearnerCoursesUncheckedCreateNestedManyWithoutCourseInput
     chapter?: ChapterUncheckedCreateNestedManyWithoutBelongCourseInput
@@ -65932,6 +65970,7 @@ export namespace Prisma {
     available_language?: EnumLanguageOptionsFieldUpdateOperationsInput | $Enums.LanguageOptions
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    rejectedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     feedbacks?: FeedbackUpdateManyWithoutCourseNestedInput
     learnerCourses?: LearnerCoursesUpdateManyWithoutCourseNestedInput
     chapter?: ChapterUpdateManyWithoutBelongCourseNestedInput
@@ -65961,6 +66000,7 @@ export namespace Prisma {
     available_language?: EnumLanguageOptionsFieldUpdateOperationsInput | $Enums.LanguageOptions
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    rejectedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     feedbacks?: FeedbackUncheckedUpdateManyWithoutCourseNestedInput
     learnerCourses?: LearnerCoursesUncheckedUpdateManyWithoutCourseNestedInput
     chapter?: ChapterUncheckedUpdateManyWithoutBelongCourseNestedInput
@@ -66446,6 +66486,7 @@ export namespace Prisma {
     available_language?: $Enums.LanguageOptions
     createdAt?: Date | string
     updatedAt?: Date | string
+    rejectedAt?: Date | string | null
     feedbacks?: FeedbackCreateNestedManyWithoutCourseInput
     learnerCourses?: LearnerCoursesCreateNestedManyWithoutCourseInput
     chapter?: ChapterCreateNestedManyWithoutBelongCourseInput
@@ -66474,6 +66515,7 @@ export namespace Prisma {
     available_language?: $Enums.LanguageOptions
     createdAt?: Date | string
     updatedAt?: Date | string
+    rejectedAt?: Date | string | null
     feedbacks?: FeedbackUncheckedCreateNestedManyWithoutCourseInput
     learnerCourses?: LearnerCoursesUncheckedCreateNestedManyWithoutCourseInput
     chapter?: ChapterUncheckedCreateNestedManyWithoutBelongCourseInput
@@ -66524,6 +66566,7 @@ export namespace Prisma {
     available_language?: $Enums.LanguageOptions
     createdAt?: Date | string
     updatedAt?: Date | string
+    rejectedAt?: Date | string | null
     feedbacks?: FeedbackCreateNestedManyWithoutCourseInput
     learnerCourses?: LearnerCoursesCreateNestedManyWithoutCourseInput
     chapter?: ChapterCreateNestedManyWithoutBelongCourseInput
@@ -66552,6 +66595,7 @@ export namespace Prisma {
     available_language?: $Enums.LanguageOptions
     createdAt?: Date | string
     updatedAt?: Date | string
+    rejectedAt?: Date | string | null
     feedbacks?: FeedbackUncheckedCreateNestedManyWithoutCourseInput
     learnerCourses?: LearnerCoursesUncheckedCreateNestedManyWithoutCourseInput
     chapter?: ChapterUncheckedCreateNestedManyWithoutBelongCourseInput
@@ -66625,6 +66669,7 @@ export namespace Prisma {
     available_language?: $Enums.LanguageOptions
     createdAt?: Date | string
     updatedAt?: Date | string
+    rejectedAt?: Date | string | null
     feedbacks?: FeedbackCreateNestedManyWithoutCourseInput
     chapter?: ChapterCreateNestedManyWithoutBelongCourseInput
     inCourseGroups?: CourseGroupCreateNestedManyWithoutBelongToCourseInput
@@ -66654,6 +66699,7 @@ export namespace Prisma {
     available_language?: $Enums.LanguageOptions
     createdAt?: Date | string
     updatedAt?: Date | string
+    rejectedAt?: Date | string | null
     feedbacks?: FeedbackUncheckedCreateNestedManyWithoutCourseInput
     chapter?: ChapterUncheckedCreateNestedManyWithoutBelongCourseInput
     inCourseGroups?: CourseGroupUncheckedCreateNestedManyWithoutBelongToCourseInput
@@ -66722,6 +66768,7 @@ export namespace Prisma {
     available_language?: EnumLanguageOptionsFieldUpdateOperationsInput | $Enums.LanguageOptions
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    rejectedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     feedbacks?: FeedbackUpdateManyWithoutCourseNestedInput
     chapter?: ChapterUpdateManyWithoutBelongCourseNestedInput
     inCourseGroups?: CourseGroupUpdateManyWithoutBelongToCourseNestedInput
@@ -66751,6 +66798,7 @@ export namespace Prisma {
     available_language?: EnumLanguageOptionsFieldUpdateOperationsInput | $Enums.LanguageOptions
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    rejectedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     feedbacks?: FeedbackUncheckedUpdateManyWithoutCourseNestedInput
     chapter?: ChapterUncheckedUpdateManyWithoutBelongCourseNestedInput
     inCourseGroups?: CourseGroupUncheckedUpdateManyWithoutBelongToCourseNestedInput
@@ -66774,6 +66822,7 @@ export namespace Prisma {
     available_language?: $Enums.LanguageOptions
     createdAt?: Date | string
     updatedAt?: Date | string
+    rejectedAt?: Date | string | null
     feedbacks?: FeedbackCreateNestedManyWithoutCourseInput
     learnerCourses?: LearnerCoursesCreateNestedManyWithoutCourseInput
     inCourseGroups?: CourseGroupCreateNestedManyWithoutBelongToCourseInput
@@ -66803,6 +66852,7 @@ export namespace Prisma {
     available_language?: $Enums.LanguageOptions
     createdAt?: Date | string
     updatedAt?: Date | string
+    rejectedAt?: Date | string | null
     feedbacks?: FeedbackUncheckedCreateNestedManyWithoutCourseInput
     learnerCourses?: LearnerCoursesUncheckedCreateNestedManyWithoutCourseInput
     inCourseGroups?: CourseGroupUncheckedCreateNestedManyWithoutBelongToCourseInput
@@ -66929,6 +66979,7 @@ export namespace Prisma {
     available_language?: EnumLanguageOptionsFieldUpdateOperationsInput | $Enums.LanguageOptions
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    rejectedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     feedbacks?: FeedbackUpdateManyWithoutCourseNestedInput
     learnerCourses?: LearnerCoursesUpdateManyWithoutCourseNestedInput
     inCourseGroups?: CourseGroupUpdateManyWithoutBelongToCourseNestedInput
@@ -66958,6 +67009,7 @@ export namespace Prisma {
     available_language?: EnumLanguageOptionsFieldUpdateOperationsInput | $Enums.LanguageOptions
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    rejectedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     feedbacks?: FeedbackUncheckedUpdateManyWithoutCourseNestedInput
     learnerCourses?: LearnerCoursesUncheckedUpdateManyWithoutCourseNestedInput
     inCourseGroups?: CourseGroupUncheckedUpdateManyWithoutBelongToCourseNestedInput
@@ -68233,6 +68285,7 @@ export namespace Prisma {
     available_language?: $Enums.LanguageOptions
     createdAt?: Date | string
     updatedAt?: Date | string
+    rejectedAt?: Date | string | null
     learnerCourses?: LearnerCoursesCreateNestedManyWithoutCourseInput
     chapter?: ChapterCreateNestedManyWithoutBelongCourseInput
     inCourseGroups?: CourseGroupCreateNestedManyWithoutBelongToCourseInput
@@ -68262,6 +68315,7 @@ export namespace Prisma {
     available_language?: $Enums.LanguageOptions
     createdAt?: Date | string
     updatedAt?: Date | string
+    rejectedAt?: Date | string | null
     learnerCourses?: LearnerCoursesUncheckedCreateNestedManyWithoutCourseInput
     chapter?: ChapterUncheckedCreateNestedManyWithoutBelongCourseInput
     inCourseGroups?: CourseGroupUncheckedCreateNestedManyWithoutBelongToCourseInput
@@ -68390,6 +68444,7 @@ export namespace Prisma {
     available_language?: EnumLanguageOptionsFieldUpdateOperationsInput | $Enums.LanguageOptions
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    rejectedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     learnerCourses?: LearnerCoursesUpdateManyWithoutCourseNestedInput
     chapter?: ChapterUpdateManyWithoutBelongCourseNestedInput
     inCourseGroups?: CourseGroupUpdateManyWithoutBelongToCourseNestedInput
@@ -68419,6 +68474,7 @@ export namespace Prisma {
     available_language?: EnumLanguageOptionsFieldUpdateOperationsInput | $Enums.LanguageOptions
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    rejectedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     learnerCourses?: LearnerCoursesUncheckedUpdateManyWithoutCourseNestedInput
     chapter?: ChapterUncheckedUpdateManyWithoutBelongCourseNestedInput
     inCourseGroups?: CourseGroupUncheckedUpdateManyWithoutBelongToCourseNestedInput
@@ -69347,6 +69403,7 @@ export namespace Prisma {
     available_language?: $Enums.LanguageOptions
     createdAt?: Date | string
     updatedAt?: Date | string
+    rejectedAt?: Date | string | null
     feedbacks?: FeedbackCreateNestedManyWithoutCourseInput
     learnerCourses?: LearnerCoursesCreateNestedManyWithoutCourseInput
     chapter?: ChapterCreateNestedManyWithoutBelongCourseInput
@@ -69376,6 +69433,7 @@ export namespace Prisma {
     available_language?: $Enums.LanguageOptions
     createdAt?: Date | string
     updatedAt?: Date | string
+    rejectedAt?: Date | string | null
     feedbacks?: FeedbackUncheckedCreateNestedManyWithoutCourseInput
     learnerCourses?: LearnerCoursesUncheckedCreateNestedManyWithoutCourseInput
     chapter?: ChapterUncheckedCreateNestedManyWithoutBelongCourseInput
@@ -69444,6 +69502,7 @@ export namespace Prisma {
     available_language?: EnumLanguageOptionsFieldUpdateOperationsInput | $Enums.LanguageOptions
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    rejectedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     feedbacks?: FeedbackUpdateManyWithoutCourseNestedInput
     learnerCourses?: LearnerCoursesUpdateManyWithoutCourseNestedInput
     chapter?: ChapterUpdateManyWithoutBelongCourseNestedInput
@@ -69473,6 +69532,7 @@ export namespace Prisma {
     available_language?: EnumLanguageOptionsFieldUpdateOperationsInput | $Enums.LanguageOptions
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    rejectedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     feedbacks?: FeedbackUncheckedUpdateManyWithoutCourseNestedInput
     learnerCourses?: LearnerCoursesUncheckedUpdateManyWithoutCourseNestedInput
     chapter?: ChapterUncheckedUpdateManyWithoutBelongCourseNestedInput
@@ -70940,6 +71000,7 @@ export namespace Prisma {
     available_language?: $Enums.LanguageOptions
     createdAt?: Date | string
     updatedAt?: Date | string
+    rejectedAt?: Date | string | null
   }
 
   export type CitizenIdsConfirmUpdateWithoutInstructorInput = {
@@ -71042,6 +71103,7 @@ export namespace Prisma {
     available_language?: EnumLanguageOptionsFieldUpdateOperationsInput | $Enums.LanguageOptions
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    rejectedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     feedbacks?: FeedbackUpdateManyWithoutCourseNestedInput
     learnerCourses?: LearnerCoursesUpdateManyWithoutCourseNestedInput
     chapter?: ChapterUpdateManyWithoutBelongCourseNestedInput
@@ -71070,6 +71132,7 @@ export namespace Prisma {
     available_language?: EnumLanguageOptionsFieldUpdateOperationsInput | $Enums.LanguageOptions
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    rejectedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     feedbacks?: FeedbackUncheckedUpdateManyWithoutCourseNestedInput
     learnerCourses?: LearnerCoursesUncheckedUpdateManyWithoutCourseNestedInput
     chapter?: ChapterUncheckedUpdateManyWithoutBelongCourseNestedInput
@@ -71096,6 +71159,7 @@ export namespace Prisma {
     available_language?: EnumLanguageOptionsFieldUpdateOperationsInput | $Enums.LanguageOptions
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    rejectedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type InstructorSpecializationsCreateManySpecializationInput = {
@@ -71782,6 +71846,7 @@ export namespace Prisma {
     available_language?: $Enums.LanguageOptions
     createdAt?: Date | string
     updatedAt?: Date | string
+    rejectedAt?: Date | string | null
   }
 
   export type CourseUpdateWithoutCategoryInput = {
@@ -71800,6 +71865,7 @@ export namespace Prisma {
     available_language?: EnumLanguageOptionsFieldUpdateOperationsInput | $Enums.LanguageOptions
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    rejectedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     feedbacks?: FeedbackUpdateManyWithoutCourseNestedInput
     learnerCourses?: LearnerCoursesUpdateManyWithoutCourseNestedInput
     chapter?: ChapterUpdateManyWithoutBelongCourseNestedInput
@@ -71828,6 +71894,7 @@ export namespace Prisma {
     available_language?: EnumLanguageOptionsFieldUpdateOperationsInput | $Enums.LanguageOptions
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    rejectedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     feedbacks?: FeedbackUncheckedUpdateManyWithoutCourseNestedInput
     learnerCourses?: LearnerCoursesUncheckedUpdateManyWithoutCourseNestedInput
     chapter?: ChapterUncheckedUpdateManyWithoutBelongCourseNestedInput
@@ -71854,6 +71921,7 @@ export namespace Prisma {
     available_language?: EnumLanguageOptionsFieldUpdateOperationsInput | $Enums.LanguageOptions
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    rejectedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type CourseCreateManyLevelInput = {
@@ -71874,6 +71942,7 @@ export namespace Prisma {
     available_language?: $Enums.LanguageOptions
     createdAt?: Date | string
     updatedAt?: Date | string
+    rejectedAt?: Date | string | null
   }
 
   export type CourseUpdateWithoutLevelInput = {
@@ -71892,6 +71961,7 @@ export namespace Prisma {
     available_language?: EnumLanguageOptionsFieldUpdateOperationsInput | $Enums.LanguageOptions
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    rejectedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     feedbacks?: FeedbackUpdateManyWithoutCourseNestedInput
     learnerCourses?: LearnerCoursesUpdateManyWithoutCourseNestedInput
     chapter?: ChapterUpdateManyWithoutBelongCourseNestedInput
@@ -71920,6 +71990,7 @@ export namespace Prisma {
     available_language?: EnumLanguageOptionsFieldUpdateOperationsInput | $Enums.LanguageOptions
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    rejectedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     feedbacks?: FeedbackUncheckedUpdateManyWithoutCourseNestedInput
     learnerCourses?: LearnerCoursesUncheckedUpdateManyWithoutCourseNestedInput
     chapter?: ChapterUncheckedUpdateManyWithoutBelongCourseNestedInput
@@ -71946,6 +72017,7 @@ export namespace Prisma {
     available_language?: EnumLanguageOptionsFieldUpdateOperationsInput | $Enums.LanguageOptions
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    rejectedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type LessonCreateManyBelongChapterInput = {
