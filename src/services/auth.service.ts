@@ -6,7 +6,6 @@ import jwt from 'jsonwebtoken';
 import { profile } from 'node:console';
 import { Profile } from 'passport-google-oauth20';
 import { sendOTPEmail } from './accountSecurity.service';
-import { userInfo } from 'node:os';
 import { AppError } from '../utils/custom-error';
 const JWT_SECRET = process.env.JWT_SECRET;
 const REFRESH_SECRET = process.env.REFRESH_SECRET;
@@ -16,7 +15,7 @@ export const generateAccessToken = (user: User): string => {
     throw new Error('JWT_SECRET is not defined');
   }
   const payload = {
-    id: user.user_id, email: user.email, role: user.role, fullName: user.fullName, avatar: user.avatar
+    id: user.user_id, email: user.email, role: user.role, fullName: user.fullName, avatar: user.avatar, isActive:user.isActive
   };
   return jwt.sign(payload, JWT_SECRET, { expiresIn: '5m' });
 };
@@ -132,7 +131,7 @@ export const generateRefreshToken = (user: User): string => {
   if (!REFRESH_SECRET) {
     throw new Error('REFRESH_SECRET is not defined');
   }
-  const payload = { id: user.user_id, role: user.role };
+  const payload = { id: user.user_id, role: user.role, isActive: user.isActive };
   return jwt.sign(payload, REFRESH_SECRET, { expiresIn: '3h' });
 };
 
@@ -218,7 +217,6 @@ export const findOrCreateGoogleUser = async (profile: Profile): Promise<User> =>
       last_login: new Date()
     },
   });
-  // Ensure learner and wallet records exist for learner role
   if (user.role === 'LEARNER') {
     const existingLearner = await prisma.learner.findUnique({ where: { user_id: user.user_id } });
     if (!existingLearner) {

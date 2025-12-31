@@ -7554,6 +7554,35 @@
       }
     },
     "/api/specializations": {
+      "get": {
+        "summary": "Get all specializations",
+        "tags": [
+          "Specialization"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "is_verified",
+            "schema": {
+              "type": "boolean"
+            },
+            "description": "Filter by verification status (LEARNER can only see verified ones)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of specializations"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      },
       "post": {
         "summary": "Create a new specialization",
         "tags": [
@@ -7580,35 +7609,6 @@
           },
           "400": {
             "description": "Invalid input"
-          },
-          "401": {
-            "description": "Unauthorized"
-          }
-        }
-      },
-      "get": {
-        "summary": "Get all specializations",
-        "tags": [
-          "Specialization"
-        ],
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
-        "parameters": [
-          {
-            "in": "query",
-            "name": "is_verified",
-            "schema": {
-              "type": "boolean"
-            },
-            "description": "Filter by verification status (LEARNER can only see verified ones)"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "List of specializations"
           },
           "401": {
             "description": "Unauthorized"

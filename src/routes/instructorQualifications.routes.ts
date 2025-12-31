@@ -67,7 +67,7 @@ router.post("/instructor-qualifications", authenticate, authorizeRoles("LEARNER"
  *       401:
  *         description: Unauthorized
  */
-router.get("/instructor-qualifications/my-qualifications", authenticate, authorizeRoles("LEARNER", "INSTRUCTOR"), getByCurrentUser);
+router.get("/instructor-qualifications/my-qualifications", authenticate, authorizeRoles("LEARNER", "INSTRUCTOR","ADMIN"), getByCurrentUser);
 
 /**
  * @openapi

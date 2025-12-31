@@ -124,6 +124,7 @@ export const createUser = async (
         password: hashedPassword,
         fullName,
         role: "LEARNER",
+        isActive: false
       },
     });
     const learner = await tx.learner.create({

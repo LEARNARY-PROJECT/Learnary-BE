@@ -116,7 +116,6 @@ export const getByCurrentUser = async (req: Request, res: Response) => {
       res.status(401).json(failure("User not authenticated"));
       return;
     }
-    
     const qualifications = await InstructorQualificationsService.getQualificationsByUserId(userId);
     res.json(success(qualifications, "Your qualifications fetched successfully"));
   } catch (err) {

@@ -302,13 +302,17 @@ export const approveQualification = async (instructor_qualification_id: string, 
       data: { role: 'INSTRUCTOR' }
     });
 
-    if (!qualification.specialization.isVerified) {
+    if (qualification && qualification.specialization_id && qualification.specialization && !qualification.specialization.isVerified) {
       await tx.specialization.update({
         where: { specialization_id: qualification.specialization_id },
         data: { isVerified: true }
       });
     }
     
+    if (!qualification.specialization_id) {
+      throw new Error('Specialization ID is required');
+    }
+
     const existingLink = await tx.instructorSpecializations.findFirst({
       where: {
         instructor_id: instructor.instructor_id,
@@ -320,7 +324,7 @@ export const approveQualification = async (instructor_qualification_id: string, 
       await tx.instructorSpecializations.create({
         data: {
           instructor_id: instructor.instructor_id,
-          specialization_id: qualification.specialization_id,
+          specialization_id: qualification.specialization_id!,
           admin_id: admin.admin_id  
         }
       });
@@ -361,8 +365,7 @@ export const rejectQualification = async (instructor_qualification_id: string): 
         data: { qualification_images: [] }
       });
     }
-
-    if (!qualification.specialization.isVerified) {
+    if (qualification.specialization && !qualification.specialization.isVerified && qualification.specialization_id) {
       const otherQualifications = await tx.instructorQualifications.count({
         where: {
           specialization_id: qualification.specialization_id,
@@ -406,16 +409,9 @@ export const getQualificationsByUserId = async (user_id: string): Promise<Instru
   if (!user_id) {
     throw new Error('user_id is required');
   }
-  const instructor = await prisma.instructor.findUnique({
-    where: { user_id }
-  });
-
-  if (!instructor) {
-    return [];
-  }
 
   return prisma.instructorQualifications.findMany({
-    where: { instructor_id: instructor.instructor_id },
+    where: { user_id },
     include: {
       specialization: true,
       instructor: {
