@@ -12819,7 +12819,7 @@ export namespace Prisma {
   export type InstructorQualificationsGroupByOutputType = {
     instructor_qualification_id: string
     instructor_id: string | null
-    specialization_id: string
+    specialization_id: string | null
     user_id: string
     type: $Enums.QualificationType
     title: string
@@ -12867,7 +12867,7 @@ export namespace Prisma {
     updateAt?: boolean
     instructor?: boolean | InstructorQualifications$instructorArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
-    specialization?: boolean | SpecializationDefaultArgs<ExtArgs>
+    specialization?: boolean | InstructorQualifications$specializationArgs<ExtArgs>
   }, ExtArgs["result"]["instructorQualifications"]>
 
   export type InstructorQualificationsSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -12887,7 +12887,7 @@ export namespace Prisma {
     updateAt?: boolean
     instructor?: boolean | InstructorQualifications$instructorArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
-    specialization?: boolean | SpecializationDefaultArgs<ExtArgs>
+    specialization?: boolean | InstructorQualifications$specializationArgs<ExtArgs>
   }, ExtArgs["result"]["instructorQualifications"]>
 
   export type InstructorQualificationsSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -12907,7 +12907,7 @@ export namespace Prisma {
     updateAt?: boolean
     instructor?: boolean | InstructorQualifications$instructorArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
-    specialization?: boolean | SpecializationDefaultArgs<ExtArgs>
+    specialization?: boolean | InstructorQualifications$specializationArgs<ExtArgs>
   }, ExtArgs["result"]["instructorQualifications"]>
 
   export type InstructorQualificationsSelectScalar = {
@@ -12931,17 +12931,17 @@ export namespace Prisma {
   export type InstructorQualificationsInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     instructor?: boolean | InstructorQualifications$instructorArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
-    specialization?: boolean | SpecializationDefaultArgs<ExtArgs>
+    specialization?: boolean | InstructorQualifications$specializationArgs<ExtArgs>
   }
   export type InstructorQualificationsIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     instructor?: boolean | InstructorQualifications$instructorArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
-    specialization?: boolean | SpecializationDefaultArgs<ExtArgs>
+    specialization?: boolean | InstructorQualifications$specializationArgs<ExtArgs>
   }
   export type InstructorQualificationsIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     instructor?: boolean | InstructorQualifications$instructorArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
-    specialization?: boolean | SpecializationDefaultArgs<ExtArgs>
+    specialization?: boolean | InstructorQualifications$specializationArgs<ExtArgs>
   }
 
   export type $InstructorQualificationsPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -12949,12 +12949,12 @@ export namespace Prisma {
     objects: {
       instructor: Prisma.$InstructorPayload<ExtArgs> | null
       user: Prisma.$UserPayload<ExtArgs>
-      specialization: Prisma.$SpecializationPayload<ExtArgs>
+      specialization: Prisma.$SpecializationPayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
       instructor_qualification_id: string
       instructor_id: string | null
-      specialization_id: string
+      specialization_id: string | null
       user_id: string
       type: $Enums.QualificationType
       title: string
@@ -13362,7 +13362,7 @@ export namespace Prisma {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     instructor<T extends InstructorQualifications$instructorArgs<ExtArgs> = {}>(args?: Subset<T, InstructorQualifications$instructorArgs<ExtArgs>>): Prisma__InstructorClient<$Result.GetResult<Prisma.$InstructorPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    specialization<T extends SpecializationDefaultArgs<ExtArgs> = {}>(args?: Subset<T, SpecializationDefaultArgs<ExtArgs>>): Prisma__SpecializationClient<$Result.GetResult<Prisma.$SpecializationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    specialization<T extends InstructorQualifications$specializationArgs<ExtArgs> = {}>(args?: Subset<T, InstructorQualifications$specializationArgs<ExtArgs>>): Prisma__SpecializationClient<$Result.GetResult<Prisma.$SpecializationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -13818,6 +13818,25 @@ export namespace Prisma {
      */
     include?: InstructorInclude<ExtArgs> | null
     where?: InstructorWhereInput
+  }
+
+  /**
+   * InstructorQualifications.specialization
+   */
+  export type InstructorQualifications$specializationArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Specialization
+     */
+    select?: SpecializationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Specialization
+     */
+    omit?: SpecializationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SpecializationInclude<ExtArgs> | null
+    where?: SpecializationWhereInput
   }
 
   /**
@@ -50311,7 +50330,7 @@ export namespace Prisma {
     NOT?: InstructorQualificationsWhereInput | InstructorQualificationsWhereInput[]
     instructor_qualification_id?: StringFilter<"InstructorQualifications"> | string
     instructor_id?: StringNullableFilter<"InstructorQualifications"> | string | null
-    specialization_id?: StringFilter<"InstructorQualifications"> | string
+    specialization_id?: StringNullableFilter<"InstructorQualifications"> | string | null
     user_id?: StringFilter<"InstructorQualifications"> | string
     type?: EnumQualificationTypeFilter<"InstructorQualifications"> | $Enums.QualificationType
     title?: StringFilter<"InstructorQualifications"> | string
@@ -50325,13 +50344,13 @@ export namespace Prisma {
     updateAt?: DateTimeFilter<"InstructorQualifications"> | Date | string
     instructor?: XOR<InstructorNullableScalarRelationFilter, InstructorWhereInput> | null
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
-    specialization?: XOR<SpecializationScalarRelationFilter, SpecializationWhereInput>
+    specialization?: XOR<SpecializationNullableScalarRelationFilter, SpecializationWhereInput> | null
   }
 
   export type InstructorQualificationsOrderByWithRelationInput = {
     instructor_qualification_id?: SortOrder
     instructor_id?: SortOrderInput | SortOrder
-    specialization_id?: SortOrder
+    specialization_id?: SortOrderInput | SortOrder
     user_id?: SortOrder
     type?: SortOrder
     title?: SortOrder
@@ -50350,12 +50369,11 @@ export namespace Prisma {
 
   export type InstructorQualificationsWhereUniqueInput = Prisma.AtLeast<{
     instructor_qualification_id?: string
-    user_id_specialization_id?: InstructorQualificationsUser_idSpecialization_idCompoundUniqueInput
     AND?: InstructorQualificationsWhereInput | InstructorQualificationsWhereInput[]
     OR?: InstructorQualificationsWhereInput[]
     NOT?: InstructorQualificationsWhereInput | InstructorQualificationsWhereInput[]
     instructor_id?: StringNullableFilter<"InstructorQualifications"> | string | null
-    specialization_id?: StringFilter<"InstructorQualifications"> | string
+    specialization_id?: StringNullableFilter<"InstructorQualifications"> | string | null
     user_id?: StringFilter<"InstructorQualifications"> | string
     type?: EnumQualificationTypeFilter<"InstructorQualifications"> | $Enums.QualificationType
     title?: StringFilter<"InstructorQualifications"> | string
@@ -50369,13 +50387,13 @@ export namespace Prisma {
     updateAt?: DateTimeFilter<"InstructorQualifications"> | Date | string
     instructor?: XOR<InstructorNullableScalarRelationFilter, InstructorWhereInput> | null
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
-    specialization?: XOR<SpecializationScalarRelationFilter, SpecializationWhereInput>
-  }, "instructor_qualification_id" | "user_id_specialization_id">
+    specialization?: XOR<SpecializationNullableScalarRelationFilter, SpecializationWhereInput> | null
+  }, "instructor_qualification_id">
 
   export type InstructorQualificationsOrderByWithAggregationInput = {
     instructor_qualification_id?: SortOrder
     instructor_id?: SortOrderInput | SortOrder
-    specialization_id?: SortOrder
+    specialization_id?: SortOrderInput | SortOrder
     user_id?: SortOrder
     type?: SortOrder
     title?: SortOrder
@@ -50398,7 +50416,7 @@ export namespace Prisma {
     NOT?: InstructorQualificationsScalarWhereWithAggregatesInput | InstructorQualificationsScalarWhereWithAggregatesInput[]
     instructor_qualification_id?: StringWithAggregatesFilter<"InstructorQualifications"> | string
     instructor_id?: StringNullableWithAggregatesFilter<"InstructorQualifications"> | string | null
-    specialization_id?: StringWithAggregatesFilter<"InstructorQualifications"> | string
+    specialization_id?: StringNullableWithAggregatesFilter<"InstructorQualifications"> | string | null
     user_id?: StringWithAggregatesFilter<"InstructorQualifications"> | string
     type?: EnumQualificationTypeWithAggregatesFilter<"InstructorQualifications"> | $Enums.QualificationType
     title?: StringWithAggregatesFilter<"InstructorQualifications"> | string
@@ -53209,13 +53227,13 @@ export namespace Prisma {
     updateAt?: Date | string
     instructor?: InstructorCreateNestedOneWithoutInstructor_qualificationsInput
     user: UserCreateNestedOneWithoutInstructor_qualificationsInput
-    specialization: SpecializationCreateNestedOneWithoutInstructorQualificationsInput
+    specialization?: SpecializationCreateNestedOneWithoutInstructorQualificationsInput
   }
 
   export type InstructorQualificationsUncheckedCreateInput = {
     instructor_qualification_id?: string
     instructor_id?: string | null
-    specialization_id: string
+    specialization_id?: string | null
     user_id: string
     type?: $Enums.QualificationType
     title: string
@@ -53243,13 +53261,13 @@ export namespace Prisma {
     updateAt?: DateTimeFieldUpdateOperationsInput | Date | string
     instructor?: InstructorUpdateOneWithoutInstructor_qualificationsNestedInput
     user?: UserUpdateOneRequiredWithoutInstructor_qualificationsNestedInput
-    specialization?: SpecializationUpdateOneRequiredWithoutInstructorQualificationsNestedInput
+    specialization?: SpecializationUpdateOneWithoutInstructorQualificationsNestedInput
   }
 
   export type InstructorQualificationsUncheckedUpdateInput = {
     instructor_qualification_id?: StringFieldUpdateOperationsInput | string
     instructor_id?: NullableStringFieldUpdateOperationsInput | string | null
-    specialization_id?: StringFieldUpdateOperationsInput | string
+    specialization_id?: NullableStringFieldUpdateOperationsInput | string | null
     user_id?: StringFieldUpdateOperationsInput | string
     type?: EnumQualificationTypeFieldUpdateOperationsInput | $Enums.QualificationType
     title?: StringFieldUpdateOperationsInput | string
@@ -53266,7 +53284,7 @@ export namespace Prisma {
   export type InstructorQualificationsCreateManyInput = {
     instructor_qualification_id?: string
     instructor_id?: string | null
-    specialization_id: string
+    specialization_id?: string | null
     user_id: string
     type?: $Enums.QualificationType
     title: string
@@ -53297,7 +53315,7 @@ export namespace Prisma {
   export type InstructorQualificationsUncheckedUpdateManyInput = {
     instructor_qualification_id?: StringFieldUpdateOperationsInput | string
     instructor_id?: NullableStringFieldUpdateOperationsInput | string | null
-    specialization_id?: StringFieldUpdateOperationsInput | string
+    specialization_id?: NullableStringFieldUpdateOperationsInput | string | null
     user_id?: StringFieldUpdateOperationsInput | string
     type?: EnumQualificationTypeFieldUpdateOperationsInput | $Enums.QualificationType
     title?: StringFieldUpdateOperationsInput | string
@@ -56172,9 +56190,9 @@ export namespace Prisma {
     isEmpty?: boolean
   }
 
-  export type InstructorQualificationsUser_idSpecialization_idCompoundUniqueInput = {
-    user_id: string
-    specialization_id: string
+  export type SpecializationNullableScalarRelationFilter = {
+    is?: SpecializationWhereInput | null
+    isNot?: SpecializationWhereInput | null
   }
 
   export type InstructorQualificationsCountOrderByAggregateInput = {
@@ -59060,10 +59078,12 @@ export namespace Prisma {
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutInstructor_qualificationsInput, UserUpdateWithoutInstructor_qualificationsInput>, UserUncheckedUpdateWithoutInstructor_qualificationsInput>
   }
 
-  export type SpecializationUpdateOneRequiredWithoutInstructorQualificationsNestedInput = {
+  export type SpecializationUpdateOneWithoutInstructorQualificationsNestedInput = {
     create?: XOR<SpecializationCreateWithoutInstructorQualificationsInput, SpecializationUncheckedCreateWithoutInstructorQualificationsInput>
     connectOrCreate?: SpecializationCreateOrConnectWithoutInstructorQualificationsInput
     upsert?: SpecializationUpsertWithoutInstructorQualificationsInput
+    disconnect?: SpecializationWhereInput | boolean
+    delete?: SpecializationWhereInput | boolean
     connect?: SpecializationWhereUniqueInput
     update?: XOR<XOR<SpecializationUpdateToOneWithWhereWithoutInstructorQualificationsInput, SpecializationUpdateWithoutInstructorQualificationsInput>, SpecializationUncheckedUpdateWithoutInstructorQualificationsInput>
   }
@@ -61766,13 +61786,13 @@ export namespace Prisma {
     createdAt?: Date | string
     updateAt?: Date | string
     instructor?: InstructorCreateNestedOneWithoutInstructor_qualificationsInput
-    specialization: SpecializationCreateNestedOneWithoutInstructorQualificationsInput
+    specialization?: SpecializationCreateNestedOneWithoutInstructorQualificationsInput
   }
 
   export type InstructorQualificationsUncheckedCreateWithoutUserInput = {
     instructor_qualification_id?: string
     instructor_id?: string | null
-    specialization_id: string
+    specialization_id?: string | null
     type?: $Enums.QualificationType
     title: string
     issue_date: Date | string
@@ -62331,7 +62351,7 @@ export namespace Prisma {
     NOT?: InstructorQualificationsScalarWhereInput | InstructorQualificationsScalarWhereInput[]
     instructor_qualification_id?: StringFilter<"InstructorQualifications"> | string
     instructor_id?: StringNullableFilter<"InstructorQualifications"> | string | null
-    specialization_id?: StringFilter<"InstructorQualifications"> | string
+    specialization_id?: StringNullableFilter<"InstructorQualifications"> | string | null
     user_id?: StringFilter<"InstructorQualifications"> | string
     type?: EnumQualificationTypeFilter<"InstructorQualifications"> | $Enums.QualificationType
     title?: StringFilter<"InstructorQualifications"> | string
@@ -63011,12 +63031,12 @@ export namespace Prisma {
     createdAt?: Date | string
     updateAt?: Date | string
     user: UserCreateNestedOneWithoutInstructor_qualificationsInput
-    specialization: SpecializationCreateNestedOneWithoutInstructorQualificationsInput
+    specialization?: SpecializationCreateNestedOneWithoutInstructorQualificationsInput
   }
 
   export type InstructorQualificationsUncheckedCreateWithoutInstructorInput = {
     instructor_qualification_id?: string
-    specialization_id: string
+    specialization_id?: string | null
     user_id: string
     type?: $Enums.QualificationType
     title: string
@@ -70298,7 +70318,7 @@ export namespace Prisma {
   export type InstructorQualificationsCreateManyUserInput = {
     instructor_qualification_id?: string
     instructor_id?: string | null
-    specialization_id: string
+    specialization_id?: string | null
     type?: $Enums.QualificationType
     title: string
     issue_date: Date | string
@@ -70540,13 +70560,13 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updateAt?: DateTimeFieldUpdateOperationsInput | Date | string
     instructor?: InstructorUpdateOneWithoutInstructor_qualificationsNestedInput
-    specialization?: SpecializationUpdateOneRequiredWithoutInstructorQualificationsNestedInput
+    specialization?: SpecializationUpdateOneWithoutInstructorQualificationsNestedInput
   }
 
   export type InstructorQualificationsUncheckedUpdateWithoutUserInput = {
     instructor_qualification_id?: StringFieldUpdateOperationsInput | string
     instructor_id?: NullableStringFieldUpdateOperationsInput | string | null
-    specialization_id?: StringFieldUpdateOperationsInput | string
+    specialization_id?: NullableStringFieldUpdateOperationsInput | string | null
     type?: EnumQualificationTypeFieldUpdateOperationsInput | $Enums.QualificationType
     title?: StringFieldUpdateOperationsInput | string
     issue_date?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -70562,7 +70582,7 @@ export namespace Prisma {
   export type InstructorQualificationsUncheckedUpdateManyWithoutUserInput = {
     instructor_qualification_id?: StringFieldUpdateOperationsInput | string
     instructor_id?: NullableStringFieldUpdateOperationsInput | string | null
-    specialization_id?: StringFieldUpdateOperationsInput | string
+    specialization_id?: NullableStringFieldUpdateOperationsInput | string | null
     type?: EnumQualificationTypeFieldUpdateOperationsInput | $Enums.QualificationType
     title?: StringFieldUpdateOperationsInput | string
     issue_date?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -70888,7 +70908,7 @@ export namespace Prisma {
 
   export type InstructorQualificationsCreateManyInstructorInput = {
     instructor_qualification_id?: string
-    specialization_id: string
+    specialization_id?: string | null
     user_id: string
     type?: $Enums.QualificationType
     title: string
@@ -70971,12 +70991,12 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updateAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutInstructor_qualificationsNestedInput
-    specialization?: SpecializationUpdateOneRequiredWithoutInstructorQualificationsNestedInput
+    specialization?: SpecializationUpdateOneWithoutInstructorQualificationsNestedInput
   }
 
   export type InstructorQualificationsUncheckedUpdateWithoutInstructorInput = {
     instructor_qualification_id?: StringFieldUpdateOperationsInput | string
-    specialization_id?: StringFieldUpdateOperationsInput | string
+    specialization_id?: NullableStringFieldUpdateOperationsInput | string | null
     user_id?: StringFieldUpdateOperationsInput | string
     type?: EnumQualificationTypeFieldUpdateOperationsInput | $Enums.QualificationType
     title?: StringFieldUpdateOperationsInput | string
@@ -70992,7 +71012,7 @@ export namespace Prisma {
 
   export type InstructorQualificationsUncheckedUpdateManyWithoutInstructorInput = {
     instructor_qualification_id?: StringFieldUpdateOperationsInput | string
-    specialization_id?: StringFieldUpdateOperationsInput | string
+    specialization_id?: NullableStringFieldUpdateOperationsInput | string | null
     user_id?: StringFieldUpdateOperationsInput | string
     type?: EnumQualificationTypeFieldUpdateOperationsInput | $Enums.QualificationType
     title?: StringFieldUpdateOperationsInput | string

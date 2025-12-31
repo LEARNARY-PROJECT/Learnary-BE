@@ -156,7 +156,7 @@ model CitizenIdsConfirm {
 model InstructorQualifications {
   instructor_qualification_id String  @id @default(uuid()) @db.VarChar(50)
   instructor_id               String? @db.Char(50)
-  specialization_id           String  @db.Char(50)
+  specialization_id           String?  @db.Char(50)
   user_id                     String  @db.Char(50)
 
   type                 QualificationType @default(Certificate)
@@ -172,9 +172,8 @@ model InstructorQualifications {
 
   instructor     Instructor?    @relation(fields: [instructor_id], references: [instructor_id])
   user           User           @relation(fields: [user_id], references: [user_id])
-  specialization Specialization @relation(fields: [specialization_id], references: [specialization_id])
+  specialization Specialization? @relation(fields: [specialization_id], references: [specialization_id])
 
-  @@unique([user_id, specialization_id])
   @@index([instructor_id], name: "idx_iq_instructor") //  FK
   @@index([user_id], name: "idx_iq_user")
   @@index([specialization_id], name: "idx_iq_specialization") //  FK
