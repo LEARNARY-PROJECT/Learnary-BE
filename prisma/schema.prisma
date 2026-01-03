@@ -170,8 +170,8 @@ model InstructorQualifications {
   createdAt            DateTime          @default(now())
   updateAt             DateTime          @updatedAt
 
-  instructor     Instructor?    @relation(fields: [instructor_id], references: [instructor_id])
-  user           User           @relation(fields: [user_id], references: [user_id])
+  instructor     Instructor?     @relation(fields: [instructor_id], references: [instructor_id])
+  user           User            @relation(fields: [user_id], references: [user_id])
   specialization Specialization? @relation(fields: [specialization_id], references: [specialization_id])
 
   @@index([instructor_id], name: "idx_iq_instructor") //  FK
@@ -336,14 +336,16 @@ model AdminRolePermission {
 }
 
 model AccountSecurity {
-  account_security_id   String    @id @default(uuid()) @db.Char(50)
-  user_id               String    @unique @db.Char(50)
-  email_verified        Boolean   @default(false)
-  failed_login_attempts Int       @db.Integer
-  verification_token    String?   @db.VarChar(255)
+  account_security_id   String        @id @default(uuid()) @db.Char(50)
+  user_id               String        @unique @db.Char(50)
+  email_verified        Boolean       @default(false)
+  failed_login_attempts Int           @db.Integer @default(0)
+  verification_token    String?       @db.VarChar(255)
   token_expires_at      DateTime?
-  createdAt             DateTime  @default(now())
-  updatedAt             DateTime  @updatedAt
+  account_noted         String?       @db.Text
+  status                AccountStatus @default(Active)
+  createdAt             DateTime      @default(now())
+  updatedAt             DateTime      @updatedAt
 
   user User @relation(fields: [user_id], references: [user_id], onDelete: Cascade)
 
@@ -787,6 +789,12 @@ enum TransactionNote {
 enum GroupType {
   Combo
   Group
+}
+
+enum AccountStatus {
+  Active
+  Locked
+  Freezed
 }
 
 model Conversation {

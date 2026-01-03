@@ -605,7 +605,7 @@ export const rejectCourse = async (courseId: string, reason: string) => {
     throw new Error('Course not found or not pending');
   }
 
-  const videoUrls: string[] = [];
+/*   const videoUrls: string[] = [];
   const lessonIds: string[] = [];
   course.chapter.forEach(chapter => {
     chapter.lessons.forEach(lesson => {
@@ -614,21 +614,21 @@ export const rejectCourse = async (courseId: string, reason: string) => {
         lessonIds.push(lesson.lesson_id);
       }
     });
-  });
-  if (videoUrls.length > 0) {
+  }); */
+/*   if (videoUrls.length > 0) {
     await deleteVideos(videoUrls);
-  }
+  } */
   return prisma.$transaction(async (tx) => {
     const updatedCourse = await tx.course.update({
       where: { course_id: courseId },
       data: { status: CourseStatus.Archived, admin_note: reason, rejectedAt: new Date() },
     });
-    for (const lessonId of lessonIds) {
+    /* for (const lessonId of lessonIds) {
       await tx.lesson.update({
         where: { lesson_id: lessonId },
         data: { video_url: null }
       });
-    }
+    }  */
     if (course.instructor && course.instructor.user) {
       sendNoticeCourseRejected({
         instructorName: course.instructor.user.fullName || 'Giảng viên',
@@ -670,7 +670,7 @@ export const uploadNewThumbnailToS3 = async (userId: string, courseId: string, f
     throw new Error("Missing course id or file!")
   }
   const maxSize = 10 * 1024 * 1024 //10mb
-  const allowedType = ["image/jpg", "image/png"]
+  const allowedType = ["image/jpg", "image/png","image/jpeg"]
   if (file.size > maxSize) {
     throw new Error("File is not fit with required (>10MB)")
   }

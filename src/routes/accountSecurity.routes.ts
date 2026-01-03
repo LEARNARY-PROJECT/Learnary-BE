@@ -10,7 +10,12 @@ import {
   sendOTP,
   sendVerificationLink,
   verifyWithToken,
-  resendOTP
+  resendOTP,
+  lockAccount,
+  activeAccount,
+  freezeAccount,
+  checkAccountActive,
+  getMyAccountStatus,
 } from "../controllers/accountSecurity.controller";
 
 const router = express.Router();
@@ -54,6 +59,43 @@ router.post("/account-securities", authenticate, authorizeRoles("ADMIN"), create
  *         description: Unauthorized
  */
 router.get("/account-securities", authenticate, authorizeRoles("ADMIN"), getAll);
+
+/**
+ * @openapi
+ * /api/account-securities/my-status:
+ *   get:
+ *     summary: Get current user's account status
+ *     tags: [AccountSecurity]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Account status retrieved successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     status:
+ *                       type: string
+ *                       enum: [ACTIVE, LOCKED, FREEZED]
+ *                       description: Current account status
+ *                     account_noted:
+ *                       type: string
+ *                       description: Reason for lock/freeze if applicable
+ *       401:
+ *         description: Unauthorized
+ *       404:
+ *         description: Account security record not found
+ *       500:
+ *         description: Unexpected Error
+ */
+router.get("/account-securities/my-status", authenticate, authorizeRoles("ADMIN","INSTRUCTOR","LEARNER"), getMyAccountStatus);
 
 /**
  * @openapi
@@ -245,5 +287,145 @@ router.post("/account-securities/verify-with-token", authenticate, verifyWithTok
  *         description: Email already verified or other error
  */
 router.post("/account-securities/verify-email/:userId", authenticate, verifyUserEmail);
+
+/**
+ * @openapi
+ * /api/account-securities/lock-account:
+ *   post:
+ *     summary: Lock a user account
+ *     tags: [AccountSecurity]
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - user_id
+ *               - reason
+ *             properties:
+ *               user_id:
+ *                 type: string
+ *                 description: User ID to lock
+ *               reason:
+ *                 type: string
+ *                 description: Reason for locking the account
+ *     responses:
+ *       200:
+ *         description: Account has been locked successfully
+ *       400:
+ *         description: Missing field required
+ *       401:
+ *         description: Unauthorized
+ *       505:
+ *         description: Unexpected Error
+ */
+router.post("/account-securities/lock-account", authenticate, authorizeRoles("ADMIN"), lockAccount);
+
+/**
+ * @openapi
+ * /api/account-securities/active-account:
+ *   post:
+ *     summary: Activate a user account
+ *     tags: [AccountSecurity]
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - user_id
+ *               - reason
+ *             properties:
+ *               user_id:
+ *                 type: string
+ *                 description: User ID to activate
+ *               reason:
+ *                 type: string
+ *                 description: Reason for activating the account
+ *     responses:
+ *       200:
+ *         description: Account has been actived successfully
+ *       400:
+ *         description: Missing field required
+ *       401:
+ *         description: Unauthorized
+ *       505:
+ *         description: Unexpected Error
+ */
+router.post("/account-securities/active-account", authenticate, authorizeRoles("ADMIN"), activeAccount);
+
+/**
+ * @openapi
+ * /api/account-securities/freeze-account:
+ *   post:
+ *     summary: Freeze a user account
+ *     tags: [AccountSecurity]
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - user_id
+ *               - reason
+ *             properties:
+ *               user_id:
+ *                 type: string
+ *                 description: User ID to freeze
+ *               reason:
+ *                 type: string
+ *                 description: Reason for freezing the account
+ *     responses:
+ *       200:
+ *         description: Account has been freezed successfully
+ *       400:
+ *         description: Missing field required
+ *       401:
+ *         description: Unauthorized
+ *       505:
+ *         description: Unexpected Error
+ */
+router.post("/account-securities/freeze-account", authenticate, authorizeRoles("ADMIN"), freezeAccount);
+
+/**
+ * @openapi
+ * /api/account-securities/check-active:
+ *   post:
+ *     summary: Check if a user account is active
+ *     tags: [AccountSecurity]
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - user_id
+ *             properties:
+ *               user_id:
+ *                 type: string
+ *                 description: User ID to check
+ *     responses:
+ *       200:
+ *         description: Account status returned successfully
+ *       400:
+ *         description: Missing field required
+ *       401:
+ *         description: Unauthorized
+ *       505:
+ *         description: Unexpected Error
+ */
+router.post("/account-securities/check-active", authenticate, authorizeRoles("ADMIN","INSTRUCTOR", "LEARNER"), checkAccountActive);
 
 export default router;

@@ -107,6 +107,14 @@ export const createDefaultUserIfNoneExists = async () => {
         admin_role_id: superAdminRole.admin_role_id
       }
     });
+
+    await tx.accountSecurity.create({
+      data: {
+        user_id: superAdminUser.user_id,
+        status: "Active",
+        account_noted: ""
+      }
+    });
   });
 };
 
@@ -124,6 +132,7 @@ export const createUser = async (
         password: hashedPassword,
         fullName,
         role: "LEARNER",
+        isActive: false
       },
     });
     const learner = await tx.learner.create({
@@ -131,6 +140,14 @@ export const createUser = async (
         user_id: user.user_id,
       }
     })
+    
+    await tx.accountSecurity.create({
+      data: {
+        user_id: user.user_id,
+        status: "Active",
+        account_noted: ""
+      }
+    });
     // Learner không cần ví - chỉ Instructor mới cần ví để nhận tiền
     return { ...user, learner }
   });

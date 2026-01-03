@@ -4,7 +4,11 @@ import { decode } from 'node:punycode';
 
 export interface JwtPayLoad {
     id: string;
+    email: string;
     role: 'ADMIN' | 'INSTRUCTOR' | 'LEARNER';
+    fullName: string;
+    avatar: string | null;
+    isActive: boolean;
 }
 
 declare global {

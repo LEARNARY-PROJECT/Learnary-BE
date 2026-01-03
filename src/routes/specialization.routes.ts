@@ -7,6 +7,27 @@ const router = express.Router();
 /**
  * @openapi
  * /api/specializations:
+ *   get:
+ *     summary: Get all specializations
+ *     tags: [Specialization]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: query
+ *         name: is_verified
+ *         schema:
+ *           type: boolean
+ *         description: Filter by verification status (LEARNER can only see verified ones)
+ *     responses:
+ *       200:
+ *         description: List of specializations
+ *       401:
+ *         description: Unauthorized
+ */
+router.get("/specializations", authenticate, authorizeRoles("ADMIN", "LEARNER", "INSTRUCTOR"), getAll);
+/**
+ * @openapi
+ * /api/specializations:
  *   post:
  *     summary: Create a new specialization
  *     tags: [Specialization]
@@ -27,29 +48,6 @@ const router = express.Router();
  *         description: Unauthorized
  */
 router.post("/specializations", authenticate, authorizeRoles("ADMIN"), create);
-
-/**
- * @openapi
- * /api/specializations:
- *   get:
- *     summary: Get all specializations
- *     tags: [Specialization]
- *     security:
- *       - bearerAuth: []
- *     parameters:
- *       - in: query
- *         name: is_verified
- *         schema:
- *           type: boolean
- *         description: Filter by verification status (LEARNER can only see verified ones)
- *     responses:
- *       200:
- *         description: List of specializations
- *       401:
- *         description: Unauthorized
- */
-router.get("/specializations", authenticate, authorizeRoles("ADMIN", "LEARNER", "INSTRUCTOR"), getAll);
-
 /**
  * @openapi
  * /api/specializations/{id}:

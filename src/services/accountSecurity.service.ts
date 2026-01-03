@@ -4,12 +4,13 @@ import { getUserById } from "./user.service";
 import { User } from "../generated/prisma";
 import { generateOTP, generateVerificationToken, getOTPExpiration } from "../utils/otp";
 import { sendVerificationEmail, sendVerificationEmailWithLink } from "./email.service";
-
+import { AppError } from "../utils/custom-error";
+import { AccountStatus } from "../generated/prisma";
 export const createAccountSecurity = async (data: Partial<AccountSecurity>) => {
   if (!data.user_id) {
     throw new Error('user_id is required');
   }
-  return prisma.accountSecurity.create({ 
+  return prisma.accountSecurity.create({
     data: {
       user_id: data.user_id,
       email_verified: data.email_verified ?? false,
@@ -17,6 +18,66 @@ export const createAccountSecurity = async (data: Partial<AccountSecurity>) => {
     }
   });
 };
+export const lockAccount = async (user_id: string, reason: string): Promise<boolean> => {
+  if (!user_id || !reason) {
+    throw new AppError("Mising field required", 400)
+  }
+  await prisma.accountSecurity.update({
+    where: {
+      user_id
+    },
+    data: {
+      status: AccountStatus.Locked,
+      account_noted: reason
+    }
+  })
+  return true
+}
+export const freezeAccount = async (user_id: string, reason: string): Promise<boolean> => {
+  if (!user_id || !reason) {
+    throw new AppError("Mising field required", 400)
+  }
+  await prisma.accountSecurity.update({
+    where: {
+      user_id
+    },
+    data: {
+      status: AccountStatus.Freezed,
+      account_noted: reason
+    }
+  })
+  return true
+}
+export const activeAcount = async (user_id: string, reason: string): Promise<boolean> => {
+  if (!user_id || !reason) {
+    throw new AppError("Mising field required", 400)
+  }
+  await prisma.accountSecurity.update({
+    where: {
+      user_id
+    },
+    data: {
+      status: AccountStatus.Active,
+      account_noted: ""
+    }
+  })
+  return true
+}
+export const isActiveAccount = async (user_id: string): Promise<boolean> => {
+  if (!user_id) {
+    throw new AppError("Missing field required", 400)
+  }
+  const res = await prisma.accountSecurity.findFirst({
+    where: { user_id },
+    select: {
+      status:true
+    }
+  })
+  if(res?.status === AccountStatus.Active) {
+    return true
+  }
+  return false
+}
 export const sendOTPEmail = async (userId: string): Promise<string> => {
   const user = await getUserById(userId);
   if (!user) {
@@ -52,7 +113,7 @@ export const sendOTPEmail = async (userId: string): Promise<string> => {
   });
 
   await sendVerificationEmail(user.email, otp);
-  return otp; 
+  return otp;
 };
 
 export const sendVerificationLink = async (userId: string): Promise<string> => {
@@ -124,30 +185,33 @@ export const verifyEmailWithToken = async (userId: string, token: string): Promi
   if (accountSecurity.token_expires_at && accountSecurity.token_expires_at < new Date()) {
     throw new Error('Verification token has expired');
   }
-
-  await prisma.accountSecurity.update({
-    where: { user_id: userId },
-    data: {
-      email_verified: true,
-      verification_token: null,
-      token_expires_at: null,
-      updatedAt: new Date()
-    }
-  });
-
+  await prisma.$transaction(async (tx) => {
+    await tx.accountSecurity.update({
+      where: { user_id: userId },
+      data: {
+        email_verified: true,
+        verification_token: null,
+        token_expires_at: null,
+        updatedAt: new Date()
+      }
+    });
+    await tx.user.update({
+      where: { user_id: userId },
+      data: {
+        isActive: true
+      }
+    })
+  })
   const updatedUser = await getUserById(userId);
   if (!updatedUser) {
     throw new Error('Failed to retrieve updated user');
   }
-
   return updatedUser;
 };
 
-
-
 export const verifyEmail = async (userId: string): Promise<User> => {
   const user = await getUserById(userId);
-  
+
   if (!user) {
     throw new Error('User not found');
   }

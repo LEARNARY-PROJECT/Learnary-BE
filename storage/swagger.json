@@ -779,6 +779,63 @@
         }
       }
     },
+    "/api/account-securities/my-status": {
+      "get": {
+        "summary": "Get current user's account status",
+        "tags": [
+          "AccountSecurity"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Account status retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "status": {
+                          "type": "string",
+                          "enum": [
+                            "ACTIVE",
+                            "LOCKED",
+                            "FREEZED"
+                          ],
+                          "description": "Current account status"
+                        },
+                        "account_noted": {
+                          "type": "string",
+                          "description": "Reason for lock/freeze if applicable"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Account security record not found"
+          },
+          "500": {
+            "description": "Unexpected Error"
+          }
+        }
+      }
+    },
     "/api/account-securities/{id}": {
       "get": {
         "summary": "Get account security by ID",
@@ -1038,6 +1095,205 @@
           },
           "500": {
             "description": "Email already verified or other error"
+          }
+        }
+      }
+    },
+    "/api/account-securities/lock-account": {
+      "post": {
+        "summary": "Lock a user account",
+        "tags": [
+          "AccountSecurity"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "user_id",
+                  "reason"
+                ],
+                "properties": {
+                  "user_id": {
+                    "type": "string",
+                    "description": "User ID to lock"
+                  },
+                  "reason": {
+                    "type": "string",
+                    "description": "Reason for locking the account"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Account has been locked successfully"
+          },
+          "400": {
+            "description": "Missing field required"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "505": {
+            "description": "Unexpected Error"
+          }
+        }
+      }
+    },
+    "/api/account-securities/active-account": {
+      "post": {
+        "summary": "Activate a user account",
+        "tags": [
+          "AccountSecurity"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "user_id",
+                  "reason"
+                ],
+                "properties": {
+                  "user_id": {
+                    "type": "string",
+                    "description": "User ID to activate"
+                  },
+                  "reason": {
+                    "type": "string",
+                    "description": "Reason for activating the account"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Account has been actived successfully"
+          },
+          "400": {
+            "description": "Missing field required"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "505": {
+            "description": "Unexpected Error"
+          }
+        }
+      }
+    },
+    "/api/account-securities/freeze-account": {
+      "post": {
+        "summary": "Freeze a user account",
+        "tags": [
+          "AccountSecurity"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "user_id",
+                  "reason"
+                ],
+                "properties": {
+                  "user_id": {
+                    "type": "string",
+                    "description": "User ID to freeze"
+                  },
+                  "reason": {
+                    "type": "string",
+                    "description": "Reason for freezing the account"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Account has been freezed successfully"
+          },
+          "400": {
+            "description": "Missing field required"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "505": {
+            "description": "Unexpected Error"
+          }
+        }
+      }
+    },
+    "/api/account-securities/check-active": {
+      "post": {
+        "summary": "Check if a user account is active",
+        "tags": [
+          "AccountSecurity"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "user_id"
+                ],
+                "properties": {
+                  "user_id": {
+                    "type": "string",
+                    "description": "User ID to check"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Account status returned successfully"
+          },
+          "400": {
+            "description": "Missing field required"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "505": {
+            "description": "Unexpected Error"
           }
         }
       }
@@ -7554,6 +7810,35 @@
       }
     },
     "/api/specializations": {
+      "get": {
+        "summary": "Get all specializations",
+        "tags": [
+          "Specialization"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "is_verified",
+            "schema": {
+              "type": "boolean"
+            },
+            "description": "Filter by verification status (LEARNER can only see verified ones)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of specializations"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      },
       "post": {
         "summary": "Create a new specialization",
         "tags": [
@@ -7580,35 +7865,6 @@
           },
           "400": {
             "description": "Invalid input"
-          },
-          "401": {
-            "description": "Unauthorized"
-          }
-        }
-      },
-      "get": {
-        "summary": "Get all specializations",
-        "tags": [
-          "Specialization"
-        ],
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
-        "parameters": [
-          {
-            "in": "query",
-            "name": "is_verified",
-            "schema": {
-              "type": "boolean"
-            },
-            "description": "Filter by verification status (LEARNER can only see verified ones)"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "List of specializations"
           },
           "401": {
             "description": "Unauthorized"

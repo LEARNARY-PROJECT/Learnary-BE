@@ -117,9 +117,9 @@ export const register = async (req: Request, res: Response): Promise<void> => {
     res.status(201).json({ id: user.user_id, email: user.email });
   } catch (err) {
     const error = err as Error;
-    console.error('Register error:', error.message); // 🔍 LOG ĐỂ DEBUG
+    console.error('Register error:', error.message);
 
-    // Phân biệt các loại lỗi
+    //các loại lỗi
     if (error.message === 'Email already registered') {
       res.status(409).json({ error: 'Email này đã được sử dụng.' });
       return;
@@ -152,30 +152,54 @@ export const login = async (req: Request, res: Response): Promise<void> => {
       res.status(401).json({ error: 'Email hoặc mật khẩu không đúng.' });
       return;
     }
-    const accessToken = generateAccessToken(user);
-    const refreshToken = generateRefreshToken(user);
+    const accessToken = await generateAccessToken(user);
+    const refreshToken = await generateRefreshToken(user);
     setRefreshTokenCookie(res, refreshToken);
-    res.status(200).json({ accessToken });
+    
+    // Decode token để kiểm tra payload
+    const decoded = jwt.decode(accessToken) as any;
+    
+    res.status(200).json({ 
+      accessToken,
+      user: {
+        id: user.user_id,
+        email: user.email,
+        fullName: user.fullName,
+        avatar: user.avatar,
+        role: user.role,
+        isActive: user.isActive
+      },
+      decodedToken: decoded // Để debug
+    });
   } catch (err) {
     const error = err as Error;
     res.status(500).json({ error: error.message });
   }
 };
 
-export const handleGoogleCallback = (req: Request, res: Response) => {
+export const handleGoogleCallback = async (req: Request, res: Response) => {
   const user = req.user as User;
   if (!user) {
     return res.redirect(`${process.env.FRONTEND_URL}/login?error=auth_failed`);
   }
 
   try {
-    const accessToken = generateAccessToken(user);
-    const refreshToken = generateRefreshToken(user);
+    const accessToken = await generateAccessToken(user);
+    const refreshToken = await generateRefreshToken(user);
 
     setRefreshTokenCookie(res, refreshToken);
 
+    const userInfo = encodeURIComponent(JSON.stringify({
+      id: user.user_id,
+      email: user.email,
+      fullName: user.fullName,
+      avatar: user.avatar,
+      role: user.role,
+      isActive: user.isActive
+    }));
+
     return res.redirect(
-      `${process.env.FRONTEND_URL}/auth-callback?accessToken=${accessToken}`
+      `${process.env.FRONTEND_URL}/auth-callback?accessToken=${accessToken}&user=${userInfo}`
     );
   } catch (err) {
     return res.redirect(`${process.env.FRONTEND_URL}/login?error=token_failed`);
@@ -200,11 +224,21 @@ export const handleRefreshToken = async (req: Request, res: Response): Promise<v
       return;
     }
 
-    const newAccessToken = generateAccessToken(user);
-    const newRefreshToken = generateRefreshToken(user);
+    const newAccessToken = await generateAccessToken(user);
+    const newRefreshToken = await generateRefreshToken(user);
 
     setRefreshTokenCookie(res, newRefreshToken);
-    res.status(200).json({ accessToken: newAccessToken });
+    res.status(200).json({ 
+      accessToken: newAccessToken,
+      user: {
+        id: user.user_id,
+        email: user.email,
+        fullName: user.fullName,
+        avatar: user.avatar,
+        role: user.role,
+        isActive: user.isActive
+      },
+    });
   } catch (err) {
     res.clearCookie('refresh_token'); // Xóa cookie hỏng
     res.status(403).json({ error: 'Refresh token không hợp lệ.' });

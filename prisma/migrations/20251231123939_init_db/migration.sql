@@ -130,7 +130,7 @@ CREATE TABLE "citizen_ids_confirms" (
 CREATE TABLE "instructor_qualifications" (
     "instructor_qualification_id" VARCHAR(50) NOT NULL,
     "instructor_id" CHAR(50),
-    "specialization_id" CHAR(50) NOT NULL,
+    "specialization_id" CHAR(50),
     "user_id" CHAR(50) NOT NULL,
     "type" "QualificationType" NOT NULL DEFAULT 'Certificate',
     "title" VARCHAR(255) NOT NULL,
@@ -303,8 +303,8 @@ CREATE TABLE "courses" (
     "status" "CourseStatus" NOT NULL DEFAULT 'Draft',
     "title" VARCHAR(255) NOT NULL,
     "slug" VARCHAR(255),
-    "requirement" VARCHAR(255),
-    "description" VARCHAR(255) NOT NULL,
+    "requirement" TEXT,
+    "description" TEXT NOT NULL,
     "thumbnail" VARCHAR(255) NOT NULL,
     "admin_note" VARCHAR(255),
     "price" DECIMAL(10,2) NOT NULL,
@@ -314,6 +314,7 @@ CREATE TABLE "courses" (
     "available_language" "LanguageOptions" NOT NULL DEFAULT 'Vietnamese',
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
+    "rejectedAt" TIMESTAMP(6),
 
     CONSTRAINT "courses_pkey" PRIMARY KEY ("course_id")
 );
@@ -382,6 +383,30 @@ CREATE TABLE "lessons" (
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "lessons_pkey" PRIMARY KEY ("lesson_id")
+);
+
+-- CreateTable
+CREATE TABLE "lesson_progress" (
+    "id" TEXT NOT NULL,
+    "user_id" CHAR(50) NOT NULL,
+    "lesson_id" CHAR(50) NOT NULL,
+    "last_watch_time" DOUBLE PRECISION NOT NULL DEFAULT 0,
+    "max_watch_time" DOUBLE PRECISION NOT NULL DEFAULT 0,
+    "is_completed" BOOLEAN NOT NULL DEFAULT false,
+    "completed_at" TIMESTAMP(3),
+
+    CONSTRAINT "lesson_progress_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "chapter_progress" (
+    "id" TEXT NOT NULL,
+    "user_id" CHAR(50) NOT NULL,
+    "chapter_id" CHAR(50) NOT NULL,
+    "is_completed" BOOLEAN NOT NULL DEFAULT false,
+    "completed_at" TIMESTAMP(3),
+
+    CONSTRAINT "chapter_progress_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -487,6 +512,43 @@ CREATE TABLE "submissions" (
     CONSTRAINT "submissions_pkey" PRIMARY KEY ("submission_id")
 );
 
+-- CreateTable
+CREATE TABLE "favorites" (
+    "favorite_id" CHAR(50) NOT NULL,
+    "learner_id" CHAR(50) NOT NULL,
+    "course_id" CHAR(50) NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "favorites_pkey" PRIMARY KEY ("favorite_id")
+);
+
+-- CreateTable
+CREATE TABLE "conversations" (
+    "conversation_id" CHAR(50) NOT NULL,
+    "user1_id" CHAR(50) NOT NULL,
+    "user2_id" CHAR(50) NOT NULL,
+    "last_message_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "conversations_pkey" PRIMARY KEY ("conversation_id")
+);
+
+-- CreateTable
+CREATE TABLE "messages" (
+    "message_id" CHAR(50) NOT NULL,
+    "conversation_id" CHAR(50) NOT NULL,
+    "sender_id" CHAR(50) NOT NULL,
+    "receiver_id" CHAR(50) NOT NULL,
+    "message_text" TEXT NOT NULL,
+    "is_read" BOOLEAN NOT NULL DEFAULT false,
+    "read_at" TIMESTAMP(3),
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "messages_pkey" PRIMARY KEY ("message_id")
+);
+
 -- CreateIndex
 CREATE UNIQUE INDEX "users_email_key" ON "users"("email");
 
@@ -585,9 +647,6 @@ CREATE INDEX "idx_iq_verified" ON "instructor_qualifications"("isVerified");
 
 -- CreateIndex
 CREATE INDEX "idx_iq_expire" ON "instructor_qualifications"("expire_date");
-
--- CreateIndex
-CREATE UNIQUE INDEX "instructor_qualifications_user_id_specialization_id_key" ON "instructor_qualifications"("user_id", "specialization_id");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "bank_account_instructor_id_key" ON "bank_account"("instructor_id");
@@ -734,6 +793,12 @@ CREATE INDEX "idx_lesson_section" ON "lessons"("chapter_id");
 CREATE INDEX "idx_lesson_order" ON "lessons"("chapter_id", "order_index");
 
 -- CreateIndex
+CREATE UNIQUE INDEX "lesson_progress_user_id_lesson_id_key" ON "lesson_progress"("user_id", "lesson_id");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "chapter_progress_user_id_chapter_id_key" ON "chapter_progress"("user_id", "chapter_id");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "feedbacks_course_id_key" ON "feedbacks"("course_id");
 
 -- CreateIndex
@@ -793,6 +858,36 @@ CREATE INDEX "idx_submission_date" ON "submissions"("submittedAt");
 -- CreateIndex
 CREATE UNIQUE INDEX "submissions_quiz_id_user_id_key" ON "submissions"("quiz_id", "user_id");
 
+-- CreateIndex
+CREATE INDEX "idx_favorite_learner" ON "favorites"("learner_id");
+
+-- CreateIndex
+CREATE INDEX "idx_favorite_course" ON "favorites"("course_id");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "favorites_learner_id_course_id_key" ON "favorites"("learner_id", "course_id");
+
+-- CreateIndex
+CREATE INDEX "idx_user1" ON "conversations"("user1_id");
+
+-- CreateIndex
+CREATE INDEX "idx_user2" ON "conversations"("user2_id");
+
+-- CreateIndex
+CREATE INDEX "idx_last_message" ON "conversations"("last_message_at");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "conversations_user1_id_user2_id_key" ON "conversations"("user1_id", "user2_id");
+
+-- CreateIndex
+CREATE INDEX "idx_conversation" ON "messages"("conversation_id");
+
+-- CreateIndex
+CREATE INDEX "idx_sender" ON "messages"("sender_id");
+
+-- CreateIndex
+CREATE INDEX "idx_created_at" ON "messages"("createdAt");
+
 -- AddForeignKey
 ALTER TABLE "learners" ADD CONSTRAINT "learners_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "users"("user_id") ON DELETE CASCADE ON UPDATE CASCADE;
 
@@ -821,7 +916,7 @@ ALTER TABLE "instructor_qualifications" ADD CONSTRAINT "instructor_qualification
 ALTER TABLE "instructor_qualifications" ADD CONSTRAINT "instructor_qualifications_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "users"("user_id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "instructor_qualifications" ADD CONSTRAINT "instructor_qualifications_specialization_id_fkey" FOREIGN KEY ("specialization_id") REFERENCES "specializations"("specialization_id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "instructor_qualifications" ADD CONSTRAINT "instructor_qualifications_specialization_id_fkey" FOREIGN KEY ("specialization_id") REFERENCES "specializations"("specialization_id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "bank_account" ADD CONSTRAINT "bank_account_instructor_id_fkey" FOREIGN KEY ("instructor_id") REFERENCES "instructors"("instructor_id") ON DELETE CASCADE ON UPDATE CASCADE;
@@ -887,6 +982,18 @@ ALTER TABLE "chapters" ADD CONSTRAINT "chapters_course_id_fkey" FOREIGN KEY ("co
 ALTER TABLE "lessons" ADD CONSTRAINT "lessons_chapter_id_fkey" FOREIGN KEY ("chapter_id") REFERENCES "chapters"("chapter_id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
+ALTER TABLE "lesson_progress" ADD CONSTRAINT "lesson_progress_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "users"("user_id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "lesson_progress" ADD CONSTRAINT "lesson_progress_lesson_id_fkey" FOREIGN KEY ("lesson_id") REFERENCES "lessons"("lesson_id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "chapter_progress" ADD CONSTRAINT "chapter_progress_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "users"("user_id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "chapter_progress" ADD CONSTRAINT "chapter_progress_chapter_id_fkey" FOREIGN KEY ("chapter_id") REFERENCES "chapters"("chapter_id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
 ALTER TABLE "notes" ADD CONSTRAINT "notes_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "users"("user_id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
@@ -927,3 +1034,24 @@ ALTER TABLE "submissions" ADD CONSTRAINT "submissions_quiz_id_fkey" FOREIGN KEY 
 
 -- AddForeignKey
 ALTER TABLE "submissions" ADD CONSTRAINT "submissions_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "users"("user_id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "favorites" ADD CONSTRAINT "favorites_learner_id_fkey" FOREIGN KEY ("learner_id") REFERENCES "learners"("learner_id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "favorites" ADD CONSTRAINT "favorites_course_id_fkey" FOREIGN KEY ("course_id") REFERENCES "courses"("course_id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "conversations" ADD CONSTRAINT "conversations_user1_id_fkey" FOREIGN KEY ("user1_id") REFERENCES "users"("user_id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "conversations" ADD CONSTRAINT "conversations_user2_id_fkey" FOREIGN KEY ("user2_id") REFERENCES "users"("user_id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "messages" ADD CONSTRAINT "messages_conversation_id_fkey" FOREIGN KEY ("conversation_id") REFERENCES "conversations"("conversation_id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "messages" ADD CONSTRAINT "messages_sender_id_fkey" FOREIGN KEY ("sender_id") REFERENCES "users"("user_id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "messages" ADD CONSTRAINT "messages_receiver_id_fkey" FOREIGN KEY ("receiver_id") REFERENCES "users"("user_id") ON DELETE CASCADE ON UPDATE CASCADE;
