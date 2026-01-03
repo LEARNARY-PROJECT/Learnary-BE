@@ -24,6 +24,14 @@ export const createAdmin = async (
         admin_role_id: admin_role_id_req
       }
     })
+    
+    await tx.accountSecurity.create({
+      data: {
+        user_id: user.user_id,
+        status: "Active",
+        account_noted: ""
+      }
+    });
     return { ...user, admin }
   })
 };

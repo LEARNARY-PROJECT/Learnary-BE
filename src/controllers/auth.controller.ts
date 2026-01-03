@@ -152,8 +152,8 @@ export const login = async (req: Request, res: Response): Promise<void> => {
       res.status(401).json({ error: 'Email hoặc mật khẩu không đúng.' });
       return;
     }
-    const accessToken = generateAccessToken(user);
-    const refreshToken = generateRefreshToken(user);
+    const accessToken = await generateAccessToken(user);
+    const refreshToken = await generateRefreshToken(user);
     setRefreshTokenCookie(res, refreshToken);
     
     // Decode token để kiểm tra payload
@@ -177,15 +177,15 @@ export const login = async (req: Request, res: Response): Promise<void> => {
   }
 };
 
-export const handleGoogleCallback = (req: Request, res: Response) => {
+export const handleGoogleCallback = async (req: Request, res: Response) => {
   const user = req.user as User;
   if (!user) {
     return res.redirect(`${process.env.FRONTEND_URL}/login?error=auth_failed`);
   }
 
   try {
-    const accessToken = generateAccessToken(user);
-    const refreshToken = generateRefreshToken(user);
+    const accessToken = await generateAccessToken(user);
+    const refreshToken = await generateRefreshToken(user);
 
     setRefreshTokenCookie(res, refreshToken);
 
@@ -224,8 +224,8 @@ export const handleRefreshToken = async (req: Request, res: Response): Promise<v
       return;
     }
 
-    const newAccessToken = generateAccessToken(user);
-    const newRefreshToken = generateRefreshToken(user);
+    const newAccessToken = await generateAccessToken(user);
+    const newRefreshToken = await generateRefreshToken(user);
 
     setRefreshTokenCookie(res, newRefreshToken);
     res.status(200).json({ 

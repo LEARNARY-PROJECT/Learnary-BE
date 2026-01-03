@@ -1,5 +1,5 @@
 import prisma from '../lib/client';
-import { User } from '../generated/prisma'
+import { User, AccountStatus } from '../generated/prisma'
 import { createUser, getUserById, getUserIdByEmail } from "../services/user.service"
 import bcryptjs from 'bcryptjs';
 import jwt from 'jsonwebtoken';
@@ -10,12 +10,22 @@ import { AppError } from '../utils/custom-error';
 const JWT_SECRET = process.env.JWT_SECRET;
 const REFRESH_SECRET = process.env.REFRESH_SECRET;
 
-export const generateAccessToken = (user: User): string => {
+export const generateAccessToken = async (user: User): Promise<string> => {
   if (!JWT_SECRET) {
     throw new Error('JWT_SECRET is not defined');
   }
+  const accountSecurity = await prisma.accountSecurity.findFirst({
+    where: { user_id: user.user_id },
+    select: { status: true }
+  });
+  const isActive = accountSecurity?.status === AccountStatus.Active;
   const payload = {
-    id: user.user_id, email: user.email, role: user.role, fullName: user.fullName, avatar: user.avatar, isActive:user.isActive
+    id: user.user_id, 
+    email: user.email, 
+    role: user.role, 
+    fullName: user.fullName, 
+    avatar: user.avatar, 
+    isActive: isActive  // Sử dụng status từ AccountSecurity
   };
   return jwt.sign(payload, JWT_SECRET, { expiresIn: '5m' });
 };
@@ -127,11 +137,16 @@ export const recoveryPassword = async (email: string, newPassword: string) => {
     throw new Error("Error while recovery password!")
   }
 }
-export const generateRefreshToken = (user: User): string => {
+export const generateRefreshToken = async (user: User): Promise<string> => {
   if (!REFRESH_SECRET) {
     throw new Error('REFRESH_SECRET is not defined');
   }
-  const payload = { id: user.user_id, role: user.role, isActive: user.isActive };
+  const accountSecurity = await prisma.accountSecurity.findFirst({
+    where: { user_id: user.user_id },
+    select: { status: true }
+  });
+  const isActive = accountSecurity?.status === AccountStatus.Active;
+  const payload = { id: user.user_id, role: user.role, isActive: isActive };
   return jwt.sign(payload, REFRESH_SECRET, { expiresIn: '3h' });
 };
 
@@ -228,6 +243,14 @@ export const findOrCreateGoogleUser = async (profile: Profile): Promise<User> =>
       await prisma.wallet.create({ data: { user_id: user.user_id, balance: 0 } });
     }
   }
+
+  await prisma.accountSecurity.create({
+    data: {
+      user_id: user.user_id,
+      status: 'Active',
+      account_noted: ''
+    }
+  });
 
   return user;
 };

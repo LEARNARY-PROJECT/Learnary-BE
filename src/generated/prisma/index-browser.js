@@ -298,6 +298,8 @@ exports.Prisma.AccountSecurityScalarFieldEnum = {
   failed_login_attempts: 'failed_login_attempts',
   verification_token: 'verification_token',
   token_expires_at: 'token_expires_at',
+  account_noted: 'account_noted',
+  status: 'status',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -579,6 +581,12 @@ exports.TransactionStatus = exports.$Enums.TransactionStatus = {
 exports.TransactionNote = exports.$Enums.TransactionNote = {
   User_Pay: 'User_Pay',
   Pay_For_Instructor: 'Pay_For_Instructor'
+};
+
+exports.AccountStatus = exports.$Enums.AccountStatus = {
+  Active: 'Active',
+  Locked: 'Locked',
+  Freezed: 'Freezed'
 };
 
 exports.GroupType = exports.$Enums.GroupType = {

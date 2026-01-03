@@ -4,7 +4,8 @@ import { getUserById } from "./user.service";
 import { User } from "../generated/prisma";
 import { generateOTP, generateVerificationToken, getOTPExpiration } from "../utils/otp";
 import { sendVerificationEmail, sendVerificationEmailWithLink } from "./email.service";
-
+import { AppError } from "../utils/custom-error";
+import { AccountStatus } from "../generated/prisma";
 export const createAccountSecurity = async (data: Partial<AccountSecurity>) => {
   if (!data.user_id) {
     throw new Error('user_id is required');
@@ -17,6 +18,66 @@ export const createAccountSecurity = async (data: Partial<AccountSecurity>) => {
     }
   });
 };
+export const lockAccount = async (user_id: string, reason: string): Promise<boolean> => {
+  if (!user_id || !reason) {
+    throw new AppError("Mising field required", 400)
+  }
+  await prisma.accountSecurity.update({
+    where: {
+      user_id
+    },
+    data: {
+      status: AccountStatus.Locked,
+      account_noted: reason
+    }
+  })
+  return true
+}
+export const freezeAccount = async (user_id: string, reason: string): Promise<boolean> => {
+  if (!user_id || !reason) {
+    throw new AppError("Mising field required", 400)
+  }
+  await prisma.accountSecurity.update({
+    where: {
+      user_id
+    },
+    data: {
+      status: AccountStatus.Freezed,
+      account_noted: reason
+    }
+  })
+  return true
+}
+export const activeAcount = async (user_id: string, reason: string): Promise<boolean> => {
+  if (!user_id || !reason) {
+    throw new AppError("Mising field required", 400)
+  }
+  await prisma.accountSecurity.update({
+    where: {
+      user_id
+    },
+    data: {
+      status: AccountStatus.Active,
+      account_noted: ""
+    }
+  })
+  return true
+}
+export const isActiveAccount = async (user_id: string): Promise<boolean> => {
+  if (!user_id) {
+    throw new AppError("Missing field required", 400)
+  }
+  const res = await prisma.accountSecurity.findFirst({
+    where: { user_id },
+    select: {
+      status:true
+    }
+  })
+  if(res?.status === AccountStatus.Active) {
+    return true
+  }
+  return false
+}
 export const sendOTPEmail = async (userId: string): Promise<string> => {
   const user = await getUserById(userId);
   if (!user) {

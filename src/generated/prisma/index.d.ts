@@ -325,6 +325,15 @@ export const GroupType: {
 
 export type GroupType = (typeof GroupType)[keyof typeof GroupType]
 
+
+export const AccountStatus: {
+  Active: 'Active',
+  Locked: 'Locked',
+  Freezed: 'Freezed'
+};
+
+export type AccountStatus = (typeof AccountStatus)[keyof typeof AccountStatus]
+
 }
 
 export type Role = $Enums.Role
@@ -378,6 +387,10 @@ export const TransactionNote: typeof $Enums.TransactionNote
 export type GroupType = $Enums.GroupType
 
 export const GroupType: typeof $Enums.GroupType
+
+export type AccountStatus = $Enums.AccountStatus
+
+export const AccountStatus: typeof $Enums.AccountStatus
 
 /**
  * ##  Prisma Client ʲˢ
@@ -23937,6 +23950,8 @@ export namespace Prisma {
     failed_login_attempts: number | null
     verification_token: string | null
     token_expires_at: Date | null
+    account_noted: string | null
+    status: $Enums.AccountStatus | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -23948,6 +23963,8 @@ export namespace Prisma {
     failed_login_attempts: number | null
     verification_token: string | null
     token_expires_at: Date | null
+    account_noted: string | null
+    status: $Enums.AccountStatus | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -23959,6 +23976,8 @@ export namespace Prisma {
     failed_login_attempts: number
     verification_token: number
     token_expires_at: number
+    account_noted: number
+    status: number
     createdAt: number
     updatedAt: number
     _all: number
@@ -23980,6 +23999,8 @@ export namespace Prisma {
     failed_login_attempts?: true
     verification_token?: true
     token_expires_at?: true
+    account_noted?: true
+    status?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -23991,6 +24012,8 @@ export namespace Prisma {
     failed_login_attempts?: true
     verification_token?: true
     token_expires_at?: true
+    account_noted?: true
+    status?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -24002,6 +24025,8 @@ export namespace Prisma {
     failed_login_attempts?: true
     verification_token?: true
     token_expires_at?: true
+    account_noted?: true
+    status?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -24100,6 +24125,8 @@ export namespace Prisma {
     failed_login_attempts: number
     verification_token: string | null
     token_expires_at: Date | null
+    account_noted: string | null
+    status: $Enums.AccountStatus
     createdAt: Date
     updatedAt: Date
     _count: AccountSecurityCountAggregateOutputType | null
@@ -24130,6 +24157,8 @@ export namespace Prisma {
     failed_login_attempts?: boolean
     verification_token?: boolean
     token_expires_at?: boolean
+    account_noted?: boolean
+    status?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
@@ -24142,6 +24171,8 @@ export namespace Prisma {
     failed_login_attempts?: boolean
     verification_token?: boolean
     token_expires_at?: boolean
+    account_noted?: boolean
+    status?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
@@ -24154,6 +24185,8 @@ export namespace Prisma {
     failed_login_attempts?: boolean
     verification_token?: boolean
     token_expires_at?: boolean
+    account_noted?: boolean
+    status?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
@@ -24166,11 +24199,13 @@ export namespace Prisma {
     failed_login_attempts?: boolean
     verification_token?: boolean
     token_expires_at?: boolean
+    account_noted?: boolean
+    status?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type AccountSecurityOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"account_security_id" | "user_id" | "email_verified" | "failed_login_attempts" | "verification_token" | "token_expires_at" | "createdAt" | "updatedAt", ExtArgs["result"]["accountSecurity"]>
+  export type AccountSecurityOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"account_security_id" | "user_id" | "email_verified" | "failed_login_attempts" | "verification_token" | "token_expires_at" | "account_noted" | "status" | "createdAt" | "updatedAt", ExtArgs["result"]["accountSecurity"]>
   export type AccountSecurityInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
   }
@@ -24193,6 +24228,8 @@ export namespace Prisma {
       failed_login_attempts: number
       verification_token: string | null
       token_expires_at: Date | null
+      account_noted: string | null
+      status: $Enums.AccountStatus
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["accountSecurity"]>
@@ -24625,6 +24662,8 @@ export namespace Prisma {
     readonly failed_login_attempts: FieldRef<"AccountSecurity", 'Int'>
     readonly verification_token: FieldRef<"AccountSecurity", 'String'>
     readonly token_expires_at: FieldRef<"AccountSecurity", 'DateTime'>
+    readonly account_noted: FieldRef<"AccountSecurity", 'String'>
+    readonly status: FieldRef<"AccountSecurity", 'AccountStatus'>
     readonly createdAt: FieldRef<"AccountSecurity", 'DateTime'>
     readonly updatedAt: FieldRef<"AccountSecurity", 'DateTime'>
   }
@@ -49218,6 +49257,8 @@ export namespace Prisma {
     failed_login_attempts: 'failed_login_attempts',
     verification_token: 'verification_token',
     token_expires_at: 'token_expires_at',
+    account_noted: 'account_noted',
+    status: 'status',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
@@ -49719,6 +49760,20 @@ export namespace Prisma {
    * Reference to a field of type 'Int[]'
    */
   export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'AccountStatus'
+   */
+  export type EnumAccountStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AccountStatus'>
+    
+
+
+  /**
+   * Reference to a field of type 'AccountStatus[]'
+   */
+  export type ListEnumAccountStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AccountStatus[]'>
     
 
 
@@ -51042,6 +51097,8 @@ export namespace Prisma {
     failed_login_attempts?: IntFilter<"AccountSecurity"> | number
     verification_token?: StringNullableFilter<"AccountSecurity"> | string | null
     token_expires_at?: DateTimeNullableFilter<"AccountSecurity"> | Date | string | null
+    account_noted?: StringNullableFilter<"AccountSecurity"> | string | null
+    status?: EnumAccountStatusFilter<"AccountSecurity"> | $Enums.AccountStatus
     createdAt?: DateTimeFilter<"AccountSecurity"> | Date | string
     updatedAt?: DateTimeFilter<"AccountSecurity"> | Date | string
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
@@ -51054,6 +51111,8 @@ export namespace Prisma {
     failed_login_attempts?: SortOrder
     verification_token?: SortOrderInput | SortOrder
     token_expires_at?: SortOrderInput | SortOrder
+    account_noted?: SortOrderInput | SortOrder
+    status?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     user?: UserOrderByWithRelationInput
@@ -51069,6 +51128,8 @@ export namespace Prisma {
     failed_login_attempts?: IntFilter<"AccountSecurity"> | number
     verification_token?: StringNullableFilter<"AccountSecurity"> | string | null
     token_expires_at?: DateTimeNullableFilter<"AccountSecurity"> | Date | string | null
+    account_noted?: StringNullableFilter<"AccountSecurity"> | string | null
+    status?: EnumAccountStatusFilter<"AccountSecurity"> | $Enums.AccountStatus
     createdAt?: DateTimeFilter<"AccountSecurity"> | Date | string
     updatedAt?: DateTimeFilter<"AccountSecurity"> | Date | string
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
@@ -51081,6 +51142,8 @@ export namespace Prisma {
     failed_login_attempts?: SortOrder
     verification_token?: SortOrderInput | SortOrder
     token_expires_at?: SortOrderInput | SortOrder
+    account_noted?: SortOrderInput | SortOrder
+    status?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: AccountSecurityCountOrderByAggregateInput
@@ -51100,6 +51163,8 @@ export namespace Prisma {
     failed_login_attempts?: IntWithAggregatesFilter<"AccountSecurity"> | number
     verification_token?: StringNullableWithAggregatesFilter<"AccountSecurity"> | string | null
     token_expires_at?: DateTimeNullableWithAggregatesFilter<"AccountSecurity"> | Date | string | null
+    account_noted?: StringNullableWithAggregatesFilter<"AccountSecurity"> | string | null
+    status?: EnumAccountStatusWithAggregatesFilter<"AccountSecurity"> | $Enums.AccountStatus
     createdAt?: DateTimeWithAggregatesFilter<"AccountSecurity"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"AccountSecurity"> | Date | string
   }
@@ -53953,9 +54018,11 @@ export namespace Prisma {
   export type AccountSecurityCreateInput = {
     account_security_id?: string
     email_verified?: boolean
-    failed_login_attempts: number
+    failed_login_attempts?: number
     verification_token?: string | null
     token_expires_at?: Date | string | null
+    account_noted?: string | null
+    status?: $Enums.AccountStatus
     createdAt?: Date | string
     updatedAt?: Date | string
     user: UserCreateNestedOneWithoutAccountSecuritiesInput
@@ -53965,9 +54032,11 @@ export namespace Prisma {
     account_security_id?: string
     user_id: string
     email_verified?: boolean
-    failed_login_attempts: number
+    failed_login_attempts?: number
     verification_token?: string | null
     token_expires_at?: Date | string | null
+    account_noted?: string | null
+    status?: $Enums.AccountStatus
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -53978,6 +54047,8 @@ export namespace Prisma {
     failed_login_attempts?: IntFieldUpdateOperationsInput | number
     verification_token?: NullableStringFieldUpdateOperationsInput | string | null
     token_expires_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    account_noted?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumAccountStatusFieldUpdateOperationsInput | $Enums.AccountStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutAccountSecuritiesNestedInput
@@ -53990,6 +54061,8 @@ export namespace Prisma {
     failed_login_attempts?: IntFieldUpdateOperationsInput | number
     verification_token?: NullableStringFieldUpdateOperationsInput | string | null
     token_expires_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    account_noted?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumAccountStatusFieldUpdateOperationsInput | $Enums.AccountStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -53998,9 +54071,11 @@ export namespace Prisma {
     account_security_id?: string
     user_id: string
     email_verified?: boolean
-    failed_login_attempts: number
+    failed_login_attempts?: number
     verification_token?: string | null
     token_expires_at?: Date | string | null
+    account_noted?: string | null
+    status?: $Enums.AccountStatus
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -54011,6 +54086,8 @@ export namespace Prisma {
     failed_login_attempts?: IntFieldUpdateOperationsInput | number
     verification_token?: NullableStringFieldUpdateOperationsInput | string | null
     token_expires_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    account_noted?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumAccountStatusFieldUpdateOperationsInput | $Enums.AccountStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -54022,6 +54099,8 @@ export namespace Prisma {
     failed_login_attempts?: IntFieldUpdateOperationsInput | number
     verification_token?: NullableStringFieldUpdateOperationsInput | string | null
     token_expires_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    account_noted?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumAccountStatusFieldUpdateOperationsInput | $Enums.AccountStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -56793,6 +56872,13 @@ export namespace Prisma {
     updatedAt?: SortOrder
   }
 
+  export type EnumAccountStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.AccountStatus | EnumAccountStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.AccountStatus[] | ListEnumAccountStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.AccountStatus[] | ListEnumAccountStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumAccountStatusFilter<$PrismaModel> | $Enums.AccountStatus
+  }
+
   export type AccountSecurityCountOrderByAggregateInput = {
     account_security_id?: SortOrder
     user_id?: SortOrder
@@ -56800,6 +56886,8 @@ export namespace Prisma {
     failed_login_attempts?: SortOrder
     verification_token?: SortOrder
     token_expires_at?: SortOrder
+    account_noted?: SortOrder
+    status?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -56815,6 +56903,8 @@ export namespace Prisma {
     failed_login_attempts?: SortOrder
     verification_token?: SortOrder
     token_expires_at?: SortOrder
+    account_noted?: SortOrder
+    status?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -56826,12 +56916,24 @@ export namespace Prisma {
     failed_login_attempts?: SortOrder
     verification_token?: SortOrder
     token_expires_at?: SortOrder
+    account_noted?: SortOrder
+    status?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
 
   export type AccountSecuritySumOrderByAggregateInput = {
     failed_login_attempts?: SortOrder
+  }
+
+  export type EnumAccountStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.AccountStatus | EnumAccountStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.AccountStatus[] | ListEnumAccountStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.AccountStatus[] | ListEnumAccountStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumAccountStatusWithAggregatesFilter<$PrismaModel> | $Enums.AccountStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumAccountStatusFilter<$PrismaModel>
+    _max?: NestedEnumAccountStatusFilter<$PrismaModel>
   }
 
   export type EnumGroupTypeFilter<$PrismaModel = never> = {
@@ -59667,6 +59769,10 @@ export namespace Prisma {
     connect?: UserWhereUniqueInput
   }
 
+  export type EnumAccountStatusFieldUpdateOperationsInput = {
+    set?: $Enums.AccountStatus
+  }
+
   export type UserUpdateOneRequiredWithoutAccountSecuritiesNestedInput = {
     create?: XOR<UserCreateWithoutAccountSecuritiesInput, UserUncheckedCreateWithoutAccountSecuritiesInput>
     connectOrCreate?: UserCreateOrConnectWithoutAccountSecuritiesInput
@@ -61442,6 +61548,23 @@ export namespace Prisma {
     _max?: NestedIntFilter<$PrismaModel>
   }
 
+  export type NestedEnumAccountStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.AccountStatus | EnumAccountStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.AccountStatus[] | ListEnumAccountStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.AccountStatus[] | ListEnumAccountStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumAccountStatusFilter<$PrismaModel> | $Enums.AccountStatus
+  }
+
+  export type NestedEnumAccountStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.AccountStatus | EnumAccountStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.AccountStatus[] | ListEnumAccountStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.AccountStatus[] | ListEnumAccountStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumAccountStatusWithAggregatesFilter<$PrismaModel> | $Enums.AccountStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumAccountStatusFilter<$PrismaModel>
+    _max?: NestedEnumAccountStatusFilter<$PrismaModel>
+  }
+
   export type NestedEnumGroupTypeFilter<$PrismaModel = never> = {
     equals?: $Enums.GroupType | EnumGroupTypeFieldRefInput<$PrismaModel>
     in?: $Enums.GroupType[] | ListEnumGroupTypeFieldRefInput<$PrismaModel>
@@ -61651,9 +61774,11 @@ export namespace Prisma {
   export type AccountSecurityCreateWithoutUserInput = {
     account_security_id?: string
     email_verified?: boolean
-    failed_login_attempts: number
+    failed_login_attempts?: number
     verification_token?: string | null
     token_expires_at?: Date | string | null
+    account_noted?: string | null
+    status?: $Enums.AccountStatus
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -61661,9 +61786,11 @@ export namespace Prisma {
   export type AccountSecurityUncheckedCreateWithoutUserInput = {
     account_security_id?: string
     email_verified?: boolean
-    failed_login_attempts: number
+    failed_login_attempts?: number
     verification_token?: string | null
     token_expires_at?: Date | string | null
+    account_noted?: string | null
+    status?: $Enums.AccountStatus
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -62219,6 +62346,8 @@ export namespace Prisma {
     failed_login_attempts?: IntFieldUpdateOperationsInput | number
     verification_token?: NullableStringFieldUpdateOperationsInput | string | null
     token_expires_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    account_noted?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumAccountStatusFieldUpdateOperationsInput | $Enums.AccountStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -62229,6 +62358,8 @@ export namespace Prisma {
     failed_login_attempts?: IntFieldUpdateOperationsInput | number
     verification_token?: NullableStringFieldUpdateOperationsInput | string | null
     token_expires_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    account_noted?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumAccountStatusFieldUpdateOperationsInput | $Enums.AccountStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
