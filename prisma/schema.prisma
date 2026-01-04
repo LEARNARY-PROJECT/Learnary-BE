@@ -28,6 +28,7 @@ model User {
   gender      String    @default("OTHER")
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
+  deletedAt   DateTime?
 
   feedbacks                 Feedback[]
   learner                   Learner?
@@ -67,6 +68,7 @@ model Learner {
 
   updatedAt DateTime @updatedAt
   createAt  DateTime @default(now())
+  deletedAt DateTime?
 
   user            User             @relation(fields: [user_id], references: [user_id], onDelete: Cascade)
   learner_courses LearnerCourses[]
@@ -83,6 +85,7 @@ model Instructor {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  deletedAt DateTime?
 
   user                      User                       @relation(fields: [user_id], references: [user_id], onDelete: Cascade)
   bank_accout               BankAccount?
@@ -205,6 +208,7 @@ model Wallet {
   balance  Decimal  @db.Decimal(10, 2)
   createAt DateTime @default(now())
   updateAt DateTime @updatedAt
+  deletedAt DateTime?
 
   belongUser   User          @relation(fields: [user_id], references: [user_id], onDelete: Cascade)
   transactions Transaction[]
@@ -346,6 +350,7 @@ model AccountSecurity {
   status                AccountStatus @default(Active)
   createdAt             DateTime      @default(now())
   updatedAt             DateTime      @updatedAt
+  deletedAt             DateTime?
 
   user User @relation(fields: [user_id], references: [user_id], onDelete: Cascade)
 

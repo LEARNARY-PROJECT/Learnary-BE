@@ -111,14 +111,11 @@ export const resetPassword = async (req: Request, res: Response) => {
 export const register = async (req: Request, res: Response): Promise<void> => {
   try {
     const { email, password, fullName } = req.body;
-
     const user = await registerUser(email, password, fullName);
-
     res.status(201).json({ id: user.user_id, email: user.email });
   } catch (err) {
     const error = err as Error;
     console.error('Register error:', error.message);
-
     //các loại lỗi
     if (error.message === 'Email already registered') {
       res.status(409).json({ error: 'Email này đã được sử dụng.' });

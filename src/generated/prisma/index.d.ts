@@ -5302,6 +5302,7 @@ export namespace Prisma {
     gender: string | null
     createdAt: Date | null
     updatedAt: Date | null
+    deletedAt: Date | null
   }
 
   export type UserMaxAggregateOutputType = {
@@ -5324,6 +5325,7 @@ export namespace Prisma {
     gender: string | null
     createdAt: Date | null
     updatedAt: Date | null
+    deletedAt: Date | null
   }
 
   export type UserCountAggregateOutputType = {
@@ -5346,6 +5348,7 @@ export namespace Prisma {
     gender: number
     createdAt: number
     updatedAt: number
+    deletedAt: number
     _all: number
   }
 
@@ -5370,6 +5373,7 @@ export namespace Prisma {
     gender?: true
     createdAt?: true
     updatedAt?: true
+    deletedAt?: true
   }
 
   export type UserMaxAggregateInputType = {
@@ -5392,6 +5396,7 @@ export namespace Prisma {
     gender?: true
     createdAt?: true
     updatedAt?: true
+    deletedAt?: true
   }
 
   export type UserCountAggregateInputType = {
@@ -5414,6 +5419,7 @@ export namespace Prisma {
     gender?: true
     createdAt?: true
     updatedAt?: true
+    deletedAt?: true
     _all?: true
   }
 
@@ -5509,6 +5515,7 @@ export namespace Prisma {
     gender: string
     createdAt: Date
     updatedAt: Date
+    deletedAt: Date | null
     _count: UserCountAggregateOutputType | null
     _min: UserMinAggregateOutputType | null
     _max: UserMaxAggregateOutputType | null
@@ -5548,6 +5555,7 @@ export namespace Prisma {
     gender?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    deletedAt?: boolean
     feedbacks?: boolean | User$feedbacksArgs<ExtArgs>
     learner?: boolean | User$learnerArgs<ExtArgs>
     instructor?: boolean | User$instructorArgs<ExtArgs>
@@ -5589,6 +5597,7 @@ export namespace Prisma {
     gender?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    deletedAt?: boolean
   }, ExtArgs["result"]["user"]>
 
   export type UserSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -5611,6 +5620,7 @@ export namespace Prisma {
     gender?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    deletedAt?: boolean
   }, ExtArgs["result"]["user"]>
 
   export type UserSelectScalar = {
@@ -5633,9 +5643,10 @@ export namespace Prisma {
     gender?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    deletedAt?: boolean
   }
 
-  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"user_id" | "email" | "phone" | "avatar" | "dateOfBirth" | "address" | "city" | "country" | "nation" | "bio" | "last_login" | "isActive" | "password" | "fullName" | "googleId" | "role" | "gender" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
+  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"user_id" | "email" | "phone" | "avatar" | "dateOfBirth" | "address" | "city" | "country" | "nation" | "bio" | "last_login" | "isActive" | "password" | "fullName" | "googleId" | "role" | "gender" | "createdAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     feedbacks?: boolean | User$feedbacksArgs<ExtArgs>
     learner?: boolean | User$learnerArgs<ExtArgs>
@@ -5702,6 +5713,7 @@ export namespace Prisma {
       gender: string
       createdAt: Date
       updatedAt: Date
+      deletedAt: Date | null
     }, ExtArgs["result"]["user"]>
     composites: {}
   }
@@ -6162,6 +6174,7 @@ export namespace Prisma {
     readonly gender: FieldRef<"User", 'String'>
     readonly createdAt: FieldRef<"User", 'DateTime'>
     readonly updatedAt: FieldRef<"User", 'DateTime'>
+    readonly deletedAt: FieldRef<"User", 'DateTime'>
   }
     
 
@@ -6991,6 +7004,7 @@ export namespace Prisma {
     enrolledAt: Date | null
     updatedAt: Date | null
     createAt: Date | null
+    deletedAt: Date | null
   }
 
   export type LearnerMaxAggregateOutputType = {
@@ -6999,6 +7013,7 @@ export namespace Prisma {
     enrolledAt: Date | null
     updatedAt: Date | null
     createAt: Date | null
+    deletedAt: Date | null
   }
 
   export type LearnerCountAggregateOutputType = {
@@ -7007,6 +7022,7 @@ export namespace Prisma {
     enrolledAt: number
     updatedAt: number
     createAt: number
+    deletedAt: number
     _all: number
   }
 
@@ -7017,6 +7033,7 @@ export namespace Prisma {
     enrolledAt?: true
     updatedAt?: true
     createAt?: true
+    deletedAt?: true
   }
 
   export type LearnerMaxAggregateInputType = {
@@ -7025,6 +7042,7 @@ export namespace Prisma {
     enrolledAt?: true
     updatedAt?: true
     createAt?: true
+    deletedAt?: true
   }
 
   export type LearnerCountAggregateInputType = {
@@ -7033,6 +7051,7 @@ export namespace Prisma {
     enrolledAt?: true
     updatedAt?: true
     createAt?: true
+    deletedAt?: true
     _all?: true
   }
 
@@ -7114,6 +7133,7 @@ export namespace Prisma {
     enrolledAt: Date
     updatedAt: Date
     createAt: Date
+    deletedAt: Date | null
     _count: LearnerCountAggregateOutputType | null
     _min: LearnerMinAggregateOutputType | null
     _max: LearnerMaxAggregateOutputType | null
@@ -7139,6 +7159,7 @@ export namespace Prisma {
     enrolledAt?: boolean
     updatedAt?: boolean
     createAt?: boolean
+    deletedAt?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
     learner_courses?: boolean | Learner$learner_coursesArgs<ExtArgs>
     favorites?: boolean | Learner$favoritesArgs<ExtArgs>
@@ -7151,6 +7172,7 @@ export namespace Prisma {
     enrolledAt?: boolean
     updatedAt?: boolean
     createAt?: boolean
+    deletedAt?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["learner"]>
 
@@ -7160,6 +7182,7 @@ export namespace Prisma {
     enrolledAt?: boolean
     updatedAt?: boolean
     createAt?: boolean
+    deletedAt?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["learner"]>
 
@@ -7169,9 +7192,10 @@ export namespace Prisma {
     enrolledAt?: boolean
     updatedAt?: boolean
     createAt?: boolean
+    deletedAt?: boolean
   }
 
-  export type LearnerOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"learner_id" | "user_id" | "enrolledAt" | "updatedAt" | "createAt", ExtArgs["result"]["learner"]>
+  export type LearnerOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"learner_id" | "user_id" | "enrolledAt" | "updatedAt" | "createAt" | "deletedAt", ExtArgs["result"]["learner"]>
   export type LearnerInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
     learner_courses?: boolean | Learner$learner_coursesArgs<ExtArgs>
@@ -7198,6 +7222,7 @@ export namespace Prisma {
       enrolledAt: Date
       updatedAt: Date
       createAt: Date
+      deletedAt: Date | null
     }, ExtArgs["result"]["learner"]>
     composites: {}
   }
@@ -7629,6 +7654,7 @@ export namespace Prisma {
     readonly enrolledAt: FieldRef<"Learner", 'DateTime'>
     readonly updatedAt: FieldRef<"Learner", 'DateTime'>
     readonly createAt: FieldRef<"Learner", 'DateTime'>
+    readonly deletedAt: FieldRef<"Learner", 'DateTime'>
   }
     
 
@@ -8108,6 +8134,7 @@ export namespace Prisma {
     status: $Enums.Status | null
     createdAt: Date | null
     updatedAt: Date | null
+    deletedAt: Date | null
   }
 
   export type InstructorMaxAggregateOutputType = {
@@ -8117,6 +8144,7 @@ export namespace Prisma {
     status: $Enums.Status | null
     createdAt: Date | null
     updatedAt: Date | null
+    deletedAt: Date | null
   }
 
   export type InstructorCountAggregateOutputType = {
@@ -8126,6 +8154,7 @@ export namespace Prisma {
     status: number
     createdAt: number
     updatedAt: number
+    deletedAt: number
     _all: number
   }
 
@@ -8137,6 +8166,7 @@ export namespace Prisma {
     status?: true
     createdAt?: true
     updatedAt?: true
+    deletedAt?: true
   }
 
   export type InstructorMaxAggregateInputType = {
@@ -8146,6 +8176,7 @@ export namespace Prisma {
     status?: true
     createdAt?: true
     updatedAt?: true
+    deletedAt?: true
   }
 
   export type InstructorCountAggregateInputType = {
@@ -8155,6 +8186,7 @@ export namespace Prisma {
     status?: true
     createdAt?: true
     updatedAt?: true
+    deletedAt?: true
     _all?: true
   }
 
@@ -8237,6 +8269,7 @@ export namespace Prisma {
     status: $Enums.Status
     createdAt: Date
     updatedAt: Date
+    deletedAt: Date | null
     _count: InstructorCountAggregateOutputType | null
     _min: InstructorMinAggregateOutputType | null
     _max: InstructorMaxAggregateOutputType | null
@@ -8263,6 +8296,7 @@ export namespace Prisma {
     status?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    deletedAt?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
     bank_accout?: boolean | Instructor$bank_accoutArgs<ExtArgs>
     instructorSpecialization?: boolean | Instructor$instructorSpecializationArgs<ExtArgs>
@@ -8279,6 +8313,7 @@ export namespace Prisma {
     status?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    deletedAt?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["instructor"]>
 
@@ -8289,6 +8324,7 @@ export namespace Prisma {
     status?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    deletedAt?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["instructor"]>
 
@@ -8299,9 +8335,10 @@ export namespace Prisma {
     status?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    deletedAt?: boolean
   }
 
-  export type InstructorOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"instructor_id" | "user_id" | "isVerified" | "status" | "createdAt" | "updatedAt", ExtArgs["result"]["instructor"]>
+  export type InstructorOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"instructor_id" | "user_id" | "isVerified" | "status" | "createdAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["instructor"]>
   export type InstructorInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
     bank_accout?: boolean | Instructor$bank_accoutArgs<ExtArgs>
@@ -8335,6 +8372,7 @@ export namespace Prisma {
       status: $Enums.Status
       createdAt: Date
       updatedAt: Date
+      deletedAt: Date | null
     }, ExtArgs["result"]["instructor"]>
     composites: {}
   }
@@ -8770,6 +8808,7 @@ export namespace Prisma {
     readonly status: FieldRef<"Instructor", 'Status'>
     readonly createdAt: FieldRef<"Instructor", 'DateTime'>
     readonly updatedAt: FieldRef<"Instructor", 'DateTime'>
+    readonly deletedAt: FieldRef<"Instructor", 'DateTime'>
   }
     
 
@@ -15000,6 +15039,7 @@ export namespace Prisma {
     balance: Decimal | null
     createAt: Date | null
     updateAt: Date | null
+    deletedAt: Date | null
   }
 
   export type WalletMaxAggregateOutputType = {
@@ -15008,6 +15048,7 @@ export namespace Prisma {
     balance: Decimal | null
     createAt: Date | null
     updateAt: Date | null
+    deletedAt: Date | null
   }
 
   export type WalletCountAggregateOutputType = {
@@ -15016,6 +15057,7 @@ export namespace Prisma {
     balance: number
     createAt: number
     updateAt: number
+    deletedAt: number
     _all: number
   }
 
@@ -15034,6 +15076,7 @@ export namespace Prisma {
     balance?: true
     createAt?: true
     updateAt?: true
+    deletedAt?: true
   }
 
   export type WalletMaxAggregateInputType = {
@@ -15042,6 +15085,7 @@ export namespace Prisma {
     balance?: true
     createAt?: true
     updateAt?: true
+    deletedAt?: true
   }
 
   export type WalletCountAggregateInputType = {
@@ -15050,6 +15094,7 @@ export namespace Prisma {
     balance?: true
     createAt?: true
     updateAt?: true
+    deletedAt?: true
     _all?: true
   }
 
@@ -15145,6 +15190,7 @@ export namespace Prisma {
     balance: Decimal
     createAt: Date
     updateAt: Date
+    deletedAt: Date | null
     _count: WalletCountAggregateOutputType | null
     _avg: WalletAvgAggregateOutputType | null
     _sum: WalletSumAggregateOutputType | null
@@ -15172,6 +15218,7 @@ export namespace Prisma {
     balance?: boolean
     createAt?: boolean
     updateAt?: boolean
+    deletedAt?: boolean
     belongUser?: boolean | UserDefaultArgs<ExtArgs>
     transactions?: boolean | Wallet$transactionsArgs<ExtArgs>
     _count?: boolean | WalletCountOutputTypeDefaultArgs<ExtArgs>
@@ -15183,6 +15230,7 @@ export namespace Prisma {
     balance?: boolean
     createAt?: boolean
     updateAt?: boolean
+    deletedAt?: boolean
     belongUser?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["wallet"]>
 
@@ -15192,6 +15240,7 @@ export namespace Prisma {
     balance?: boolean
     createAt?: boolean
     updateAt?: boolean
+    deletedAt?: boolean
     belongUser?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["wallet"]>
 
@@ -15201,9 +15250,10 @@ export namespace Prisma {
     balance?: boolean
     createAt?: boolean
     updateAt?: boolean
+    deletedAt?: boolean
   }
 
-  export type WalletOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"wallet_id" | "user_id" | "balance" | "createAt" | "updateAt", ExtArgs["result"]["wallet"]>
+  export type WalletOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"wallet_id" | "user_id" | "balance" | "createAt" | "updateAt" | "deletedAt", ExtArgs["result"]["wallet"]>
   export type WalletInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     belongUser?: boolean | UserDefaultArgs<ExtArgs>
     transactions?: boolean | Wallet$transactionsArgs<ExtArgs>
@@ -15228,6 +15278,7 @@ export namespace Prisma {
       balance: Prisma.Decimal
       createAt: Date
       updateAt: Date
+      deletedAt: Date | null
     }, ExtArgs["result"]["wallet"]>
     composites: {}
   }
@@ -15658,6 +15709,7 @@ export namespace Prisma {
     readonly balance: FieldRef<"Wallet", 'Decimal'>
     readonly createAt: FieldRef<"Wallet", 'DateTime'>
     readonly updateAt: FieldRef<"Wallet", 'DateTime'>
+    readonly deletedAt: FieldRef<"Wallet", 'DateTime'>
   }
     
 
@@ -23954,6 +24006,7 @@ export namespace Prisma {
     status: $Enums.AccountStatus | null
     createdAt: Date | null
     updatedAt: Date | null
+    deletedAt: Date | null
   }
 
   export type AccountSecurityMaxAggregateOutputType = {
@@ -23967,6 +24020,7 @@ export namespace Prisma {
     status: $Enums.AccountStatus | null
     createdAt: Date | null
     updatedAt: Date | null
+    deletedAt: Date | null
   }
 
   export type AccountSecurityCountAggregateOutputType = {
@@ -23980,6 +24034,7 @@ export namespace Prisma {
     status: number
     createdAt: number
     updatedAt: number
+    deletedAt: number
     _all: number
   }
 
@@ -24003,6 +24058,7 @@ export namespace Prisma {
     status?: true
     createdAt?: true
     updatedAt?: true
+    deletedAt?: true
   }
 
   export type AccountSecurityMaxAggregateInputType = {
@@ -24016,6 +24072,7 @@ export namespace Prisma {
     status?: true
     createdAt?: true
     updatedAt?: true
+    deletedAt?: true
   }
 
   export type AccountSecurityCountAggregateInputType = {
@@ -24029,6 +24086,7 @@ export namespace Prisma {
     status?: true
     createdAt?: true
     updatedAt?: true
+    deletedAt?: true
     _all?: true
   }
 
@@ -24129,6 +24187,7 @@ export namespace Prisma {
     status: $Enums.AccountStatus
     createdAt: Date
     updatedAt: Date
+    deletedAt: Date | null
     _count: AccountSecurityCountAggregateOutputType | null
     _avg: AccountSecurityAvgAggregateOutputType | null
     _sum: AccountSecuritySumAggregateOutputType | null
@@ -24161,6 +24220,7 @@ export namespace Prisma {
     status?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    deletedAt?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["accountSecurity"]>
 
@@ -24175,6 +24235,7 @@ export namespace Prisma {
     status?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    deletedAt?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["accountSecurity"]>
 
@@ -24189,6 +24250,7 @@ export namespace Prisma {
     status?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    deletedAt?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["accountSecurity"]>
 
@@ -24203,9 +24265,10 @@ export namespace Prisma {
     status?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    deletedAt?: boolean
   }
 
-  export type AccountSecurityOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"account_security_id" | "user_id" | "email_verified" | "failed_login_attempts" | "verification_token" | "token_expires_at" | "account_noted" | "status" | "createdAt" | "updatedAt", ExtArgs["result"]["accountSecurity"]>
+  export type AccountSecurityOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"account_security_id" | "user_id" | "email_verified" | "failed_login_attempts" | "verification_token" | "token_expires_at" | "account_noted" | "status" | "createdAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["accountSecurity"]>
   export type AccountSecurityInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
   }
@@ -24232,6 +24295,7 @@ export namespace Prisma {
       status: $Enums.AccountStatus
       createdAt: Date
       updatedAt: Date
+      deletedAt: Date | null
     }, ExtArgs["result"]["accountSecurity"]>
     composites: {}
   }
@@ -24666,6 +24730,7 @@ export namespace Prisma {
     readonly status: FieldRef<"AccountSecurity", 'AccountStatus'>
     readonly createdAt: FieldRef<"AccountSecurity", 'DateTime'>
     readonly updatedAt: FieldRef<"AccountSecurity", 'DateTime'>
+    readonly deletedAt: FieldRef<"AccountSecurity", 'DateTime'>
   }
     
 
@@ -49050,7 +49115,8 @@ export namespace Prisma {
     role: 'role',
     gender: 'gender',
     createdAt: 'createdAt',
-    updatedAt: 'updatedAt'
+    updatedAt: 'updatedAt',
+    deletedAt: 'deletedAt'
   };
 
   export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
@@ -49061,7 +49127,8 @@ export namespace Prisma {
     user_id: 'user_id',
     enrolledAt: 'enrolledAt',
     updatedAt: 'updatedAt',
-    createAt: 'createAt'
+    createAt: 'createAt',
+    deletedAt: 'deletedAt'
   };
 
   export type LearnerScalarFieldEnum = (typeof LearnerScalarFieldEnum)[keyof typeof LearnerScalarFieldEnum]
@@ -49073,7 +49140,8 @@ export namespace Prisma {
     isVerified: 'isVerified',
     status: 'status',
     createdAt: 'createdAt',
-    updatedAt: 'updatedAt'
+    updatedAt: 'updatedAt',
+    deletedAt: 'deletedAt'
   };
 
   export type InstructorScalarFieldEnum = (typeof InstructorScalarFieldEnum)[keyof typeof InstructorScalarFieldEnum]
@@ -49158,7 +49226,8 @@ export namespace Prisma {
     user_id: 'user_id',
     balance: 'balance',
     createAt: 'createAt',
-    updateAt: 'updateAt'
+    updateAt: 'updateAt',
+    deletedAt: 'deletedAt'
   };
 
   export type WalletScalarFieldEnum = (typeof WalletScalarFieldEnum)[keyof typeof WalletScalarFieldEnum]
@@ -49260,7 +49329,8 @@ export namespace Prisma {
     account_noted: 'account_noted',
     status: 'status',
     createdAt: 'createdAt',
-    updatedAt: 'updatedAt'
+    updatedAt: 'updatedAt',
+    deletedAt: 'deletedAt'
   };
 
   export type AccountSecurityScalarFieldEnum = (typeof AccountSecurityScalarFieldEnum)[keyof typeof AccountSecurityScalarFieldEnum]
@@ -49887,6 +49957,7 @@ export namespace Prisma {
     gender?: StringFilter<"User"> | string
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
+    deletedAt?: DateTimeNullableFilter<"User"> | Date | string | null
     feedbacks?: FeedbackListRelationFilter
     learner?: XOR<LearnerNullableScalarRelationFilter, LearnerWhereInput> | null
     instructor?: XOR<InstructorNullableScalarRelationFilter, InstructorWhereInput> | null
@@ -49927,6 +49998,7 @@ export namespace Prisma {
     gender?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    deletedAt?: SortOrderInput | SortOrder
     feedbacks?: FeedbackOrderByRelationAggregateInput
     learner?: LearnerOrderByWithRelationInput
     instructor?: InstructorOrderByWithRelationInput
@@ -49970,6 +50042,7 @@ export namespace Prisma {
     gender?: StringFilter<"User"> | string
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
+    deletedAt?: DateTimeNullableFilter<"User"> | Date | string | null
     feedbacks?: FeedbackListRelationFilter
     learner?: XOR<LearnerNullableScalarRelationFilter, LearnerWhereInput> | null
     instructor?: XOR<InstructorNullableScalarRelationFilter, InstructorWhereInput> | null
@@ -50010,6 +50083,7 @@ export namespace Prisma {
     gender?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    deletedAt?: SortOrderInput | SortOrder
     _count?: UserCountOrderByAggregateInput
     _max?: UserMaxOrderByAggregateInput
     _min?: UserMinOrderByAggregateInput
@@ -50038,6 +50112,7 @@ export namespace Prisma {
     gender?: StringWithAggregatesFilter<"User"> | string
     createdAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
+    deletedAt?: DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
   }
 
   export type LearnerWhereInput = {
@@ -50049,6 +50124,7 @@ export namespace Prisma {
     enrolledAt?: DateTimeFilter<"Learner"> | Date | string
     updatedAt?: DateTimeFilter<"Learner"> | Date | string
     createAt?: DateTimeFilter<"Learner"> | Date | string
+    deletedAt?: DateTimeNullableFilter<"Learner"> | Date | string | null
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
     learner_courses?: LearnerCoursesListRelationFilter
     favorites?: FavoriteListRelationFilter
@@ -50060,6 +50136,7 @@ export namespace Prisma {
     enrolledAt?: SortOrder
     updatedAt?: SortOrder
     createAt?: SortOrder
+    deletedAt?: SortOrderInput | SortOrder
     user?: UserOrderByWithRelationInput
     learner_courses?: LearnerCoursesOrderByRelationAggregateInput
     favorites?: FavoriteOrderByRelationAggregateInput
@@ -50074,6 +50151,7 @@ export namespace Prisma {
     enrolledAt?: DateTimeFilter<"Learner"> | Date | string
     updatedAt?: DateTimeFilter<"Learner"> | Date | string
     createAt?: DateTimeFilter<"Learner"> | Date | string
+    deletedAt?: DateTimeNullableFilter<"Learner"> | Date | string | null
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
     learner_courses?: LearnerCoursesListRelationFilter
     favorites?: FavoriteListRelationFilter
@@ -50085,6 +50163,7 @@ export namespace Prisma {
     enrolledAt?: SortOrder
     updatedAt?: SortOrder
     createAt?: SortOrder
+    deletedAt?: SortOrderInput | SortOrder
     _count?: LearnerCountOrderByAggregateInput
     _max?: LearnerMaxOrderByAggregateInput
     _min?: LearnerMinOrderByAggregateInput
@@ -50099,6 +50178,7 @@ export namespace Prisma {
     enrolledAt?: DateTimeWithAggregatesFilter<"Learner"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Learner"> | Date | string
     createAt?: DateTimeWithAggregatesFilter<"Learner"> | Date | string
+    deletedAt?: DateTimeNullableWithAggregatesFilter<"Learner"> | Date | string | null
   }
 
   export type InstructorWhereInput = {
@@ -50111,6 +50191,7 @@ export namespace Prisma {
     status?: EnumStatusFilter<"Instructor"> | $Enums.Status
     createdAt?: DateTimeFilter<"Instructor"> | Date | string
     updatedAt?: DateTimeFilter<"Instructor"> | Date | string
+    deletedAt?: DateTimeNullableFilter<"Instructor"> | Date | string | null
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
     bank_accout?: XOR<BankAccountNullableScalarRelationFilter, BankAccountWhereInput> | null
     instructorSpecialization?: XOR<InstructorSpecializationsNullableScalarRelationFilter, InstructorSpecializationsWhereInput> | null
@@ -50126,6 +50207,7 @@ export namespace Prisma {
     status?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    deletedAt?: SortOrderInput | SortOrder
     user?: UserOrderByWithRelationInput
     bank_accout?: BankAccountOrderByWithRelationInput
     instructorSpecialization?: InstructorSpecializationsOrderByWithRelationInput
@@ -50144,6 +50226,7 @@ export namespace Prisma {
     status?: EnumStatusFilter<"Instructor"> | $Enums.Status
     createdAt?: DateTimeFilter<"Instructor"> | Date | string
     updatedAt?: DateTimeFilter<"Instructor"> | Date | string
+    deletedAt?: DateTimeNullableFilter<"Instructor"> | Date | string | null
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
     bank_accout?: XOR<BankAccountNullableScalarRelationFilter, BankAccountWhereInput> | null
     instructorSpecialization?: XOR<InstructorSpecializationsNullableScalarRelationFilter, InstructorSpecializationsWhereInput> | null
@@ -50159,6 +50242,7 @@ export namespace Prisma {
     status?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    deletedAt?: SortOrderInput | SortOrder
     _count?: InstructorCountOrderByAggregateInput
     _max?: InstructorMaxOrderByAggregateInput
     _min?: InstructorMinOrderByAggregateInput
@@ -50174,6 +50258,7 @@ export namespace Prisma {
     status?: EnumStatusWithAggregatesFilter<"Instructor"> | $Enums.Status
     createdAt?: DateTimeWithAggregatesFilter<"Instructor"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Instructor"> | Date | string
+    deletedAt?: DateTimeNullableWithAggregatesFilter<"Instructor"> | Date | string | null
   }
 
   export type InstructorSpecializationsWhereInput = {
@@ -50573,6 +50658,7 @@ export namespace Prisma {
     balance?: DecimalFilter<"Wallet"> | Decimal | DecimalJsLike | number | string
     createAt?: DateTimeFilter<"Wallet"> | Date | string
     updateAt?: DateTimeFilter<"Wallet"> | Date | string
+    deletedAt?: DateTimeNullableFilter<"Wallet"> | Date | string | null
     belongUser?: XOR<UserScalarRelationFilter, UserWhereInput>
     transactions?: TransactionListRelationFilter
   }
@@ -50583,6 +50669,7 @@ export namespace Prisma {
     balance?: SortOrder
     createAt?: SortOrder
     updateAt?: SortOrder
+    deletedAt?: SortOrderInput | SortOrder
     belongUser?: UserOrderByWithRelationInput
     transactions?: TransactionOrderByRelationAggregateInput
   }
@@ -50596,6 +50683,7 @@ export namespace Prisma {
     balance?: DecimalFilter<"Wallet"> | Decimal | DecimalJsLike | number | string
     createAt?: DateTimeFilter<"Wallet"> | Date | string
     updateAt?: DateTimeFilter<"Wallet"> | Date | string
+    deletedAt?: DateTimeNullableFilter<"Wallet"> | Date | string | null
     belongUser?: XOR<UserScalarRelationFilter, UserWhereInput>
     transactions?: TransactionListRelationFilter
   }, "wallet_id" | "user_id">
@@ -50606,6 +50694,7 @@ export namespace Prisma {
     balance?: SortOrder
     createAt?: SortOrder
     updateAt?: SortOrder
+    deletedAt?: SortOrderInput | SortOrder
     _count?: WalletCountOrderByAggregateInput
     _avg?: WalletAvgOrderByAggregateInput
     _max?: WalletMaxOrderByAggregateInput
@@ -50622,6 +50711,7 @@ export namespace Prisma {
     balance?: DecimalWithAggregatesFilter<"Wallet"> | Decimal | DecimalJsLike | number | string
     createAt?: DateTimeWithAggregatesFilter<"Wallet"> | Date | string
     updateAt?: DateTimeWithAggregatesFilter<"Wallet"> | Date | string
+    deletedAt?: DateTimeNullableWithAggregatesFilter<"Wallet"> | Date | string | null
   }
 
   export type TransactionWhereInput = {
@@ -51101,6 +51191,7 @@ export namespace Prisma {
     status?: EnumAccountStatusFilter<"AccountSecurity"> | $Enums.AccountStatus
     createdAt?: DateTimeFilter<"AccountSecurity"> | Date | string
     updatedAt?: DateTimeFilter<"AccountSecurity"> | Date | string
+    deletedAt?: DateTimeNullableFilter<"AccountSecurity"> | Date | string | null
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
   }
 
@@ -51115,6 +51206,7 @@ export namespace Prisma {
     status?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    deletedAt?: SortOrderInput | SortOrder
     user?: UserOrderByWithRelationInput
   }
 
@@ -51132,6 +51224,7 @@ export namespace Prisma {
     status?: EnumAccountStatusFilter<"AccountSecurity"> | $Enums.AccountStatus
     createdAt?: DateTimeFilter<"AccountSecurity"> | Date | string
     updatedAt?: DateTimeFilter<"AccountSecurity"> | Date | string
+    deletedAt?: DateTimeNullableFilter<"AccountSecurity"> | Date | string | null
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
   }, "account_security_id" | "user_id">
 
@@ -51146,6 +51239,7 @@ export namespace Prisma {
     status?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    deletedAt?: SortOrderInput | SortOrder
     _count?: AccountSecurityCountOrderByAggregateInput
     _avg?: AccountSecurityAvgOrderByAggregateInput
     _max?: AccountSecurityMaxOrderByAggregateInput
@@ -51167,6 +51261,7 @@ export namespace Prisma {
     status?: EnumAccountStatusWithAggregatesFilter<"AccountSecurity"> | $Enums.AccountStatus
     createdAt?: DateTimeWithAggregatesFilter<"AccountSecurity"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"AccountSecurity"> | Date | string
+    deletedAt?: DateTimeNullableWithAggregatesFilter<"AccountSecurity"> | Date | string | null
   }
 
   export type GroupWhereInput = {
@@ -52719,6 +52814,7 @@ export namespace Prisma {
     gender?: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    deletedAt?: Date | string | null
     feedbacks?: FeedbackCreateNestedManyWithoutUserInput
     learner?: LearnerCreateNestedOneWithoutUserInput
     instructor?: InstructorCreateNestedOneWithoutUserInput
@@ -52759,6 +52855,7 @@ export namespace Prisma {
     gender?: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    deletedAt?: Date | string | null
     feedbacks?: FeedbackUncheckedCreateNestedManyWithoutUserInput
     learner?: LearnerUncheckedCreateNestedOneWithoutUserInput
     instructor?: InstructorUncheckedCreateNestedOneWithoutUserInput
@@ -52799,6 +52896,7 @@ export namespace Prisma {
     gender?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     feedbacks?: FeedbackUpdateManyWithoutUserNestedInput
     learner?: LearnerUpdateOneWithoutUserNestedInput
     instructor?: InstructorUpdateOneWithoutUserNestedInput
@@ -52839,6 +52937,7 @@ export namespace Prisma {
     gender?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     feedbacks?: FeedbackUncheckedUpdateManyWithoutUserNestedInput
     learner?: LearnerUncheckedUpdateOneWithoutUserNestedInput
     instructor?: InstructorUncheckedUpdateOneWithoutUserNestedInput
@@ -52879,6 +52978,7 @@ export namespace Prisma {
     gender?: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    deletedAt?: Date | string | null
   }
 
   export type UserUpdateManyMutationInput = {
@@ -52901,6 +53001,7 @@ export namespace Prisma {
     gender?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type UserUncheckedUpdateManyInput = {
@@ -52923,6 +53024,7 @@ export namespace Prisma {
     gender?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type LearnerCreateInput = {
@@ -52930,6 +53032,7 @@ export namespace Prisma {
     enrolledAt?: Date | string
     updatedAt?: Date | string
     createAt?: Date | string
+    deletedAt?: Date | string | null
     user: UserCreateNestedOneWithoutLearnerInput
     learner_courses?: LearnerCoursesCreateNestedManyWithoutLearnerInput
     favorites?: FavoriteCreateNestedManyWithoutLearnerInput
@@ -52941,6 +53044,7 @@ export namespace Prisma {
     enrolledAt?: Date | string
     updatedAt?: Date | string
     createAt?: Date | string
+    deletedAt?: Date | string | null
     learner_courses?: LearnerCoursesUncheckedCreateNestedManyWithoutLearnerInput
     favorites?: FavoriteUncheckedCreateNestedManyWithoutLearnerInput
   }
@@ -52950,6 +53054,7 @@ export namespace Prisma {
     enrolledAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     user?: UserUpdateOneRequiredWithoutLearnerNestedInput
     learner_courses?: LearnerCoursesUpdateManyWithoutLearnerNestedInput
     favorites?: FavoriteUpdateManyWithoutLearnerNestedInput
@@ -52961,6 +53066,7 @@ export namespace Prisma {
     enrolledAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     learner_courses?: LearnerCoursesUncheckedUpdateManyWithoutLearnerNestedInput
     favorites?: FavoriteUncheckedUpdateManyWithoutLearnerNestedInput
   }
@@ -52971,6 +53077,7 @@ export namespace Prisma {
     enrolledAt?: Date | string
     updatedAt?: Date | string
     createAt?: Date | string
+    deletedAt?: Date | string | null
   }
 
   export type LearnerUpdateManyMutationInput = {
@@ -52978,6 +53085,7 @@ export namespace Prisma {
     enrolledAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type LearnerUncheckedUpdateManyInput = {
@@ -52986,6 +53094,7 @@ export namespace Prisma {
     enrolledAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type InstructorCreateInput = {
@@ -52994,6 +53103,7 @@ export namespace Prisma {
     status?: $Enums.Status
     createdAt?: Date | string
     updatedAt?: Date | string
+    deletedAt?: Date | string | null
     user: UserCreateNestedOneWithoutInstructorInput
     bank_accout?: BankAccountCreateNestedOneWithoutBelongInstructorInput
     instructorSpecialization?: InstructorSpecializationsCreateNestedOneWithoutInstructorInput
@@ -53009,6 +53119,7 @@ export namespace Prisma {
     status?: $Enums.Status
     createdAt?: Date | string
     updatedAt?: Date | string
+    deletedAt?: Date | string | null
     bank_accout?: BankAccountUncheckedCreateNestedOneWithoutBelongInstructorInput
     instructorSpecialization?: InstructorSpecializationsUncheckedCreateNestedOneWithoutInstructorInput
     citizen_id_confirms?: CitizenIdsConfirmUncheckedCreateNestedManyWithoutInstructorInput
@@ -53022,6 +53133,7 @@ export namespace Prisma {
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     user?: UserUpdateOneRequiredWithoutInstructorNestedInput
     bank_accout?: BankAccountUpdateOneWithoutBelongInstructorNestedInput
     instructorSpecialization?: InstructorSpecializationsUpdateOneWithoutInstructorNestedInput
@@ -53037,6 +53149,7 @@ export namespace Prisma {
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     bank_accout?: BankAccountUncheckedUpdateOneWithoutBelongInstructorNestedInput
     instructorSpecialization?: InstructorSpecializationsUncheckedUpdateOneWithoutInstructorNestedInput
     citizen_id_confirms?: CitizenIdsConfirmUncheckedUpdateManyWithoutInstructorNestedInput
@@ -53051,6 +53164,7 @@ export namespace Prisma {
     status?: $Enums.Status
     createdAt?: Date | string
     updatedAt?: Date | string
+    deletedAt?: Date | string | null
   }
 
   export type InstructorUpdateManyMutationInput = {
@@ -53059,6 +53173,7 @@ export namespace Prisma {
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type InstructorUncheckedUpdateManyInput = {
@@ -53068,6 +53183,7 @@ export namespace Prisma {
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type InstructorSpecializationsCreateInput = {
@@ -53487,6 +53603,7 @@ export namespace Prisma {
     balance: Decimal | DecimalJsLike | number | string
     createAt?: Date | string
     updateAt?: Date | string
+    deletedAt?: Date | string | null
     belongUser: UserCreateNestedOneWithoutWalletInput
     transactions?: TransactionCreateNestedManyWithoutWalletInput
   }
@@ -53497,6 +53614,7 @@ export namespace Prisma {
     balance: Decimal | DecimalJsLike | number | string
     createAt?: Date | string
     updateAt?: Date | string
+    deletedAt?: Date | string | null
     transactions?: TransactionUncheckedCreateNestedManyWithoutWalletInput
   }
 
@@ -53505,6 +53623,7 @@ export namespace Prisma {
     balance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     createAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updateAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     belongUser?: UserUpdateOneRequiredWithoutWalletNestedInput
     transactions?: TransactionUpdateManyWithoutWalletNestedInput
   }
@@ -53515,6 +53634,7 @@ export namespace Prisma {
     balance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     createAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updateAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     transactions?: TransactionUncheckedUpdateManyWithoutWalletNestedInput
   }
 
@@ -53524,6 +53644,7 @@ export namespace Prisma {
     balance: Decimal | DecimalJsLike | number | string
     createAt?: Date | string
     updateAt?: Date | string
+    deletedAt?: Date | string | null
   }
 
   export type WalletUpdateManyMutationInput = {
@@ -53531,6 +53652,7 @@ export namespace Prisma {
     balance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     createAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updateAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type WalletUncheckedUpdateManyInput = {
@@ -53539,6 +53661,7 @@ export namespace Prisma {
     balance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     createAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updateAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type TransactionCreateInput = {
@@ -54025,6 +54148,7 @@ export namespace Prisma {
     status?: $Enums.AccountStatus
     createdAt?: Date | string
     updatedAt?: Date | string
+    deletedAt?: Date | string | null
     user: UserCreateNestedOneWithoutAccountSecuritiesInput
   }
 
@@ -54039,6 +54163,7 @@ export namespace Prisma {
     status?: $Enums.AccountStatus
     createdAt?: Date | string
     updatedAt?: Date | string
+    deletedAt?: Date | string | null
   }
 
   export type AccountSecurityUpdateInput = {
@@ -54051,6 +54176,7 @@ export namespace Prisma {
     status?: EnumAccountStatusFieldUpdateOperationsInput | $Enums.AccountStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     user?: UserUpdateOneRequiredWithoutAccountSecuritiesNestedInput
   }
 
@@ -54065,6 +54191,7 @@ export namespace Prisma {
     status?: EnumAccountStatusFieldUpdateOperationsInput | $Enums.AccountStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type AccountSecurityCreateManyInput = {
@@ -54078,6 +54205,7 @@ export namespace Prisma {
     status?: $Enums.AccountStatus
     createdAt?: Date | string
     updatedAt?: Date | string
+    deletedAt?: Date | string | null
   }
 
   export type AccountSecurityUpdateManyMutationInput = {
@@ -54090,6 +54218,7 @@ export namespace Prisma {
     status?: EnumAccountStatusFieldUpdateOperationsInput | $Enums.AccountStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type AccountSecurityUncheckedUpdateManyInput = {
@@ -54103,6 +54232,7 @@ export namespace Prisma {
     status?: EnumAccountStatusFieldUpdateOperationsInput | $Enums.AccountStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type GroupCreateInput = {
@@ -55891,6 +56021,7 @@ export namespace Prisma {
     gender?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    deletedAt?: SortOrder
   }
 
   export type UserMaxOrderByAggregateInput = {
@@ -55913,6 +56044,7 @@ export namespace Prisma {
     gender?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    deletedAt?: SortOrder
   }
 
   export type UserMinOrderByAggregateInput = {
@@ -55935,6 +56067,7 @@ export namespace Prisma {
     gender?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    deletedAt?: SortOrder
   }
 
   export type StringWithAggregatesFilter<$PrismaModel = never> = {
@@ -56050,6 +56183,7 @@ export namespace Prisma {
     enrolledAt?: SortOrder
     updatedAt?: SortOrder
     createAt?: SortOrder
+    deletedAt?: SortOrder
   }
 
   export type LearnerMaxOrderByAggregateInput = {
@@ -56058,6 +56192,7 @@ export namespace Prisma {
     enrolledAt?: SortOrder
     updatedAt?: SortOrder
     createAt?: SortOrder
+    deletedAt?: SortOrder
   }
 
   export type LearnerMinOrderByAggregateInput = {
@@ -56066,6 +56201,7 @@ export namespace Prisma {
     enrolledAt?: SortOrder
     updatedAt?: SortOrder
     createAt?: SortOrder
+    deletedAt?: SortOrder
   }
 
   export type EnumStatusFilter<$PrismaModel = never> = {
@@ -56112,6 +56248,7 @@ export namespace Prisma {
     status?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    deletedAt?: SortOrder
   }
 
   export type InstructorMaxOrderByAggregateInput = {
@@ -56121,6 +56258,7 @@ export namespace Prisma {
     status?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    deletedAt?: SortOrder
   }
 
   export type InstructorMinOrderByAggregateInput = {
@@ -56130,6 +56268,7 @@ export namespace Prisma {
     status?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    deletedAt?: SortOrder
   }
 
   export type EnumStatusWithAggregatesFilter<$PrismaModel = never> = {
@@ -56406,6 +56545,7 @@ export namespace Prisma {
     balance?: SortOrder
     createAt?: SortOrder
     updateAt?: SortOrder
+    deletedAt?: SortOrder
   }
 
   export type WalletAvgOrderByAggregateInput = {
@@ -56418,6 +56558,7 @@ export namespace Prisma {
     balance?: SortOrder
     createAt?: SortOrder
     updateAt?: SortOrder
+    deletedAt?: SortOrder
   }
 
   export type WalletMinOrderByAggregateInput = {
@@ -56426,6 +56567,7 @@ export namespace Prisma {
     balance?: SortOrder
     createAt?: SortOrder
     updateAt?: SortOrder
+    deletedAt?: SortOrder
   }
 
   export type WalletSumOrderByAggregateInput = {
@@ -56890,6 +57032,7 @@ export namespace Prisma {
     status?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    deletedAt?: SortOrder
   }
 
   export type AccountSecurityAvgOrderByAggregateInput = {
@@ -56907,6 +57050,7 @@ export namespace Prisma {
     status?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    deletedAt?: SortOrder
   }
 
   export type AccountSecurityMinOrderByAggregateInput = {
@@ -56920,6 +57064,7 @@ export namespace Prisma {
     status?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    deletedAt?: SortOrder
   }
 
   export type AccountSecuritySumOrderByAggregateInput = {
@@ -61699,6 +61844,7 @@ export namespace Prisma {
     enrolledAt?: Date | string
     updatedAt?: Date | string
     createAt?: Date | string
+    deletedAt?: Date | string | null
     learner_courses?: LearnerCoursesCreateNestedManyWithoutLearnerInput
     favorites?: FavoriteCreateNestedManyWithoutLearnerInput
   }
@@ -61708,6 +61854,7 @@ export namespace Prisma {
     enrolledAt?: Date | string
     updatedAt?: Date | string
     createAt?: Date | string
+    deletedAt?: Date | string | null
     learner_courses?: LearnerCoursesUncheckedCreateNestedManyWithoutLearnerInput
     favorites?: FavoriteUncheckedCreateNestedManyWithoutLearnerInput
   }
@@ -61723,6 +61870,7 @@ export namespace Prisma {
     status?: $Enums.Status
     createdAt?: Date | string
     updatedAt?: Date | string
+    deletedAt?: Date | string | null
     bank_accout?: BankAccountCreateNestedOneWithoutBelongInstructorInput
     instructorSpecialization?: InstructorSpecializationsCreateNestedOneWithoutInstructorInput
     citizen_id_confirms?: CitizenIdsConfirmCreateNestedManyWithoutInstructorInput
@@ -61736,6 +61884,7 @@ export namespace Prisma {
     status?: $Enums.Status
     createdAt?: Date | string
     updatedAt?: Date | string
+    deletedAt?: Date | string | null
     bank_accout?: BankAccountUncheckedCreateNestedOneWithoutBelongInstructorInput
     instructorSpecialization?: InstructorSpecializationsUncheckedCreateNestedOneWithoutInstructorInput
     citizen_id_confirms?: CitizenIdsConfirmUncheckedCreateNestedManyWithoutInstructorInput
@@ -61781,6 +61930,7 @@ export namespace Prisma {
     status?: $Enums.AccountStatus
     createdAt?: Date | string
     updatedAt?: Date | string
+    deletedAt?: Date | string | null
   }
 
   export type AccountSecurityUncheckedCreateWithoutUserInput = {
@@ -61793,6 +61943,7 @@ export namespace Prisma {
     status?: $Enums.AccountStatus
     createdAt?: Date | string
     updatedAt?: Date | string
+    deletedAt?: Date | string | null
   }
 
   export type AccountSecurityCreateOrConnectWithoutUserInput = {
@@ -61887,6 +62038,7 @@ export namespace Prisma {
     balance: Decimal | DecimalJsLike | number | string
     createAt?: Date | string
     updateAt?: Date | string
+    deletedAt?: Date | string | null
     transactions?: TransactionCreateNestedManyWithoutWalletInput
   }
 
@@ -61895,6 +62047,7 @@ export namespace Prisma {
     balance: Decimal | DecimalJsLike | number | string
     createAt?: Date | string
     updateAt?: Date | string
+    deletedAt?: Date | string | null
     transactions?: TransactionUncheckedCreateNestedManyWithoutWalletInput
   }
 
@@ -62250,6 +62403,7 @@ export namespace Prisma {
     enrolledAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     learner_courses?: LearnerCoursesUpdateManyWithoutLearnerNestedInput
     favorites?: FavoriteUpdateManyWithoutLearnerNestedInput
   }
@@ -62259,6 +62413,7 @@ export namespace Prisma {
     enrolledAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     learner_courses?: LearnerCoursesUncheckedUpdateManyWithoutLearnerNestedInput
     favorites?: FavoriteUncheckedUpdateManyWithoutLearnerNestedInput
   }
@@ -62280,6 +62435,7 @@ export namespace Prisma {
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     bank_accout?: BankAccountUpdateOneWithoutBelongInstructorNestedInput
     instructorSpecialization?: InstructorSpecializationsUpdateOneWithoutInstructorNestedInput
     citizen_id_confirms?: CitizenIdsConfirmUpdateManyWithoutInstructorNestedInput
@@ -62293,6 +62449,7 @@ export namespace Prisma {
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     bank_accout?: BankAccountUncheckedUpdateOneWithoutBelongInstructorNestedInput
     instructorSpecialization?: InstructorSpecializationsUncheckedUpdateOneWithoutInstructorNestedInput
     citizen_id_confirms?: CitizenIdsConfirmUncheckedUpdateManyWithoutInstructorNestedInput
@@ -62350,6 +62507,7 @@ export namespace Prisma {
     status?: EnumAccountStatusFieldUpdateOperationsInput | $Enums.AccountStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type AccountSecurityUncheckedUpdateWithoutUserInput = {
@@ -62362,6 +62520,7 @@ export namespace Prisma {
     status?: EnumAccountStatusFieldUpdateOperationsInput | $Enums.AccountStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type TransactionUpsertWithWhereUniqueWithoutUserInput = {
@@ -62450,6 +62609,7 @@ export namespace Prisma {
     balance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     createAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updateAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     transactions?: TransactionUpdateManyWithoutWalletNestedInput
   }
 
@@ -62458,6 +62618,7 @@ export namespace Prisma {
     balance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     createAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updateAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     transactions?: TransactionUncheckedUpdateManyWithoutWalletNestedInput
   }
 
@@ -62751,6 +62912,7 @@ export namespace Prisma {
     gender?: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    deletedAt?: Date | string | null
     feedbacks?: FeedbackCreateNestedManyWithoutUserInput
     instructor?: InstructorCreateNestedOneWithoutUserInput
     admin?: AdminCreateNestedOneWithoutUserInput
@@ -62790,6 +62952,7 @@ export namespace Prisma {
     gender?: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    deletedAt?: Date | string | null
     feedbacks?: FeedbackUncheckedCreateNestedManyWithoutUserInput
     instructor?: InstructorUncheckedCreateNestedOneWithoutUserInput
     admin?: AdminUncheckedCreateNestedOneWithoutUserInput
@@ -62901,6 +63064,7 @@ export namespace Prisma {
     gender?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     feedbacks?: FeedbackUpdateManyWithoutUserNestedInput
     instructor?: InstructorUpdateOneWithoutUserNestedInput
     admin?: AdminUpdateOneWithoutUserNestedInput
@@ -62940,6 +63104,7 @@ export namespace Prisma {
     gender?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     feedbacks?: FeedbackUncheckedUpdateManyWithoutUserNestedInput
     instructor?: InstructorUncheckedUpdateOneWithoutUserNestedInput
     admin?: AdminUncheckedUpdateOneWithoutUserNestedInput
@@ -63037,6 +63202,7 @@ export namespace Prisma {
     gender?: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    deletedAt?: Date | string | null
     feedbacks?: FeedbackCreateNestedManyWithoutUserInput
     learner?: LearnerCreateNestedOneWithoutUserInput
     admin?: AdminCreateNestedOneWithoutUserInput
@@ -63076,6 +63242,7 @@ export namespace Prisma {
     gender?: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    deletedAt?: Date | string | null
     feedbacks?: FeedbackUncheckedCreateNestedManyWithoutUserInput
     learner?: LearnerUncheckedCreateNestedOneWithoutUserInput
     admin?: AdminUncheckedCreateNestedOneWithoutUserInput
@@ -63315,6 +63482,7 @@ export namespace Prisma {
     gender?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     feedbacks?: FeedbackUpdateManyWithoutUserNestedInput
     learner?: LearnerUpdateOneWithoutUserNestedInput
     admin?: AdminUpdateOneWithoutUserNestedInput
@@ -63354,6 +63522,7 @@ export namespace Prisma {
     gender?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     feedbacks?: FeedbackUncheckedUpdateManyWithoutUserNestedInput
     learner?: LearnerUncheckedUpdateOneWithoutUserNestedInput
     admin?: AdminUncheckedUpdateOneWithoutUserNestedInput
@@ -63551,6 +63720,7 @@ export namespace Prisma {
     status?: $Enums.Status
     createdAt?: Date | string
     updatedAt?: Date | string
+    deletedAt?: Date | string | null
     user: UserCreateNestedOneWithoutInstructorInput
     bank_accout?: BankAccountCreateNestedOneWithoutBelongInstructorInput
     citizen_id_confirms?: CitizenIdsConfirmCreateNestedManyWithoutInstructorInput
@@ -63565,6 +63735,7 @@ export namespace Prisma {
     status?: $Enums.Status
     createdAt?: Date | string
     updatedAt?: Date | string
+    deletedAt?: Date | string | null
     bank_accout?: BankAccountUncheckedCreateNestedOneWithoutBelongInstructorInput
     citizen_id_confirms?: CitizenIdsConfirmUncheckedCreateNestedManyWithoutInstructorInput
     instructor_qualifications?: InstructorQualificationsUncheckedCreateNestedManyWithoutInstructorInput
@@ -63649,6 +63820,7 @@ export namespace Prisma {
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     user?: UserUpdateOneRequiredWithoutInstructorNestedInput
     bank_accout?: BankAccountUpdateOneWithoutBelongInstructorNestedInput
     citizen_id_confirms?: CitizenIdsConfirmUpdateManyWithoutInstructorNestedInput
@@ -63663,6 +63835,7 @@ export namespace Prisma {
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     bank_accout?: BankAccountUncheckedUpdateOneWithoutBelongInstructorNestedInput
     citizen_id_confirms?: CitizenIdsConfirmUncheckedUpdateManyWithoutInstructorNestedInput
     instructor_qualifications?: InstructorQualificationsUncheckedUpdateManyWithoutInstructorNestedInput
@@ -63786,6 +63959,7 @@ export namespace Prisma {
     gender?: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    deletedAt?: Date | string | null
     feedbacks?: FeedbackCreateNestedManyWithoutUserInput
     learner?: LearnerCreateNestedOneWithoutUserInput
     instructor?: InstructorCreateNestedOneWithoutUserInput
@@ -63825,6 +63999,7 @@ export namespace Prisma {
     gender?: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    deletedAt?: Date | string | null
     feedbacks?: FeedbackUncheckedCreateNestedManyWithoutUserInput
     learner?: LearnerUncheckedCreateNestedOneWithoutUserInput
     instructor?: InstructorUncheckedCreateNestedOneWithoutUserInput
@@ -63924,6 +64099,7 @@ export namespace Prisma {
     gender?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     feedbacks?: FeedbackUpdateManyWithoutUserNestedInput
     learner?: LearnerUpdateOneWithoutUserNestedInput
     instructor?: InstructorUpdateOneWithoutUserNestedInput
@@ -63963,6 +64139,7 @@ export namespace Prisma {
     gender?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     feedbacks?: FeedbackUncheckedUpdateManyWithoutUserNestedInput
     learner?: LearnerUncheckedUpdateOneWithoutUserNestedInput
     instructor?: InstructorUncheckedUpdateOneWithoutUserNestedInput
@@ -63988,6 +64165,7 @@ export namespace Prisma {
     status?: $Enums.Status
     createdAt?: Date | string
     updatedAt?: Date | string
+    deletedAt?: Date | string | null
     user: UserCreateNestedOneWithoutInstructorInput
     bank_accout?: BankAccountCreateNestedOneWithoutBelongInstructorInput
     instructorSpecialization?: InstructorSpecializationsCreateNestedOneWithoutInstructorInput
@@ -64002,6 +64180,7 @@ export namespace Prisma {
     status?: $Enums.Status
     createdAt?: Date | string
     updatedAt?: Date | string
+    deletedAt?: Date | string | null
     bank_accout?: BankAccountUncheckedCreateNestedOneWithoutBelongInstructorInput
     instructorSpecialization?: InstructorSpecializationsUncheckedCreateNestedOneWithoutInstructorInput
     instructor_qualifications?: InstructorQualificationsUncheckedCreateNestedManyWithoutInstructorInput
@@ -64030,6 +64209,7 @@ export namespace Prisma {
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     user?: UserUpdateOneRequiredWithoutInstructorNestedInput
     bank_accout?: BankAccountUpdateOneWithoutBelongInstructorNestedInput
     instructorSpecialization?: InstructorSpecializationsUpdateOneWithoutInstructorNestedInput
@@ -64044,6 +64224,7 @@ export namespace Prisma {
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     bank_accout?: BankAccountUncheckedUpdateOneWithoutBelongInstructorNestedInput
     instructorSpecialization?: InstructorSpecializationsUncheckedUpdateOneWithoutInstructorNestedInput
     instructor_qualifications?: InstructorQualificationsUncheckedUpdateManyWithoutInstructorNestedInput
@@ -64056,6 +64237,7 @@ export namespace Prisma {
     status?: $Enums.Status
     createdAt?: Date | string
     updatedAt?: Date | string
+    deletedAt?: Date | string | null
     user: UserCreateNestedOneWithoutInstructorInput
     bank_accout?: BankAccountCreateNestedOneWithoutBelongInstructorInput
     instructorSpecialization?: InstructorSpecializationsCreateNestedOneWithoutInstructorInput
@@ -64070,6 +64252,7 @@ export namespace Prisma {
     status?: $Enums.Status
     createdAt?: Date | string
     updatedAt?: Date | string
+    deletedAt?: Date | string | null
     bank_accout?: BankAccountUncheckedCreateNestedOneWithoutBelongInstructorInput
     instructorSpecialization?: InstructorSpecializationsUncheckedCreateNestedOneWithoutInstructorInput
     citizen_id_confirms?: CitizenIdsConfirmUncheckedCreateNestedManyWithoutInstructorInput
@@ -64101,6 +64284,7 @@ export namespace Prisma {
     gender?: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    deletedAt?: Date | string | null
     feedbacks?: FeedbackCreateNestedManyWithoutUserInput
     learner?: LearnerCreateNestedOneWithoutUserInput
     instructor?: InstructorCreateNestedOneWithoutUserInput
@@ -64140,6 +64324,7 @@ export namespace Prisma {
     gender?: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    deletedAt?: Date | string | null
     feedbacks?: FeedbackUncheckedCreateNestedManyWithoutUserInput
     learner?: LearnerUncheckedCreateNestedOneWithoutUserInput
     instructor?: InstructorUncheckedCreateNestedOneWithoutUserInput
@@ -64208,6 +64393,7 @@ export namespace Prisma {
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     user?: UserUpdateOneRequiredWithoutInstructorNestedInput
     bank_accout?: BankAccountUpdateOneWithoutBelongInstructorNestedInput
     instructorSpecialization?: InstructorSpecializationsUpdateOneWithoutInstructorNestedInput
@@ -64222,6 +64408,7 @@ export namespace Prisma {
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     bank_accout?: BankAccountUncheckedUpdateOneWithoutBelongInstructorNestedInput
     instructorSpecialization?: InstructorSpecializationsUncheckedUpdateOneWithoutInstructorNestedInput
     citizen_id_confirms?: CitizenIdsConfirmUncheckedUpdateManyWithoutInstructorNestedInput
@@ -64259,6 +64446,7 @@ export namespace Prisma {
     gender?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     feedbacks?: FeedbackUpdateManyWithoutUserNestedInput
     learner?: LearnerUpdateOneWithoutUserNestedInput
     instructor?: InstructorUpdateOneWithoutUserNestedInput
@@ -64298,6 +64486,7 @@ export namespace Prisma {
     gender?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     feedbacks?: FeedbackUncheckedUpdateManyWithoutUserNestedInput
     learner?: LearnerUncheckedUpdateOneWithoutUserNestedInput
     instructor?: InstructorUncheckedUpdateOneWithoutUserNestedInput
@@ -64356,6 +64545,7 @@ export namespace Prisma {
     status?: $Enums.Status
     createdAt?: Date | string
     updatedAt?: Date | string
+    deletedAt?: Date | string | null
     user: UserCreateNestedOneWithoutInstructorInput
     instructorSpecialization?: InstructorSpecializationsCreateNestedOneWithoutInstructorInput
     citizen_id_confirms?: CitizenIdsConfirmCreateNestedManyWithoutInstructorInput
@@ -64370,6 +64560,7 @@ export namespace Prisma {
     status?: $Enums.Status
     createdAt?: Date | string
     updatedAt?: Date | string
+    deletedAt?: Date | string | null
     instructorSpecialization?: InstructorSpecializationsUncheckedCreateNestedOneWithoutInstructorInput
     citizen_id_confirms?: CitizenIdsConfirmUncheckedCreateNestedManyWithoutInstructorInput
     instructor_qualifications?: InstructorQualificationsUncheckedCreateNestedManyWithoutInstructorInput
@@ -64398,6 +64589,7 @@ export namespace Prisma {
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     user?: UserUpdateOneRequiredWithoutInstructorNestedInput
     instructorSpecialization?: InstructorSpecializationsUpdateOneWithoutInstructorNestedInput
     citizen_id_confirms?: CitizenIdsConfirmUpdateManyWithoutInstructorNestedInput
@@ -64412,6 +64604,7 @@ export namespace Prisma {
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     instructorSpecialization?: InstructorSpecializationsUncheckedUpdateOneWithoutInstructorNestedInput
     citizen_id_confirms?: CitizenIdsConfirmUncheckedUpdateManyWithoutInstructorNestedInput
     instructor_qualifications?: InstructorQualificationsUncheckedUpdateManyWithoutInstructorNestedInput
@@ -64438,6 +64631,7 @@ export namespace Prisma {
     gender?: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    deletedAt?: Date | string | null
     feedbacks?: FeedbackCreateNestedManyWithoutUserInput
     learner?: LearnerCreateNestedOneWithoutUserInput
     instructor?: InstructorCreateNestedOneWithoutUserInput
@@ -64477,6 +64671,7 @@ export namespace Prisma {
     gender?: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    deletedAt?: Date | string | null
     feedbacks?: FeedbackUncheckedCreateNestedManyWithoutUserInput
     learner?: LearnerUncheckedCreateNestedOneWithoutUserInput
     instructor?: InstructorUncheckedCreateNestedOneWithoutUserInput
@@ -64582,6 +64777,7 @@ export namespace Prisma {
     gender?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     feedbacks?: FeedbackUpdateManyWithoutUserNestedInput
     learner?: LearnerUpdateOneWithoutUserNestedInput
     instructor?: InstructorUpdateOneWithoutUserNestedInput
@@ -64621,6 +64817,7 @@ export namespace Prisma {
     gender?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     feedbacks?: FeedbackUncheckedUpdateManyWithoutUserNestedInput
     learner?: LearnerUncheckedUpdateOneWithoutUserNestedInput
     instructor?: InstructorUncheckedUpdateOneWithoutUserNestedInput
@@ -64735,6 +64932,7 @@ export namespace Prisma {
     gender?: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    deletedAt?: Date | string | null
     feedbacks?: FeedbackCreateNestedManyWithoutUserInput
     learner?: LearnerCreateNestedOneWithoutUserInput
     instructor?: InstructorCreateNestedOneWithoutUserInput
@@ -64774,6 +64972,7 @@ export namespace Prisma {
     gender?: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    deletedAt?: Date | string | null
     feedbacks?: FeedbackUncheckedCreateNestedManyWithoutUserInput
     learner?: LearnerUncheckedCreateNestedOneWithoutUserInput
     instructor?: InstructorUncheckedCreateNestedOneWithoutUserInput
@@ -64803,6 +65002,7 @@ export namespace Prisma {
     balance: Decimal | DecimalJsLike | number | string
     createAt?: Date | string
     updateAt?: Date | string
+    deletedAt?: Date | string | null
     belongUser: UserCreateNestedOneWithoutWalletInput
   }
 
@@ -64812,6 +65012,7 @@ export namespace Prisma {
     balance: Decimal | DecimalJsLike | number | string
     createAt?: Date | string
     updateAt?: Date | string
+    deletedAt?: Date | string | null
   }
 
   export type WalletCreateOrConnectWithoutTransactionsInput = {
@@ -64915,6 +65116,7 @@ export namespace Prisma {
     gender?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     feedbacks?: FeedbackUpdateManyWithoutUserNestedInput
     learner?: LearnerUpdateOneWithoutUserNestedInput
     instructor?: InstructorUpdateOneWithoutUserNestedInput
@@ -64954,6 +65156,7 @@ export namespace Prisma {
     gender?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     feedbacks?: FeedbackUncheckedUpdateManyWithoutUserNestedInput
     learner?: LearnerUncheckedUpdateOneWithoutUserNestedInput
     instructor?: InstructorUncheckedUpdateOneWithoutUserNestedInput
@@ -64989,6 +65192,7 @@ export namespace Prisma {
     balance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     createAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updateAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     belongUser?: UserUpdateOneRequiredWithoutWalletNestedInput
   }
 
@@ -64998,6 +65202,7 @@ export namespace Prisma {
     balance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     createAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updateAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type UserCreateWithoutAdminInput = {
@@ -65020,6 +65225,7 @@ export namespace Prisma {
     gender?: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    deletedAt?: Date | string | null
     feedbacks?: FeedbackCreateNestedManyWithoutUserInput
     learner?: LearnerCreateNestedOneWithoutUserInput
     instructor?: InstructorCreateNestedOneWithoutUserInput
@@ -65059,6 +65265,7 @@ export namespace Prisma {
     gender?: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    deletedAt?: Date | string | null
     feedbacks?: FeedbackUncheckedCreateNestedManyWithoutUserInput
     learner?: LearnerUncheckedCreateNestedOneWithoutUserInput
     instructor?: InstructorUncheckedCreateNestedOneWithoutUserInput
@@ -65193,6 +65400,7 @@ export namespace Prisma {
     gender?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     feedbacks?: FeedbackUpdateManyWithoutUserNestedInput
     learner?: LearnerUpdateOneWithoutUserNestedInput
     instructor?: InstructorUpdateOneWithoutUserNestedInput
@@ -65232,6 +65440,7 @@ export namespace Prisma {
     gender?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     feedbacks?: FeedbackUncheckedUpdateManyWithoutUserNestedInput
     learner?: LearnerUncheckedUpdateOneWithoutUserNestedInput
     instructor?: InstructorUncheckedUpdateOneWithoutUserNestedInput
@@ -65756,6 +65965,7 @@ export namespace Prisma {
     gender?: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    deletedAt?: Date | string | null
     feedbacks?: FeedbackCreateNestedManyWithoutUserInput
     learner?: LearnerCreateNestedOneWithoutUserInput
     instructor?: InstructorCreateNestedOneWithoutUserInput
@@ -65795,6 +66005,7 @@ export namespace Prisma {
     gender?: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    deletedAt?: Date | string | null
     feedbacks?: FeedbackUncheckedCreateNestedManyWithoutUserInput
     learner?: LearnerUncheckedCreateNestedOneWithoutUserInput
     instructor?: InstructorUncheckedCreateNestedOneWithoutUserInput
@@ -65850,6 +66061,7 @@ export namespace Prisma {
     gender?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     feedbacks?: FeedbackUpdateManyWithoutUserNestedInput
     learner?: LearnerUpdateOneWithoutUserNestedInput
     instructor?: InstructorUpdateOneWithoutUserNestedInput
@@ -65889,6 +66101,7 @@ export namespace Prisma {
     gender?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     feedbacks?: FeedbackUncheckedUpdateManyWithoutUserNestedInput
     learner?: LearnerUncheckedUpdateOneWithoutUserNestedInput
     instructor?: InstructorUncheckedUpdateOneWithoutUserNestedInput
@@ -66327,6 +66540,7 @@ export namespace Prisma {
     status?: $Enums.Status
     createdAt?: Date | string
     updatedAt?: Date | string
+    deletedAt?: Date | string | null
     user: UserCreateNestedOneWithoutInstructorInput
     bank_accout?: BankAccountCreateNestedOneWithoutBelongInstructorInput
     instructorSpecialization?: InstructorSpecializationsCreateNestedOneWithoutInstructorInput
@@ -66341,6 +66555,7 @@ export namespace Prisma {
     status?: $Enums.Status
     createdAt?: Date | string
     updatedAt?: Date | string
+    deletedAt?: Date | string | null
     bank_accout?: BankAccountUncheckedCreateNestedOneWithoutBelongInstructorInput
     instructorSpecialization?: InstructorSpecializationsUncheckedCreateNestedOneWithoutInstructorInput
     citizen_id_confirms?: CitizenIdsConfirmUncheckedCreateNestedManyWithoutInstructorInput
@@ -66565,6 +66780,7 @@ export namespace Prisma {
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     user?: UserUpdateOneRequiredWithoutInstructorNestedInput
     bank_accout?: BankAccountUpdateOneWithoutBelongInstructorNestedInput
     instructorSpecialization?: InstructorSpecializationsUpdateOneWithoutInstructorNestedInput
@@ -66579,6 +66795,7 @@ export namespace Prisma {
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     bank_accout?: BankAccountUncheckedUpdateOneWithoutBelongInstructorNestedInput
     instructorSpecialization?: InstructorSpecializationsUncheckedUpdateOneWithoutInstructorNestedInput
     citizen_id_confirms?: CitizenIdsConfirmUncheckedUpdateManyWithoutInstructorNestedInput
@@ -66766,6 +66983,7 @@ export namespace Prisma {
     enrolledAt?: Date | string
     updatedAt?: Date | string
     createAt?: Date | string
+    deletedAt?: Date | string | null
     user: UserCreateNestedOneWithoutLearnerInput
     favorites?: FavoriteCreateNestedManyWithoutLearnerInput
   }
@@ -66776,6 +66994,7 @@ export namespace Prisma {
     enrolledAt?: Date | string
     updatedAt?: Date | string
     createAt?: Date | string
+    deletedAt?: Date | string | null
     favorites?: FavoriteUncheckedCreateNestedManyWithoutLearnerInput
   }
 
@@ -66859,6 +67078,7 @@ export namespace Prisma {
     enrolledAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     user?: UserUpdateOneRequiredWithoutLearnerNestedInput
     favorites?: FavoriteUpdateManyWithoutLearnerNestedInput
   }
@@ -66869,6 +67089,7 @@ export namespace Prisma {
     enrolledAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     favorites?: FavoriteUncheckedUpdateManyWithoutLearnerNestedInput
   }
 
@@ -67393,6 +67614,7 @@ export namespace Prisma {
     gender?: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    deletedAt?: Date | string | null
     feedbacks?: FeedbackCreateNestedManyWithoutUserInput
     learner?: LearnerCreateNestedOneWithoutUserInput
     instructor?: InstructorCreateNestedOneWithoutUserInput
@@ -67432,6 +67654,7 @@ export namespace Prisma {
     gender?: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    deletedAt?: Date | string | null
     feedbacks?: FeedbackUncheckedCreateNestedManyWithoutUserInput
     learner?: LearnerUncheckedCreateNestedOneWithoutUserInput
     instructor?: InstructorUncheckedCreateNestedOneWithoutUserInput
@@ -67520,6 +67743,7 @@ export namespace Prisma {
     gender?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     feedbacks?: FeedbackUpdateManyWithoutUserNestedInput
     learner?: LearnerUpdateOneWithoutUserNestedInput
     instructor?: InstructorUpdateOneWithoutUserNestedInput
@@ -67559,6 +67783,7 @@ export namespace Prisma {
     gender?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     feedbacks?: FeedbackUncheckedUpdateManyWithoutUserNestedInput
     learner?: LearnerUncheckedUpdateOneWithoutUserNestedInput
     instructor?: InstructorUncheckedUpdateOneWithoutUserNestedInput
@@ -67637,6 +67862,7 @@ export namespace Prisma {
     gender?: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    deletedAt?: Date | string | null
     feedbacks?: FeedbackCreateNestedManyWithoutUserInput
     learner?: LearnerCreateNestedOneWithoutUserInput
     instructor?: InstructorCreateNestedOneWithoutUserInput
@@ -67676,6 +67902,7 @@ export namespace Prisma {
     gender?: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    deletedAt?: Date | string | null
     feedbacks?: FeedbackUncheckedCreateNestedManyWithoutUserInput
     learner?: LearnerUncheckedCreateNestedOneWithoutUserInput
     instructor?: InstructorUncheckedCreateNestedOneWithoutUserInput
@@ -67758,6 +67985,7 @@ export namespace Prisma {
     gender?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     feedbacks?: FeedbackUpdateManyWithoutUserNestedInput
     learner?: LearnerUpdateOneWithoutUserNestedInput
     instructor?: InstructorUpdateOneWithoutUserNestedInput
@@ -67797,6 +68025,7 @@ export namespace Prisma {
     gender?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     feedbacks?: FeedbackUncheckedUpdateManyWithoutUserNestedInput
     learner?: LearnerUncheckedUpdateOneWithoutUserNestedInput
     instructor?: InstructorUncheckedUpdateOneWithoutUserNestedInput
@@ -67869,6 +68098,7 @@ export namespace Prisma {
     gender?: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    deletedAt?: Date | string | null
     feedbacks?: FeedbackCreateNestedManyWithoutUserInput
     learner?: LearnerCreateNestedOneWithoutUserInput
     instructor?: InstructorCreateNestedOneWithoutUserInput
@@ -67908,6 +68138,7 @@ export namespace Prisma {
     gender?: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    deletedAt?: Date | string | null
     feedbacks?: FeedbackUncheckedCreateNestedManyWithoutUserInput
     learner?: LearnerUncheckedCreateNestedOneWithoutUserInput
     instructor?: InstructorUncheckedCreateNestedOneWithoutUserInput
@@ -67996,6 +68227,7 @@ export namespace Prisma {
     gender?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     feedbacks?: FeedbackUpdateManyWithoutUserNestedInput
     learner?: LearnerUpdateOneWithoutUserNestedInput
     instructor?: InstructorUpdateOneWithoutUserNestedInput
@@ -68035,6 +68267,7 @@ export namespace Prisma {
     gender?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     feedbacks?: FeedbackUncheckedUpdateManyWithoutUserNestedInput
     learner?: LearnerUncheckedUpdateOneWithoutUserNestedInput
     instructor?: InstructorUncheckedUpdateOneWithoutUserNestedInput
@@ -68113,6 +68346,7 @@ export namespace Prisma {
     gender?: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    deletedAt?: Date | string | null
     feedbacks?: FeedbackCreateNestedManyWithoutUserInput
     learner?: LearnerCreateNestedOneWithoutUserInput
     instructor?: InstructorCreateNestedOneWithoutUserInput
@@ -68152,6 +68386,7 @@ export namespace Prisma {
     gender?: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    deletedAt?: Date | string | null
     feedbacks?: FeedbackUncheckedCreateNestedManyWithoutUserInput
     learner?: LearnerUncheckedCreateNestedOneWithoutUserInput
     instructor?: InstructorUncheckedCreateNestedOneWithoutUserInput
@@ -68230,6 +68465,7 @@ export namespace Prisma {
     gender?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     feedbacks?: FeedbackUpdateManyWithoutUserNestedInput
     learner?: LearnerUpdateOneWithoutUserNestedInput
     instructor?: InstructorUpdateOneWithoutUserNestedInput
@@ -68269,6 +68505,7 @@ export namespace Prisma {
     gender?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     feedbacks?: FeedbackUncheckedUpdateManyWithoutUserNestedInput
     learner?: LearnerUncheckedUpdateOneWithoutUserNestedInput
     instructor?: InstructorUncheckedUpdateOneWithoutUserNestedInput
@@ -68337,6 +68574,7 @@ export namespace Prisma {
     gender?: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    deletedAt?: Date | string | null
     learner?: LearnerCreateNestedOneWithoutUserInput
     instructor?: InstructorCreateNestedOneWithoutUserInput
     admin?: AdminCreateNestedOneWithoutUserInput
@@ -68376,6 +68614,7 @@ export namespace Prisma {
     gender?: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    deletedAt?: Date | string | null
     learner?: LearnerUncheckedCreateNestedOneWithoutUserInput
     instructor?: InstructorUncheckedCreateNestedOneWithoutUserInput
     admin?: AdminUncheckedCreateNestedOneWithoutUserInput
@@ -68490,6 +68729,7 @@ export namespace Prisma {
     gender?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     learner?: LearnerUpdateOneWithoutUserNestedInput
     instructor?: InstructorUpdateOneWithoutUserNestedInput
     admin?: AdminUpdateOneWithoutUserNestedInput
@@ -68529,6 +68769,7 @@ export namespace Prisma {
     gender?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     learner?: LearnerUncheckedUpdateOneWithoutUserNestedInput
     instructor?: InstructorUncheckedUpdateOneWithoutUserNestedInput
     admin?: AdminUncheckedUpdateOneWithoutUserNestedInput
@@ -69268,6 +69509,7 @@ export namespace Prisma {
     gender?: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    deletedAt?: Date | string | null
     feedbacks?: FeedbackCreateNestedManyWithoutUserInput
     learner?: LearnerCreateNestedOneWithoutUserInput
     instructor?: InstructorCreateNestedOneWithoutUserInput
@@ -69307,6 +69549,7 @@ export namespace Prisma {
     gender?: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    deletedAt?: Date | string | null
     feedbacks?: FeedbackUncheckedCreateNestedManyWithoutUserInput
     learner?: LearnerUncheckedCreateNestedOneWithoutUserInput
     instructor?: InstructorUncheckedCreateNestedOneWithoutUserInput
@@ -69421,6 +69664,7 @@ export namespace Prisma {
     gender?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     feedbacks?: FeedbackUpdateManyWithoutUserNestedInput
     learner?: LearnerUpdateOneWithoutUserNestedInput
     instructor?: InstructorUpdateOneWithoutUserNestedInput
@@ -69460,6 +69704,7 @@ export namespace Prisma {
     gender?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     feedbacks?: FeedbackUncheckedUpdateManyWithoutUserNestedInput
     learner?: LearnerUncheckedUpdateOneWithoutUserNestedInput
     instructor?: InstructorUncheckedUpdateOneWithoutUserNestedInput
@@ -69500,6 +69745,7 @@ export namespace Prisma {
     enrolledAt?: Date | string
     updatedAt?: Date | string
     createAt?: Date | string
+    deletedAt?: Date | string | null
     user: UserCreateNestedOneWithoutLearnerInput
     learner_courses?: LearnerCoursesCreateNestedManyWithoutLearnerInput
   }
@@ -69510,6 +69756,7 @@ export namespace Prisma {
     enrolledAt?: Date | string
     updatedAt?: Date | string
     createAt?: Date | string
+    deletedAt?: Date | string | null
     learner_courses?: LearnerCoursesUncheckedCreateNestedManyWithoutLearnerInput
   }
 
@@ -69593,6 +69840,7 @@ export namespace Prisma {
     enrolledAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     user?: UserUpdateOneRequiredWithoutLearnerNestedInput
     learner_courses?: LearnerCoursesUpdateManyWithoutLearnerNestedInput
   }
@@ -69603,6 +69851,7 @@ export namespace Prisma {
     enrolledAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     learner_courses?: LearnerCoursesUncheckedUpdateManyWithoutLearnerNestedInput
   }
 
@@ -69691,6 +69940,7 @@ export namespace Prisma {
     gender?: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    deletedAt?: Date | string | null
     feedbacks?: FeedbackCreateNestedManyWithoutUserInput
     learner?: LearnerCreateNestedOneWithoutUserInput
     instructor?: InstructorCreateNestedOneWithoutUserInput
@@ -69730,6 +69980,7 @@ export namespace Prisma {
     gender?: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    deletedAt?: Date | string | null
     feedbacks?: FeedbackUncheckedCreateNestedManyWithoutUserInput
     learner?: LearnerUncheckedCreateNestedOneWithoutUserInput
     instructor?: InstructorUncheckedCreateNestedOneWithoutUserInput
@@ -69774,6 +70025,7 @@ export namespace Prisma {
     gender?: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    deletedAt?: Date | string | null
     feedbacks?: FeedbackCreateNestedManyWithoutUserInput
     learner?: LearnerCreateNestedOneWithoutUserInput
     instructor?: InstructorCreateNestedOneWithoutUserInput
@@ -69813,6 +70065,7 @@ export namespace Prisma {
     gender?: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    deletedAt?: Date | string | null
     feedbacks?: FeedbackUncheckedCreateNestedManyWithoutUserInput
     learner?: LearnerUncheckedCreateNestedOneWithoutUserInput
     instructor?: InstructorUncheckedCreateNestedOneWithoutUserInput
@@ -69900,6 +70153,7 @@ export namespace Prisma {
     gender?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     feedbacks?: FeedbackUpdateManyWithoutUserNestedInput
     learner?: LearnerUpdateOneWithoutUserNestedInput
     instructor?: InstructorUpdateOneWithoutUserNestedInput
@@ -69939,6 +70193,7 @@ export namespace Prisma {
     gender?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     feedbacks?: FeedbackUncheckedUpdateManyWithoutUserNestedInput
     learner?: LearnerUncheckedUpdateOneWithoutUserNestedInput
     instructor?: InstructorUncheckedUpdateOneWithoutUserNestedInput
@@ -69989,6 +70244,7 @@ export namespace Prisma {
     gender?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     feedbacks?: FeedbackUpdateManyWithoutUserNestedInput
     learner?: LearnerUpdateOneWithoutUserNestedInput
     instructor?: InstructorUpdateOneWithoutUserNestedInput
@@ -70028,6 +70284,7 @@ export namespace Prisma {
     gender?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     feedbacks?: FeedbackUncheckedUpdateManyWithoutUserNestedInput
     learner?: LearnerUncheckedUpdateOneWithoutUserNestedInput
     instructor?: InstructorUncheckedUpdateOneWithoutUserNestedInput
@@ -70106,6 +70363,7 @@ export namespace Prisma {
     gender?: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    deletedAt?: Date | string | null
     feedbacks?: FeedbackCreateNestedManyWithoutUserInput
     learner?: LearnerCreateNestedOneWithoutUserInput
     instructor?: InstructorCreateNestedOneWithoutUserInput
@@ -70145,6 +70403,7 @@ export namespace Prisma {
     gender?: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    deletedAt?: Date | string | null
     feedbacks?: FeedbackUncheckedCreateNestedManyWithoutUserInput
     learner?: LearnerUncheckedCreateNestedOneWithoutUserInput
     instructor?: InstructorUncheckedCreateNestedOneWithoutUserInput
@@ -70189,6 +70448,7 @@ export namespace Prisma {
     gender?: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    deletedAt?: Date | string | null
     feedbacks?: FeedbackCreateNestedManyWithoutUserInput
     learner?: LearnerCreateNestedOneWithoutUserInput
     instructor?: InstructorCreateNestedOneWithoutUserInput
@@ -70228,6 +70488,7 @@ export namespace Prisma {
     gender?: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    deletedAt?: Date | string | null
     feedbacks?: FeedbackUncheckedCreateNestedManyWithoutUserInput
     learner?: LearnerUncheckedCreateNestedOneWithoutUserInput
     instructor?: InstructorUncheckedCreateNestedOneWithoutUserInput
@@ -70312,6 +70573,7 @@ export namespace Prisma {
     gender?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     feedbacks?: FeedbackUpdateManyWithoutUserNestedInput
     learner?: LearnerUpdateOneWithoutUserNestedInput
     instructor?: InstructorUpdateOneWithoutUserNestedInput
@@ -70351,6 +70613,7 @@ export namespace Prisma {
     gender?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     feedbacks?: FeedbackUncheckedUpdateManyWithoutUserNestedInput
     learner?: LearnerUncheckedUpdateOneWithoutUserNestedInput
     instructor?: InstructorUncheckedUpdateOneWithoutUserNestedInput
@@ -70401,6 +70664,7 @@ export namespace Prisma {
     gender?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     feedbacks?: FeedbackUpdateManyWithoutUserNestedInput
     learner?: LearnerUpdateOneWithoutUserNestedInput
     instructor?: InstructorUpdateOneWithoutUserNestedInput
@@ -70440,6 +70704,7 @@ export namespace Prisma {
     gender?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     feedbacks?: FeedbackUncheckedUpdateManyWithoutUserNestedInput
     learner?: LearnerUncheckedUpdateOneWithoutUserNestedInput
     instructor?: InstructorUncheckedUpdateOneWithoutUserNestedInput
