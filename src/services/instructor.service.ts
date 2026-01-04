@@ -15,7 +15,12 @@ export const createInstructor = async (
   if (!user) {
     throw new Error('User not found');
   }
-
+  const accountSecurity = await prisma.accountSecurity.findUnique({
+    where: { user_id: data.user_id }
+  });
+  if (!accountSecurity || !accountSecurity.email_verified) {
+    throw new Error('Email chưa được xác thực. Vui lòng xác thực email trước khi đăng ký làm giảng viên');
+  }
   const existingInstructor = await prisma.instructor.findUnique({
     where: { user_id: data.user_id }
   });

@@ -177,4 +177,74 @@ router.post(
  */
 router.get('/payment/status', PaymentController.getPaymentStatus);
 
+/**
+ * @openapi
+ * /api/payment/learner-history/{userId}:
+ *   get:
+ *     summary: Get learner transaction history
+ *     tags: [Payment]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: userId
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: ID of the learner
+ *     responses:
+ *       200:
+ *         description: Transaction history retrieved successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     user:
+ *                       type: object
+ *                       properties:
+ *                         user_id:
+ *                           type: string
+ *                         email:
+ *                           type: string
+ *                         fullName:
+ *                           type: string
+ *                         avatar:
+ *                           type: string
+ *                     stats:
+ *                       type: object
+ *                       properties:
+ *                         totalTransactions:
+ *                           type: number
+ *                         successfulTransactions:
+ *                           type: number
+ *                         pendingTransactions:
+ *                           type: number
+ *                         cancelledTransactions:
+ *                           type: number
+ *                         totalSpent:
+ *                           type: number
+ *                     transactions:
+ *                       type: array
+ *                       items:
+ *                         type: object
+ *       400:
+ *         description: Missing userId
+ *       401:
+ *         description: Unauthorized
+ *       500:
+ *         description: Internal Server Error
+ */
+router.get(
+  '/payment/learner-history/:userId',
+  authenticate,
+  authorizeRoles("LEARNER", "ADMIN", "INSTRUCTOR"),
+  PaymentController.getLearnerTransactionHistory
+);
+
 export default router;

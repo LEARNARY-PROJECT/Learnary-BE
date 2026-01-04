@@ -439,3 +439,80 @@ export const getFullUserProfile = async (userId: string) => {
     }
   });
 };
+
+/**
+ * Tự động xóa (soft delete) tài khoản chưa xác thực email trong vòng 7 ngày
+ * Chạy định kỳ bởi cronjob
+ */
+export const autoDeleteUnverifiedAccounts = async (): Promise<{
+  deletedCount: number;
+  deletedUserIds: string[];
+}> => {
+  const sevenDaysAgo = new Date();
+  sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+  try {
+    const unverifiedUsers = await prisma.user.findMany({
+      where: {
+        createdAt: {
+          lt: sevenDaysAgo
+        },
+        deletedAt: null, 
+        accountSecurities: {
+          email_verified: false
+        }
+      },
+      include: {
+        accountSecurities: true,
+        learner: true,
+        instructor: true,
+        wallet: true
+      }
+    });
+    if (unverifiedUsers.length === 0) {
+      return { deletedCount: 0, deletedUserIds: [] };
+    }
+    const deletedUserIds: string[] = [];
+    const now = new Date();
+    for (const user of unverifiedUsers) {
+      await prisma.$transaction(async (tx) => {
+        await tx.user.update({
+          where: { user_id: user.user_id },
+          data: { deletedAt: now }
+        });
+        if (user.accountSecurities) {
+          await tx.accountSecurity.update({
+            where: { user_id: user.user_id },
+            data: { deletedAt: now }
+          });
+        }
+        if (user.learner) {
+          await tx.learner.update({
+            where: { user_id: user.user_id },
+            data: { deletedAt: now }
+          });
+        }
+        if (user.instructor) {
+          await tx.instructor.update({
+            where: { user_id: user.user_id },
+            data: { deletedAt: now }
+          });
+        }
+        if (user.wallet) {
+          await tx.wallet.update({
+            where: { user_id: user.user_id },
+            data: { deletedAt: now }
+          });
+        }
+      });
+      deletedUserIds.push(user.user_id);
+    }
+    // console.log(`[Auto Delete] Đã xóa ${deletedUserIds.length} tài khoản chưa xác thực email: ${deletedUserIds.join(', ')}`);
+    return {
+      deletedCount: deletedUserIds.length,
+      deletedUserIds
+    };
+  } catch (error) {
+    console.error('[Auto Delete Error]:', error);
+    throw error;
+  }
+};

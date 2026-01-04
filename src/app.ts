@@ -6,6 +6,7 @@ import { setupSwagger } from "./docs/swagger";
 import { createDefaultUserIfNoneExists } from "./services/user.service";
 import { seedResourceTypes } from "./services/resourceType.service";
 import { initializeSocket } from "./socket";
+import { startCronJobs } from "./jobs/cronJobs";
 import authRoutes from "./routes/auth.routes";
 import userRoutes from "./routes/user.routes";
 import courseRoutes from "./routes/course.routes";
@@ -176,6 +177,8 @@ async function startServer() {
 
     initializeSocket(server);
     console.log("✅ Socket.io initialized");
+
+    startCronJobs();
 
     server.listen(port, () => {
       console.log(`\n✅ Server is running on http://localhost:${port}`);
