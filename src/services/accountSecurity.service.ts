@@ -22,46 +22,79 @@ export const lockAccount = async (user_id: string, reason: string): Promise<bool
   if (!user_id || !reason) {
     throw new AppError("Mising field required", 400)
   }
-  await prisma.accountSecurity.update({
-    where: {
-      user_id
-    },
-    data: {
-      status: AccountStatus.Locked,
-      account_noted: reason
-    }
-  })
-  return true
+  
+  await prisma.$transaction(async (tx) => {
+    await tx.accountSecurity.update({
+      where: {
+        user_id
+      },
+      data: {
+        status: AccountStatus.Locked,
+        account_noted: reason
+      }
+    });
+    await tx.user.update({
+      where: {
+        user_id
+      },
+      data: {
+        isActive: false
+      }
+    });
+  });
+  return true;
 }
+
 export const freezeAccount = async (user_id: string, reason: string): Promise<boolean> => {
   if (!user_id || !reason) {
     throw new AppError("Mising field required", 400)
   }
-  await prisma.accountSecurity.update({
-    where: {
-      user_id
-    },
-    data: {
-      status: AccountStatus.Freezed,
-      account_noted: reason
-    }
-  })
-  return true
+  await prisma.$transaction(async (tx) => {
+    await tx.accountSecurity.update({
+      where: {
+        user_id
+      },
+      data: {
+        status: AccountStatus.Freezed,
+        account_noted: reason
+      }
+    });
+    await tx.user.update({
+      where: {
+        user_id
+      },
+      data: {
+        isActive: false
+      }
+    });
+  });
+  return true;
 }
+
 export const activeAcount = async (user_id: string, reason: string): Promise<boolean> => {
   if (!user_id || !reason) {
     throw new AppError("Mising field required", 400)
   }
-  await prisma.accountSecurity.update({
-    where: {
-      user_id
-    },
-    data: {
-      status: AccountStatus.Active,
-      account_noted: ""
-    }
-  })
-  return true
+  await prisma.$transaction(async (tx) => {
+    await tx.accountSecurity.update({
+      where: {
+        user_id
+      },
+      data: {
+        status: AccountStatus.Active,
+        account_noted: ""
+      }
+    });
+    await tx.user.update({
+      where: {
+        user_id
+      },
+      data: {
+        isActive: true
+      }
+    });
+  });
+  return true;
 }
 export const isActiveAccount = async (user_id: string): Promise<boolean> => {
   if (!user_id) {
@@ -186,16 +219,18 @@ export const verifyEmailWithToken = async (userId: string, token: string): Promi
     throw new Error('Verification token has expired');
   }
   await prisma.$transaction(async (tx) => {
-    await tx.accountSecurity.update({
+     await tx.accountSecurity.update({
       where: { user_id: userId },
       data: {
         email_verified: true,
+        status:"Active",
+        account_noted:"",
         verification_token: null,
         token_expires_at: null,
         updatedAt: new Date()
       }
     });
-    await tx.user.update({
+     await tx.user.update({
       where: { user_id: userId },
       data: {
         isActive: true

@@ -144,8 +144,8 @@ export const createUser = async (
     await tx.accountSecurity.create({
       data: {
         user_id: user.user_id,
-        status: "Active",
-        account_noted: ""
+        status: "Freezed",
+        account_noted: "Chưa xác thực email"
       }
     });
     // Learner không cần ví - chỉ Instructor mới cần ví để nhận tiền
@@ -162,6 +162,13 @@ export const getUsersExceptAdmins = async (): Promise<User[]> => {
     where: {
       NOT: {
         role: 'ADMIN'
+      }
+    }, 
+    include: {
+      accountSecurities: {
+        select: {
+          status:true
+        }
       }
     }
   });
@@ -365,7 +372,12 @@ export const getUserIdByEmail = async (email: string) => {
         email,
       },
       select: {
-        user_id: true
+        user_id: true,
+        accountSecurities: {
+          select: {
+            email_verified:true
+          }
+        }
       }
     })
     return user?.user_id
