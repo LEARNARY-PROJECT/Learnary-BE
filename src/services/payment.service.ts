@@ -21,6 +21,8 @@ export const PaymentService = {
         // Kiểm tra xem user đã mua chưa
         const learner = await prisma.learner.findUnique({ where: { user_id: userId } });
         
+        const discounted_price = course.sale_off ? Math.round(Number(course.price) * (1 - Number(course.sale_off) / 100)) : Number(course.price);
+
         if (learner) {
             const alreadyEnrolled = await prisma.learnerCourses.findUnique({
                 where: {
@@ -43,7 +45,7 @@ export const PaymentService = {
                 user_id: userId,
                 course_id: courseId,
                 wallet_id: null, // Học viên không có ví
-                amount: course.price,
+                amount: discounted_price,
                 currency: 'VND' ,
                 payment_method: TransactionMethod.Bank_Transfer,
                 transaction_type: TransactionType.Pay,
@@ -56,7 +58,7 @@ export const PaymentService = {
         // Tạo body gửi sang PayOS
         const paymentBody: CreatePaymentParams = {
             orderCode: orderCode,
-            amount: Number(course.price),
+            amount: Number(discounted_price),
             description: "Thanh toan khoa hoc",
             // Lưu ý: Đảm bảo biến môi trường FRONTEND_URL không có dấu / ở cuối
             cancelUrl: `${process.env.FRONTEND_URL || 'http://localhost:3000'}/payment/cancel`,
@@ -253,7 +255,7 @@ export const PaymentService = {
                             sendConfirmedEnrolledCourse({
                                 orderCode: String(orderCode),
                                 courseName: transaction.course.title,
-                                coursePrice: Number(transaction.course.price),
+                                coursePrice: Number(transaction.amount), // lấy giá đã giảm
                                 transactionDate: webhookData.transactionDateTime,
                                 buyerEmail: user.email,
                                 buyerName: user.fullName || 'Học viên'
@@ -275,9 +277,9 @@ export const PaymentService = {
 
                 if (instructor && instructor.user) {
                     // Tính tiền (Giữ lại 10% phí nền tảng)
-                    const originalPrice = Number(course.price);
-                    const platformFee = originalPrice * 0.1;
-                    const instructorAmount = originalPrice * 0.9; 
+                    const paidPrice = Number(transaction.amount); // lấy giá đã giảm
+                    const platformFee = paidPrice * 0.1;
+                    const instructorAmount = paidPrice * 0.9; 
 
                     // Tìm ví giảng viên (hoặc tạo mới nếu chưa có)
                     let instructorWallet = await tx.wallet.findUnique({

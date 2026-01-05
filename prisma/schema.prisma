@@ -90,7 +90,6 @@ model Instructor {
   user                      User                       @relation(fields: [user_id], references: [user_id], onDelete: Cascade)
   bank_accout               BankAccount?
   instructorSpecialization  InstructorSpecializations?
-  citizen_id_confirms       CitizenIdsConfirm[]
   instructor_qualifications InstructorQualifications[]
   courses                   Course[]
 
@@ -135,33 +134,11 @@ model Specialization {
   @@index([isVerified], name: "idx_spec_verified")
   @@map("specializations")
 }
-
-model CitizenIdsConfirm {
-  citizen_id    String @id @default(uuid()) @db.Char(50)
-  instructor_id String @unique @db.Char(50)
-
-  citizen_number String         @unique
-  date_of_birth  DateTime
-  place_of_birth String         @db.VarChar(255)
-  issued_place   String         @db.VarChar(255)
-  status         ApprovalStatus @default(Pending)
-  isVerified     Boolean        @default(false)
-  createdAt      DateTime       @default(now())
-  updatedAt      DateTime       @updatedAt
-
-  instructor Instructor @relation(fields: [instructor_id], references: [instructor_id], onDelete: Cascade)
-
-  @@index([status], name: "idx_citizen_status")
-  @@index([isVerified], name: "idx_citizen_verified")
-  @@map("citizen_ids_confirms")
-}
-
 model InstructorQualifications {
   instructor_qualification_id String  @id @default(uuid()) @db.VarChar(50)
   instructor_id               String? @db.Char(50)
   specialization_id           String? @db.Char(50)
   user_id                     String  @db.Char(50)
-
   type                 QualificationType @default(Certificate)
   title                String            @db.VarChar(255)
   issue_date           DateTime
@@ -217,7 +194,7 @@ model Wallet {
   @@map("wallets")
 }
 
-model Transaction {
+model Transaction { 
   transaction_id String  @id @default(uuid()) @db.Char(50)
   course_id      String? @db.Char(50)
   user_id        String  @db.Char(50)
@@ -402,8 +379,8 @@ model Course {
   thumbnail          String          @db.VarChar(255)
   admin_note         String?         @db.VarChar(255)
   price              Decimal         @db.Decimal(10, 2)
-  sale_off           Boolean         @default(false)
-  hot                Boolean         @default(false)
+  sale_off           Decimal?         @db.Decimal(10, 2) // phần trăm giảm giá
+  hot                Boolean?         @default(false)
   tag                Boolean         @default(false)
   available_language LanguageOptions @default(Vietnamese)
   createdAt          DateTime        @default(now())
