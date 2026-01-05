@@ -196,6 +196,8 @@ export const createDraftCourse = async (
     description: data.description.trim(),
     thumbnail: data.thumbnail.trim(),
     price: data.price,
+    sale_off: data.sale_off ?? null,
+    hot: data.hot ?? null,
     slug: CreateSlug(data.title),
     status: CourseStatus.Draft.trim(),
     chapter: {
@@ -245,6 +247,8 @@ export const createDraftCourse = async (
       description: cleanData.description,
       thumbnail: cleanData.thumbnail,
       price: cleanData.price,
+      sale_off: cleanData.sale_off,
+      hot: cleanData.hot,
       slug: cleanData.slug,
       status: CourseStatus.Draft,
       chapter: {
@@ -296,18 +300,19 @@ export const updateDraftCourse = async (
 
   if (!course) throw new Error('Khóa học không tồn tại.');
 
-  // Nếu Published chỉ cho phép cập nhật giá và cấp độ
+  // Nếu Published chỉ cho phép cập nhật giá và cấp độ, hot, sale_off
   if (course.status === CourseStatus.Published) {
     return await prisma.course.update({
       where: { course_id: courseId },
       data: {
         price: data.price,
         level_id: data.level_id?.trim(),
+        sale_off: data.sale_off ?? null,
+        hot: data.hot ?? null,
       },
     });
   }
 
-  // Nếu Draft thì giữ logic cũ
   if (course.status !== CourseStatus.Draft) {
     throw new Error('Khóa học này đã được gửi duyệt, không thể lưu nháp.');
   }

@@ -178,19 +178,6 @@ exports.Prisma.SpecializationScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
-exports.Prisma.CitizenIdsConfirmScalarFieldEnum = {
-  citizen_id: 'citizen_id',
-  instructor_id: 'instructor_id',
-  citizen_number: 'citizen_number',
-  date_of_birth: 'date_of_birth',
-  place_of_birth: 'place_of_birth',
-  issued_place: 'issued_place',
-  status: 'status',
-  isVerified: 'isVerified',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
-};
-
 exports.Prisma.InstructorQualificationsScalarFieldEnum = {
   instructor_qualification_id: 'instructor_qualification_id',
   instructor_id: 'instructor_id',
@@ -546,15 +533,15 @@ exports.Status = exports.$Enums.Status = {
   Suspended: 'Suspended'
 };
 
+exports.QualificationType = exports.$Enums.QualificationType = {
+  Degree: 'Degree',
+  Certificate: 'Certificate'
+};
+
 exports.ApprovalStatus = exports.$Enums.ApprovalStatus = {
   Pending: 'Pending',
   Approved: 'Approved',
   Rejected: 'Rejected'
-};
-
-exports.QualificationType = exports.$Enums.QualificationType = {
-  Degree: 'Degree',
-  Certificate: 'Certificate'
 };
 
 exports.TransactionType = exports.$Enums.TransactionType = {
@@ -625,7 +612,6 @@ exports.Prisma.ModelName = {
   Instructor: 'Instructor',
   InstructorSpecializations: 'InstructorSpecializations',
   Specialization: 'Specialization',
-  CitizenIdsConfirm: 'CitizenIdsConfirm',
   InstructorQualifications: 'InstructorQualifications',
   BankAccount: 'BankAccount',
   Wallet: 'Wallet',
