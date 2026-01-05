@@ -440,6 +440,111 @@ export const PaymentService = {
             });
         }
         return expiredTransactions.length;
+    },
+
+    getLearnerTransactionHistory: async (userId: string) => {
+        const user = await prisma.user.findUnique({
+            where: { user_id: userId }
+        });
+        if (!user) {
+            throw new Error("Người dùng không tồn tại");
+        }
+        const transactions = await prisma.transaction.findMany({
+            where: {
+                user_id: userId,
+                transaction_type: TransactionType.Pay,
+                OR: [
+                    { status: TransactionStatus.Success },
+                    { status: TransactionStatus.Pending },
+                    { status: TransactionStatus.Cancel }
+                ]
+            },
+            include: {
+                course: {
+                    select: {
+                        course_id: true,
+                        title: true,
+                        thumbnail: true,
+                        price: true,
+                        instructor: {
+                            select: {
+                                user: {
+                                    select: {
+                                        fullName: true,
+                                        avatar: true
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            orderBy: {
+                createdAt: 'desc'
+            }
+        });
+        const formattedTransactions = transactions.map(tx => {
+            if (!tx.course_id && tx.description?.includes('combo')) {
+                return {
+                    transaction_id: tx.transaction_id,
+                    type: 'combo',
+                    amount: Number(tx.amount),
+                    currency: tx.currency,
+                    status: tx.status,
+                    payment_method: tx.payment_method,
+                    description: tx.description,
+                    note: tx.note,
+                    payment_code: tx.payment_code.toString(),
+                    createdAt: tx.createdAt,
+                    course: null,
+                    comboName: tx.description?.replace('Thanh toán combo: ', '') || 'Combo khóa học'
+                };
+            }
+            return {
+                transaction_id: tx.transaction_id,
+                type: 'course',
+                amount: Number(tx.amount),
+                currency: tx.currency,
+                status: tx.status,
+                payment_method: tx.payment_method,
+                description: tx.description,
+                note: tx.note,
+                payment_code: tx.payment_code.toString(),
+                createdAt: tx.createdAt,
+                course: tx.course ? {
+                    course_id: tx.course.course_id,
+                    title: tx.course.title,
+                    thumbnail: tx.course.thumbnail,
+                    price: Number(tx.course.price),
+                    instructor: {
+                        fullName: tx.course.instructor.user.fullName,
+                        avatar: tx.course.instructor.user.avatar
+                    }
+                } : null,
+                comboName: null
+            };
+        });
+
+        const stats = {
+            totalTransactions: transactions.length,
+            successfulTransactions: transactions.filter(tx => tx.status === TransactionStatus.Success).length,
+            pendingTransactions: transactions.filter(tx => tx.status === TransactionStatus.Pending).length,
+            cancelledTransactions: transactions.filter(tx => tx.status === TransactionStatus.Cancel).length,
+            totalSpent: transactions
+                .filter(tx => tx.status === TransactionStatus.Success)
+                .reduce((sum, tx) => sum + Number(tx.amount), 0)
+        };
+
+        return {
+            user: {
+                user_id: user.user_id,
+                email: user.email,
+                fullName: user.fullName,
+                avatar: user.avatar
+            },
+            stats,
+            transactions: formattedTransactions
+        };
     }
     
 };

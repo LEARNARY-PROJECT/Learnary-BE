@@ -28,6 +28,7 @@ model User {
   gender      String    @default("OTHER")
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
+  deletedAt   DateTime?
 
   feedbacks                 Feedback[]
   learner                   Learner?
@@ -65,8 +66,9 @@ model Learner {
   user_id    String   @unique @db.Char(50)
   enrolledAt DateTime @default(now())
 
-  updatedAt DateTime @updatedAt
-  createAt  DateTime @default(now())
+  updatedAt DateTime  @updatedAt
+  createAt  DateTime  @default(now())
+  deletedAt DateTime?
 
   user            User             @relation(fields: [user_id], references: [user_id], onDelete: Cascade)
   learner_courses LearnerCourses[]
@@ -81,8 +83,9 @@ model Instructor {
   isVerified    Boolean @default(false)
   status        Status  @default(Inactive)
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
 
   user                      User                       @relation(fields: [user_id], references: [user_id], onDelete: Cascade)
   bank_accout               BankAccount?
@@ -180,9 +183,10 @@ model Wallet {
   wallet_id String @id @default(uuid()) @db.VarChar(50)
   user_id   String @unique @db.Char(50)
 
-  balance  Decimal  @db.Decimal(10, 2)
-  createAt DateTime @default(now())
-  updateAt DateTime @updatedAt
+  balance   Decimal   @db.Decimal(10, 2)
+  createAt  DateTime  @default(now())
+  updateAt  DateTime  @updatedAt
+  deletedAt DateTime?
 
   belongUser   User          @relation(fields: [user_id], references: [user_id], onDelete: Cascade)
   transactions Transaction[]
@@ -324,6 +328,7 @@ model AccountSecurity {
   status                AccountStatus @default(Active)
   createdAt             DateTime      @default(now())
   updatedAt             DateTime      @updatedAt
+  deletedAt             DateTime?
 
   user User @relation(fields: [user_id], references: [user_id], onDelete: Cascade)
 

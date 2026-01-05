@@ -105,5 +105,28 @@ export const PaymentController = {
         } catch (error) {
             return res.status(500).json({ error: (error as Error).message });
         }
+    },
+
+    getLearnerTransactionHistory: async (req: Request, res: Response) => {
+        try {
+            const { userId } = req.params;
+            if (!userId) {
+                return res.status(400).json({ 
+                    error: "Thiếu userId" 
+                });
+            }
+            const result = await PaymentService.getLearnerTransactionHistory(userId);
+            return res.json({ 
+                success: true,
+                data: result
+            });
+        } catch (error) {
+            const err = error as Error;
+            console.error("Error getting learner transaction history:", err.message);
+            return res.status(500).json({ 
+                success: false,
+                error: err.message 
+            });
+        }
     }
 };

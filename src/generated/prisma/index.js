@@ -112,7 +112,8 @@ exports.Prisma.UserScalarFieldEnum = {
   role: 'role',
   gender: 'gender',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  deletedAt: 'deletedAt'
 };
 
 exports.Prisma.LearnerScalarFieldEnum = {
@@ -120,7 +121,8 @@ exports.Prisma.LearnerScalarFieldEnum = {
   user_id: 'user_id',
   enrolledAt: 'enrolledAt',
   updatedAt: 'updatedAt',
-  createAt: 'createAt'
+  createAt: 'createAt',
+  deletedAt: 'deletedAt'
 };
 
 exports.Prisma.InstructorScalarFieldEnum = {
@@ -129,7 +131,8 @@ exports.Prisma.InstructorScalarFieldEnum = {
   isVerified: 'isVerified',
   status: 'status',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  deletedAt: 'deletedAt'
 };
 
 exports.Prisma.InstructorSpecializationsScalarFieldEnum = {
@@ -183,7 +186,8 @@ exports.Prisma.WalletScalarFieldEnum = {
   user_id: 'user_id',
   balance: 'balance',
   createAt: 'createAt',
-  updateAt: 'updateAt'
+  updateAt: 'updateAt',
+  deletedAt: 'deletedAt'
 };
 
 exports.Prisma.TransactionScalarFieldEnum = {
@@ -261,7 +265,8 @@ exports.Prisma.AccountSecurityScalarFieldEnum = {
   account_noted: 'account_noted',
   status: 'status',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  deletedAt: 'deletedAt'
 };
 
 exports.Prisma.GroupScalarFieldEnum = {

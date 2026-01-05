@@ -20,11 +20,11 @@ export const generateAccessToken = async (user: User): Promise<string> => {
   });
   const isActive = accountSecurity?.status === AccountStatus.Active;
   const payload = {
-    id: user.user_id, 
-    email: user.email, 
-    role: user.role, 
-    fullName: user.fullName, 
-    avatar: user.avatar, 
+    id: user.user_id,
+    email: user.email,
+    role: user.role,
+    fullName: user.fullName,
+    avatar: user.avatar,
     isActive: isActive  // Sử dụng status từ AccountSecurity
   };
   return jwt.sign(payload, JWT_SECRET, { expiresIn: '5m' });
@@ -101,21 +101,28 @@ export const verifyTokenWhenRecoveryPassword = async (email: string, token: stri
   if (accountSecurity.token_expires_at && accountSecurity.token_expires_at < new Date()) {
     throw new Error('Verification token has expired');
   }
-
-  await prisma.accountSecurity.update({
-    where: { user_id: userId },
-    data: {
-      verification_token: null,
-      token_expires_at: null,
-      updatedAt: new Date()
-    }
-  });
-
+  await prisma.$transaction(async (tx) => {
+    await tx.user.update({
+      where: { user_id: userId },
+      data: {
+        isActive: true
+      }
+    })
+    await tx.accountSecurity.update({
+      where: { user_id: userId },
+      data: {
+        verification_token: null,
+        token_expires_at: null,
+        status: "Active",
+        account_noted: "",
+        updatedAt: new Date()
+      }
+    });
+  })
   const updatedUser = await getUserById(userId);
   if (!updatedUser) {
     throw new Error('Failed to retrieve updated user');
   }
-
   return updatedUser;
 };
 export const recoveryPassword = async (email: string, newPassword: string) => {
@@ -228,6 +235,7 @@ export const findOrCreateGoogleUser = async (profile: Profile): Promise<User> =>
       avatar,
       googleId,
       password: null,
+      isActive:true,
       role: 'LEARNER',
       last_login: new Date()
     },
@@ -248,7 +256,8 @@ export const findOrCreateGoogleUser = async (profile: Profile): Promise<User> =>
     data: {
       user_id: user.user_id,
       status: 'Active',
-      account_noted: ''
+      account_noted: '',
+      email_verified:true,
     }
   });
 

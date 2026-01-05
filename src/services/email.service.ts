@@ -10,7 +10,6 @@ export const sendEmail = async (options: SendEmailOptions): Promise<void> => {
       subject: options.subject,
       html: options.html,
     });
-    console.log(`✅ Email sent to ${options.to}`);
   } catch (error) {
     console.error('❌ Error sending email:', error);
     throw new Error('Failed to send email');
@@ -22,7 +21,6 @@ export const sendNoticeWithdrawApproved = async(data:sendNoticeWithdrawProps) =>
       style: 'currency',
       currency: 'VND'
     }).format(Number(data.transaction.amount));
-    
     const formattedDate = new Date(data.transaction.createdAt).toLocaleString('vi-VN', {
       year: 'numeric',
       month: '2-digit',
@@ -30,7 +28,6 @@ export const sendNoticeWithdrawApproved = async(data:sendNoticeWithdrawProps) =>
       hour: '2-digit',
       minute: '2-digit'
     });
-
     const html = `
       <!DOCTYPE html>
       <html>
