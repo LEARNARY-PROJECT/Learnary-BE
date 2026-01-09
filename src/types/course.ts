@@ -34,7 +34,9 @@ export interface CourseCreateDto {
   description: string;
   thumbnail: string;
   price: number;
-  chapter: ChapterDto[];
+  sale_off?: number | null; // phần trăm giảm giá
+  hot?: boolean | null;
+  chapter?: ChapterDto[];
 }
 
 export interface CreateSubmissionDTO {

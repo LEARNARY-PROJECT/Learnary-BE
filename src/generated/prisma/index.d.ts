@@ -39,11 +39,6 @@ export type InstructorSpecializations = $Result.DefaultSelection<Prisma.$Instruc
  */
 export type Specialization = $Result.DefaultSelection<Prisma.$SpecializationPayload>
 /**
- * Model CitizenIdsConfirm
- * 
- */
-export type CitizenIdsConfirm = $Result.DefaultSelection<Prisma.$CitizenIdsConfirmPayload>
-/**
  * Model InstructorQualifications
  * 
  */
@@ -558,16 +553,6 @@ export class PrismaClient<
     * ```
     */
   get specialization(): Prisma.SpecializationDelegate<ExtArgs, ClientOptions>;
-
-  /**
-   * `prisma.citizenIdsConfirm`: Exposes CRUD operations for the **CitizenIdsConfirm** model.
-    * Example usage:
-    * ```ts
-    * // Fetch zero or more CitizenIdsConfirms
-    * const citizenIdsConfirms = await prisma.citizenIdsConfirm.findMany()
-    * ```
-    */
-  get citizenIdsConfirm(): Prisma.CitizenIdsConfirmDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.instructorQualifications`: Exposes CRUD operations for the **InstructorQualifications** model.
@@ -1327,7 +1312,6 @@ export namespace Prisma {
     Instructor: 'Instructor',
     InstructorSpecializations: 'InstructorSpecializations',
     Specialization: 'Specialization',
-    CitizenIdsConfirm: 'CitizenIdsConfirm',
     InstructorQualifications: 'InstructorQualifications',
     BankAccount: 'BankAccount',
     Wallet: 'Wallet',
@@ -1375,7 +1359,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "learner" | "instructor" | "instructorSpecializations" | "specialization" | "citizenIdsConfirm" | "instructorQualifications" | "bankAccount" | "wallet" | "transaction" | "admin" | "resourceType" | "adminRole" | "permission" | "permissionOnResource" | "adminRolePermission" | "accountSecurity" | "group" | "courseGroup" | "course" | "category" | "level" | "learnerCourses" | "chapter" | "lesson" | "lessonProgress" | "chapterProgress" | "note" | "withdrawRequest" | "feedback" | "quiz" | "question" | "options" | "answer" | "submission" | "favorite" | "conversation" | "message"
+      modelProps: "user" | "learner" | "instructor" | "instructorSpecializations" | "specialization" | "instructorQualifications" | "bankAccount" | "wallet" | "transaction" | "admin" | "resourceType" | "adminRole" | "permission" | "permissionOnResource" | "adminRolePermission" | "accountSecurity" | "group" | "courseGroup" | "course" | "category" | "level" | "learnerCourses" | "chapter" | "lesson" | "lessonProgress" | "chapterProgress" | "note" | "withdrawRequest" | "feedback" | "quiz" | "question" | "options" | "answer" | "submission" | "favorite" | "conversation" | "message"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1746,80 +1730,6 @@ export namespace Prisma {
           count: {
             args: Prisma.SpecializationCountArgs<ExtArgs>
             result: $Utils.Optional<SpecializationCountAggregateOutputType> | number
-          }
-        }
-      }
-      CitizenIdsConfirm: {
-        payload: Prisma.$CitizenIdsConfirmPayload<ExtArgs>
-        fields: Prisma.CitizenIdsConfirmFieldRefs
-        operations: {
-          findUnique: {
-            args: Prisma.CitizenIdsConfirmFindUniqueArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$CitizenIdsConfirmPayload> | null
-          }
-          findUniqueOrThrow: {
-            args: Prisma.CitizenIdsConfirmFindUniqueOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$CitizenIdsConfirmPayload>
-          }
-          findFirst: {
-            args: Prisma.CitizenIdsConfirmFindFirstArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$CitizenIdsConfirmPayload> | null
-          }
-          findFirstOrThrow: {
-            args: Prisma.CitizenIdsConfirmFindFirstOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$CitizenIdsConfirmPayload>
-          }
-          findMany: {
-            args: Prisma.CitizenIdsConfirmFindManyArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$CitizenIdsConfirmPayload>[]
-          }
-          create: {
-            args: Prisma.CitizenIdsConfirmCreateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$CitizenIdsConfirmPayload>
-          }
-          createMany: {
-            args: Prisma.CitizenIdsConfirmCreateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          createManyAndReturn: {
-            args: Prisma.CitizenIdsConfirmCreateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$CitizenIdsConfirmPayload>[]
-          }
-          delete: {
-            args: Prisma.CitizenIdsConfirmDeleteArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$CitizenIdsConfirmPayload>
-          }
-          update: {
-            args: Prisma.CitizenIdsConfirmUpdateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$CitizenIdsConfirmPayload>
-          }
-          deleteMany: {
-            args: Prisma.CitizenIdsConfirmDeleteManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          updateMany: {
-            args: Prisma.CitizenIdsConfirmUpdateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          updateManyAndReturn: {
-            args: Prisma.CitizenIdsConfirmUpdateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$CitizenIdsConfirmPayload>[]
-          }
-          upsert: {
-            args: Prisma.CitizenIdsConfirmUpsertArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$CitizenIdsConfirmPayload>
-          }
-          aggregate: {
-            args: Prisma.CitizenIdsConfirmAggregateArgs<ExtArgs>
-            result: $Utils.Optional<AggregateCitizenIdsConfirm>
-          }
-          groupBy: {
-            args: Prisma.CitizenIdsConfirmGroupByArgs<ExtArgs>
-            result: $Utils.Optional<CitizenIdsConfirmGroupByOutputType>[]
-          }
-          count: {
-            args: Prisma.CitizenIdsConfirmCountArgs<ExtArgs>
-            result: $Utils.Optional<CitizenIdsConfirmCountAggregateOutputType> | number
           }
         }
       }
@@ -4288,7 +4198,6 @@ export namespace Prisma {
     instructor?: InstructorOmit
     instructorSpecializations?: InstructorSpecializationsOmit
     specialization?: SpecializationOmit
-    citizenIdsConfirm?: CitizenIdsConfirmOmit
     instructorQualifications?: InstructorQualificationsOmit
     bankAccount?: BankAccountOmit
     wallet?: WalletOmit
@@ -4580,13 +4489,11 @@ export namespace Prisma {
    */
 
   export type InstructorCountOutputType = {
-    citizen_id_confirms: number
     instructor_qualifications: number
     courses: number
   }
 
   export type InstructorCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    citizen_id_confirms?: boolean | InstructorCountOutputTypeCountCitizen_id_confirmsArgs
     instructor_qualifications?: boolean | InstructorCountOutputTypeCountInstructor_qualificationsArgs
     courses?: boolean | InstructorCountOutputTypeCountCoursesArgs
   }
@@ -4600,13 +4507,6 @@ export namespace Prisma {
      * Select specific fields to fetch from the InstructorCountOutputType
      */
     select?: InstructorCountOutputTypeSelect<ExtArgs> | null
-  }
-
-  /**
-   * InstructorCountOutputType without action
-   */
-  export type InstructorCountOutputTypeCountCitizen_id_confirmsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: CitizenIdsConfirmWhereInput
   }
 
   /**
@@ -8300,7 +8200,6 @@ export namespace Prisma {
     user?: boolean | UserDefaultArgs<ExtArgs>
     bank_accout?: boolean | Instructor$bank_accoutArgs<ExtArgs>
     instructorSpecialization?: boolean | Instructor$instructorSpecializationArgs<ExtArgs>
-    citizen_id_confirms?: boolean | Instructor$citizen_id_confirmsArgs<ExtArgs>
     instructor_qualifications?: boolean | Instructor$instructor_qualificationsArgs<ExtArgs>
     courses?: boolean | Instructor$coursesArgs<ExtArgs>
     _count?: boolean | InstructorCountOutputTypeDefaultArgs<ExtArgs>
@@ -8343,7 +8242,6 @@ export namespace Prisma {
     user?: boolean | UserDefaultArgs<ExtArgs>
     bank_accout?: boolean | Instructor$bank_accoutArgs<ExtArgs>
     instructorSpecialization?: boolean | Instructor$instructorSpecializationArgs<ExtArgs>
-    citizen_id_confirms?: boolean | Instructor$citizen_id_confirmsArgs<ExtArgs>
     instructor_qualifications?: boolean | Instructor$instructor_qualificationsArgs<ExtArgs>
     courses?: boolean | Instructor$coursesArgs<ExtArgs>
     _count?: boolean | InstructorCountOutputTypeDefaultArgs<ExtArgs>
@@ -8361,7 +8259,6 @@ export namespace Prisma {
       user: Prisma.$UserPayload<ExtArgs>
       bank_accout: Prisma.$BankAccountPayload<ExtArgs> | null
       instructorSpecialization: Prisma.$InstructorSpecializationsPayload<ExtArgs> | null
-      citizen_id_confirms: Prisma.$CitizenIdsConfirmPayload<ExtArgs>[]
       instructor_qualifications: Prisma.$InstructorQualificationsPayload<ExtArgs>[]
       courses: Prisma.$CoursePayload<ExtArgs>[]
     }
@@ -8770,7 +8667,6 @@ export namespace Prisma {
     user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     bank_accout<T extends Instructor$bank_accoutArgs<ExtArgs> = {}>(args?: Subset<T, Instructor$bank_accoutArgs<ExtArgs>>): Prisma__BankAccountClient<$Result.GetResult<Prisma.$BankAccountPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     instructorSpecialization<T extends Instructor$instructorSpecializationArgs<ExtArgs> = {}>(args?: Subset<T, Instructor$instructorSpecializationArgs<ExtArgs>>): Prisma__InstructorSpecializationsClient<$Result.GetResult<Prisma.$InstructorSpecializationsPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-    citizen_id_confirms<T extends Instructor$citizen_id_confirmsArgs<ExtArgs> = {}>(args?: Subset<T, Instructor$citizen_id_confirmsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CitizenIdsConfirmPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     instructor_qualifications<T extends Instructor$instructor_qualificationsArgs<ExtArgs> = {}>(args?: Subset<T, Instructor$instructor_qualificationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$InstructorQualificationsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     courses<T extends Instructor$coursesArgs<ExtArgs> = {}>(args?: Subset<T, Instructor$coursesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CoursePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
@@ -9240,30 +9136,6 @@ export namespace Prisma {
      */
     include?: InstructorSpecializationsInclude<ExtArgs> | null
     where?: InstructorSpecializationsWhereInput
-  }
-
-  /**
-   * Instructor.citizen_id_confirms
-   */
-  export type Instructor$citizen_id_confirmsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the CitizenIdsConfirm
-     */
-    select?: CitizenIdsConfirmSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the CitizenIdsConfirm
-     */
-    omit?: CitizenIdsConfirmOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: CitizenIdsConfirmInclude<ExtArgs> | null
-    where?: CitizenIdsConfirmWhereInput
-    orderBy?: CitizenIdsConfirmOrderByWithRelationInput | CitizenIdsConfirmOrderByWithRelationInput[]
-    cursor?: CitizenIdsConfirmWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: CitizenIdsConfirmScalarFieldEnum | CitizenIdsConfirmScalarFieldEnum[]
   }
 
   /**
@@ -11559,1129 +11431,6 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: SpecializationInclude<ExtArgs> | null
-  }
-
-
-  /**
-   * Model CitizenIdsConfirm
-   */
-
-  export type AggregateCitizenIdsConfirm = {
-    _count: CitizenIdsConfirmCountAggregateOutputType | null
-    _min: CitizenIdsConfirmMinAggregateOutputType | null
-    _max: CitizenIdsConfirmMaxAggregateOutputType | null
-  }
-
-  export type CitizenIdsConfirmMinAggregateOutputType = {
-    citizen_id: string | null
-    instructor_id: string | null
-    citizen_number: string | null
-    date_of_birth: Date | null
-    place_of_birth: string | null
-    issued_place: string | null
-    status: $Enums.ApprovalStatus | null
-    isVerified: boolean | null
-    createdAt: Date | null
-    updatedAt: Date | null
-  }
-
-  export type CitizenIdsConfirmMaxAggregateOutputType = {
-    citizen_id: string | null
-    instructor_id: string | null
-    citizen_number: string | null
-    date_of_birth: Date | null
-    place_of_birth: string | null
-    issued_place: string | null
-    status: $Enums.ApprovalStatus | null
-    isVerified: boolean | null
-    createdAt: Date | null
-    updatedAt: Date | null
-  }
-
-  export type CitizenIdsConfirmCountAggregateOutputType = {
-    citizen_id: number
-    instructor_id: number
-    citizen_number: number
-    date_of_birth: number
-    place_of_birth: number
-    issued_place: number
-    status: number
-    isVerified: number
-    createdAt: number
-    updatedAt: number
-    _all: number
-  }
-
-
-  export type CitizenIdsConfirmMinAggregateInputType = {
-    citizen_id?: true
-    instructor_id?: true
-    citizen_number?: true
-    date_of_birth?: true
-    place_of_birth?: true
-    issued_place?: true
-    status?: true
-    isVerified?: true
-    createdAt?: true
-    updatedAt?: true
-  }
-
-  export type CitizenIdsConfirmMaxAggregateInputType = {
-    citizen_id?: true
-    instructor_id?: true
-    citizen_number?: true
-    date_of_birth?: true
-    place_of_birth?: true
-    issued_place?: true
-    status?: true
-    isVerified?: true
-    createdAt?: true
-    updatedAt?: true
-  }
-
-  export type CitizenIdsConfirmCountAggregateInputType = {
-    citizen_id?: true
-    instructor_id?: true
-    citizen_number?: true
-    date_of_birth?: true
-    place_of_birth?: true
-    issued_place?: true
-    status?: true
-    isVerified?: true
-    createdAt?: true
-    updatedAt?: true
-    _all?: true
-  }
-
-  export type CitizenIdsConfirmAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which CitizenIdsConfirm to aggregate.
-     */
-    where?: CitizenIdsConfirmWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of CitizenIdsConfirms to fetch.
-     */
-    orderBy?: CitizenIdsConfirmOrderByWithRelationInput | CitizenIdsConfirmOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the start position
-     */
-    cursor?: CitizenIdsConfirmWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` CitizenIdsConfirms from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` CitizenIdsConfirms.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Count returned CitizenIdsConfirms
-    **/
-    _count?: true | CitizenIdsConfirmCountAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the minimum value
-    **/
-    _min?: CitizenIdsConfirmMinAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the maximum value
-    **/
-    _max?: CitizenIdsConfirmMaxAggregateInputType
-  }
-
-  export type GetCitizenIdsConfirmAggregateType<T extends CitizenIdsConfirmAggregateArgs> = {
-        [P in keyof T & keyof AggregateCitizenIdsConfirm]: P extends '_count' | 'count'
-      ? T[P] extends true
-        ? number
-        : GetScalarType<T[P], AggregateCitizenIdsConfirm[P]>
-      : GetScalarType<T[P], AggregateCitizenIdsConfirm[P]>
-  }
-
-
-
-
-  export type CitizenIdsConfirmGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: CitizenIdsConfirmWhereInput
-    orderBy?: CitizenIdsConfirmOrderByWithAggregationInput | CitizenIdsConfirmOrderByWithAggregationInput[]
-    by: CitizenIdsConfirmScalarFieldEnum[] | CitizenIdsConfirmScalarFieldEnum
-    having?: CitizenIdsConfirmScalarWhereWithAggregatesInput
-    take?: number
-    skip?: number
-    _count?: CitizenIdsConfirmCountAggregateInputType | true
-    _min?: CitizenIdsConfirmMinAggregateInputType
-    _max?: CitizenIdsConfirmMaxAggregateInputType
-  }
-
-  export type CitizenIdsConfirmGroupByOutputType = {
-    citizen_id: string
-    instructor_id: string
-    citizen_number: string
-    date_of_birth: Date
-    place_of_birth: string
-    issued_place: string
-    status: $Enums.ApprovalStatus
-    isVerified: boolean
-    createdAt: Date
-    updatedAt: Date
-    _count: CitizenIdsConfirmCountAggregateOutputType | null
-    _min: CitizenIdsConfirmMinAggregateOutputType | null
-    _max: CitizenIdsConfirmMaxAggregateOutputType | null
-  }
-
-  type GetCitizenIdsConfirmGroupByPayload<T extends CitizenIdsConfirmGroupByArgs> = Prisma.PrismaPromise<
-    Array<
-      PickEnumerable<CitizenIdsConfirmGroupByOutputType, T['by']> &
-        {
-          [P in ((keyof T) & (keyof CitizenIdsConfirmGroupByOutputType))]: P extends '_count'
-            ? T[P] extends boolean
-              ? number
-              : GetScalarType<T[P], CitizenIdsConfirmGroupByOutputType[P]>
-            : GetScalarType<T[P], CitizenIdsConfirmGroupByOutputType[P]>
-        }
-      >
-    >
-
-
-  export type CitizenIdsConfirmSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    citizen_id?: boolean
-    instructor_id?: boolean
-    citizen_number?: boolean
-    date_of_birth?: boolean
-    place_of_birth?: boolean
-    issued_place?: boolean
-    status?: boolean
-    isVerified?: boolean
-    createdAt?: boolean
-    updatedAt?: boolean
-    instructor?: boolean | InstructorDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["citizenIdsConfirm"]>
-
-  export type CitizenIdsConfirmSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    citizen_id?: boolean
-    instructor_id?: boolean
-    citizen_number?: boolean
-    date_of_birth?: boolean
-    place_of_birth?: boolean
-    issued_place?: boolean
-    status?: boolean
-    isVerified?: boolean
-    createdAt?: boolean
-    updatedAt?: boolean
-    instructor?: boolean | InstructorDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["citizenIdsConfirm"]>
-
-  export type CitizenIdsConfirmSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    citizen_id?: boolean
-    instructor_id?: boolean
-    citizen_number?: boolean
-    date_of_birth?: boolean
-    place_of_birth?: boolean
-    issued_place?: boolean
-    status?: boolean
-    isVerified?: boolean
-    createdAt?: boolean
-    updatedAt?: boolean
-    instructor?: boolean | InstructorDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["citizenIdsConfirm"]>
-
-  export type CitizenIdsConfirmSelectScalar = {
-    citizen_id?: boolean
-    instructor_id?: boolean
-    citizen_number?: boolean
-    date_of_birth?: boolean
-    place_of_birth?: boolean
-    issued_place?: boolean
-    status?: boolean
-    isVerified?: boolean
-    createdAt?: boolean
-    updatedAt?: boolean
-  }
-
-  export type CitizenIdsConfirmOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"citizen_id" | "instructor_id" | "citizen_number" | "date_of_birth" | "place_of_birth" | "issued_place" | "status" | "isVerified" | "createdAt" | "updatedAt", ExtArgs["result"]["citizenIdsConfirm"]>
-  export type CitizenIdsConfirmInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    instructor?: boolean | InstructorDefaultArgs<ExtArgs>
-  }
-  export type CitizenIdsConfirmIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    instructor?: boolean | InstructorDefaultArgs<ExtArgs>
-  }
-  export type CitizenIdsConfirmIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    instructor?: boolean | InstructorDefaultArgs<ExtArgs>
-  }
-
-  export type $CitizenIdsConfirmPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    name: "CitizenIdsConfirm"
-    objects: {
-      instructor: Prisma.$InstructorPayload<ExtArgs>
-    }
-    scalars: $Extensions.GetPayloadResult<{
-      citizen_id: string
-      instructor_id: string
-      citizen_number: string
-      date_of_birth: Date
-      place_of_birth: string
-      issued_place: string
-      status: $Enums.ApprovalStatus
-      isVerified: boolean
-      createdAt: Date
-      updatedAt: Date
-    }, ExtArgs["result"]["citizenIdsConfirm"]>
-    composites: {}
-  }
-
-  type CitizenIdsConfirmGetPayload<S extends boolean | null | undefined | CitizenIdsConfirmDefaultArgs> = $Result.GetResult<Prisma.$CitizenIdsConfirmPayload, S>
-
-  type CitizenIdsConfirmCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
-    Omit<CitizenIdsConfirmFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
-      select?: CitizenIdsConfirmCountAggregateInputType | true
-    }
-
-  export interface CitizenIdsConfirmDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
-    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['CitizenIdsConfirm'], meta: { name: 'CitizenIdsConfirm' } }
-    /**
-     * Find zero or one CitizenIdsConfirm that matches the filter.
-     * @param {CitizenIdsConfirmFindUniqueArgs} args - Arguments to find a CitizenIdsConfirm
-     * @example
-     * // Get one CitizenIdsConfirm
-     * const citizenIdsConfirm = await prisma.citizenIdsConfirm.findUnique({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUnique<T extends CitizenIdsConfirmFindUniqueArgs>(args: SelectSubset<T, CitizenIdsConfirmFindUniqueArgs<ExtArgs>>): Prisma__CitizenIdsConfirmClient<$Result.GetResult<Prisma.$CitizenIdsConfirmPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find one CitizenIdsConfirm that matches the filter or throw an error with `error.code='P2025'`
-     * if no matches were found.
-     * @param {CitizenIdsConfirmFindUniqueOrThrowArgs} args - Arguments to find a CitizenIdsConfirm
-     * @example
-     * // Get one CitizenIdsConfirm
-     * const citizenIdsConfirm = await prisma.citizenIdsConfirm.findUniqueOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUniqueOrThrow<T extends CitizenIdsConfirmFindUniqueOrThrowArgs>(args: SelectSubset<T, CitizenIdsConfirmFindUniqueOrThrowArgs<ExtArgs>>): Prisma__CitizenIdsConfirmClient<$Result.GetResult<Prisma.$CitizenIdsConfirmPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first CitizenIdsConfirm that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {CitizenIdsConfirmFindFirstArgs} args - Arguments to find a CitizenIdsConfirm
-     * @example
-     * // Get one CitizenIdsConfirm
-     * const citizenIdsConfirm = await prisma.citizenIdsConfirm.findFirst({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirst<T extends CitizenIdsConfirmFindFirstArgs>(args?: SelectSubset<T, CitizenIdsConfirmFindFirstArgs<ExtArgs>>): Prisma__CitizenIdsConfirmClient<$Result.GetResult<Prisma.$CitizenIdsConfirmPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first CitizenIdsConfirm that matches the filter or
-     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {CitizenIdsConfirmFindFirstOrThrowArgs} args - Arguments to find a CitizenIdsConfirm
-     * @example
-     * // Get one CitizenIdsConfirm
-     * const citizenIdsConfirm = await prisma.citizenIdsConfirm.findFirstOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirstOrThrow<T extends CitizenIdsConfirmFindFirstOrThrowArgs>(args?: SelectSubset<T, CitizenIdsConfirmFindFirstOrThrowArgs<ExtArgs>>): Prisma__CitizenIdsConfirmClient<$Result.GetResult<Prisma.$CitizenIdsConfirmPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find zero or more CitizenIdsConfirms that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {CitizenIdsConfirmFindManyArgs} args - Arguments to filter and select certain fields only.
-     * @example
-     * // Get all CitizenIdsConfirms
-     * const citizenIdsConfirms = await prisma.citizenIdsConfirm.findMany()
-     * 
-     * // Get first 10 CitizenIdsConfirms
-     * const citizenIdsConfirms = await prisma.citizenIdsConfirm.findMany({ take: 10 })
-     * 
-     * // Only select the `citizen_id`
-     * const citizenIdsConfirmWithCitizen_idOnly = await prisma.citizenIdsConfirm.findMany({ select: { citizen_id: true } })
-     * 
-     */
-    findMany<T extends CitizenIdsConfirmFindManyArgs>(args?: SelectSubset<T, CitizenIdsConfirmFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CitizenIdsConfirmPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
-
-    /**
-     * Create a CitizenIdsConfirm.
-     * @param {CitizenIdsConfirmCreateArgs} args - Arguments to create a CitizenIdsConfirm.
-     * @example
-     * // Create one CitizenIdsConfirm
-     * const CitizenIdsConfirm = await prisma.citizenIdsConfirm.create({
-     *   data: {
-     *     // ... data to create a CitizenIdsConfirm
-     *   }
-     * })
-     * 
-     */
-    create<T extends CitizenIdsConfirmCreateArgs>(args: SelectSubset<T, CitizenIdsConfirmCreateArgs<ExtArgs>>): Prisma__CitizenIdsConfirmClient<$Result.GetResult<Prisma.$CitizenIdsConfirmPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Create many CitizenIdsConfirms.
-     * @param {CitizenIdsConfirmCreateManyArgs} args - Arguments to create many CitizenIdsConfirms.
-     * @example
-     * // Create many CitizenIdsConfirms
-     * const citizenIdsConfirm = await prisma.citizenIdsConfirm.createMany({
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     *     
-     */
-    createMany<T extends CitizenIdsConfirmCreateManyArgs>(args?: SelectSubset<T, CitizenIdsConfirmCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Create many CitizenIdsConfirms and returns the data saved in the database.
-     * @param {CitizenIdsConfirmCreateManyAndReturnArgs} args - Arguments to create many CitizenIdsConfirms.
-     * @example
-     * // Create many CitizenIdsConfirms
-     * const citizenIdsConfirm = await prisma.citizenIdsConfirm.createManyAndReturn({
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * 
-     * // Create many CitizenIdsConfirms and only return the `citizen_id`
-     * const citizenIdsConfirmWithCitizen_idOnly = await prisma.citizenIdsConfirm.createManyAndReturn({
-     *   select: { citizen_id: true },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * 
-     */
-    createManyAndReturn<T extends CitizenIdsConfirmCreateManyAndReturnArgs>(args?: SelectSubset<T, CitizenIdsConfirmCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CitizenIdsConfirmPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
-
-    /**
-     * Delete a CitizenIdsConfirm.
-     * @param {CitizenIdsConfirmDeleteArgs} args - Arguments to delete one CitizenIdsConfirm.
-     * @example
-     * // Delete one CitizenIdsConfirm
-     * const CitizenIdsConfirm = await prisma.citizenIdsConfirm.delete({
-     *   where: {
-     *     // ... filter to delete one CitizenIdsConfirm
-     *   }
-     * })
-     * 
-     */
-    delete<T extends CitizenIdsConfirmDeleteArgs>(args: SelectSubset<T, CitizenIdsConfirmDeleteArgs<ExtArgs>>): Prisma__CitizenIdsConfirmClient<$Result.GetResult<Prisma.$CitizenIdsConfirmPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Update one CitizenIdsConfirm.
-     * @param {CitizenIdsConfirmUpdateArgs} args - Arguments to update one CitizenIdsConfirm.
-     * @example
-     * // Update one CitizenIdsConfirm
-     * const citizenIdsConfirm = await prisma.citizenIdsConfirm.update({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    update<T extends CitizenIdsConfirmUpdateArgs>(args: SelectSubset<T, CitizenIdsConfirmUpdateArgs<ExtArgs>>): Prisma__CitizenIdsConfirmClient<$Result.GetResult<Prisma.$CitizenIdsConfirmPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Delete zero or more CitizenIdsConfirms.
-     * @param {CitizenIdsConfirmDeleteManyArgs} args - Arguments to filter CitizenIdsConfirms to delete.
-     * @example
-     * // Delete a few CitizenIdsConfirms
-     * const { count } = await prisma.citizenIdsConfirm.deleteMany({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     * 
-     */
-    deleteMany<T extends CitizenIdsConfirmDeleteManyArgs>(args?: SelectSubset<T, CitizenIdsConfirmDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more CitizenIdsConfirms.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {CitizenIdsConfirmUpdateManyArgs} args - Arguments to update one or more rows.
-     * @example
-     * // Update many CitizenIdsConfirms
-     * const citizenIdsConfirm = await prisma.citizenIdsConfirm.updateMany({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    updateMany<T extends CitizenIdsConfirmUpdateManyArgs>(args: SelectSubset<T, CitizenIdsConfirmUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more CitizenIdsConfirms and returns the data updated in the database.
-     * @param {CitizenIdsConfirmUpdateManyAndReturnArgs} args - Arguments to update many CitizenIdsConfirms.
-     * @example
-     * // Update many CitizenIdsConfirms
-     * const citizenIdsConfirm = await prisma.citizenIdsConfirm.updateManyAndReturn({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * 
-     * // Update zero or more CitizenIdsConfirms and only return the `citizen_id`
-     * const citizenIdsConfirmWithCitizen_idOnly = await prisma.citizenIdsConfirm.updateManyAndReturn({
-     *   select: { citizen_id: true },
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * 
-     */
-    updateManyAndReturn<T extends CitizenIdsConfirmUpdateManyAndReturnArgs>(args: SelectSubset<T, CitizenIdsConfirmUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CitizenIdsConfirmPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
-
-    /**
-     * Create or update one CitizenIdsConfirm.
-     * @param {CitizenIdsConfirmUpsertArgs} args - Arguments to update or create a CitizenIdsConfirm.
-     * @example
-     * // Update or create a CitizenIdsConfirm
-     * const citizenIdsConfirm = await prisma.citizenIdsConfirm.upsert({
-     *   create: {
-     *     // ... data to create a CitizenIdsConfirm
-     *   },
-     *   update: {
-     *     // ... in case it already exists, update
-     *   },
-     *   where: {
-     *     // ... the filter for the CitizenIdsConfirm we want to update
-     *   }
-     * })
-     */
-    upsert<T extends CitizenIdsConfirmUpsertArgs>(args: SelectSubset<T, CitizenIdsConfirmUpsertArgs<ExtArgs>>): Prisma__CitizenIdsConfirmClient<$Result.GetResult<Prisma.$CitizenIdsConfirmPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-
-    /**
-     * Count the number of CitizenIdsConfirms.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {CitizenIdsConfirmCountArgs} args - Arguments to filter CitizenIdsConfirms to count.
-     * @example
-     * // Count the number of CitizenIdsConfirms
-     * const count = await prisma.citizenIdsConfirm.count({
-     *   where: {
-     *     // ... the filter for the CitizenIdsConfirms we want to count
-     *   }
-     * })
-    **/
-    count<T extends CitizenIdsConfirmCountArgs>(
-      args?: Subset<T, CitizenIdsConfirmCountArgs>,
-    ): Prisma.PrismaPromise<
-      T extends $Utils.Record<'select', any>
-        ? T['select'] extends true
-          ? number
-          : GetScalarType<T['select'], CitizenIdsConfirmCountAggregateOutputType>
-        : number
-    >
-
-    /**
-     * Allows you to perform aggregations operations on a CitizenIdsConfirm.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {CitizenIdsConfirmAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
-     * @example
-     * // Ordered by age ascending
-     * // Where email contains prisma.io
-     * // Limited to the 10 users
-     * const aggregations = await prisma.user.aggregate({
-     *   _avg: {
-     *     age: true,
-     *   },
-     *   where: {
-     *     email: {
-     *       contains: "prisma.io",
-     *     },
-     *   },
-     *   orderBy: {
-     *     age: "asc",
-     *   },
-     *   take: 10,
-     * })
-    **/
-    aggregate<T extends CitizenIdsConfirmAggregateArgs>(args: Subset<T, CitizenIdsConfirmAggregateArgs>): Prisma.PrismaPromise<GetCitizenIdsConfirmAggregateType<T>>
-
-    /**
-     * Group by CitizenIdsConfirm.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {CitizenIdsConfirmGroupByArgs} args - Group by arguments.
-     * @example
-     * // Group by city, order by createdAt, get count
-     * const result = await prisma.user.groupBy({
-     *   by: ['city', 'createdAt'],
-     *   orderBy: {
-     *     createdAt: true
-     *   },
-     *   _count: {
-     *     _all: true
-     *   },
-     * })
-     * 
-    **/
-    groupBy<
-      T extends CitizenIdsConfirmGroupByArgs,
-      HasSelectOrTake extends Or<
-        Extends<'skip', Keys<T>>,
-        Extends<'take', Keys<T>>
-      >,
-      OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: CitizenIdsConfirmGroupByArgs['orderBy'] }
-        : { orderBy?: CitizenIdsConfirmGroupByArgs['orderBy'] },
-      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
-      ByFields extends MaybeTupleToUnion<T['by']>,
-      ByValid extends Has<ByFields, OrderFields>,
-      HavingFields extends GetHavingFields<T['having']>,
-      HavingValid extends Has<ByFields, HavingFields>,
-      ByEmpty extends T['by'] extends never[] ? True : False,
-      InputErrors extends ByEmpty extends True
-      ? `Error: "by" must not be empty.`
-      : HavingValid extends False
-      ? {
-          [P in HavingFields]: P extends ByFields
-            ? never
-            : P extends string
-            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
-            : [
-                Error,
-                'Field ',
-                P,
-                ` in "having" needs to be provided in "by"`,
-              ]
-        }[HavingFields]
-      : 'take' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "take", you also need to provide "orderBy"'
-      : 'skip' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "skip", you also need to provide "orderBy"'
-      : ByValid extends True
-      ? {}
-      : {
-          [P in OrderFields]: P extends ByFields
-            ? never
-            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-        }[OrderFields]
-    >(args: SubsetIntersection<T, CitizenIdsConfirmGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetCitizenIdsConfirmGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
-  /**
-   * Fields of the CitizenIdsConfirm model
-   */
-  readonly fields: CitizenIdsConfirmFieldRefs;
-  }
-
-  /**
-   * The delegate class that acts as a "Promise-like" for CitizenIdsConfirm.
-   * Why is this prefixed with `Prisma__`?
-   * Because we want to prevent naming conflicts as mentioned in
-   * https://github.com/prisma/prisma-client-js/issues/707
-   */
-  export interface Prisma__CitizenIdsConfirmClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
-    readonly [Symbol.toStringTag]: "PrismaPromise"
-    instructor<T extends InstructorDefaultArgs<ExtArgs> = {}>(args?: Subset<T, InstructorDefaultArgs<ExtArgs>>): Prisma__InstructorClient<$Result.GetResult<Prisma.$InstructorPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    /**
-     * Attaches callbacks for the resolution and/or rejection of the Promise.
-     * @param onfulfilled The callback to execute when the Promise is resolved.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of which ever callback is executed.
-     */
-    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
-    /**
-     * Attaches a callback for only the rejection of the Promise.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of the callback.
-     */
-    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
-    /**
-     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
-     * resolved value cannot be modified from the callback.
-     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
-     * @returns A Promise for the completion of the callback.
-     */
-    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
-  }
-
-
-
-
-  /**
-   * Fields of the CitizenIdsConfirm model
-   */
-  interface CitizenIdsConfirmFieldRefs {
-    readonly citizen_id: FieldRef<"CitizenIdsConfirm", 'String'>
-    readonly instructor_id: FieldRef<"CitizenIdsConfirm", 'String'>
-    readonly citizen_number: FieldRef<"CitizenIdsConfirm", 'String'>
-    readonly date_of_birth: FieldRef<"CitizenIdsConfirm", 'DateTime'>
-    readonly place_of_birth: FieldRef<"CitizenIdsConfirm", 'String'>
-    readonly issued_place: FieldRef<"CitizenIdsConfirm", 'String'>
-    readonly status: FieldRef<"CitizenIdsConfirm", 'ApprovalStatus'>
-    readonly isVerified: FieldRef<"CitizenIdsConfirm", 'Boolean'>
-    readonly createdAt: FieldRef<"CitizenIdsConfirm", 'DateTime'>
-    readonly updatedAt: FieldRef<"CitizenIdsConfirm", 'DateTime'>
-  }
-    
-
-  // Custom InputTypes
-  /**
-   * CitizenIdsConfirm findUnique
-   */
-  export type CitizenIdsConfirmFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the CitizenIdsConfirm
-     */
-    select?: CitizenIdsConfirmSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the CitizenIdsConfirm
-     */
-    omit?: CitizenIdsConfirmOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: CitizenIdsConfirmInclude<ExtArgs> | null
-    /**
-     * Filter, which CitizenIdsConfirm to fetch.
-     */
-    where: CitizenIdsConfirmWhereUniqueInput
-  }
-
-  /**
-   * CitizenIdsConfirm findUniqueOrThrow
-   */
-  export type CitizenIdsConfirmFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the CitizenIdsConfirm
-     */
-    select?: CitizenIdsConfirmSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the CitizenIdsConfirm
-     */
-    omit?: CitizenIdsConfirmOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: CitizenIdsConfirmInclude<ExtArgs> | null
-    /**
-     * Filter, which CitizenIdsConfirm to fetch.
-     */
-    where: CitizenIdsConfirmWhereUniqueInput
-  }
-
-  /**
-   * CitizenIdsConfirm findFirst
-   */
-  export type CitizenIdsConfirmFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the CitizenIdsConfirm
-     */
-    select?: CitizenIdsConfirmSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the CitizenIdsConfirm
-     */
-    omit?: CitizenIdsConfirmOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: CitizenIdsConfirmInclude<ExtArgs> | null
-    /**
-     * Filter, which CitizenIdsConfirm to fetch.
-     */
-    where?: CitizenIdsConfirmWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of CitizenIdsConfirms to fetch.
-     */
-    orderBy?: CitizenIdsConfirmOrderByWithRelationInput | CitizenIdsConfirmOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for CitizenIdsConfirms.
-     */
-    cursor?: CitizenIdsConfirmWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` CitizenIdsConfirms from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` CitizenIdsConfirms.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of CitizenIdsConfirms.
-     */
-    distinct?: CitizenIdsConfirmScalarFieldEnum | CitizenIdsConfirmScalarFieldEnum[]
-  }
-
-  /**
-   * CitizenIdsConfirm findFirstOrThrow
-   */
-  export type CitizenIdsConfirmFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the CitizenIdsConfirm
-     */
-    select?: CitizenIdsConfirmSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the CitizenIdsConfirm
-     */
-    omit?: CitizenIdsConfirmOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: CitizenIdsConfirmInclude<ExtArgs> | null
-    /**
-     * Filter, which CitizenIdsConfirm to fetch.
-     */
-    where?: CitizenIdsConfirmWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of CitizenIdsConfirms to fetch.
-     */
-    orderBy?: CitizenIdsConfirmOrderByWithRelationInput | CitizenIdsConfirmOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for CitizenIdsConfirms.
-     */
-    cursor?: CitizenIdsConfirmWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` CitizenIdsConfirms from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` CitizenIdsConfirms.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of CitizenIdsConfirms.
-     */
-    distinct?: CitizenIdsConfirmScalarFieldEnum | CitizenIdsConfirmScalarFieldEnum[]
-  }
-
-  /**
-   * CitizenIdsConfirm findMany
-   */
-  export type CitizenIdsConfirmFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the CitizenIdsConfirm
-     */
-    select?: CitizenIdsConfirmSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the CitizenIdsConfirm
-     */
-    omit?: CitizenIdsConfirmOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: CitizenIdsConfirmInclude<ExtArgs> | null
-    /**
-     * Filter, which CitizenIdsConfirms to fetch.
-     */
-    where?: CitizenIdsConfirmWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of CitizenIdsConfirms to fetch.
-     */
-    orderBy?: CitizenIdsConfirmOrderByWithRelationInput | CitizenIdsConfirmOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for listing CitizenIdsConfirms.
-     */
-    cursor?: CitizenIdsConfirmWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` CitizenIdsConfirms from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` CitizenIdsConfirms.
-     */
-    skip?: number
-    distinct?: CitizenIdsConfirmScalarFieldEnum | CitizenIdsConfirmScalarFieldEnum[]
-  }
-
-  /**
-   * CitizenIdsConfirm create
-   */
-  export type CitizenIdsConfirmCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the CitizenIdsConfirm
-     */
-    select?: CitizenIdsConfirmSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the CitizenIdsConfirm
-     */
-    omit?: CitizenIdsConfirmOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: CitizenIdsConfirmInclude<ExtArgs> | null
-    /**
-     * The data needed to create a CitizenIdsConfirm.
-     */
-    data: XOR<CitizenIdsConfirmCreateInput, CitizenIdsConfirmUncheckedCreateInput>
-  }
-
-  /**
-   * CitizenIdsConfirm createMany
-   */
-  export type CitizenIdsConfirmCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to create many CitizenIdsConfirms.
-     */
-    data: CitizenIdsConfirmCreateManyInput | CitizenIdsConfirmCreateManyInput[]
-    skipDuplicates?: boolean
-  }
-
-  /**
-   * CitizenIdsConfirm createManyAndReturn
-   */
-  export type CitizenIdsConfirmCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the CitizenIdsConfirm
-     */
-    select?: CitizenIdsConfirmSelectCreateManyAndReturn<ExtArgs> | null
-    /**
-     * Omit specific fields from the CitizenIdsConfirm
-     */
-    omit?: CitizenIdsConfirmOmit<ExtArgs> | null
-    /**
-     * The data used to create many CitizenIdsConfirms.
-     */
-    data: CitizenIdsConfirmCreateManyInput | CitizenIdsConfirmCreateManyInput[]
-    skipDuplicates?: boolean
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: CitizenIdsConfirmIncludeCreateManyAndReturn<ExtArgs> | null
-  }
-
-  /**
-   * CitizenIdsConfirm update
-   */
-  export type CitizenIdsConfirmUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the CitizenIdsConfirm
-     */
-    select?: CitizenIdsConfirmSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the CitizenIdsConfirm
-     */
-    omit?: CitizenIdsConfirmOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: CitizenIdsConfirmInclude<ExtArgs> | null
-    /**
-     * The data needed to update a CitizenIdsConfirm.
-     */
-    data: XOR<CitizenIdsConfirmUpdateInput, CitizenIdsConfirmUncheckedUpdateInput>
-    /**
-     * Choose, which CitizenIdsConfirm to update.
-     */
-    where: CitizenIdsConfirmWhereUniqueInput
-  }
-
-  /**
-   * CitizenIdsConfirm updateMany
-   */
-  export type CitizenIdsConfirmUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to update CitizenIdsConfirms.
-     */
-    data: XOR<CitizenIdsConfirmUpdateManyMutationInput, CitizenIdsConfirmUncheckedUpdateManyInput>
-    /**
-     * Filter which CitizenIdsConfirms to update
-     */
-    where?: CitizenIdsConfirmWhereInput
-    /**
-     * Limit how many CitizenIdsConfirms to update.
-     */
-    limit?: number
-  }
-
-  /**
-   * CitizenIdsConfirm updateManyAndReturn
-   */
-  export type CitizenIdsConfirmUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the CitizenIdsConfirm
-     */
-    select?: CitizenIdsConfirmSelectUpdateManyAndReturn<ExtArgs> | null
-    /**
-     * Omit specific fields from the CitizenIdsConfirm
-     */
-    omit?: CitizenIdsConfirmOmit<ExtArgs> | null
-    /**
-     * The data used to update CitizenIdsConfirms.
-     */
-    data: XOR<CitizenIdsConfirmUpdateManyMutationInput, CitizenIdsConfirmUncheckedUpdateManyInput>
-    /**
-     * Filter which CitizenIdsConfirms to update
-     */
-    where?: CitizenIdsConfirmWhereInput
-    /**
-     * Limit how many CitizenIdsConfirms to update.
-     */
-    limit?: number
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: CitizenIdsConfirmIncludeUpdateManyAndReturn<ExtArgs> | null
-  }
-
-  /**
-   * CitizenIdsConfirm upsert
-   */
-  export type CitizenIdsConfirmUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the CitizenIdsConfirm
-     */
-    select?: CitizenIdsConfirmSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the CitizenIdsConfirm
-     */
-    omit?: CitizenIdsConfirmOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: CitizenIdsConfirmInclude<ExtArgs> | null
-    /**
-     * The filter to search for the CitizenIdsConfirm to update in case it exists.
-     */
-    where: CitizenIdsConfirmWhereUniqueInput
-    /**
-     * In case the CitizenIdsConfirm found by the `where` argument doesn't exist, create a new CitizenIdsConfirm with this data.
-     */
-    create: XOR<CitizenIdsConfirmCreateInput, CitizenIdsConfirmUncheckedCreateInput>
-    /**
-     * In case the CitizenIdsConfirm was found with the provided `where` argument, update it with this data.
-     */
-    update: XOR<CitizenIdsConfirmUpdateInput, CitizenIdsConfirmUncheckedUpdateInput>
-  }
-
-  /**
-   * CitizenIdsConfirm delete
-   */
-  export type CitizenIdsConfirmDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the CitizenIdsConfirm
-     */
-    select?: CitizenIdsConfirmSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the CitizenIdsConfirm
-     */
-    omit?: CitizenIdsConfirmOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: CitizenIdsConfirmInclude<ExtArgs> | null
-    /**
-     * Filter which CitizenIdsConfirm to delete.
-     */
-    where: CitizenIdsConfirmWhereUniqueInput
-  }
-
-  /**
-   * CitizenIdsConfirm deleteMany
-   */
-  export type CitizenIdsConfirmDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which CitizenIdsConfirms to delete
-     */
-    where?: CitizenIdsConfirmWhereInput
-    /**
-     * Limit how many CitizenIdsConfirms to delete.
-     */
-    limit?: number
-  }
-
-  /**
-   * CitizenIdsConfirm without action
-   */
-  export type CitizenIdsConfirmDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the CitizenIdsConfirm
-     */
-    select?: CitizenIdsConfirmSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the CitizenIdsConfirm
-     */
-    omit?: CitizenIdsConfirmOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: CitizenIdsConfirmInclude<ExtArgs> | null
   }
 
 
@@ -27389,10 +26138,12 @@ export namespace Prisma {
 
   export type CourseAvgAggregateOutputType = {
     price: Decimal | null
+    sale_off: Decimal | null
   }
 
   export type CourseSumAggregateOutputType = {
     price: Decimal | null
+    sale_off: Decimal | null
   }
 
   export type CourseMinAggregateOutputType = {
@@ -27408,7 +26159,7 @@ export namespace Prisma {
     thumbnail: string | null
     admin_note: string | null
     price: Decimal | null
-    sale_off: boolean | null
+    sale_off: Decimal | null
     hot: boolean | null
     tag: boolean | null
     available_language: $Enums.LanguageOptions | null
@@ -27430,7 +26181,7 @@ export namespace Prisma {
     thumbnail: string | null
     admin_note: string | null
     price: Decimal | null
-    sale_off: boolean | null
+    sale_off: Decimal | null
     hot: boolean | null
     tag: boolean | null
     available_language: $Enums.LanguageOptions | null
@@ -27465,10 +26216,12 @@ export namespace Prisma {
 
   export type CourseAvgAggregateInputType = {
     price?: true
+    sale_off?: true
   }
 
   export type CourseSumAggregateInputType = {
     price?: true
+    sale_off?: true
   }
 
   export type CourseMinAggregateInputType = {
@@ -27637,8 +26390,8 @@ export namespace Prisma {
     thumbnail: string
     admin_note: string | null
     price: Decimal
-    sale_off: boolean
-    hot: boolean
+    sale_off: Decimal | null
+    hot: boolean | null
     tag: boolean
     available_language: $Enums.LanguageOptions
     createdAt: Date
@@ -27819,8 +26572,8 @@ export namespace Prisma {
       thumbnail: string
       admin_note: string | null
       price: Prisma.Decimal
-      sale_off: boolean
-      hot: boolean
+      sale_off: Prisma.Decimal | null
+      hot: boolean | null
       tag: boolean
       available_language: $Enums.LanguageOptions
       createdAt: Date
@@ -28270,7 +27023,7 @@ export namespace Prisma {
     readonly thumbnail: FieldRef<"Course", 'String'>
     readonly admin_note: FieldRef<"Course", 'String'>
     readonly price: FieldRef<"Course", 'Decimal'>
-    readonly sale_off: FieldRef<"Course", 'Boolean'>
+    readonly sale_off: FieldRef<"Course", 'Decimal'>
     readonly hot: FieldRef<"Course", 'Boolean'>
     readonly tag: FieldRef<"Course", 'Boolean'>
     readonly available_language: FieldRef<"Course", 'LanguageOptions'>
@@ -49172,22 +47925,6 @@ export namespace Prisma {
   export type SpecializationScalarFieldEnum = (typeof SpecializationScalarFieldEnum)[keyof typeof SpecializationScalarFieldEnum]
 
 
-  export const CitizenIdsConfirmScalarFieldEnum: {
-    citizen_id: 'citizen_id',
-    instructor_id: 'instructor_id',
-    citizen_number: 'citizen_number',
-    date_of_birth: 'date_of_birth',
-    place_of_birth: 'place_of_birth',
-    issued_place: 'issued_place',
-    status: 'status',
-    isVerified: 'isVerified',
-    createdAt: 'createdAt',
-    updatedAt: 'updatedAt'
-  };
-
-  export type CitizenIdsConfirmScalarFieldEnum = (typeof CitizenIdsConfirmScalarFieldEnum)[keyof typeof CitizenIdsConfirmScalarFieldEnum]
-
-
   export const InstructorQualificationsScalarFieldEnum: {
     instructor_qualification_id: 'instructor_qualification_id',
     instructor_id: 'instructor_id',
@@ -49708,20 +48445,6 @@ export namespace Prisma {
 
 
   /**
-   * Reference to a field of type 'ApprovalStatus'
-   */
-  export type EnumApprovalStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ApprovalStatus'>
-    
-
-
-  /**
-   * Reference to a field of type 'ApprovalStatus[]'
-   */
-  export type ListEnumApprovalStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ApprovalStatus[]'>
-    
-
-
-  /**
    * Reference to a field of type 'QualificationType'
    */
   export type EnumQualificationTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QualificationType'>
@@ -49732,6 +48455,20 @@ export namespace Prisma {
    * Reference to a field of type 'QualificationType[]'
    */
   export type ListEnumQualificationTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QualificationType[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'ApprovalStatus'
+   */
+  export type EnumApprovalStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ApprovalStatus'>
+    
+
+
+  /**
+   * Reference to a field of type 'ApprovalStatus[]'
+   */
+  export type ListEnumApprovalStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ApprovalStatus[]'>
     
 
 
@@ -50195,7 +48932,6 @@ export namespace Prisma {
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
     bank_accout?: XOR<BankAccountNullableScalarRelationFilter, BankAccountWhereInput> | null
     instructorSpecialization?: XOR<InstructorSpecializationsNullableScalarRelationFilter, InstructorSpecializationsWhereInput> | null
-    citizen_id_confirms?: CitizenIdsConfirmListRelationFilter
     instructor_qualifications?: InstructorQualificationsListRelationFilter
     courses?: CourseListRelationFilter
   }
@@ -50211,7 +48947,6 @@ export namespace Prisma {
     user?: UserOrderByWithRelationInput
     bank_accout?: BankAccountOrderByWithRelationInput
     instructorSpecialization?: InstructorSpecializationsOrderByWithRelationInput
-    citizen_id_confirms?: CitizenIdsConfirmOrderByRelationAggregateInput
     instructor_qualifications?: InstructorQualificationsOrderByRelationAggregateInput
     courses?: CourseOrderByRelationAggregateInput
   }
@@ -50230,7 +48965,6 @@ export namespace Prisma {
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
     bank_accout?: XOR<BankAccountNullableScalarRelationFilter, BankAccountWhereInput> | null
     instructorSpecialization?: XOR<InstructorSpecializationsNullableScalarRelationFilter, InstructorSpecializationsWhereInput> | null
-    citizen_id_confirms?: CitizenIdsConfirmListRelationFilter
     instructor_qualifications?: InstructorQualificationsListRelationFilter
     courses?: CourseListRelationFilter
   }, "instructor_id" | "user_id">
@@ -50396,86 +49130,6 @@ export namespace Prisma {
     isVerified?: BoolWithAggregatesFilter<"Specialization"> | boolean
     createdAt?: DateTimeWithAggregatesFilter<"Specialization"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Specialization"> | Date | string
-  }
-
-  export type CitizenIdsConfirmWhereInput = {
-    AND?: CitizenIdsConfirmWhereInput | CitizenIdsConfirmWhereInput[]
-    OR?: CitizenIdsConfirmWhereInput[]
-    NOT?: CitizenIdsConfirmWhereInput | CitizenIdsConfirmWhereInput[]
-    citizen_id?: StringFilter<"CitizenIdsConfirm"> | string
-    instructor_id?: StringFilter<"CitizenIdsConfirm"> | string
-    citizen_number?: StringFilter<"CitizenIdsConfirm"> | string
-    date_of_birth?: DateTimeFilter<"CitizenIdsConfirm"> | Date | string
-    place_of_birth?: StringFilter<"CitizenIdsConfirm"> | string
-    issued_place?: StringFilter<"CitizenIdsConfirm"> | string
-    status?: EnumApprovalStatusFilter<"CitizenIdsConfirm"> | $Enums.ApprovalStatus
-    isVerified?: BoolFilter<"CitizenIdsConfirm"> | boolean
-    createdAt?: DateTimeFilter<"CitizenIdsConfirm"> | Date | string
-    updatedAt?: DateTimeFilter<"CitizenIdsConfirm"> | Date | string
-    instructor?: XOR<InstructorScalarRelationFilter, InstructorWhereInput>
-  }
-
-  export type CitizenIdsConfirmOrderByWithRelationInput = {
-    citizen_id?: SortOrder
-    instructor_id?: SortOrder
-    citizen_number?: SortOrder
-    date_of_birth?: SortOrder
-    place_of_birth?: SortOrder
-    issued_place?: SortOrder
-    status?: SortOrder
-    isVerified?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-    instructor?: InstructorOrderByWithRelationInput
-  }
-
-  export type CitizenIdsConfirmWhereUniqueInput = Prisma.AtLeast<{
-    citizen_id?: string
-    instructor_id?: string
-    citizen_number?: string
-    AND?: CitizenIdsConfirmWhereInput | CitizenIdsConfirmWhereInput[]
-    OR?: CitizenIdsConfirmWhereInput[]
-    NOT?: CitizenIdsConfirmWhereInput | CitizenIdsConfirmWhereInput[]
-    date_of_birth?: DateTimeFilter<"CitizenIdsConfirm"> | Date | string
-    place_of_birth?: StringFilter<"CitizenIdsConfirm"> | string
-    issued_place?: StringFilter<"CitizenIdsConfirm"> | string
-    status?: EnumApprovalStatusFilter<"CitizenIdsConfirm"> | $Enums.ApprovalStatus
-    isVerified?: BoolFilter<"CitizenIdsConfirm"> | boolean
-    createdAt?: DateTimeFilter<"CitizenIdsConfirm"> | Date | string
-    updatedAt?: DateTimeFilter<"CitizenIdsConfirm"> | Date | string
-    instructor?: XOR<InstructorScalarRelationFilter, InstructorWhereInput>
-  }, "citizen_id" | "instructor_id" | "citizen_number">
-
-  export type CitizenIdsConfirmOrderByWithAggregationInput = {
-    citizen_id?: SortOrder
-    instructor_id?: SortOrder
-    citizen_number?: SortOrder
-    date_of_birth?: SortOrder
-    place_of_birth?: SortOrder
-    issued_place?: SortOrder
-    status?: SortOrder
-    isVerified?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-    _count?: CitizenIdsConfirmCountOrderByAggregateInput
-    _max?: CitizenIdsConfirmMaxOrderByAggregateInput
-    _min?: CitizenIdsConfirmMinOrderByAggregateInput
-  }
-
-  export type CitizenIdsConfirmScalarWhereWithAggregatesInput = {
-    AND?: CitizenIdsConfirmScalarWhereWithAggregatesInput | CitizenIdsConfirmScalarWhereWithAggregatesInput[]
-    OR?: CitizenIdsConfirmScalarWhereWithAggregatesInput[]
-    NOT?: CitizenIdsConfirmScalarWhereWithAggregatesInput | CitizenIdsConfirmScalarWhereWithAggregatesInput[]
-    citizen_id?: StringWithAggregatesFilter<"CitizenIdsConfirm"> | string
-    instructor_id?: StringWithAggregatesFilter<"CitizenIdsConfirm"> | string
-    citizen_number?: StringWithAggregatesFilter<"CitizenIdsConfirm"> | string
-    date_of_birth?: DateTimeWithAggregatesFilter<"CitizenIdsConfirm"> | Date | string
-    place_of_birth?: StringWithAggregatesFilter<"CitizenIdsConfirm"> | string
-    issued_place?: StringWithAggregatesFilter<"CitizenIdsConfirm"> | string
-    status?: EnumApprovalStatusWithAggregatesFilter<"CitizenIdsConfirm"> | $Enums.ApprovalStatus
-    isVerified?: BoolWithAggregatesFilter<"CitizenIdsConfirm"> | boolean
-    createdAt?: DateTimeWithAggregatesFilter<"CitizenIdsConfirm"> | Date | string
-    updatedAt?: DateTimeWithAggregatesFilter<"CitizenIdsConfirm"> | Date | string
   }
 
   export type InstructorQualificationsWhereInput = {
@@ -51408,8 +50062,8 @@ export namespace Prisma {
     thumbnail?: StringFilter<"Course"> | string
     admin_note?: StringNullableFilter<"Course"> | string | null
     price?: DecimalFilter<"Course"> | Decimal | DecimalJsLike | number | string
-    sale_off?: BoolFilter<"Course"> | boolean
-    hot?: BoolFilter<"Course"> | boolean
+    sale_off?: DecimalNullableFilter<"Course"> | Decimal | DecimalJsLike | number | string | null
+    hot?: BoolNullableFilter<"Course"> | boolean | null
     tag?: BoolFilter<"Course"> | boolean
     available_language?: EnumLanguageOptionsFilter<"Course"> | $Enums.LanguageOptions
     createdAt?: DateTimeFilter<"Course"> | Date | string
@@ -51439,8 +50093,8 @@ export namespace Prisma {
     thumbnail?: SortOrder
     admin_note?: SortOrderInput | SortOrder
     price?: SortOrder
-    sale_off?: SortOrder
-    hot?: SortOrder
+    sale_off?: SortOrderInput | SortOrder
+    hot?: SortOrderInput | SortOrder
     tag?: SortOrder
     available_language?: SortOrder
     createdAt?: SortOrder
@@ -51473,8 +50127,8 @@ export namespace Prisma {
     thumbnail?: StringFilter<"Course"> | string
     admin_note?: StringNullableFilter<"Course"> | string | null
     price?: DecimalFilter<"Course"> | Decimal | DecimalJsLike | number | string
-    sale_off?: BoolFilter<"Course"> | boolean
-    hot?: BoolFilter<"Course"> | boolean
+    sale_off?: DecimalNullableFilter<"Course"> | Decimal | DecimalJsLike | number | string | null
+    hot?: BoolNullableFilter<"Course"> | boolean | null
     tag?: BoolFilter<"Course"> | boolean
     available_language?: EnumLanguageOptionsFilter<"Course"> | $Enums.LanguageOptions
     createdAt?: DateTimeFilter<"Course"> | Date | string
@@ -51504,8 +50158,8 @@ export namespace Prisma {
     thumbnail?: SortOrder
     admin_note?: SortOrderInput | SortOrder
     price?: SortOrder
-    sale_off?: SortOrder
-    hot?: SortOrder
+    sale_off?: SortOrderInput | SortOrder
+    hot?: SortOrderInput | SortOrder
     tag?: SortOrder
     available_language?: SortOrder
     createdAt?: SortOrder
@@ -51534,8 +50188,8 @@ export namespace Prisma {
     thumbnail?: StringWithAggregatesFilter<"Course"> | string
     admin_note?: StringNullableWithAggregatesFilter<"Course"> | string | null
     price?: DecimalWithAggregatesFilter<"Course"> | Decimal | DecimalJsLike | number | string
-    sale_off?: BoolWithAggregatesFilter<"Course"> | boolean
-    hot?: BoolWithAggregatesFilter<"Course"> | boolean
+    sale_off?: DecimalNullableWithAggregatesFilter<"Course"> | Decimal | DecimalJsLike | number | string | null
+    hot?: BoolNullableWithAggregatesFilter<"Course"> | boolean | null
     tag?: BoolWithAggregatesFilter<"Course"> | boolean
     available_language?: EnumLanguageOptionsWithAggregatesFilter<"Course"> | $Enums.LanguageOptions
     createdAt?: DateTimeWithAggregatesFilter<"Course"> | Date | string
@@ -53107,7 +51761,6 @@ export namespace Prisma {
     user: UserCreateNestedOneWithoutInstructorInput
     bank_accout?: BankAccountCreateNestedOneWithoutBelongInstructorInput
     instructorSpecialization?: InstructorSpecializationsCreateNestedOneWithoutInstructorInput
-    citizen_id_confirms?: CitizenIdsConfirmCreateNestedManyWithoutInstructorInput
     instructor_qualifications?: InstructorQualificationsCreateNestedManyWithoutInstructorInput
     courses?: CourseCreateNestedManyWithoutInstructorInput
   }
@@ -53122,7 +51775,6 @@ export namespace Prisma {
     deletedAt?: Date | string | null
     bank_accout?: BankAccountUncheckedCreateNestedOneWithoutBelongInstructorInput
     instructorSpecialization?: InstructorSpecializationsUncheckedCreateNestedOneWithoutInstructorInput
-    citizen_id_confirms?: CitizenIdsConfirmUncheckedCreateNestedManyWithoutInstructorInput
     instructor_qualifications?: InstructorQualificationsUncheckedCreateNestedManyWithoutInstructorInput
     courses?: CourseUncheckedCreateNestedManyWithoutInstructorInput
   }
@@ -53137,7 +51789,6 @@ export namespace Prisma {
     user?: UserUpdateOneRequiredWithoutInstructorNestedInput
     bank_accout?: BankAccountUpdateOneWithoutBelongInstructorNestedInput
     instructorSpecialization?: InstructorSpecializationsUpdateOneWithoutInstructorNestedInput
-    citizen_id_confirms?: CitizenIdsConfirmUpdateManyWithoutInstructorNestedInput
     instructor_qualifications?: InstructorQualificationsUpdateManyWithoutInstructorNestedInput
     courses?: CourseUpdateManyWithoutInstructorNestedInput
   }
@@ -53152,7 +51803,6 @@ export namespace Prisma {
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     bank_accout?: BankAccountUncheckedUpdateOneWithoutBelongInstructorNestedInput
     instructorSpecialization?: InstructorSpecializationsUncheckedUpdateOneWithoutInstructorNestedInput
-    citizen_id_confirms?: CitizenIdsConfirmUncheckedUpdateManyWithoutInstructorNestedInput
     instructor_qualifications?: InstructorQualificationsUncheckedUpdateManyWithoutInstructorNestedInput
     courses?: CourseUncheckedUpdateManyWithoutInstructorNestedInput
   }
@@ -53318,96 +51968,6 @@ export namespace Prisma {
     instructor_id?: NullableStringFieldUpdateOperationsInput | string | null
     user_id?: StringFieldUpdateOperationsInput | string
     specialization_name?: StringFieldUpdateOperationsInput | string
-    isVerified?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type CitizenIdsConfirmCreateInput = {
-    citizen_id?: string
-    citizen_number: string
-    date_of_birth: Date | string
-    place_of_birth: string
-    issued_place: string
-    status?: $Enums.ApprovalStatus
-    isVerified?: boolean
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    instructor: InstructorCreateNestedOneWithoutCitizen_id_confirmsInput
-  }
-
-  export type CitizenIdsConfirmUncheckedCreateInput = {
-    citizen_id?: string
-    instructor_id: string
-    citizen_number: string
-    date_of_birth: Date | string
-    place_of_birth: string
-    issued_place: string
-    status?: $Enums.ApprovalStatus
-    isVerified?: boolean
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type CitizenIdsConfirmUpdateInput = {
-    citizen_id?: StringFieldUpdateOperationsInput | string
-    citizen_number?: StringFieldUpdateOperationsInput | string
-    date_of_birth?: DateTimeFieldUpdateOperationsInput | Date | string
-    place_of_birth?: StringFieldUpdateOperationsInput | string
-    issued_place?: StringFieldUpdateOperationsInput | string
-    status?: EnumApprovalStatusFieldUpdateOperationsInput | $Enums.ApprovalStatus
-    isVerified?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    instructor?: InstructorUpdateOneRequiredWithoutCitizen_id_confirmsNestedInput
-  }
-
-  export type CitizenIdsConfirmUncheckedUpdateInput = {
-    citizen_id?: StringFieldUpdateOperationsInput | string
-    instructor_id?: StringFieldUpdateOperationsInput | string
-    citizen_number?: StringFieldUpdateOperationsInput | string
-    date_of_birth?: DateTimeFieldUpdateOperationsInput | Date | string
-    place_of_birth?: StringFieldUpdateOperationsInput | string
-    issued_place?: StringFieldUpdateOperationsInput | string
-    status?: EnumApprovalStatusFieldUpdateOperationsInput | $Enums.ApprovalStatus
-    isVerified?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type CitizenIdsConfirmCreateManyInput = {
-    citizen_id?: string
-    instructor_id: string
-    citizen_number: string
-    date_of_birth: Date | string
-    place_of_birth: string
-    issued_place: string
-    status?: $Enums.ApprovalStatus
-    isVerified?: boolean
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type CitizenIdsConfirmUpdateManyMutationInput = {
-    citizen_id?: StringFieldUpdateOperationsInput | string
-    citizen_number?: StringFieldUpdateOperationsInput | string
-    date_of_birth?: DateTimeFieldUpdateOperationsInput | Date | string
-    place_of_birth?: StringFieldUpdateOperationsInput | string
-    issued_place?: StringFieldUpdateOperationsInput | string
-    status?: EnumApprovalStatusFieldUpdateOperationsInput | $Enums.ApprovalStatus
-    isVerified?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type CitizenIdsConfirmUncheckedUpdateManyInput = {
-    citizen_id?: StringFieldUpdateOperationsInput | string
-    instructor_id?: StringFieldUpdateOperationsInput | string
-    citizen_number?: StringFieldUpdateOperationsInput | string
-    date_of_birth?: DateTimeFieldUpdateOperationsInput | Date | string
-    place_of_birth?: StringFieldUpdateOperationsInput | string
-    issued_place?: StringFieldUpdateOperationsInput | string
-    status?: EnumApprovalStatusFieldUpdateOperationsInput | $Enums.ApprovalStatus
     isVerified?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -54373,8 +52933,8 @@ export namespace Prisma {
     thumbnail: string
     admin_note?: string | null
     price: Decimal | DecimalJsLike | number | string
-    sale_off?: boolean
-    hot?: boolean
+    sale_off?: Decimal | DecimalJsLike | number | string | null
+    hot?: boolean | null
     tag?: boolean
     available_language?: $Enums.LanguageOptions
     createdAt?: Date | string
@@ -54404,8 +52964,8 @@ export namespace Prisma {
     thumbnail: string
     admin_note?: string | null
     price: Decimal | DecimalJsLike | number | string
-    sale_off?: boolean
-    hot?: boolean
+    sale_off?: Decimal | DecimalJsLike | number | string | null
+    hot?: boolean | null
     tag?: boolean
     available_language?: $Enums.LanguageOptions
     createdAt?: Date | string
@@ -54429,8 +52989,8 @@ export namespace Prisma {
     thumbnail?: StringFieldUpdateOperationsInput | string
     admin_note?: NullableStringFieldUpdateOperationsInput | string | null
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    sale_off?: BoolFieldUpdateOperationsInput | boolean
-    hot?: BoolFieldUpdateOperationsInput | boolean
+    sale_off?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    hot?: NullableBoolFieldUpdateOperationsInput | boolean | null
     tag?: BoolFieldUpdateOperationsInput | boolean
     available_language?: EnumLanguageOptionsFieldUpdateOperationsInput | $Enums.LanguageOptions
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -54460,8 +53020,8 @@ export namespace Prisma {
     thumbnail?: StringFieldUpdateOperationsInput | string
     admin_note?: NullableStringFieldUpdateOperationsInput | string | null
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    sale_off?: BoolFieldUpdateOperationsInput | boolean
-    hot?: BoolFieldUpdateOperationsInput | boolean
+    sale_off?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    hot?: NullableBoolFieldUpdateOperationsInput | boolean | null
     tag?: BoolFieldUpdateOperationsInput | boolean
     available_language?: EnumLanguageOptionsFieldUpdateOperationsInput | $Enums.LanguageOptions
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -54488,8 +53048,8 @@ export namespace Prisma {
     thumbnail: string
     admin_note?: string | null
     price: Decimal | DecimalJsLike | number | string
-    sale_off?: boolean
-    hot?: boolean
+    sale_off?: Decimal | DecimalJsLike | number | string | null
+    hot?: boolean | null
     tag?: boolean
     available_language?: $Enums.LanguageOptions
     createdAt?: Date | string
@@ -54507,8 +53067,8 @@ export namespace Prisma {
     thumbnail?: StringFieldUpdateOperationsInput | string
     admin_note?: NullableStringFieldUpdateOperationsInput | string | null
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    sale_off?: BoolFieldUpdateOperationsInput | boolean
-    hot?: BoolFieldUpdateOperationsInput | boolean
+    sale_off?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    hot?: NullableBoolFieldUpdateOperationsInput | boolean | null
     tag?: BoolFieldUpdateOperationsInput | boolean
     available_language?: EnumLanguageOptionsFieldUpdateOperationsInput | $Enums.LanguageOptions
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -54529,8 +53089,8 @@ export namespace Prisma {
     thumbnail?: StringFieldUpdateOperationsInput | string
     admin_note?: NullableStringFieldUpdateOperationsInput | string | null
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    sale_off?: BoolFieldUpdateOperationsInput | boolean
-    hot?: BoolFieldUpdateOperationsInput | boolean
+    sale_off?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    hot?: NullableBoolFieldUpdateOperationsInput | boolean | null
     tag?: BoolFieldUpdateOperationsInput | boolean
     available_language?: EnumLanguageOptionsFieldUpdateOperationsInput | $Enums.LanguageOptions
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -56221,20 +54781,10 @@ export namespace Prisma {
     isNot?: InstructorSpecializationsWhereInput | null
   }
 
-  export type CitizenIdsConfirmListRelationFilter = {
-    every?: CitizenIdsConfirmWhereInput
-    some?: CitizenIdsConfirmWhereInput
-    none?: CitizenIdsConfirmWhereInput
-  }
-
   export type CourseListRelationFilter = {
     every?: CourseWhereInput
     some?: CourseWhereInput
     none?: CourseWhereInput
-  }
-
-  export type CitizenIdsConfirmOrderByRelationAggregateInput = {
-    _count?: SortOrder
   }
 
   export type CourseOrderByRelationAggregateInput = {
@@ -56363,62 +54913,6 @@ export namespace Prisma {
     updatedAt?: SortOrder
   }
 
-  export type EnumApprovalStatusFilter<$PrismaModel = never> = {
-    equals?: $Enums.ApprovalStatus | EnumApprovalStatusFieldRefInput<$PrismaModel>
-    in?: $Enums.ApprovalStatus[] | ListEnumApprovalStatusFieldRefInput<$PrismaModel>
-    notIn?: $Enums.ApprovalStatus[] | ListEnumApprovalStatusFieldRefInput<$PrismaModel>
-    not?: NestedEnumApprovalStatusFilter<$PrismaModel> | $Enums.ApprovalStatus
-  }
-
-  export type CitizenIdsConfirmCountOrderByAggregateInput = {
-    citizen_id?: SortOrder
-    instructor_id?: SortOrder
-    citizen_number?: SortOrder
-    date_of_birth?: SortOrder
-    place_of_birth?: SortOrder
-    issued_place?: SortOrder
-    status?: SortOrder
-    isVerified?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-  }
-
-  export type CitizenIdsConfirmMaxOrderByAggregateInput = {
-    citizen_id?: SortOrder
-    instructor_id?: SortOrder
-    citizen_number?: SortOrder
-    date_of_birth?: SortOrder
-    place_of_birth?: SortOrder
-    issued_place?: SortOrder
-    status?: SortOrder
-    isVerified?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-  }
-
-  export type CitizenIdsConfirmMinOrderByAggregateInput = {
-    citizen_id?: SortOrder
-    instructor_id?: SortOrder
-    citizen_number?: SortOrder
-    date_of_birth?: SortOrder
-    place_of_birth?: SortOrder
-    issued_place?: SortOrder
-    status?: SortOrder
-    isVerified?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-  }
-
-  export type EnumApprovalStatusWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.ApprovalStatus | EnumApprovalStatusFieldRefInput<$PrismaModel>
-    in?: $Enums.ApprovalStatus[] | ListEnumApprovalStatusFieldRefInput<$PrismaModel>
-    notIn?: $Enums.ApprovalStatus[] | ListEnumApprovalStatusFieldRefInput<$PrismaModel>
-    not?: NestedEnumApprovalStatusWithAggregatesFilter<$PrismaModel> | $Enums.ApprovalStatus
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumApprovalStatusFilter<$PrismaModel>
-    _max?: NestedEnumApprovalStatusFilter<$PrismaModel>
-  }
-
   export type EnumQualificationTypeFilter<$PrismaModel = never> = {
     equals?: $Enums.QualificationType | EnumQualificationTypeFieldRefInput<$PrismaModel>
     in?: $Enums.QualificationType[] | ListEnumQualificationTypeFieldRefInput<$PrismaModel>
@@ -56432,6 +54926,13 @@ export namespace Prisma {
     hasEvery?: string[] | ListStringFieldRefInput<$PrismaModel>
     hasSome?: string[] | ListStringFieldRefInput<$PrismaModel>
     isEmpty?: boolean
+  }
+
+  export type EnumApprovalStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.ApprovalStatus | EnumApprovalStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.ApprovalStatus[] | ListEnumApprovalStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ApprovalStatus[] | ListEnumApprovalStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumApprovalStatusFilter<$PrismaModel> | $Enums.ApprovalStatus
   }
 
   export type SpecializationNullableScalarRelationFilter = {
@@ -56496,6 +54997,16 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumQualificationTypeFilter<$PrismaModel>
     _max?: NestedEnumQualificationTypeFilter<$PrismaModel>
+  }
+
+  export type EnumApprovalStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.ApprovalStatus | EnumApprovalStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.ApprovalStatus[] | ListEnumApprovalStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ApprovalStatus[] | ListEnumApprovalStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumApprovalStatusWithAggregatesFilter<$PrismaModel> | $Enums.ApprovalStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumApprovalStatusFilter<$PrismaModel>
+    _max?: NestedEnumApprovalStatusFilter<$PrismaModel>
   }
 
   export type BankAccountCountOrderByAggregateInput = {
@@ -57200,6 +55711,11 @@ export namespace Prisma {
     not?: NestedEnumCourseStatusFilter<$PrismaModel> | $Enums.CourseStatus
   }
 
+  export type BoolNullableFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel> | null
+    not?: NestedBoolNullableFilter<$PrismaModel> | boolean | null
+  }
+
   export type EnumLanguageOptionsFilter<$PrismaModel = never> = {
     equals?: $Enums.LanguageOptions | EnumLanguageOptionsFieldRefInput<$PrismaModel>
     in?: $Enums.LanguageOptions[] | ListEnumLanguageOptionsFieldRefInput<$PrismaModel>
@@ -57251,6 +55767,7 @@ export namespace Prisma {
 
   export type CourseAvgOrderByAggregateInput = {
     price?: SortOrder
+    sale_off?: SortOrder
   }
 
   export type CourseMaxOrderByAggregateInput = {
@@ -57299,6 +55816,7 @@ export namespace Prisma {
 
   export type CourseSumOrderByAggregateInput = {
     price?: SortOrder
+    sale_off?: SortOrder
   }
 
   export type EnumCourseStatusWithAggregatesFilter<$PrismaModel = never> = {
@@ -57309,6 +55827,14 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumCourseStatusFilter<$PrismaModel>
     _max?: NestedEnumCourseStatusFilter<$PrismaModel>
+  }
+
+  export type BoolNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel> | null
+    not?: NestedBoolNullableWithAggregatesFilter<$PrismaModel> | boolean | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedBoolNullableFilter<$PrismaModel>
+    _max?: NestedBoolNullableFilter<$PrismaModel>
   }
 
   export type EnumLanguageOptionsWithAggregatesFilter<$PrismaModel = never> = {
@@ -58957,13 +57483,6 @@ export namespace Prisma {
     connect?: InstructorSpecializationsWhereUniqueInput
   }
 
-  export type CitizenIdsConfirmCreateNestedManyWithoutInstructorInput = {
-    create?: XOR<CitizenIdsConfirmCreateWithoutInstructorInput, CitizenIdsConfirmUncheckedCreateWithoutInstructorInput> | CitizenIdsConfirmCreateWithoutInstructorInput[] | CitizenIdsConfirmUncheckedCreateWithoutInstructorInput[]
-    connectOrCreate?: CitizenIdsConfirmCreateOrConnectWithoutInstructorInput | CitizenIdsConfirmCreateOrConnectWithoutInstructorInput[]
-    createMany?: CitizenIdsConfirmCreateManyInstructorInputEnvelope
-    connect?: CitizenIdsConfirmWhereUniqueInput | CitizenIdsConfirmWhereUniqueInput[]
-  }
-
   export type InstructorQualificationsCreateNestedManyWithoutInstructorInput = {
     create?: XOR<InstructorQualificationsCreateWithoutInstructorInput, InstructorQualificationsUncheckedCreateWithoutInstructorInput> | InstructorQualificationsCreateWithoutInstructorInput[] | InstructorQualificationsUncheckedCreateWithoutInstructorInput[]
     connectOrCreate?: InstructorQualificationsCreateOrConnectWithoutInstructorInput | InstructorQualificationsCreateOrConnectWithoutInstructorInput[]
@@ -58988,13 +57507,6 @@ export namespace Prisma {
     create?: XOR<InstructorSpecializationsCreateWithoutInstructorInput, InstructorSpecializationsUncheckedCreateWithoutInstructorInput>
     connectOrCreate?: InstructorSpecializationsCreateOrConnectWithoutInstructorInput
     connect?: InstructorSpecializationsWhereUniqueInput
-  }
-
-  export type CitizenIdsConfirmUncheckedCreateNestedManyWithoutInstructorInput = {
-    create?: XOR<CitizenIdsConfirmCreateWithoutInstructorInput, CitizenIdsConfirmUncheckedCreateWithoutInstructorInput> | CitizenIdsConfirmCreateWithoutInstructorInput[] | CitizenIdsConfirmUncheckedCreateWithoutInstructorInput[]
-    connectOrCreate?: CitizenIdsConfirmCreateOrConnectWithoutInstructorInput | CitizenIdsConfirmCreateOrConnectWithoutInstructorInput[]
-    createMany?: CitizenIdsConfirmCreateManyInstructorInputEnvelope
-    connect?: CitizenIdsConfirmWhereUniqueInput | CitizenIdsConfirmWhereUniqueInput[]
   }
 
   export type InstructorQualificationsUncheckedCreateNestedManyWithoutInstructorInput = {
@@ -59043,20 +57555,6 @@ export namespace Prisma {
     update?: XOR<XOR<InstructorSpecializationsUpdateToOneWithWhereWithoutInstructorInput, InstructorSpecializationsUpdateWithoutInstructorInput>, InstructorSpecializationsUncheckedUpdateWithoutInstructorInput>
   }
 
-  export type CitizenIdsConfirmUpdateManyWithoutInstructorNestedInput = {
-    create?: XOR<CitizenIdsConfirmCreateWithoutInstructorInput, CitizenIdsConfirmUncheckedCreateWithoutInstructorInput> | CitizenIdsConfirmCreateWithoutInstructorInput[] | CitizenIdsConfirmUncheckedCreateWithoutInstructorInput[]
-    connectOrCreate?: CitizenIdsConfirmCreateOrConnectWithoutInstructorInput | CitizenIdsConfirmCreateOrConnectWithoutInstructorInput[]
-    upsert?: CitizenIdsConfirmUpsertWithWhereUniqueWithoutInstructorInput | CitizenIdsConfirmUpsertWithWhereUniqueWithoutInstructorInput[]
-    createMany?: CitizenIdsConfirmCreateManyInstructorInputEnvelope
-    set?: CitizenIdsConfirmWhereUniqueInput | CitizenIdsConfirmWhereUniqueInput[]
-    disconnect?: CitizenIdsConfirmWhereUniqueInput | CitizenIdsConfirmWhereUniqueInput[]
-    delete?: CitizenIdsConfirmWhereUniqueInput | CitizenIdsConfirmWhereUniqueInput[]
-    connect?: CitizenIdsConfirmWhereUniqueInput | CitizenIdsConfirmWhereUniqueInput[]
-    update?: CitizenIdsConfirmUpdateWithWhereUniqueWithoutInstructorInput | CitizenIdsConfirmUpdateWithWhereUniqueWithoutInstructorInput[]
-    updateMany?: CitizenIdsConfirmUpdateManyWithWhereWithoutInstructorInput | CitizenIdsConfirmUpdateManyWithWhereWithoutInstructorInput[]
-    deleteMany?: CitizenIdsConfirmScalarWhereInput | CitizenIdsConfirmScalarWhereInput[]
-  }
-
   export type InstructorQualificationsUpdateManyWithoutInstructorNestedInput = {
     create?: XOR<InstructorQualificationsCreateWithoutInstructorInput, InstructorQualificationsUncheckedCreateWithoutInstructorInput> | InstructorQualificationsCreateWithoutInstructorInput[] | InstructorQualificationsUncheckedCreateWithoutInstructorInput[]
     connectOrCreate?: InstructorQualificationsCreateOrConnectWithoutInstructorInput | InstructorQualificationsCreateOrConnectWithoutInstructorInput[]
@@ -59103,20 +57601,6 @@ export namespace Prisma {
     delete?: InstructorSpecializationsWhereInput | boolean
     connect?: InstructorSpecializationsWhereUniqueInput
     update?: XOR<XOR<InstructorSpecializationsUpdateToOneWithWhereWithoutInstructorInput, InstructorSpecializationsUpdateWithoutInstructorInput>, InstructorSpecializationsUncheckedUpdateWithoutInstructorInput>
-  }
-
-  export type CitizenIdsConfirmUncheckedUpdateManyWithoutInstructorNestedInput = {
-    create?: XOR<CitizenIdsConfirmCreateWithoutInstructorInput, CitizenIdsConfirmUncheckedCreateWithoutInstructorInput> | CitizenIdsConfirmCreateWithoutInstructorInput[] | CitizenIdsConfirmUncheckedCreateWithoutInstructorInput[]
-    connectOrCreate?: CitizenIdsConfirmCreateOrConnectWithoutInstructorInput | CitizenIdsConfirmCreateOrConnectWithoutInstructorInput[]
-    upsert?: CitizenIdsConfirmUpsertWithWhereUniqueWithoutInstructorInput | CitizenIdsConfirmUpsertWithWhereUniqueWithoutInstructorInput[]
-    createMany?: CitizenIdsConfirmCreateManyInstructorInputEnvelope
-    set?: CitizenIdsConfirmWhereUniqueInput | CitizenIdsConfirmWhereUniqueInput[]
-    disconnect?: CitizenIdsConfirmWhereUniqueInput | CitizenIdsConfirmWhereUniqueInput[]
-    delete?: CitizenIdsConfirmWhereUniqueInput | CitizenIdsConfirmWhereUniqueInput[]
-    connect?: CitizenIdsConfirmWhereUniqueInput | CitizenIdsConfirmWhereUniqueInput[]
-    update?: CitizenIdsConfirmUpdateWithWhereUniqueWithoutInstructorInput | CitizenIdsConfirmUpdateWithWhereUniqueWithoutInstructorInput[]
-    updateMany?: CitizenIdsConfirmUpdateManyWithWhereWithoutInstructorInput | CitizenIdsConfirmUpdateManyWithWhereWithoutInstructorInput[]
-    deleteMany?: CitizenIdsConfirmScalarWhereInput | CitizenIdsConfirmScalarWhereInput[]
   }
 
   export type InstructorQualificationsUncheckedUpdateManyWithoutInstructorNestedInput = {
@@ -59287,24 +57771,6 @@ export namespace Prisma {
     deleteMany?: InstructorQualificationsScalarWhereInput | InstructorQualificationsScalarWhereInput[]
   }
 
-  export type InstructorCreateNestedOneWithoutCitizen_id_confirmsInput = {
-    create?: XOR<InstructorCreateWithoutCitizen_id_confirmsInput, InstructorUncheckedCreateWithoutCitizen_id_confirmsInput>
-    connectOrCreate?: InstructorCreateOrConnectWithoutCitizen_id_confirmsInput
-    connect?: InstructorWhereUniqueInput
-  }
-
-  export type EnumApprovalStatusFieldUpdateOperationsInput = {
-    set?: $Enums.ApprovalStatus
-  }
-
-  export type InstructorUpdateOneRequiredWithoutCitizen_id_confirmsNestedInput = {
-    create?: XOR<InstructorCreateWithoutCitizen_id_confirmsInput, InstructorUncheckedCreateWithoutCitizen_id_confirmsInput>
-    connectOrCreate?: InstructorCreateOrConnectWithoutCitizen_id_confirmsInput
-    upsert?: InstructorUpsertWithoutCitizen_id_confirmsInput
-    connect?: InstructorWhereUniqueInput
-    update?: XOR<XOR<InstructorUpdateToOneWithWhereWithoutCitizen_id_confirmsInput, InstructorUpdateWithoutCitizen_id_confirmsInput>, InstructorUncheckedUpdateWithoutCitizen_id_confirmsInput>
-  }
-
   export type InstructorQualificationsCreatequalification_imagesInput = {
     set: string[]
   }
@@ -59334,6 +57800,10 @@ export namespace Prisma {
   export type InstructorQualificationsUpdatequalification_imagesInput = {
     set?: string[]
     push?: string | string[]
+  }
+
+  export type EnumApprovalStatusFieldUpdateOperationsInput = {
+    set?: $Enums.ApprovalStatus
   }
 
   export type InstructorUpdateOneWithoutInstructor_qualificationsNestedInput = {
@@ -60104,6 +58574,10 @@ export namespace Prisma {
 
   export type EnumCourseStatusFieldUpdateOperationsInput = {
     set?: $Enums.CourseStatus
+  }
+
+  export type NullableBoolFieldUpdateOperationsInput = {
+    set?: boolean | null
   }
 
   export type EnumLanguageOptionsFieldUpdateOperationsInput = {
@@ -61483,28 +59957,18 @@ export namespace Prisma {
     _max?: NestedEnumStatusFilter<$PrismaModel>
   }
 
-  export type NestedEnumApprovalStatusFilter<$PrismaModel = never> = {
-    equals?: $Enums.ApprovalStatus | EnumApprovalStatusFieldRefInput<$PrismaModel>
-    in?: $Enums.ApprovalStatus[] | ListEnumApprovalStatusFieldRefInput<$PrismaModel>
-    notIn?: $Enums.ApprovalStatus[] | ListEnumApprovalStatusFieldRefInput<$PrismaModel>
-    not?: NestedEnumApprovalStatusFilter<$PrismaModel> | $Enums.ApprovalStatus
-  }
-
-  export type NestedEnumApprovalStatusWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.ApprovalStatus | EnumApprovalStatusFieldRefInput<$PrismaModel>
-    in?: $Enums.ApprovalStatus[] | ListEnumApprovalStatusFieldRefInput<$PrismaModel>
-    notIn?: $Enums.ApprovalStatus[] | ListEnumApprovalStatusFieldRefInput<$PrismaModel>
-    not?: NestedEnumApprovalStatusWithAggregatesFilter<$PrismaModel> | $Enums.ApprovalStatus
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumApprovalStatusFilter<$PrismaModel>
-    _max?: NestedEnumApprovalStatusFilter<$PrismaModel>
-  }
-
   export type NestedEnumQualificationTypeFilter<$PrismaModel = never> = {
     equals?: $Enums.QualificationType | EnumQualificationTypeFieldRefInput<$PrismaModel>
     in?: $Enums.QualificationType[] | ListEnumQualificationTypeFieldRefInput<$PrismaModel>
     notIn?: $Enums.QualificationType[] | ListEnumQualificationTypeFieldRefInput<$PrismaModel>
     not?: NestedEnumQualificationTypeFilter<$PrismaModel> | $Enums.QualificationType
+  }
+
+  export type NestedEnumApprovalStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.ApprovalStatus | EnumApprovalStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.ApprovalStatus[] | ListEnumApprovalStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ApprovalStatus[] | ListEnumApprovalStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumApprovalStatusFilter<$PrismaModel> | $Enums.ApprovalStatus
   }
 
   export type NestedEnumQualificationTypeWithAggregatesFilter<$PrismaModel = never> = {
@@ -61515,6 +59979,16 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumQualificationTypeFilter<$PrismaModel>
     _max?: NestedEnumQualificationTypeFilter<$PrismaModel>
+  }
+
+  export type NestedEnumApprovalStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.ApprovalStatus | EnumApprovalStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.ApprovalStatus[] | ListEnumApprovalStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ApprovalStatus[] | ListEnumApprovalStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumApprovalStatusWithAggregatesFilter<$PrismaModel> | $Enums.ApprovalStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumApprovalStatusFilter<$PrismaModel>
+    _max?: NestedEnumApprovalStatusFilter<$PrismaModel>
   }
 
   export type NestedDecimalFilter<$PrismaModel = never> = {
@@ -61734,6 +60208,11 @@ export namespace Prisma {
     not?: NestedEnumCourseStatusFilter<$PrismaModel> | $Enums.CourseStatus
   }
 
+  export type NestedBoolNullableFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel> | null
+    not?: NestedBoolNullableFilter<$PrismaModel> | boolean | null
+  }
+
   export type NestedEnumLanguageOptionsFilter<$PrismaModel = never> = {
     equals?: $Enums.LanguageOptions | EnumLanguageOptionsFieldRefInput<$PrismaModel>
     in?: $Enums.LanguageOptions[] | ListEnumLanguageOptionsFieldRefInput<$PrismaModel>
@@ -61749,6 +60228,14 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumCourseStatusFilter<$PrismaModel>
     _max?: NestedEnumCourseStatusFilter<$PrismaModel>
+  }
+
+  export type NestedBoolNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel> | null
+    not?: NestedBoolNullableWithAggregatesFilter<$PrismaModel> | boolean | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedBoolNullableFilter<$PrismaModel>
+    _max?: NestedBoolNullableFilter<$PrismaModel>
   }
 
   export type NestedEnumLanguageOptionsWithAggregatesFilter<$PrismaModel = never> = {
@@ -61873,7 +60360,6 @@ export namespace Prisma {
     deletedAt?: Date | string | null
     bank_accout?: BankAccountCreateNestedOneWithoutBelongInstructorInput
     instructorSpecialization?: InstructorSpecializationsCreateNestedOneWithoutInstructorInput
-    citizen_id_confirms?: CitizenIdsConfirmCreateNestedManyWithoutInstructorInput
     instructor_qualifications?: InstructorQualificationsCreateNestedManyWithoutInstructorInput
     courses?: CourseCreateNestedManyWithoutInstructorInput
   }
@@ -61887,7 +60373,6 @@ export namespace Prisma {
     deletedAt?: Date | string | null
     bank_accout?: BankAccountUncheckedCreateNestedOneWithoutBelongInstructorInput
     instructorSpecialization?: InstructorSpecializationsUncheckedCreateNestedOneWithoutInstructorInput
-    citizen_id_confirms?: CitizenIdsConfirmUncheckedCreateNestedManyWithoutInstructorInput
     instructor_qualifications?: InstructorQualificationsUncheckedCreateNestedManyWithoutInstructorInput
     courses?: CourseUncheckedCreateNestedManyWithoutInstructorInput
   }
@@ -62438,7 +60923,6 @@ export namespace Prisma {
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     bank_accout?: BankAccountUpdateOneWithoutBelongInstructorNestedInput
     instructorSpecialization?: InstructorSpecializationsUpdateOneWithoutInstructorNestedInput
-    citizen_id_confirms?: CitizenIdsConfirmUpdateManyWithoutInstructorNestedInput
     instructor_qualifications?: InstructorQualificationsUpdateManyWithoutInstructorNestedInput
     courses?: CourseUpdateManyWithoutInstructorNestedInput
   }
@@ -62452,7 +60936,6 @@ export namespace Prisma {
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     bank_accout?: BankAccountUncheckedUpdateOneWithoutBelongInstructorNestedInput
     instructorSpecialization?: InstructorSpecializationsUncheckedUpdateOneWithoutInstructorNestedInput
-    citizen_id_confirms?: CitizenIdsConfirmUncheckedUpdateManyWithoutInstructorNestedInput
     instructor_qualifications?: InstructorQualificationsUncheckedUpdateManyWithoutInstructorNestedInput
     courses?: CourseUncheckedUpdateManyWithoutInstructorNestedInput
   }
@@ -63311,40 +61794,6 @@ export namespace Prisma {
     create: XOR<InstructorSpecializationsCreateWithoutInstructorInput, InstructorSpecializationsUncheckedCreateWithoutInstructorInput>
   }
 
-  export type CitizenIdsConfirmCreateWithoutInstructorInput = {
-    citizen_id?: string
-    citizen_number: string
-    date_of_birth: Date | string
-    place_of_birth: string
-    issued_place: string
-    status?: $Enums.ApprovalStatus
-    isVerified?: boolean
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type CitizenIdsConfirmUncheckedCreateWithoutInstructorInput = {
-    citizen_id?: string
-    citizen_number: string
-    date_of_birth: Date | string
-    place_of_birth: string
-    issued_place: string
-    status?: $Enums.ApprovalStatus
-    isVerified?: boolean
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type CitizenIdsConfirmCreateOrConnectWithoutInstructorInput = {
-    where: CitizenIdsConfirmWhereUniqueInput
-    create: XOR<CitizenIdsConfirmCreateWithoutInstructorInput, CitizenIdsConfirmUncheckedCreateWithoutInstructorInput>
-  }
-
-  export type CitizenIdsConfirmCreateManyInstructorInputEnvelope = {
-    data: CitizenIdsConfirmCreateManyInstructorInput | CitizenIdsConfirmCreateManyInstructorInput[]
-    skipDuplicates?: boolean
-  }
-
   export type InstructorQualificationsCreateWithoutInstructorInput = {
     instructor_qualification_id?: string
     type?: $Enums.QualificationType
@@ -63397,8 +61846,8 @@ export namespace Prisma {
     thumbnail: string
     admin_note?: string | null
     price: Decimal | DecimalJsLike | number | string
-    sale_off?: boolean
-    hot?: boolean
+    sale_off?: Decimal | DecimalJsLike | number | string | null
+    hot?: boolean | null
     tag?: boolean
     available_language?: $Enums.LanguageOptions
     createdAt?: Date | string
@@ -63426,8 +61875,8 @@ export namespace Prisma {
     thumbnail: string
     admin_note?: string | null
     price: Decimal | DecimalJsLike | number | string
-    sale_off?: boolean
-    hot?: boolean
+    sale_off?: Decimal | DecimalJsLike | number | string | null
+    hot?: boolean | null
     tag?: boolean
     available_language?: $Enums.LanguageOptions
     createdAt?: Date | string
@@ -63598,38 +62047,6 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type CitizenIdsConfirmUpsertWithWhereUniqueWithoutInstructorInput = {
-    where: CitizenIdsConfirmWhereUniqueInput
-    update: XOR<CitizenIdsConfirmUpdateWithoutInstructorInput, CitizenIdsConfirmUncheckedUpdateWithoutInstructorInput>
-    create: XOR<CitizenIdsConfirmCreateWithoutInstructorInput, CitizenIdsConfirmUncheckedCreateWithoutInstructorInput>
-  }
-
-  export type CitizenIdsConfirmUpdateWithWhereUniqueWithoutInstructorInput = {
-    where: CitizenIdsConfirmWhereUniqueInput
-    data: XOR<CitizenIdsConfirmUpdateWithoutInstructorInput, CitizenIdsConfirmUncheckedUpdateWithoutInstructorInput>
-  }
-
-  export type CitizenIdsConfirmUpdateManyWithWhereWithoutInstructorInput = {
-    where: CitizenIdsConfirmScalarWhereInput
-    data: XOR<CitizenIdsConfirmUpdateManyMutationInput, CitizenIdsConfirmUncheckedUpdateManyWithoutInstructorInput>
-  }
-
-  export type CitizenIdsConfirmScalarWhereInput = {
-    AND?: CitizenIdsConfirmScalarWhereInput | CitizenIdsConfirmScalarWhereInput[]
-    OR?: CitizenIdsConfirmScalarWhereInput[]
-    NOT?: CitizenIdsConfirmScalarWhereInput | CitizenIdsConfirmScalarWhereInput[]
-    citizen_id?: StringFilter<"CitizenIdsConfirm"> | string
-    instructor_id?: StringFilter<"CitizenIdsConfirm"> | string
-    citizen_number?: StringFilter<"CitizenIdsConfirm"> | string
-    date_of_birth?: DateTimeFilter<"CitizenIdsConfirm"> | Date | string
-    place_of_birth?: StringFilter<"CitizenIdsConfirm"> | string
-    issued_place?: StringFilter<"CitizenIdsConfirm"> | string
-    status?: EnumApprovalStatusFilter<"CitizenIdsConfirm"> | $Enums.ApprovalStatus
-    isVerified?: BoolFilter<"CitizenIdsConfirm"> | boolean
-    createdAt?: DateTimeFilter<"CitizenIdsConfirm"> | Date | string
-    updatedAt?: DateTimeFilter<"CitizenIdsConfirm"> | Date | string
-  }
-
   export type InstructorQualificationsUpsertWithWhereUniqueWithoutInstructorInput = {
     where: InstructorQualificationsWhereUniqueInput
     update: XOR<InstructorQualificationsUpdateWithoutInstructorInput, InstructorQualificationsUncheckedUpdateWithoutInstructorInput>
@@ -63678,8 +62095,8 @@ export namespace Prisma {
     thumbnail?: StringFilter<"Course"> | string
     admin_note?: StringNullableFilter<"Course"> | string | null
     price?: DecimalFilter<"Course"> | Decimal | DecimalJsLike | number | string
-    sale_off?: BoolFilter<"Course"> | boolean
-    hot?: BoolFilter<"Course"> | boolean
+    sale_off?: DecimalNullableFilter<"Course"> | Decimal | DecimalJsLike | number | string | null
+    hot?: BoolNullableFilter<"Course"> | boolean | null
     tag?: BoolFilter<"Course"> | boolean
     available_language?: EnumLanguageOptionsFilter<"Course"> | $Enums.LanguageOptions
     createdAt?: DateTimeFilter<"Course"> | Date | string
@@ -63723,7 +62140,6 @@ export namespace Prisma {
     deletedAt?: Date | string | null
     user: UserCreateNestedOneWithoutInstructorInput
     bank_accout?: BankAccountCreateNestedOneWithoutBelongInstructorInput
-    citizen_id_confirms?: CitizenIdsConfirmCreateNestedManyWithoutInstructorInput
     instructor_qualifications?: InstructorQualificationsCreateNestedManyWithoutInstructorInput
     courses?: CourseCreateNestedManyWithoutInstructorInput
   }
@@ -63737,7 +62153,6 @@ export namespace Prisma {
     updatedAt?: Date | string
     deletedAt?: Date | string | null
     bank_accout?: BankAccountUncheckedCreateNestedOneWithoutBelongInstructorInput
-    citizen_id_confirms?: CitizenIdsConfirmUncheckedCreateNestedManyWithoutInstructorInput
     instructor_qualifications?: InstructorQualificationsUncheckedCreateNestedManyWithoutInstructorInput
     courses?: CourseUncheckedCreateNestedManyWithoutInstructorInput
   }
@@ -63823,7 +62238,6 @@ export namespace Prisma {
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     user?: UserUpdateOneRequiredWithoutInstructorNestedInput
     bank_accout?: BankAccountUpdateOneWithoutBelongInstructorNestedInput
-    citizen_id_confirms?: CitizenIdsConfirmUpdateManyWithoutInstructorNestedInput
     instructor_qualifications?: InstructorQualificationsUpdateManyWithoutInstructorNestedInput
     courses?: CourseUpdateManyWithoutInstructorNestedInput
   }
@@ -63837,7 +62251,6 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     bank_accout?: BankAccountUncheckedUpdateOneWithoutBelongInstructorNestedInput
-    citizen_id_confirms?: CitizenIdsConfirmUncheckedUpdateManyWithoutInstructorNestedInput
     instructor_qualifications?: InstructorQualificationsUncheckedUpdateManyWithoutInstructorNestedInput
     courses?: CourseUncheckedUpdateManyWithoutInstructorNestedInput
   }
@@ -64241,7 +62654,6 @@ export namespace Prisma {
     user: UserCreateNestedOneWithoutInstructorInput
     bank_accout?: BankAccountCreateNestedOneWithoutBelongInstructorInput
     instructorSpecialization?: InstructorSpecializationsCreateNestedOneWithoutInstructorInput
-    citizen_id_confirms?: CitizenIdsConfirmCreateNestedManyWithoutInstructorInput
     courses?: CourseCreateNestedManyWithoutInstructorInput
   }
 
@@ -64255,7 +62667,6 @@ export namespace Prisma {
     deletedAt?: Date | string | null
     bank_accout?: BankAccountUncheckedCreateNestedOneWithoutBelongInstructorInput
     instructorSpecialization?: InstructorSpecializationsUncheckedCreateNestedOneWithoutInstructorInput
-    citizen_id_confirms?: CitizenIdsConfirmUncheckedCreateNestedManyWithoutInstructorInput
     courses?: CourseUncheckedCreateNestedManyWithoutInstructorInput
   }
 
@@ -64397,7 +62808,6 @@ export namespace Prisma {
     user?: UserUpdateOneRequiredWithoutInstructorNestedInput
     bank_accout?: BankAccountUpdateOneWithoutBelongInstructorNestedInput
     instructorSpecialization?: InstructorSpecializationsUpdateOneWithoutInstructorNestedInput
-    citizen_id_confirms?: CitizenIdsConfirmUpdateManyWithoutInstructorNestedInput
     courses?: CourseUpdateManyWithoutInstructorNestedInput
   }
 
@@ -64411,7 +62821,6 @@ export namespace Prisma {
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     bank_accout?: BankAccountUncheckedUpdateOneWithoutBelongInstructorNestedInput
     instructorSpecialization?: InstructorSpecializationsUncheckedUpdateOneWithoutInstructorNestedInput
-    citizen_id_confirms?: CitizenIdsConfirmUncheckedUpdateManyWithoutInstructorNestedInput
     courses?: CourseUncheckedUpdateManyWithoutInstructorNestedInput
   }
 
@@ -64548,7 +62957,6 @@ export namespace Prisma {
     deletedAt?: Date | string | null
     user: UserCreateNestedOneWithoutInstructorInput
     instructorSpecialization?: InstructorSpecializationsCreateNestedOneWithoutInstructorInput
-    citizen_id_confirms?: CitizenIdsConfirmCreateNestedManyWithoutInstructorInput
     instructor_qualifications?: InstructorQualificationsCreateNestedManyWithoutInstructorInput
     courses?: CourseCreateNestedManyWithoutInstructorInput
   }
@@ -64562,7 +62970,6 @@ export namespace Prisma {
     updatedAt?: Date | string
     deletedAt?: Date | string | null
     instructorSpecialization?: InstructorSpecializationsUncheckedCreateNestedOneWithoutInstructorInput
-    citizen_id_confirms?: CitizenIdsConfirmUncheckedCreateNestedManyWithoutInstructorInput
     instructor_qualifications?: InstructorQualificationsUncheckedCreateNestedManyWithoutInstructorInput
     courses?: CourseUncheckedCreateNestedManyWithoutInstructorInput
   }
@@ -64592,7 +62999,6 @@ export namespace Prisma {
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     user?: UserUpdateOneRequiredWithoutInstructorNestedInput
     instructorSpecialization?: InstructorSpecializationsUpdateOneWithoutInstructorNestedInput
-    citizen_id_confirms?: CitizenIdsConfirmUpdateManyWithoutInstructorNestedInput
     instructor_qualifications?: InstructorQualificationsUpdateManyWithoutInstructorNestedInput
     courses?: CourseUpdateManyWithoutInstructorNestedInput
   }
@@ -64606,7 +63012,6 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     instructorSpecialization?: InstructorSpecializationsUncheckedUpdateOneWithoutInstructorNestedInput
-    citizen_id_confirms?: CitizenIdsConfirmUncheckedUpdateManyWithoutInstructorNestedInput
     instructor_qualifications?: InstructorQualificationsUncheckedUpdateManyWithoutInstructorNestedInput
     courses?: CourseUncheckedUpdateManyWithoutInstructorNestedInput
   }
@@ -64863,8 +63268,8 @@ export namespace Prisma {
     thumbnail: string
     admin_note?: string | null
     price: Decimal | DecimalJsLike | number | string
-    sale_off?: boolean
-    hot?: boolean
+    sale_off?: Decimal | DecimalJsLike | number | string | null
+    hot?: boolean | null
     tag?: boolean
     available_language?: $Enums.LanguageOptions
     createdAt?: Date | string
@@ -64893,8 +63298,8 @@ export namespace Prisma {
     thumbnail: string
     admin_note?: string | null
     price: Decimal | DecimalJsLike | number | string
-    sale_off?: boolean
-    hot?: boolean
+    sale_off?: Decimal | DecimalJsLike | number | string | null
+    hot?: boolean | null
     tag?: boolean
     available_language?: $Enums.LanguageOptions
     createdAt?: Date | string
@@ -65041,8 +63446,8 @@ export namespace Prisma {
     thumbnail?: StringFieldUpdateOperationsInput | string
     admin_note?: NullableStringFieldUpdateOperationsInput | string | null
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    sale_off?: BoolFieldUpdateOperationsInput | boolean
-    hot?: BoolFieldUpdateOperationsInput | boolean
+    sale_off?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    hot?: NullableBoolFieldUpdateOperationsInput | boolean | null
     tag?: BoolFieldUpdateOperationsInput | boolean
     available_language?: EnumLanguageOptionsFieldUpdateOperationsInput | $Enums.LanguageOptions
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -65071,8 +63476,8 @@ export namespace Prisma {
     thumbnail?: StringFieldUpdateOperationsInput | string
     admin_note?: NullableStringFieldUpdateOperationsInput | string | null
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    sale_off?: BoolFieldUpdateOperationsInput | boolean
-    hot?: BoolFieldUpdateOperationsInput | boolean
+    sale_off?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    hot?: NullableBoolFieldUpdateOperationsInput | boolean | null
     tag?: BoolFieldUpdateOperationsInput | boolean
     available_language?: EnumLanguageOptionsFieldUpdateOperationsInput | $Enums.LanguageOptions
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -66207,8 +64612,8 @@ export namespace Prisma {
     thumbnail: string
     admin_note?: string | null
     price: Decimal | DecimalJsLike | number | string
-    sale_off?: boolean
-    hot?: boolean
+    sale_off?: Decimal | DecimalJsLike | number | string | null
+    hot?: boolean | null
     tag?: boolean
     available_language?: $Enums.LanguageOptions
     createdAt?: Date | string
@@ -66237,8 +64642,8 @@ export namespace Prisma {
     thumbnail: string
     admin_note?: string | null
     price: Decimal | DecimalJsLike | number | string
-    sale_off?: boolean
-    hot?: boolean
+    sale_off?: Decimal | DecimalJsLike | number | string | null
+    hot?: boolean | null
     tag?: boolean
     available_language?: $Enums.LanguageOptions
     createdAt?: Date | string
@@ -66308,8 +64713,8 @@ export namespace Prisma {
     thumbnail?: StringFieldUpdateOperationsInput | string
     admin_note?: NullableStringFieldUpdateOperationsInput | string | null
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    sale_off?: BoolFieldUpdateOperationsInput | boolean
-    hot?: BoolFieldUpdateOperationsInput | boolean
+    sale_off?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    hot?: NullableBoolFieldUpdateOperationsInput | boolean | null
     tag?: BoolFieldUpdateOperationsInput | boolean
     available_language?: EnumLanguageOptionsFieldUpdateOperationsInput | $Enums.LanguageOptions
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -66338,8 +64743,8 @@ export namespace Prisma {
     thumbnail?: StringFieldUpdateOperationsInput | string
     admin_note?: NullableStringFieldUpdateOperationsInput | string | null
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    sale_off?: BoolFieldUpdateOperationsInput | boolean
-    hot?: BoolFieldUpdateOperationsInput | boolean
+    sale_off?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    hot?: NullableBoolFieldUpdateOperationsInput | boolean | null
     tag?: BoolFieldUpdateOperationsInput | boolean
     available_language?: EnumLanguageOptionsFieldUpdateOperationsInput | $Enums.LanguageOptions
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -66544,7 +64949,6 @@ export namespace Prisma {
     user: UserCreateNestedOneWithoutInstructorInput
     bank_accout?: BankAccountCreateNestedOneWithoutBelongInstructorInput
     instructorSpecialization?: InstructorSpecializationsCreateNestedOneWithoutInstructorInput
-    citizen_id_confirms?: CitizenIdsConfirmCreateNestedManyWithoutInstructorInput
     instructor_qualifications?: InstructorQualificationsCreateNestedManyWithoutInstructorInput
   }
 
@@ -66558,7 +64962,6 @@ export namespace Prisma {
     deletedAt?: Date | string | null
     bank_accout?: BankAccountUncheckedCreateNestedOneWithoutBelongInstructorInput
     instructorSpecialization?: InstructorSpecializationsUncheckedCreateNestedOneWithoutInstructorInput
-    citizen_id_confirms?: CitizenIdsConfirmUncheckedCreateNestedManyWithoutInstructorInput
     instructor_qualifications?: InstructorQualificationsUncheckedCreateNestedManyWithoutInstructorInput
   }
 
@@ -66784,7 +65187,6 @@ export namespace Prisma {
     user?: UserUpdateOneRequiredWithoutInstructorNestedInput
     bank_accout?: BankAccountUpdateOneWithoutBelongInstructorNestedInput
     instructorSpecialization?: InstructorSpecializationsUpdateOneWithoutInstructorNestedInput
-    citizen_id_confirms?: CitizenIdsConfirmUpdateManyWithoutInstructorNestedInput
     instructor_qualifications?: InstructorQualificationsUpdateManyWithoutInstructorNestedInput
   }
 
@@ -66798,7 +65200,6 @@ export namespace Prisma {
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     bank_accout?: BankAccountUncheckedUpdateOneWithoutBelongInstructorNestedInput
     instructorSpecialization?: InstructorSpecializationsUncheckedUpdateOneWithoutInstructorNestedInput
-    citizen_id_confirms?: CitizenIdsConfirmUncheckedUpdateManyWithoutInstructorNestedInput
     instructor_qualifications?: InstructorQualificationsUncheckedUpdateManyWithoutInstructorNestedInput
   }
 
@@ -66828,8 +65229,8 @@ export namespace Prisma {
     thumbnail: string
     admin_note?: string | null
     price: Decimal | DecimalJsLike | number | string
-    sale_off?: boolean
-    hot?: boolean
+    sale_off?: Decimal | DecimalJsLike | number | string | null
+    hot?: boolean | null
     tag?: boolean
     available_language?: $Enums.LanguageOptions
     createdAt?: Date | string
@@ -66857,8 +65258,8 @@ export namespace Prisma {
     thumbnail: string
     admin_note?: string | null
     price: Decimal | DecimalJsLike | number | string
-    sale_off?: boolean
-    hot?: boolean
+    sale_off?: Decimal | DecimalJsLike | number | string | null
+    hot?: boolean | null
     tag?: boolean
     available_language?: $Enums.LanguageOptions
     createdAt?: Date | string
@@ -66908,8 +65309,8 @@ export namespace Prisma {
     thumbnail: string
     admin_note?: string | null
     price: Decimal | DecimalJsLike | number | string
-    sale_off?: boolean
-    hot?: boolean
+    sale_off?: Decimal | DecimalJsLike | number | string | null
+    hot?: boolean | null
     tag?: boolean
     available_language?: $Enums.LanguageOptions
     createdAt?: Date | string
@@ -66937,8 +65338,8 @@ export namespace Prisma {
     thumbnail: string
     admin_note?: string | null
     price: Decimal | DecimalJsLike | number | string
-    sale_off?: boolean
-    hot?: boolean
+    sale_off?: Decimal | DecimalJsLike | number | string | null
+    hot?: boolean | null
     tag?: boolean
     available_language?: $Enums.LanguageOptions
     createdAt?: Date | string
@@ -67013,8 +65414,8 @@ export namespace Prisma {
     thumbnail: string
     admin_note?: string | null
     price: Decimal | DecimalJsLike | number | string
-    sale_off?: boolean
-    hot?: boolean
+    sale_off?: Decimal | DecimalJsLike | number | string | null
+    hot?: boolean | null
     tag?: boolean
     available_language?: $Enums.LanguageOptions
     createdAt?: Date | string
@@ -67043,8 +65444,8 @@ export namespace Prisma {
     thumbnail: string
     admin_note?: string | null
     price: Decimal | DecimalJsLike | number | string
-    sale_off?: boolean
-    hot?: boolean
+    sale_off?: Decimal | DecimalJsLike | number | string | null
+    hot?: boolean | null
     tag?: boolean
     available_language?: $Enums.LanguageOptions
     createdAt?: Date | string
@@ -67114,8 +65515,8 @@ export namespace Prisma {
     thumbnail?: StringFieldUpdateOperationsInput | string
     admin_note?: NullableStringFieldUpdateOperationsInput | string | null
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    sale_off?: BoolFieldUpdateOperationsInput | boolean
-    hot?: BoolFieldUpdateOperationsInput | boolean
+    sale_off?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    hot?: NullableBoolFieldUpdateOperationsInput | boolean | null
     tag?: BoolFieldUpdateOperationsInput | boolean
     available_language?: EnumLanguageOptionsFieldUpdateOperationsInput | $Enums.LanguageOptions
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -67144,8 +65545,8 @@ export namespace Prisma {
     thumbnail?: StringFieldUpdateOperationsInput | string
     admin_note?: NullableStringFieldUpdateOperationsInput | string | null
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    sale_off?: BoolFieldUpdateOperationsInput | boolean
-    hot?: BoolFieldUpdateOperationsInput | boolean
+    sale_off?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    hot?: NullableBoolFieldUpdateOperationsInput | boolean | null
     tag?: BoolFieldUpdateOperationsInput | boolean
     available_language?: EnumLanguageOptionsFieldUpdateOperationsInput | $Enums.LanguageOptions
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -67168,8 +65569,8 @@ export namespace Prisma {
     thumbnail: string
     admin_note?: string | null
     price: Decimal | DecimalJsLike | number | string
-    sale_off?: boolean
-    hot?: boolean
+    sale_off?: Decimal | DecimalJsLike | number | string | null
+    hot?: boolean | null
     tag?: boolean
     available_language?: $Enums.LanguageOptions
     createdAt?: Date | string
@@ -67198,8 +65599,8 @@ export namespace Prisma {
     thumbnail: string
     admin_note?: string | null
     price: Decimal | DecimalJsLike | number | string
-    sale_off?: boolean
-    hot?: boolean
+    sale_off?: Decimal | DecimalJsLike | number | string | null
+    hot?: boolean | null
     tag?: boolean
     available_language?: $Enums.LanguageOptions
     createdAt?: Date | string
@@ -67325,8 +65726,8 @@ export namespace Prisma {
     thumbnail?: StringFieldUpdateOperationsInput | string
     admin_note?: NullableStringFieldUpdateOperationsInput | string | null
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    sale_off?: BoolFieldUpdateOperationsInput | boolean
-    hot?: BoolFieldUpdateOperationsInput | boolean
+    sale_off?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    hot?: NullableBoolFieldUpdateOperationsInput | boolean | null
     tag?: BoolFieldUpdateOperationsInput | boolean
     available_language?: EnumLanguageOptionsFieldUpdateOperationsInput | $Enums.LanguageOptions
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -67355,8 +65756,8 @@ export namespace Prisma {
     thumbnail?: StringFieldUpdateOperationsInput | string
     admin_note?: NullableStringFieldUpdateOperationsInput | string | null
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    sale_off?: BoolFieldUpdateOperationsInput | boolean
-    hot?: BoolFieldUpdateOperationsInput | boolean
+    sale_off?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    hot?: NullableBoolFieldUpdateOperationsInput | boolean | null
     tag?: BoolFieldUpdateOperationsInput | boolean
     available_language?: EnumLanguageOptionsFieldUpdateOperationsInput | $Enums.LanguageOptions
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -68649,8 +67050,8 @@ export namespace Prisma {
     thumbnail: string
     admin_note?: string | null
     price: Decimal | DecimalJsLike | number | string
-    sale_off?: boolean
-    hot?: boolean
+    sale_off?: Decimal | DecimalJsLike | number | string | null
+    hot?: boolean | null
     tag?: boolean
     available_language?: $Enums.LanguageOptions
     createdAt?: Date | string
@@ -68679,8 +67080,8 @@ export namespace Prisma {
     thumbnail: string
     admin_note?: string | null
     price: Decimal | DecimalJsLike | number | string
-    sale_off?: boolean
-    hot?: boolean
+    sale_off?: Decimal | DecimalJsLike | number | string | null
+    hot?: boolean | null
     tag?: boolean
     available_language?: $Enums.LanguageOptions
     createdAt?: Date | string
@@ -68810,8 +67211,8 @@ export namespace Prisma {
     thumbnail?: StringFieldUpdateOperationsInput | string
     admin_note?: NullableStringFieldUpdateOperationsInput | string | null
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    sale_off?: BoolFieldUpdateOperationsInput | boolean
-    hot?: BoolFieldUpdateOperationsInput | boolean
+    sale_off?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    hot?: NullableBoolFieldUpdateOperationsInput | boolean | null
     tag?: BoolFieldUpdateOperationsInput | boolean
     available_language?: EnumLanguageOptionsFieldUpdateOperationsInput | $Enums.LanguageOptions
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -68840,8 +67241,8 @@ export namespace Prisma {
     thumbnail?: StringFieldUpdateOperationsInput | string
     admin_note?: NullableStringFieldUpdateOperationsInput | string | null
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    sale_off?: BoolFieldUpdateOperationsInput | boolean
-    hot?: BoolFieldUpdateOperationsInput | boolean
+    sale_off?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    hot?: NullableBoolFieldUpdateOperationsInput | boolean | null
     tag?: BoolFieldUpdateOperationsInput | boolean
     available_language?: EnumLanguageOptionsFieldUpdateOperationsInput | $Enums.LanguageOptions
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -69775,8 +68176,8 @@ export namespace Prisma {
     thumbnail: string
     admin_note?: string | null
     price: Decimal | DecimalJsLike | number | string
-    sale_off?: boolean
-    hot?: boolean
+    sale_off?: Decimal | DecimalJsLike | number | string | null
+    hot?: boolean | null
     tag?: boolean
     available_language?: $Enums.LanguageOptions
     createdAt?: Date | string
@@ -69805,8 +68206,8 @@ export namespace Prisma {
     thumbnail: string
     admin_note?: string | null
     price: Decimal | DecimalJsLike | number | string
-    sale_off?: boolean
-    hot?: boolean
+    sale_off?: Decimal | DecimalJsLike | number | string | null
+    hot?: boolean | null
     tag?: boolean
     available_language?: $Enums.LanguageOptions
     createdAt?: Date | string
@@ -69876,8 +68277,8 @@ export namespace Prisma {
     thumbnail?: StringFieldUpdateOperationsInput | string
     admin_note?: NullableStringFieldUpdateOperationsInput | string | null
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    sale_off?: BoolFieldUpdateOperationsInput | boolean
-    hot?: BoolFieldUpdateOperationsInput | boolean
+    sale_off?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    hot?: NullableBoolFieldUpdateOperationsInput | boolean | null
     tag?: BoolFieldUpdateOperationsInput | boolean
     available_language?: EnumLanguageOptionsFieldUpdateOperationsInput | $Enums.LanguageOptions
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -69906,8 +68307,8 @@ export namespace Prisma {
     thumbnail?: StringFieldUpdateOperationsInput | string
     admin_note?: NullableStringFieldUpdateOperationsInput | string | null
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    sale_off?: BoolFieldUpdateOperationsInput | boolean
-    hot?: BoolFieldUpdateOperationsInput | boolean
+    sale_off?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    hot?: NullableBoolFieldUpdateOperationsInput | boolean | null
     tag?: BoolFieldUpdateOperationsInput | boolean
     available_language?: EnumLanguageOptionsFieldUpdateOperationsInput | $Enums.LanguageOptions
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -71350,18 +69751,6 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type CitizenIdsConfirmCreateManyInstructorInput = {
-    citizen_id?: string
-    citizen_number: string
-    date_of_birth: Date | string
-    place_of_birth: string
-    issued_place: string
-    status?: $Enums.ApprovalStatus
-    isVerified?: boolean
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
   export type InstructorQualificationsCreateManyInstructorInput = {
     instructor_qualification_id?: string
     specialization_id?: string | null
@@ -71390,49 +69779,13 @@ export namespace Prisma {
     thumbnail: string
     admin_note?: string | null
     price: Decimal | DecimalJsLike | number | string
-    sale_off?: boolean
-    hot?: boolean
+    sale_off?: Decimal | DecimalJsLike | number | string | null
+    hot?: boolean | null
     tag?: boolean
     available_language?: $Enums.LanguageOptions
     createdAt?: Date | string
     updatedAt?: Date | string
     rejectedAt?: Date | string | null
-  }
-
-  export type CitizenIdsConfirmUpdateWithoutInstructorInput = {
-    citizen_id?: StringFieldUpdateOperationsInput | string
-    citizen_number?: StringFieldUpdateOperationsInput | string
-    date_of_birth?: DateTimeFieldUpdateOperationsInput | Date | string
-    place_of_birth?: StringFieldUpdateOperationsInput | string
-    issued_place?: StringFieldUpdateOperationsInput | string
-    status?: EnumApprovalStatusFieldUpdateOperationsInput | $Enums.ApprovalStatus
-    isVerified?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type CitizenIdsConfirmUncheckedUpdateWithoutInstructorInput = {
-    citizen_id?: StringFieldUpdateOperationsInput | string
-    citizen_number?: StringFieldUpdateOperationsInput | string
-    date_of_birth?: DateTimeFieldUpdateOperationsInput | Date | string
-    place_of_birth?: StringFieldUpdateOperationsInput | string
-    issued_place?: StringFieldUpdateOperationsInput | string
-    status?: EnumApprovalStatusFieldUpdateOperationsInput | $Enums.ApprovalStatus
-    isVerified?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type CitizenIdsConfirmUncheckedUpdateManyWithoutInstructorInput = {
-    citizen_id?: StringFieldUpdateOperationsInput | string
-    citizen_number?: StringFieldUpdateOperationsInput | string
-    date_of_birth?: DateTimeFieldUpdateOperationsInput | Date | string
-    place_of_birth?: StringFieldUpdateOperationsInput | string
-    issued_place?: StringFieldUpdateOperationsInput | string
-    status?: EnumApprovalStatusFieldUpdateOperationsInput | $Enums.ApprovalStatus
-    isVerified?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type InstructorQualificationsUpdateWithoutInstructorInput = {
@@ -71493,8 +69846,8 @@ export namespace Prisma {
     thumbnail?: StringFieldUpdateOperationsInput | string
     admin_note?: NullableStringFieldUpdateOperationsInput | string | null
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    sale_off?: BoolFieldUpdateOperationsInput | boolean
-    hot?: BoolFieldUpdateOperationsInput | boolean
+    sale_off?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    hot?: NullableBoolFieldUpdateOperationsInput | boolean | null
     tag?: BoolFieldUpdateOperationsInput | boolean
     available_language?: EnumLanguageOptionsFieldUpdateOperationsInput | $Enums.LanguageOptions
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -71522,8 +69875,8 @@ export namespace Prisma {
     thumbnail?: StringFieldUpdateOperationsInput | string
     admin_note?: NullableStringFieldUpdateOperationsInput | string | null
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    sale_off?: BoolFieldUpdateOperationsInput | boolean
-    hot?: BoolFieldUpdateOperationsInput | boolean
+    sale_off?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    hot?: NullableBoolFieldUpdateOperationsInput | boolean | null
     tag?: BoolFieldUpdateOperationsInput | boolean
     available_language?: EnumLanguageOptionsFieldUpdateOperationsInput | $Enums.LanguageOptions
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -71549,8 +69902,8 @@ export namespace Prisma {
     thumbnail?: StringFieldUpdateOperationsInput | string
     admin_note?: NullableStringFieldUpdateOperationsInput | string | null
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    sale_off?: BoolFieldUpdateOperationsInput | boolean
-    hot?: BoolFieldUpdateOperationsInput | boolean
+    sale_off?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    hot?: NullableBoolFieldUpdateOperationsInput | boolean | null
     tag?: BoolFieldUpdateOperationsInput | boolean
     available_language?: EnumLanguageOptionsFieldUpdateOperationsInput | $Enums.LanguageOptions
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -72236,8 +70589,8 @@ export namespace Prisma {
     thumbnail: string
     admin_note?: string | null
     price: Decimal | DecimalJsLike | number | string
-    sale_off?: boolean
-    hot?: boolean
+    sale_off?: Decimal | DecimalJsLike | number | string | null
+    hot?: boolean | null
     tag?: boolean
     available_language?: $Enums.LanguageOptions
     createdAt?: Date | string
@@ -72255,8 +70608,8 @@ export namespace Prisma {
     thumbnail?: StringFieldUpdateOperationsInput | string
     admin_note?: NullableStringFieldUpdateOperationsInput | string | null
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    sale_off?: BoolFieldUpdateOperationsInput | boolean
-    hot?: BoolFieldUpdateOperationsInput | boolean
+    sale_off?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    hot?: NullableBoolFieldUpdateOperationsInput | boolean | null
     tag?: BoolFieldUpdateOperationsInput | boolean
     available_language?: EnumLanguageOptionsFieldUpdateOperationsInput | $Enums.LanguageOptions
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -72284,8 +70637,8 @@ export namespace Prisma {
     thumbnail?: StringFieldUpdateOperationsInput | string
     admin_note?: NullableStringFieldUpdateOperationsInput | string | null
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    sale_off?: BoolFieldUpdateOperationsInput | boolean
-    hot?: BoolFieldUpdateOperationsInput | boolean
+    sale_off?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    hot?: NullableBoolFieldUpdateOperationsInput | boolean | null
     tag?: BoolFieldUpdateOperationsInput | boolean
     available_language?: EnumLanguageOptionsFieldUpdateOperationsInput | $Enums.LanguageOptions
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -72311,8 +70664,8 @@ export namespace Prisma {
     thumbnail?: StringFieldUpdateOperationsInput | string
     admin_note?: NullableStringFieldUpdateOperationsInput | string | null
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    sale_off?: BoolFieldUpdateOperationsInput | boolean
-    hot?: BoolFieldUpdateOperationsInput | boolean
+    sale_off?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    hot?: NullableBoolFieldUpdateOperationsInput | boolean | null
     tag?: BoolFieldUpdateOperationsInput | boolean
     available_language?: EnumLanguageOptionsFieldUpdateOperationsInput | $Enums.LanguageOptions
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -72332,8 +70685,8 @@ export namespace Prisma {
     thumbnail: string
     admin_note?: string | null
     price: Decimal | DecimalJsLike | number | string
-    sale_off?: boolean
-    hot?: boolean
+    sale_off?: Decimal | DecimalJsLike | number | string | null
+    hot?: boolean | null
     tag?: boolean
     available_language?: $Enums.LanguageOptions
     createdAt?: Date | string
@@ -72351,8 +70704,8 @@ export namespace Prisma {
     thumbnail?: StringFieldUpdateOperationsInput | string
     admin_note?: NullableStringFieldUpdateOperationsInput | string | null
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    sale_off?: BoolFieldUpdateOperationsInput | boolean
-    hot?: BoolFieldUpdateOperationsInput | boolean
+    sale_off?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    hot?: NullableBoolFieldUpdateOperationsInput | boolean | null
     tag?: BoolFieldUpdateOperationsInput | boolean
     available_language?: EnumLanguageOptionsFieldUpdateOperationsInput | $Enums.LanguageOptions
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -72380,8 +70733,8 @@ export namespace Prisma {
     thumbnail?: StringFieldUpdateOperationsInput | string
     admin_note?: NullableStringFieldUpdateOperationsInput | string | null
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    sale_off?: BoolFieldUpdateOperationsInput | boolean
-    hot?: BoolFieldUpdateOperationsInput | boolean
+    sale_off?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    hot?: NullableBoolFieldUpdateOperationsInput | boolean | null
     tag?: BoolFieldUpdateOperationsInput | boolean
     available_language?: EnumLanguageOptionsFieldUpdateOperationsInput | $Enums.LanguageOptions
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -72407,8 +70760,8 @@ export namespace Prisma {
     thumbnail?: StringFieldUpdateOperationsInput | string
     admin_note?: NullableStringFieldUpdateOperationsInput | string | null
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    sale_off?: BoolFieldUpdateOperationsInput | boolean
-    hot?: BoolFieldUpdateOperationsInput | boolean
+    sale_off?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    hot?: NullableBoolFieldUpdateOperationsInput | boolean | null
     tag?: BoolFieldUpdateOperationsInput | boolean
     available_language?: EnumLanguageOptionsFieldUpdateOperationsInput | $Enums.LanguageOptions
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
