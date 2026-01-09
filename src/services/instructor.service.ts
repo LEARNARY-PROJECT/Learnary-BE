@@ -48,7 +48,6 @@ export const getInstructorById = async (instructor_id: string): Promise<Instruct
     include: {
       user: true,
       instructorSpecialization: true,
-      citizen_id_confirms: true,
       instructor_qualifications: true,
       courses: true,
     }
