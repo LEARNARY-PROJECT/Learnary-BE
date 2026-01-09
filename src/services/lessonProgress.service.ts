@@ -2,7 +2,7 @@ import prisma from "../lib/client";
 import { AppError } from "../utils/custom-error";
 
 export const markLessonComplete = async (user_id: string, lesson_id: string) => {
-  return prisma.lessonProgress.upsert({
+  const progress = await prisma.lessonProgress.upsert({
     where: {
       user_id_lesson_id: {
         user_id,
@@ -20,10 +20,12 @@ export const markLessonComplete = async (user_id: string, lesson_id: string) => 
       completed_at: new Date()
     }
   });
+  await updateLearnerCourseProgress(user_id, lesson_id);
+  return progress;
 };
 
 export const markLessonIncomplete = async (user_id: string, lesson_id: string) => {
-  return prisma.lessonProgress.upsert({
+  const progress = await prisma.lessonProgress.upsert({
     where: {
       user_id_lesson_id: {
         user_id,
@@ -41,6 +43,8 @@ export const markLessonIncomplete = async (user_id: string, lesson_id: string) =
       completed_at: null
     }
   });
+  await updateLearnerCourseProgress(user_id, lesson_id);
+  return progress;
 };
 
 export const getLessonProgress = async (user_id: string, lesson_id: string) => {
@@ -177,6 +181,59 @@ export const deleteLessonProgress = async (user_id: string, lesson_id: string) =
         user_id,
         lesson_id
       }
+    }
+  });
+};
+const updateLearnerCourseProgress = async (user_id: string, lesson_id: string) => {
+  const lesson = await prisma.lesson.findUnique({
+    where: { lesson_id },
+    select: {
+      belongChapter: {
+        select: {
+          course_id: true
+        }
+      }
+    }
+  });
+  if (!lesson?.belongChapter?.course_id) {
+    return;
+  }
+  const course_id = lesson.belongChapter.course_id;
+  const learner = await prisma.learner.findUnique({
+    where: { user_id },
+    select: { learner_id: true }
+  });
+  if (!learner) {
+    return;
+  }
+  const totalLessons = await prisma.lesson.count({
+    where: {
+      belongChapter: {
+        course_id
+      }
+    }
+  });
+  const completedLessons = await prisma.lessonProgress.count({
+    where: {
+      user_id,
+      is_completed: true,
+      lesson: {
+        belongChapter: {
+          course_id
+        }
+      }
+    }
+  });
+  const progressPercentage = totalLessons > 0 ? parseFloat(((completedLessons / totalLessons) * 100).toFixed(2)) : 0;
+  await prisma.learnerCourses.update({
+    where: {
+      learner_id_course_id: {
+        learner_id: learner.learner_id,
+        course_id
+      }
+    },
+    data: {
+      progress: progressPercentage
     }
   });
 };

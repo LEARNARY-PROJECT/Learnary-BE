@@ -15,12 +15,31 @@ export const createFeedback = async (req: Request, res: Response)  => {
         res.status(201).json(feedback);
     } catch (error) {
         const e = error as Error;
-        console.error('Create feedback error:', e);
-        
         if (e.message === "You already feedback on this course") {
             res.status(409).json({ 
                 success: false,
                 message: 'Bạn đã đánh giá khóa học này rồi' 
+            });
+            return;
+        }
+        if (e.message === "User is not a learner") {
+            res.status(403).json({ 
+                success: false,
+                message: 'Bạn phải là học viên để đánh giá khóa học' 
+            });
+            return;
+        }
+        if (e.message === "You must enroll in this course before giving feedback") {
+            res.status(403).json({ 
+                success: false,
+                message: 'Bạn phải đăng ký khóa học trước khi đánh giá' 
+            });
+            return;
+        }
+        if (e.message.includes("You must complete at least 30%")) {
+            res.status(403).json({ 
+                success: false,
+                message: e.message 
             });
             return;
         }

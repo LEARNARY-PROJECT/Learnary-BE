@@ -100,8 +100,8 @@ app.use("/api", courseGroupRoutes);
 app.use("/api", groupRoutes);
 app.use("/api", categoriesRoutes);
 app.use("/api", levelRoutes);
-app.use("/api", courseRoutes);//public  thì để trc course
 app.use("/api", feedbackRoutes);
+app.use("/api", courseRoutes);//public  thì để trc course
 app.use("/api", learnerRoutes);
 app.use("/api", instructorRoutes);
 app.use("/api/instructor", instructorStatsRoutes);
