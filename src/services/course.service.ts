@@ -134,7 +134,8 @@ export const getCoursesByInstructorId = async (userId: string) => {
       _count: {
         select: { chapter: true }
       },
-      level: true
+      level: true,
+      category:true
     },
   });
 };
@@ -699,5 +700,75 @@ export const uploadNewThumbnailToS3 = async (userId: string, courseId: string, f
     return updatedThumbnail;
   } catch (error) {
     throw new Error("Error while compare URL thumbnail")
+  }
+}
+export const autoDeleteRejectedCourseVideos = async () => {
+  try {
+    const sevenDaysAgo = new Date();
+    sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+    const rejectedCourses = await prisma.course.findMany({
+      where: {
+        status: CourseStatus.Archived,
+        rejectedAt: {
+          lte: sevenDaysAgo, // rejectedAt nhỏ hơn hoặc bằng 7 ngày trước
+          not: null
+        }
+      },
+      include: {
+        chapter: {
+          include: {
+            lessons: {
+              select: {
+                lesson_id: true,
+                video_url: true
+              }
+            }
+          }
+        }
+      }
+    });
+    if (rejectedCourses.length === 0) {
+      return {
+        deletedCoursesCount: 0,
+        deletedVideosCount: 0,
+        message: 'Không có khóa học nào cần xóa video'
+      };
+    }
+    let totalDeletedVideos = 0;
+    const deletedCourses: string[] = [];
+    for (const course of rejectedCourses) {
+      const videoUrls: string[] = [];
+      for (const chapter of course.chapter) {
+        for (const lesson of chapter.lessons) {
+          if (lesson.video_url) {
+            videoUrls.push(lesson.video_url);
+          }
+        }
+      }
+      if (videoUrls.length > 0) {
+        await deleteVideos(videoUrls);
+        totalDeletedVideos += videoUrls.length;
+        for (const chapter of course.chapter) {
+          for (const lesson of chapter.lessons) {
+            if (lesson.video_url) {
+              await prisma.lesson.update({
+                where: { lesson_id: lesson.lesson_id },
+                data: { video_url: null }
+              });
+            }
+          }
+        }
+        deletedCourses.push(course.title);
+      }
+    }
+    return {
+      deletedCoursesCount: deletedCourses.length,
+      deletedVideosCount: totalDeletedVideos,
+      message: `Đã xóa ${totalDeletedVideos} video từ ${deletedCourses.length} khóa học bị từ chối`,
+      courses: deletedCourses
+    };
+  } catch (error) {
+    console.error('Error in autoDeleteRejectedCourseVideos:', error);
+    throw new Error('Lỗi khi tự động xóa video khóa học bị từ chối');
   }
 }
