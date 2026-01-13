@@ -27724,7 +27724,7 @@ export namespace Prisma {
   export type CategoryGroupByOutputType = {
     category_id: string
     category_name: string
-    slug: string | null
+    slug: string
     createdAt: Date
     updatedAt: Date
     _count: CategoryCountAggregateOutputType | null
@@ -27796,7 +27796,7 @@ export namespace Prisma {
     scalars: $Extensions.GetPayloadResult<{
       category_id: string
       category_name: string
-      slug: string | null
+      slug: string
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["category"]>
@@ -50203,7 +50203,7 @@ export namespace Prisma {
     NOT?: CategoryWhereInput | CategoryWhereInput[]
     category_id?: StringFilter<"Category"> | string
     category_name?: StringFilter<"Category"> | string
-    slug?: StringNullableFilter<"Category"> | string | null
+    slug?: StringFilter<"Category"> | string
     createdAt?: DateTimeFilter<"Category"> | Date | string
     updatedAt?: DateTimeFilter<"Category"> | Date | string
     courses?: CourseListRelationFilter
@@ -50212,7 +50212,7 @@ export namespace Prisma {
   export type CategoryOrderByWithRelationInput = {
     category_id?: SortOrder
     category_name?: SortOrder
-    slug?: SortOrderInput | SortOrder
+    slug?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     courses?: CourseOrderByRelationAggregateInput
@@ -50221,19 +50221,19 @@ export namespace Prisma {
   export type CategoryWhereUniqueInput = Prisma.AtLeast<{
     category_id?: string
     category_name?: string
+    slug?: string
     AND?: CategoryWhereInput | CategoryWhereInput[]
     OR?: CategoryWhereInput[]
     NOT?: CategoryWhereInput | CategoryWhereInput[]
-    slug?: StringNullableFilter<"Category"> | string | null
     createdAt?: DateTimeFilter<"Category"> | Date | string
     updatedAt?: DateTimeFilter<"Category"> | Date | string
     courses?: CourseListRelationFilter
-  }, "category_id" | "category_name">
+  }, "category_id" | "category_name" | "slug">
 
   export type CategoryOrderByWithAggregationInput = {
     category_id?: SortOrder
     category_name?: SortOrder
-    slug?: SortOrderInput | SortOrder
+    slug?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: CategoryCountOrderByAggregateInput
@@ -50247,7 +50247,7 @@ export namespace Prisma {
     NOT?: CategoryScalarWhereWithAggregatesInput | CategoryScalarWhereWithAggregatesInput[]
     category_id?: StringWithAggregatesFilter<"Category"> | string
     category_name?: StringWithAggregatesFilter<"Category"> | string
-    slug?: StringNullableWithAggregatesFilter<"Category"> | string | null
+    slug?: StringWithAggregatesFilter<"Category"> | string
     createdAt?: DateTimeWithAggregatesFilter<"Category"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Category"> | Date | string
   }
@@ -53101,7 +53101,7 @@ export namespace Prisma {
   export type CategoryCreateInput = {
     category_id?: string
     category_name: string
-    slug?: string | null
+    slug: string
     createdAt?: Date | string
     updatedAt?: Date | string
     courses?: CourseCreateNestedManyWithoutCategoryInput
@@ -53110,7 +53110,7 @@ export namespace Prisma {
   export type CategoryUncheckedCreateInput = {
     category_id?: string
     category_name: string
-    slug?: string | null
+    slug: string
     createdAt?: Date | string
     updatedAt?: Date | string
     courses?: CourseUncheckedCreateNestedManyWithoutCategoryInput
@@ -53119,7 +53119,7 @@ export namespace Prisma {
   export type CategoryUpdateInput = {
     category_id?: StringFieldUpdateOperationsInput | string
     category_name?: StringFieldUpdateOperationsInput | string
-    slug?: NullableStringFieldUpdateOperationsInput | string | null
+    slug?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     courses?: CourseUpdateManyWithoutCategoryNestedInput
@@ -53128,7 +53128,7 @@ export namespace Prisma {
   export type CategoryUncheckedUpdateInput = {
     category_id?: StringFieldUpdateOperationsInput | string
     category_name?: StringFieldUpdateOperationsInput | string
-    slug?: NullableStringFieldUpdateOperationsInput | string | null
+    slug?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     courses?: CourseUncheckedUpdateManyWithoutCategoryNestedInput
@@ -53137,7 +53137,7 @@ export namespace Prisma {
   export type CategoryCreateManyInput = {
     category_id?: string
     category_name: string
-    slug?: string | null
+    slug: string
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -53145,7 +53145,7 @@ export namespace Prisma {
   export type CategoryUpdateManyMutationInput = {
     category_id?: StringFieldUpdateOperationsInput | string
     category_name?: StringFieldUpdateOperationsInput | string
-    slug?: NullableStringFieldUpdateOperationsInput | string | null
+    slug?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -53153,7 +53153,7 @@ export namespace Prisma {
   export type CategoryUncheckedUpdateManyInput = {
     category_id?: StringFieldUpdateOperationsInput | string
     category_name?: StringFieldUpdateOperationsInput | string
-    slug?: NullableStringFieldUpdateOperationsInput | string | null
+    slug?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -64849,7 +64849,7 @@ export namespace Prisma {
   export type CategoryCreateWithoutCoursesInput = {
     category_id?: string
     category_name: string
-    slug?: string | null
+    slug: string
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -64857,7 +64857,7 @@ export namespace Prisma {
   export type CategoryUncheckedCreateWithoutCoursesInput = {
     category_id?: string
     category_name: string
-    slug?: string | null
+    slug: string
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -65081,7 +65081,7 @@ export namespace Prisma {
   export type CategoryUpdateWithoutCoursesInput = {
     category_id?: StringFieldUpdateOperationsInput | string
     category_name?: StringFieldUpdateOperationsInput | string
-    slug?: NullableStringFieldUpdateOperationsInput | string | null
+    slug?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -65089,7 +65089,7 @@ export namespace Prisma {
   export type CategoryUncheckedUpdateWithoutCoursesInput = {
     category_id?: StringFieldUpdateOperationsInput | string
     category_name?: StringFieldUpdateOperationsInput | string
-    slug?: NullableStringFieldUpdateOperationsInput | string | null
+    slug?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }

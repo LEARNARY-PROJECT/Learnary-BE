@@ -1,5 +1,6 @@
 import prisma from "../lib/client";
 import { Category } from '../generated/prisma'
+import { AppError } from "../utils/custom-error";
 type UpdateCategoryData =  Partial<Omit<Category, 'category_id' | 'createdAt' | 'updatedAt'>>
 
 const seedCategory = [
@@ -30,7 +31,18 @@ export const getCategoryById = async (category_id: string) => {
 };
 
 export const getAllCategories = async () => {
-  return prisma.category.findMany();
+  return prisma.category.findMany({
+    select:{
+      category_id:true,
+      category_name:true,
+      slug:true,
+      _count: {
+        select: {
+          courses:true
+        }
+      }
+    }
+  });
 };
 
 export const updateCategory = async (category_id: string, data: UpdateCategoryData) => {
@@ -40,7 +52,67 @@ export const updateCategory = async (category_id: string, data: UpdateCategoryDa
 export const deleteCategory = async (category_id: string) => {
   return prisma.category.delete({ where: { category_id } });
 };
+export const getCategoryBySlug = async (category_slug: string, page: number = 1, limit: number = 10) => {
+  if(!category_slug) {
+     throw new AppError("Can not found slug", 404)
+  }
+  const neededCat = await prisma.category.findFirst({
+    where:{
+      slug: category_slug
+    },
+  })
+  if(!neededCat) {
+    throw new AppError("Can not found category", 404)
+  }
+  const skip = (page - 1) * limit;
+  const [courses, total] = await Promise.all([
+    prisma.course.findMany({
+      where:{
+        category_id: neededCat.category_id
+      },
+      select:{
+        course_id:true,
+        hot:true,
+        description:true,
+        slug:true,
+        title:true,
+        instructor: {
+          select: {
+            user: {
+              select: {
+                fullName: true,
+                avatar: true,
+                user_id: true
+              }
+            }
+          }
+        }
+      },
+      skip,
+      take: limit,
+      orderBy: {
+        createdAt: 'desc'
+      }
+    }),
+    prisma.course.count({
+      where:{
+        category_id: neededCat.category_id
+      }
+    })
+  ]);
 
+  return {
+    data: courses,
+    category:neededCat,
+    pagination: {
+      page,
+      limit,
+      total,
+      totalPages: Math.ceil(total / limit),
+      hasMore: page * limit < total
+    }
+  };
+}
 export const seedCategories = async () => {
   try {
     const existingCategories = await prisma.category.findMany();
