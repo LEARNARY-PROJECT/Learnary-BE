@@ -55,3 +55,17 @@ export const remove = async (req: Request, res: Response) => {
     res.status(500).json(failure("Failed to delete category", e.message));
   }
 };
+
+export const getBySlug = async (req: Request, res: Response) => {
+  try {
+    const { slug } = req.params;
+    const page = parseInt(req.query.page as string) || 1;
+    const limit = parseInt(req.query.limit as string) || 10;
+
+    const result = await CategoriesService.getCategoryBySlug(slug, page, limit);
+    res.json(success(result, "Courses fetched successfully"));
+  } catch (err) {
+    const e = err as Error;
+    res.status(500).json(failure("Failed to fetch courses by category slug", e.message));
+  }
+};
