@@ -10,6 +10,7 @@ import { S3_BUCKET_NAME, s3Client } from "../config/s3.config";
 import { PutObjectCommand } from "@aws-sdk/client-s3";
 import { getInstructorByUserId } from './instructor.service';
 import { sendNoticeCourseApproved, sendNoticeCourseRejected } from './email.service';
+
 export const getCourseBySlug = async (slugs: string): Promise<Course> => {
   if (!slugs) throw new Error('Không tìm thấy slug truyền vào!')
   const course = await prisma.course.findFirst({
@@ -86,6 +87,62 @@ export const getAllCourses = async () => {
       createdAt: 'desc' 
     }
   });
+};
+
+// Admin cập nhật trạng thái hot cho một khóa học bất kỳ
+export const updateCourseHotByAdmin = async (courseId: string, hot: boolean) => {
+  const course = await prisma.course.findUnique({ where: { course_id: courseId } });
+  if (!course) throw new Error('Course not found');
+  return prisma.course.update({
+    where: { course_id: courseId },
+    data: { hot },
+  });
+};
+
+export const setTopSellingCoursesHot = async () => {
+  const topCourses = await getTopSellingCourses();
+  const topIds = topCourses.map(c => c.course_id);
+  await prisma.course.updateMany({
+    data: { hot: true },
+    where: { course_id: { in: topIds } },
+  });
+
+  return { updatedHotIds: topIds };
+};
+
+export const getTopSellingCourses = async () => {
+  const courses = await prisma.course.findMany({
+    where: { status: 'Published' },
+    include: {
+      _count: {
+        select: { learnerCourses: true },
+      },
+    },
+  });
+  const coursesWithRevenue = courses.map((course) => {
+    const soldCount = course._count.learnerCourses || 0;
+    const revenue = Number(course.price) * soldCount;
+    return {
+      ...course,
+      soldCount,
+      revenue,
+    };
+  });
+
+  coursesWithRevenue.sort((a, b) => {
+    if (b.revenue !== a.revenue) return b.revenue - a.revenue;
+    return b.soldCount - a.soldCount;
+  });
+
+  const top10 = coursesWithRevenue.slice(0, 10);
+  const topIds = top10.map(c => c.course_id);
+
+  await prisma.course.updateMany({
+    data: { hot: true },
+    where: { course_id: { in: topIds } },
+  });
+
+  return top10;
 };
 
 export const getCourseById = (course_id: string) =>
@@ -302,13 +359,12 @@ export const updateDraftCourse = async (
 
   // Nếu Published chỉ cho phép cập nhật giá và cấp độ, hot, sale_off
   if (course.status === CourseStatus.Published) {
-    return await prisma.course.update({
+    return await prisma.course.update({ 
       where: { course_id: courseId },
       data: {
         price: data.price,
         level_id: data.level_id?.trim(),
         sale_off: data.sale_off ?? null,
-        hot: data.hot ?? null,
       },
     });
   }

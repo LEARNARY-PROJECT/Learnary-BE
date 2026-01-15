@@ -69,7 +69,15 @@ const router = express.Router();
  *                 $ref: '#/components/schemas/Course'
  */
 router.get('/courses', ControllerCourse.getAll);
+router.get('/courses/top-selling', ControllerCourse.getTopSellingCourses);
 
+// Admin cập nhật hot cho top 10 khóa học bán chạy nhất
+router.post(
+  '/courses/admin/update-hot',
+  authenticate,
+  authorizeRoles('ADMIN'),
+  ControllerCourse.updateHotTop10
+);
 router.get('/courses/slug/:slug',optionalAuthenticate, ControllerCourse.getCourseBySlug)
 
 // --- CÁC ROUTE CẦN XÁC THỰC ---
@@ -109,6 +117,44 @@ router.get(
   authenticate,
   authorizeRoles('ADMIN'),
   ControllerCourse.getPending,
+);
+
+/**
+ * @openapi
+ * /api/courses/admin/hot/{id}:
+ *   put:
+ *     summary: (Admin) Bật/tắt hot cho một khóa học
+ *     tags: [Course (Admin)]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               hot:
+ *                 type: boolean
+ *     responses:
+ *       200:
+ *         description: Cập nhật hot thành công
+ *       400:
+ *         description: Dữ liệu không hợp lệ
+ *       404:
+ *         description: Không tìm thấy khóa học
+ */
+router.put(
+  '/courses/admin/hot/:id',
+  authenticate,
+  authorizeRoles('ADMIN'),
+  ControllerCourse.updateHotStatus
 );
 
 /**
