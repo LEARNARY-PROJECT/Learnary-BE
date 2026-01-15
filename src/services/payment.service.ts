@@ -553,10 +553,6 @@ export const PaymentService = {
 if (process.env.NODE_ENV !== 'test') {
     setInterval(() => {
         PaymentService.autoCancelExpiredTransactions()
-            .then(count => {
-                if (count > 0) console.log(`Đã hủy ${count} giao dịch quá hạn.`);
-            })
-            .catch(err => console.error('Auto cancel error:', err));
     }, 10000);
 }
 

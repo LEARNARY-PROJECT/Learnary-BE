@@ -103,7 +103,14 @@ export const getInstructorQualificationsById = async (instructor_qualification_i
           }
         }
       },
-      specialization: true
+      specialization: true,
+      user: {
+        select: {
+          fullName:true,
+          avatar:true,
+          email:true
+        }
+      }
     }
   });
 };
