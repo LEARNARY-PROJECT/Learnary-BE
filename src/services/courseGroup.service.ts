@@ -94,7 +94,8 @@ export const getCoursesByGroupId = async (groupId: string) => {
                 }
               }
             }
-          }
+          },
+          category:true
         }
       }
     },

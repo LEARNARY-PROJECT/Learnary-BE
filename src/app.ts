@@ -20,7 +20,6 @@ import adminRolePermissionRoutes from "./routes/adminRolePermission.routes";
 import accountSecurityRoutes from "./routes/accountSecurity.routes";
 import instructorSpecializationsRoutes from "./routes/instructorSpecializations.routes";
 import specializationRoutes from "./routes/specialization.routes";
-import citizenIdsConfirmRoutes from "./routes/citizenIdsConfirm.routes";
 import instructorQualificationsRoutes from "./routes/instructorQualifications.routes";
 import walletRoutes from "./routes/wallet.routes";
 import bankAccountRoutes from "./routes/bankAccount.routes";
@@ -100,8 +99,8 @@ app.use("/api", courseGroupRoutes);
 app.use("/api", groupRoutes);
 app.use("/api", categoriesRoutes);
 app.use("/api", levelRoutes);
-app.use("/api", courseRoutes);//public  thì để trc course
 app.use("/api", feedbackRoutes);
+app.use("/api", courseRoutes);//public  thì để trc course
 app.use("/api", learnerRoutes);
 app.use("/api", instructorRoutes);
 app.use("/api/instructor", instructorStatsRoutes);
@@ -115,7 +114,6 @@ app.use("/api", favoriteRoutes);
 app.use("/api", accountSecurityRoutes);
 app.use("/api", instructorSpecializationsRoutes);
 app.use("/api", specializationRoutes);
-app.use("/api", citizenIdsConfirmRoutes);
 app.use("/api", instructorQualificationsRoutes);
 app.use("/api", walletRoutes);
 app.use("/api", bankAccountRoutes);

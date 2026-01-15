@@ -1,6 +1,6 @@
 import express from "express";
 import { authenticate, authorizeRoles, optionalAuthenticate } from "../middlewares/auth.middleware";
-import { create, getAll, getById, update, remove } from "../controllers/categories.controller";
+import { create, getAll, getById, update, remove, getBySlug } from "../controllers/categories.controller";
 
 const router = express.Router();
 /**
@@ -119,5 +119,60 @@ router.put("/categories/update/:id", authenticate, authorizeRoles("ADMIN"), upda
  *         description: Unauthorized
  */
 router.delete("/categories/delete/:id", authenticate, authorizeRoles("ADMIN"), remove);
+
+/**
+ * @openapi
+ * /api/categories/slug/{slug}:
+ *   get:
+ *     summary: Get courses by category slug with pagination
+ *     tags: [Categories]
+ *     parameters:
+ *       - in: path
+ *         name: slug
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: Category slug
+ *       - in: query
+ *         name: page
+ *         schema:
+ *           type: integer
+ *           default: 1
+ *         description: Page number
+ *       - in: query
+ *         name: limit
+ *         schema:
+ *           type: integer
+ *           default: 10
+ *         description: Number of items per page
+ *     responses:
+ *       200:
+ *         description: List of courses in the category with pagination
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 data:
+ *                   type: array
+ *                 pagination:
+ *                   type: object
+ *                   properties:
+ *                     page:
+ *                       type: integer
+ *                     limit:
+ *                       type: integer
+ *                     total:
+ *                       type: integer
+ *                     totalPages:
+ *                       type: integer
+ *                     hasMore:
+ *                       type: boolean
+ *       404:
+ *         description: Category not found
+ *       500:
+ *         description: Server error
+ */
+router.get("/categories/slug/:slug", optionalAuthenticate, getBySlug);
 
 export default router;
