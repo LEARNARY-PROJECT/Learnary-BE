@@ -40,7 +40,9 @@ export const getAllCategories = async () => {
         select: {
           courses:true
         }
-      }
+      },
+      createdAt:true,
+      updatedAt:true
     }
   });
 };
