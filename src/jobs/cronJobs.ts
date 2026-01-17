@@ -1,6 +1,7 @@
 import { autoDeleteUnverifiedAccounts } from '../services/user.service';
 import { autoDeleteRejectedCourseVideos } from '../services/course.service';
-
+import cron from 'node-cron';
+import { setTopSellingCoursesHot } from '../services/course.service';
 export const startCronJobs = () => {
   if (process.env.NODE_ENV === 'development') {
     console.log('⏸️  Cronjobs disabled in test environment');
@@ -9,6 +10,10 @@ export const startCronJobs = () => {
   startAutoDeleteUnverifiedAccountsJob();
   startAutoDeleteRejectedCourseVideosJob();
   console.log('✅ All cronjobs initialized successfully');
+  cron.schedule('* * * * *', async () => {
+    await setTopSellingCoursesHot();
+    console.log('Đã cập nhật trạng thái hot tự động mỗi 1 phút!');
+  });
 };
 const startAutoDeleteUnverifiedAccountsJob = () => {
   const TWENTY_FOUR_HOURS = 24 * 60 * 60 * 1000; // 24 giờ
