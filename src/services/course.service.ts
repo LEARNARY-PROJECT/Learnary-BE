@@ -88,6 +88,82 @@ export const getAllCourses = async () => {
   });
 };
 
+// Admin cập nhật trạng thái hot cho một khóa học bất kỳ
+export const updateCourseHotByAdmin = async (courseId: string, hot: boolean) => {
+  const course = await prisma.course.findUnique({ where: { course_id: courseId } });
+  if (!course) throw new Error('Course not found');
+  return prisma.course.update({
+    where: { course_id: courseId },
+    data: { hot },
+  });
+};
+
+export const setTopSellingCoursesHot = async () => {
+  // Reset hot=false cho tất cả khóa học
+  await prisma.course.updateMany({
+    data: { hot: false },
+    where: {},
+  });
+  // Lấy top 10 bán chạy
+  const topCourses = await getTopSellingCourses();
+  const topIds = topCourses.map(c => c.course_id);
+  // Set hot=true cho top 10
+  if (topIds.length > 0) {
+    await prisma.course.updateMany({
+      data: { hot: true },
+      where: { course_id: { in: topIds } },
+    });
+  }
+  return { updatedHotIds: topIds };
+};
+
+export const getTopSellingCourses = async () => {
+  // Lấy các khóa học đã xuất bản, kèm số học viên và số feedback
+  const courses = await prisma.course.findMany({
+    where: { status: 'Published' },
+    include: {
+      _count: {
+        select: { learnerCourses: true, feedbacks: true },
+      },
+      feedbacks: true,
+    },
+  });
+  // Tính doanh thu, số học viên, số feedback, và điểm hot
+  const coursesWithScore = courses
+    .map((course) => {
+      const soldCount = course._count.learnerCourses || 0;
+      const revenue = Number(course.price) * soldCount;
+      const price = Number(course.price);
+      // Tính điểm giá
+      let priceScore = 0;
+      if (price < 10000) priceScore = 0;
+      else if (price < 100000) priceScore = 1;
+      else if (price < 1000000) priceScore = 3;
+      else priceScore = 5;
+      // Tính điểm trung bình sao
+      let avgRating = 0;
+      if (course.feedbacks && course.feedbacks.length > 0) {
+        avgRating = course.feedbacks.reduce((sum, f) => sum + (f.rating || 0), 0) / course.feedbacks.length;
+      }
+      // Điểm hot = priceScore + avgRating
+      const hotScore = priceScore + avgRating;
+      return {
+        ...course,
+        soldCount,
+        revenue,
+        priceScore,
+        avgRating,
+        hotScore,
+      };
+    })
+    .filter(c => c !== null);
+  // Sắp xếp theo điểm hot giảm dần
+  coursesWithScore.sort((a, b) => b.hotScore - a.hotScore);
+  // Lấy top 10
+  const top10 = coursesWithScore.slice(0, 10);
+  return top10;
+};
+
 export const getCourseById = (course_id: string) =>
   prisma.course.findUnique({
     where: { course_id },
@@ -303,13 +379,12 @@ export const updateDraftCourse = async (
 
   // Nếu Published chỉ cho phép cập nhật giá và cấp độ, hot, sale_off
   if (course.status === CourseStatus.Published) {
-    return await prisma.course.update({
+    return await prisma.course.update({ 
       where: { course_id: courseId },
       data: {
         price: data.price,
         level_id: data.level_id?.trim(),
         sale_off: data.sale_off ?? null,
-        hot: data.hot ?? null,
       },
     });
   }

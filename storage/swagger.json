@@ -3356,6 +3356,55 @@
         }
       }
     },
+    "/api/courses/admin/hot/{id}": {
+      "put": {
+        "summary": "(Admin) Bật/tắt hot cho một khóa học",
+        "tags": [
+          "Course (Admin)"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "hot": {
+                    "type": "boolean"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Cập nhật hot thành công"
+          },
+          "400": {
+            "description": "Dữ liệu không hợp lệ"
+          },
+          "404": {
+            "description": "Không tìm thấy khóa học"
+          }
+        }
+      }
+    },
     "/api/courses/{id}": {
       "get": {
         "summary": "Lấy chi tiết 1 khóa học (Có kiểm tra bảo mật)",

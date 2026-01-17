@@ -41,6 +41,30 @@ export const getAll = async (_: Request, res: Response): Promise<void> => {
     });
   }
 };
+// Admin cập nhật trạng thái hot cho một khóa học
+export const updateHotStatus = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const { id } = req.params;
+    const { hot } = req.body;
+    if (typeof hot !== 'boolean') {
+      res.status(400).json({ message: 'Trường hot phải là true hoặc false.' });
+      return;
+    }
+    const updated = await courseService.updateCourseHotByAdmin(id, hot);
+    res.json({ success: true, data: updated });
+  } catch (error) {
+    res.status(500).json({ message: 'Cập nhật hot thất bại', error: (error as Error).message });
+  }
+};
+// Lấy top 10 khóa học bán chạy nhất (doanh số + số lượng bán)
+export const getTopSellingCourses = async (_req: Request, res: Response): Promise<void> => {
+  try {
+    const courses = await courseService.getTopSellingCourses();
+    res.status(200).json({ success: true, data: courses });
+  } catch (error) {
+    res.status(500).json({ message: 'Lấy top khóa học bán chạy thất bại', error: (error as Error).message });
+  }
+};
 export const getCourseBySlug = async (req: Request, res: Response): Promise<void> => {
   try {
     const slug = req.params.slug;
@@ -240,3 +264,12 @@ export const updateThumbnail = async (req: Request, res: Response) => {
     res.status(500).json({ message: 'Update thumbnail thất bại!', error: (error as Error).message });
   }
 }
+
+export const updateHotTop10 = async (_req: Request, res: Response) => {
+  try {
+    const result = await courseService.setTopSellingCoursesHot();
+    res.json({ success: true, ...result });
+  } catch (error) {
+    res.status(500).json({ message: 'Cập nhật hot top 10 thất bại', error: (error as Error).message });
+  }
+};
