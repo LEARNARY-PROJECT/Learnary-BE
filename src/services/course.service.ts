@@ -10,7 +10,6 @@ import { S3_BUCKET_NAME, s3Client } from "../config/s3.config";
 import { PutObjectCommand } from "@aws-sdk/client-s3";
 import { getInstructorByUserId } from './instructor.service';
 import { sendNoticeCourseApproved, sendNoticeCourseRejected } from './email.service';
-
 export const getCourseBySlug = async (slugs: string): Promise<Course> => {
   if (!slugs) throw new Error('Không tìm thấy slug truyền vào!')
   const course = await prisma.course.findFirst({
@@ -100,48 +99,68 @@ export const updateCourseHotByAdmin = async (courseId: string, hot: boolean) => 
 };
 
 export const setTopSellingCoursesHot = async () => {
+  // Reset hot=false cho tất cả khóa học
+  await prisma.course.updateMany({
+    data: { hot: false },
+    where: {},
+  });
+  // Lấy top 10 bán chạy
   const topCourses = await getTopSellingCourses();
   const topIds = topCourses.map(c => c.course_id);
-  await prisma.course.updateMany({
-    data: { hot: true },
-    where: { course_id: { in: topIds } },
-  });
-
+  // Set hot=true cho top 10
+  if (topIds.length > 0) {
+    await prisma.course.updateMany({
+      data: { hot: true },
+      where: { course_id: { in: topIds } },
+    });
+  }
   return { updatedHotIds: topIds };
 };
 
 export const getTopSellingCourses = async () => {
+  // Lấy các khóa học đã xuất bản, kèm số học viên và số feedback
   const courses = await prisma.course.findMany({
     where: { status: 'Published' },
     include: {
       _count: {
-        select: { learnerCourses: true },
+        select: { learnerCourses: true, feedbacks: true },
       },
+      feedbacks: true,
     },
   });
-  const coursesWithRevenue = courses.map((course) => {
-    const soldCount = course._count.learnerCourses || 0;
-    const revenue = Number(course.price) * soldCount;
-    return {
-      ...course,
-      soldCount,
-      revenue,
-    };
-  });
-
-  coursesWithRevenue.sort((a, b) => {
-    if (b.revenue !== a.revenue) return b.revenue - a.revenue;
-    return b.soldCount - a.soldCount;
-  });
-
-  const top10 = coursesWithRevenue.slice(0, 10);
-  const topIds = top10.map(c => c.course_id);
-
-  await prisma.course.updateMany({
-    data: { hot: true },
-    where: { course_id: { in: topIds } },
-  });
-
+  // Tính doanh thu, số học viên, số feedback, và điểm hot
+  const coursesWithScore = courses
+    .map((course) => {
+      const soldCount = course._count.learnerCourses || 0;
+      const revenue = Number(course.price) * soldCount;
+      const price = Number(course.price);
+      // Tính điểm giá
+      let priceScore = 0;
+      if (price < 10000) priceScore = 0;
+      else if (price < 100000) priceScore = 1;
+      else if (price < 1000000) priceScore = 3;
+      else priceScore = 5;
+      // Tính điểm trung bình sao
+      let avgRating = 0;
+      if (course.feedbacks && course.feedbacks.length > 0) {
+        avgRating = course.feedbacks.reduce((sum, f) => sum + (f.rating || 0), 0) / course.feedbacks.length;
+      }
+      // Điểm hot = priceScore + avgRating
+      const hotScore = priceScore + avgRating;
+      return {
+        ...course,
+        soldCount,
+        revenue,
+        priceScore,
+        avgRating,
+        hotScore,
+      };
+    })
+    .filter(c => c !== null);
+  // Sắp xếp theo điểm hot giảm dần
+  coursesWithScore.sort((a, b) => b.hotScore - a.hotScore);
+  // Lấy top 10
+  const top10 = coursesWithScore.slice(0, 10);
   return top10;
 };
 

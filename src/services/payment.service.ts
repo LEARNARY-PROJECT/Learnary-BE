@@ -8,19 +8,13 @@ export const PaymentService = {
     createPaymentLink: async (userId: string, courseId: string): Promise<{ qrCode: string, orderCode: number, amount: number}> => {
         const course = await prisma.course.findUnique({ where: { course_id: courseId } });
         if (!course) throw new Error("Khóa học không tồn tại");
-
-        // Kiểm tra xem người mua có phải là giảng viên của khóa học không
         const instructor = await prisma.instructor.findUnique({ where: { user_id: userId } });
         if (instructor && instructor.instructor_id === course.instructor_id) {
             throw new Error("Bạn không thể mua khóa học của chính mình!");
         }
 
-        // PayOS yêu cầu orderCode là number (nhỏ hơn 9 triệu tỷ)
         const orderCode = Number(String(Date.now()).slice(-6)); 
-
-        // Kiểm tra xem user đã mua chưa
-        const learner = await prisma.learner.findUnique({ where: { user_id: userId } });
-        
+        const learner = await prisma.learner.findUnique({ where: { user_id: userId } });    
         const discounted_price = course.sale_off ? Math.round(Number(course.price) * (1 - Number(course.sale_off) / 100)) : Number(course.price);
 
         if (learner) {
@@ -38,8 +32,6 @@ export const PaymentService = {
             }
         }
 
-        // Tạo Transaction trong DB (Trạng thái Pending)
-        // Học viên thanh toán KHÔNG cần wallet, chỉ lưu lịch sử giao dịch
         await prisma.transaction.create({
             data: {
                 user_id: userId,
@@ -60,7 +52,6 @@ export const PaymentService = {
             orderCode: orderCode,
             amount: Number(discounted_price),
             description: "Thanh toan khoa hoc",
-            // Lưu ý: Đảm bảo biến môi trường FRONTEND_URL không có dấu / ở cuối
             cancelUrl: `${process.env.FRONTEND_URL || 'http://localhost:3000'}/payment/cancel`,
             returnUrl: `${process.env.FRONTEND_URL || 'http://localhost:3000'}/payment/success`
         };
@@ -70,39 +61,26 @@ export const PaymentService = {
         return { qrCode: response.qrCode, orderCode, amount: Number(response.amount) };
     },
 
-    // 2. Hàm xử lý Webhook
+    // API Xử lý Webhook từ PayOS
     processWebhook: async (webhookBody: PayOSWebhookBody): Promise<PayOSWebhookData> => {
-        // 1. Xác thực và lấy mã đơn
         const webhookData = await payOS.webhooks.verify(webhookBody);
         const orderCode = webhookData.orderCode;
-
-        // 2. Mở Transaction
         await prisma.$transaction(async (tx) => {
-            
-                // ⚠️ BƯỚC QUAN TRỌNG: Tìm xem đơn hàng có tồn tại không trước?
                 const transaction = await tx.transaction.findUnique({
                     where: { payment_code: BigInt(orderCode) },
                     include: { course: true  }
                 });
-
-                // Nếu KHÔNG tìm thấy (VD: do PayOS test fake data 123)
                 if (!transaction) {
-                    return; // Dừng luôn, không làm gì cả, không báo lỗi
+                    return;
                 }
 
-                // Nếu tìm thấy -> Thì mới Update
                 const updatedTrans = await tx.transaction.update({
-                    where: { transaction_id: transaction.transaction_id }, // Update theo ID cho chắc
+                    where: { transaction_id: transaction.transaction_id }, 
                     data: { status: TransactionStatus.Success }
                 });
-                // ⚠️ KIỂM TRA: Đây là thanh toán combo hay khóa học đơn?
                 const isComboPayment = !updatedTrans.course_id && updatedTrans.description?.includes('combo');
                 
                 if (isComboPayment) {
-                    // XỬ LÝ THANH TOÁN COMBO
-                    // Lấy group_id từ description (format: "Thanh toán combo: {name}")
-                    // Hoặc có thể lưu group_id vào field khác trong transaction
-                    // Tạm thời tìm combo qua description
                     const groupMatches = await tx.group.findMany({
                         include: {
                             hasCourseGroup: {   
@@ -124,7 +102,6 @@ export const PaymentService = {
                     if (!targetGroup) {
                         return;
                     }
-                    // Tìm learner
                     const learner = await tx.learner.findUnique({
                         where: { user_id: updatedTrans.user_id }
                     });
@@ -133,7 +110,6 @@ export const PaymentService = {
                         return;
                     }
 
-                    // Enroll tất cả khóa học trong combo
                     for (const cg of targetGroup.hasCourseGroup) {
                         const exists = await tx.learnerCourses.findUnique({
                             where: { 
@@ -160,7 +136,6 @@ export const PaymentService = {
                         }
                     }
 
-                    // Cộng tiền cho giảng viên của từng khóa học
                     const totalPrice = Number(updatedTrans.amount);
                     const pricePerCourse = totalPrice / targetGroup.hasCourseGroup.length;
 
@@ -212,19 +187,14 @@ export const PaymentService = {
                     return; // Kết thúc xử lý combo
                 }
 
-                // XỬ LÝ THANH TOÁN KHÓA HỌC ĐƠN (code gốc)
-                // ⚠️ KIỂM TRA course_id trước khi tiếp tục
                 if (!updatedTrans.course_id) {
                     return;
                 }
-
-                // 2. Tìm thông tin học viên
                 const learner = await tx.learner.findUnique({
                     where: { user_id: updatedTrans.user_id }
                 });
 
                 if (learner) {
-                    // Kiểm tra trùng lặp lần cuối
                     const exists = await tx.learnerCourses.findUnique({
                         where: { 
                             learner_id_course_id: { 
@@ -264,7 +234,6 @@ export const PaymentService = {
                     }
                 }
 
-                // ===== PHẦN CỘNG TIỀN CHO GIẢNG VIÊN =====
                 const course = transaction.course; 
                 if (!course) {
                     return;
@@ -286,7 +255,6 @@ export const PaymentService = {
                         where: { user_id: instructor.user_id }
                     });
 
-                    // Nếu GV chưa có ví → Tạo mới
                     if (!instructorWallet) {
                         instructorWallet = await tx.wallet.create({
                             data: {
@@ -324,7 +292,7 @@ export const PaymentService = {
         return webhookData;
     },
 
-    // 3. Hàm hủy thanh toán
+    // Hàm hủy thanh toán
     cancelPayment: async (orderCode: number): Promise<void> => {
         const transaction = await prisma.transaction.findUnique({
             where: { payment_code: BigInt(orderCode) }
@@ -343,7 +311,7 @@ export const PaymentService = {
         }
     },
 
-    // 4. Hàm tạo link thanh toán cho Combo
+    // Hàm tạo link thanh toán cho Combo
     createComboPaymentLink: async (userId: string, groupId: string): Promise<{ qrCode: string, orderCode: number, amount: number }> => {
         // Lấy thông tin combo/group
         const group = await prisma.group.findUnique({ 

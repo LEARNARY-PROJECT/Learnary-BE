@@ -3,7 +3,7 @@ import { PaymentService } from '../services/payment.service';
 import { PayOSWebhookBody } from '../types/payos'; 
 
 export const PaymentController = {
-    // 1. API Tạo Link Thanh Toán
+    // API Tạo Link Thanh Toán
     createPaymentLink: async (req: Request, res: Response) => {
         try {
             const { userId, courseId } = req.body as { userId: string, courseId: string };
@@ -18,16 +18,13 @@ export const PaymentController = {
 
         } catch (error) {
             const err = error as Error;
-            // Trả về 400 nếu lỗi do logic (ví dụ: đã mua rồi), 500 nếu lỗi hệ thống
             return res.status(500).json({ error: err.message });
         }
     },
-
-    // 2. API Nhận Webhook (Tự động)
+    //API Xử lý Webhook từ PayOS
     handleWebhook: async (req: Request, res: Response) => {
 
         try {
-            // Ép kiểu req.body về PayOSWebhookBody
             const webhookBody = req.body as PayOSWebhookBody;
 
             if (!webhookBody || !webhookBody.data) {
@@ -37,17 +34,13 @@ export const PaymentController = {
                 });
             }
             const result = await PaymentService.processWebhook(webhookBody);
-            // PayOS yêu cầu phản hồi nhanh, nếu không nó sẽ gửi lại nhiều lần
             return res.json({ success: true, message: "Webhook processed successfully" });
         } catch (error) {
             const err = error as Error;
-            
-            // Nếu lỗi chữ ký -> Trả về 400 để PayOS biết
-            // Nếu lỗi DB -> Vẫn có thể trả về 200 (success: false) để tránh PayOS spam retry (Tùy chiến lược của bạn)
             return res.status(400).json({ success: false, message: err?.message || String(err) });
         }
     },
-    // 3. API Hủy Thanh Toán
+    // API Hủy Thanh Toán
     cancelPayment: async (req: Request, res: Response) => {
         try {
             const { orderCode } = req.body as { orderCode: string };
@@ -68,7 +61,6 @@ export const PaymentController = {
         }
     },
 
-    // 4. API Tạo Link Thanh Toán Combo
     createComboPaymentLink: async (req: Request, res: Response) => {
         try {
             const { userId, groupId } = req.body as { userId: string, groupId: string };
@@ -88,7 +80,6 @@ export const PaymentController = {
         }
     },
 
-    // 5. API kiểm tra trạng thái giao dịch
     getPaymentStatus: async (req: Request, res: Response) => {
         try {
             const orderCode = req.query.orderCode;
