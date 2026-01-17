@@ -100,6 +100,7 @@ app.use("/api", groupRoutes);
 app.use("/api", categoriesRoutes);
 app.use("/api", levelRoutes);
 app.use("/api", feedbackRoutes);
+app.use("/api", accountSecurityRoutes);
 app.use("/api", courseRoutes);//public  thì để trc course
 app.use("/api", learnerRoutes);
 app.use("/api", instructorRoutes);
@@ -111,7 +112,6 @@ app.use("/api", adminRolePermissionRoutes);
 app.use("/api", resourceTypeRoutes);
 app.use("/api", permissionOnResourceRoutes);
 app.use("/api", favoriteRoutes);
-app.use("/api", accountSecurityRoutes);
 app.use("/api", instructorSpecializationsRoutes);
 app.use("/api", specializationRoutes);
 app.use("/api", instructorQualificationsRoutes);
