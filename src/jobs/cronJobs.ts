@@ -1,6 +1,5 @@
 import { autoDeleteUnverifiedAccounts } from '../services/user.service';
 import { autoDeleteRejectedCourseVideos } from '../services/course.service';
-import cron from 'node-cron';
 import { setTopSellingCoursesHot } from '../services/course.service';
 export const startCronJobs = () => {
   if (process.env.NODE_ENV === 'development') {
