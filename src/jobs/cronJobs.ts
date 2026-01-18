@@ -9,11 +9,27 @@ export const startCronJobs = () => {
   }
   startAutoDeleteUnverifiedAccountsJob();
   startAutoDeleteRejectedCourseVideosJob();
+  startUpdateHotCoursesJob();
   console.log('✅ All cronjobs initialized successfully');
-  cron.schedule('* * * * *', async () => {
-    await setTopSellingCoursesHot();
-    console.log('Đã cập nhật trạng thái hot tự động mỗi 1 phút!');
+};
+
+const startUpdateHotCoursesJob = () => {
+  const TEN_MINUTES = 10* 60 * 1000; // 10 phút
+  // Chạy ngay khi khởi động
+  setTopSellingCoursesHot().then(() => {
+    console.log('Đã cập nhật trạng thái hot cho các khóa học (lần đầu khi khởi động)!');
+  }).catch(err => {
+    console.error('❌ [Cronjob Error - Update Hot Courses]:', err);
   });
+  // Lặp lại mỗi 10 phút
+  setInterval(() => {
+    setTopSellingCoursesHot().then(() => {
+      console.log('Đã cập nhật trạng thái hot cho các khóa học (tự động mỗi 10 phút)!');
+    }).catch(err => {
+      console.error('❌ [Cronjob Error - Update Hot Courses]:', err);
+    });
+  }, TEN_MINUTES);
+  console.log('✅ Cronjob: Update hot courses enabled (runs every 10 minutes)');
 };
 const startAutoDeleteUnverifiedAccountsJob = () => {
   const TWENTY_FOUR_HOURS = 24 * 60 * 60 * 1000; // 24 giờ
