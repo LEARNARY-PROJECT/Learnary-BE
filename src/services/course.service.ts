@@ -113,6 +113,8 @@ export const setTopSellingCoursesHot = async () => {
       data: { hot: true },
       where: { course_id: { in: topIds } },
     });
+  } else {
+    console.log('[CRON] Không có khóa học nào được cập nhật hot.');
   }
   return { updatedHotIds: topIds };
 };
