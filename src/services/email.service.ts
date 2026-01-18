@@ -1,5 +1,5 @@
 import { transporter } from '../config/email.config';
-import { Transaction, User } from '../generated/prisma';
+import { Transaction, User, WithdrawRequest } from '../generated/prisma';
 import { CourseApprovedData, OrderConfirmationData, SendEmailOptions, sendNoticeWithdrawProps, CourseRejectedData } from '../types/email';
 
 export const sendEmail = async (options: SendEmailOptions): Promise<void> => {
@@ -15,7 +15,7 @@ export const sendEmail = async (options: SendEmailOptions): Promise<void> => {
     throw new Error('Failed to send email');
   }
 };
-export const sendNoticeWithdrawApproved = async(data:sendNoticeWithdrawProps) => {
+export const sendNoticeWithdrawApproved = async (data: sendNoticeWithdrawProps) => {
   try {
     const formattedAmount = new Intl.NumberFormat('vi-VN', {
       style: 'currency',
@@ -128,13 +128,13 @@ export const sendNoticeWithdrawApproved = async(data:sendNoticeWithdrawProps) =>
   }
 }
 
-export const sendNoticeWithdrawRejected = async(data: sendNoticeWithdrawProps) => {
+export const sendNoticeWithdrawRejected = async (data: sendNoticeWithdrawProps) => {
   try {
     const formattedAmount = new Intl.NumberFormat('vi-VN', {
       style: 'currency',
       currency: 'VND'
     }).format(Number(data.transaction.amount));
-    
+
     const formattedDate = new Date(data.transaction.createdAt).toLocaleString('vi-VN', {
       year: 'numeric',
       month: '2-digit',
@@ -248,7 +248,7 @@ export const sendNoticeWithdrawRejected = async(data: sendNoticeWithdrawProps) =
   }
 }
 
-export const sendNoticeApprovedInstructor = async (user:User) => {
+export const sendNoticeApprovedInstructor = async (user: User) => {
   try {
     if (!user.email) {
       throw new Error('User không có email');
@@ -503,7 +503,7 @@ export const sendNoticeCourseRejected = async (data: CourseRejectedData) => {
       style: 'currency',
       currency: 'VND'
     }).format(data.coursePrice);
-    
+
     const formattedDate = new Date(data.rejectedAt).toLocaleString('vi-VN', {
       year: 'numeric',
       month: '2-digit',
@@ -673,7 +673,7 @@ export const sendNoticeCourseApproved = async (data: CourseApprovedData) => {
       style: 'currency',
       currency: 'VND'
     }).format(data.coursePrice);
-    
+
     const formattedDate = new Date(data.approvedAt).toLocaleString('vi-VN', {
       year: 'numeric',
       month: '2-digit',
@@ -824,12 +824,12 @@ export const sendNoticeCourseApproved = async (data: CourseApprovedData) => {
 export const sendConfirmedEnrolledCourse = async (data: OrderConfirmationData) => {
   try {
     const { orderCode, courseName, coursePrice, transactionDate, buyerEmail, buyerName } = data;
-    
+
     const formattedPrice = new Intl.NumberFormat('vi-VN', {
       style: 'currency',
       currency: 'VND'
     }).format(coursePrice);
-    
+
     const formattedDate = new Date(transactionDate).toLocaleString('vi-VN', {
       year: 'numeric',
       month: '2-digit',
