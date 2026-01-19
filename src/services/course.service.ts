@@ -274,7 +274,7 @@ export const createDraftCourse = async (
     title: data.title.trim(),
     requirement: data.requirement.trim(),
     description: data.description.trim(),
-    thumbnail: data.thumbnail.trim(),
+    thumbnail: data.thumbnail?.trim() ?? null,
     price: data.price,
     sale_off: data.sale_off ?? null,
     hot: data.hot ?? null,
@@ -325,7 +325,7 @@ export const createDraftCourse = async (
       title: cleanData.title,
       requirement: cleanData.requirement,
       description: cleanData.description,
-      thumbnail: cleanData.thumbnail,
+      thumbnail: cleanData.thumbnail ?? '',
       price: cleanData.price,
       sale_off: cleanData.sale_off,
       hot: cleanData.hot,
@@ -465,6 +465,68 @@ export const updateDraftCourse = async (
   });
 };
 
+// Hàm kiểm tra độ dài các trường trước khi lưu
+const validateFieldLengths = (data: CourseCreateDto) => {
+  const errors: string[] = [];
+
+  // Kiểm tra Course fields
+  if (data.title && data.title.trim().length > 255) {
+    errors.push(`Tiêu đề khóa học quá dài: ${data.title.trim().length}/255 ký tự`);
+  }
+
+  const courseSlug = CreateSlug(data.title.trim());
+  if (courseSlug.length > 255) {
+    errors.push(`Slug khóa học quá dài: ${courseSlug.length}/255 ký tự`);
+  }
+
+  if (data.category_id && data.category_id.trim().length > 50) {
+    errors.push(`Category ID quá dài: ${data.category_id.trim().length}/50 ký tự`);
+  }
+
+  if (data.level_id && data.level_id.trim().length > 50) {
+    errors.push(`Level ID quá dài: ${data.level_id.trim().length}/50 ký tự`);
+  }
+
+  // Kiểm tra Chapter, Lesson, Quiz fields
+  (data.chapter || []).forEach((chapter, chapterIndex) => {
+    if (chapter.chapter_title && chapter.chapter_title.trim().length > 255) {
+      errors.push(`Chương ${chapterIndex + 1}: Tiêu đề quá dài (${chapter.chapter_title.trim().length}/255 ký tự)`);
+    }
+
+    (chapter.lessons || []).forEach((lesson, lessonIndex) => {
+      if (lesson.title && lesson.title.trim().length > 255) {
+        errors.push(`Chương ${chapterIndex + 1}, Bài ${lessonIndex + 1}: Tiêu đề quá dài (${lesson.title.trim().length}/255 ký tự)`);
+      }
+
+      const lessonSlug = lesson.title.trim().toLowerCase().replace(/\s+/g, '-');
+      if (lessonSlug.length > 255) {
+        errors.push(`Chương ${chapterIndex + 1}, Bài ${lessonIndex + 1}: Slug quá dài (${lessonSlug.length}/255 ký tự). Tiêu đề: "${lesson.title.trim()}"`);
+      }
+
+      if (lesson.video_url && lesson.video_url.trim().length > 255) {
+        errors.push(`Chương ${chapterIndex + 1}, Bài ${lessonIndex + 1}: URL video quá dài (${lesson.video_url.trim().length}/255 ký tự)`);
+      }
+
+      if (lesson.duration && lesson.duration.trim().length > 100) {
+        errors.push(`Chương ${chapterIndex + 1}, Bài ${lessonIndex + 1}: Duration quá dài (${lesson.duration.trim().length}/100 ký tự)`);
+      }
+    });
+
+    if (chapter.quiz) {
+      if (chapter.quiz.title && chapter.quiz.title.trim().length > 100) {
+        errors.push(`Chương ${chapterIndex + 1}, Quiz: Tiêu đề quá dài (${chapter.quiz.title.trim().length}/100 ký tự)`);
+      }
+
+      const quizSlug = chapter.quiz.title.trim().toLowerCase().replace(/\s+/g, '-');
+      if (quizSlug.length > 255) {
+        errors.push(`Chương ${chapterIndex + 1}, Quiz: Slug quá dài (${quizSlug.length}/255 ký tự). Tiêu đề: "${chapter.quiz.title.trim()}"`);
+      }
+    }
+  });
+
+  return errors;
+};
+
 export const submitCourseForApproval = async (
   courseId: string,
   userId: string,
@@ -493,6 +555,14 @@ export const submitCourseForApproval = async (
 
   if (!allLessonsHaveVideo) {
     throw new Error('Tất cả các bài học đã tạo phải có video mới được gửi duyệt.');
+  }
+
+  // Kiểm tra độ dài các trường
+  const validationErrors = validateFieldLengths(data);
+  if (validationErrors.length > 0) {
+    console.error('=== VALIDATION ERRORS ===');
+    validationErrors.forEach(err => console.error(err));
+    throw new Error(`Phát hiện ${validationErrors.length} lỗi vượt quá độ dài:\n${validationErrors.join('\n')}`);
   }
 
   try {
