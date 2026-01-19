@@ -250,6 +250,7 @@ export const createDraftCourse = async (
   userId: string,
   data: CourseCreateDto,
 ) => {
+  
   const instructor = await prisma.instructor.findUnique({
     where: { user_id: userId },
   });
