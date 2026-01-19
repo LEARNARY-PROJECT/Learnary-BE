@@ -4,7 +4,7 @@ import path from 'path';
 
 const TEMPORARY_VIDEO_FOLDER = 'temporary_videos/';
 const PERMANENT_VIDEO_FOLDER = 'videos/';
-const MAX_VIDEO_SIZE = 500 * 1024 * 1024; // 500MB
+const MAX_VIDEO_SIZE = 100 * 1024 * 1024; // 100MB
 const ALLOWED_VIDEO_TYPES = ['video/mp4', 'video/webm', 'video/quicktime'];
 
 export const validateLessonVideo = (file: Express.Multer.File): void => {
