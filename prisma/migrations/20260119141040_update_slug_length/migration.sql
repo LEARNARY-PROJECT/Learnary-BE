@@ -1,0 +1,5 @@
+-- AlterTable
+ALTER TABLE "lessons" ALTER COLUMN "slug" SET DATA TYPE VARCHAR(255);
+
+-- AlterTable
+ALTER TABLE "quizzes" ALTER COLUMN "slug" SET DATA TYPE VARCHAR(255);

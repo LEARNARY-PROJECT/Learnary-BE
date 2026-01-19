@@ -4,11 +4,10 @@ import { uploadTemporaryVideo, uploadPermanentVideo, updateVideo, deleteVideo } 
 
 export const createLesson = async (
   data: Omit<Lesson, 'lesson_id' | 'createAt' | 'updatedAt' | 'video_url'>,
-  videoFile?: Express.Multer.File
+  videoFile?: Express.Multer.File,
+  duration?:string
 ): Promise<Lesson> => {
-
   let videoUrl: string | null = null;
-  
   const lesson = await prisma.lesson.create({ 
     data: {
       ...data,
@@ -26,7 +25,10 @@ export const createLesson = async (
       videoUrl = isApproved ? await uploadPermanentVideo(lesson.lesson_id, videoFile) : await uploadTemporaryVideo(lesson.lesson_id, videoFile);
       return prisma.lesson.update({
         where: { lesson_id: lesson.lesson_id },
-        data: { video_url: videoUrl }
+        data: { 
+          video_url: videoUrl,
+          duration: duration
+        }
       });
     } catch (error) {
       // nếu upload lỗi xoá luôn lesson đó
@@ -48,7 +50,8 @@ export const getAllLessons = async (): Promise<Lesson[]> => {
 export const updateLesson = async (
   lesson_id: string, 
   data: Partial<Omit<Lesson, 'lesson_id' | 'createAt' | 'updatedAt' | 'video_url'>>,
-  videoFile?: Express.Multer.File
+  videoFile?: Express.Multer.File,
+  duration?: number
 ): Promise<Lesson> => {
   const lesson = await prisma.lesson.findUnique({ 
     where: { lesson_id },
@@ -61,6 +64,9 @@ export const updateLesson = async (
 
   if (!lesson) {
     throw new Error('Lesson not found');
+  }
+  if (duration !== undefined) {
+    data.duration = duration.toString();
   }
   if (videoFile) {
     const isApproved = lesson.belongChapter.belongCourse.status === 'Published';

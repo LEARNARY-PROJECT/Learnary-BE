@@ -40,7 +40,8 @@ export const getAll = async (_: Request, res: Response) => {
 export const update = async (req: Request, res: Response) => {
   try {
     const videoFile = req.file as Express.Multer.File | undefined;
-    const updated = await LessonService.updateLesson(req.params.id, req.body, videoFile);
+    const duration = req.body.duration ? parseFloat(req.body.duration) : undefined;
+    const updated = await LessonService.updateLesson(req.params.id, req.body, videoFile, duration);
     res.json(success(updated, "Lesson updated successfully"));
   } catch (err) {
     const e = err as Error;

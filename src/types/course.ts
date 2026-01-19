@@ -32,7 +32,7 @@ export interface CourseCreateDto {
   title: string;
   requirement: string;
   description: string;
-  thumbnail: string;
+  thumbnail?: string;
   price: number;
   sale_off?: number | null; // phần trăm giảm giá
   hot?: boolean | null;

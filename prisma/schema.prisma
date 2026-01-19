@@ -376,7 +376,7 @@ model Course {
   slug               String?         @unique @db.VarChar(255)
   requirement        String?         @db.Text
   description        String          @db.Text
-  thumbnail          String          @db.VarChar(255)
+  thumbnail          String?          @db.VarChar(255)
   admin_note         String?         @db.VarChar(255)
   price              Decimal         @db.Decimal(10, 2)
   sale_off           Decimal?         @db.Decimal(10, 2) // phần trăm giảm giá
@@ -488,7 +488,7 @@ model Lesson {
   video_url   String? @db.VarChar(255)
   isCompleted Boolean @default(false)
   duration    String  @db.VarChar(100)
-  slug        String  @db.Char(50)
+  slug        String  @db.VarChar(255)
   order_index Int     @default(0)
 
   createAt  DateTime @default(now())
@@ -593,7 +593,7 @@ model Quiz {
   quiz_id    String   @id @default(uuid()) @db.Char(50)
   chapter_id String   @unique @db.Char(50)
   title      String   @db.VarChar(100)
-  slug       String   @db.Char(50)
+  slug       String   @db.VarChar(255)
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
 

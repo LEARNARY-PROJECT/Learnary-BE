@@ -26387,7 +26387,7 @@ export namespace Prisma {
     slug: string | null
     requirement: string | null
     description: string
-    thumbnail: string
+    thumbnail: string | null
     admin_note: string | null
     price: Decimal
     sale_off: Decimal | null
@@ -26569,7 +26569,7 @@ export namespace Prisma {
       slug: string | null
       requirement: string | null
       description: string
-      thumbnail: string
+      thumbnail: string | null
       admin_note: string | null
       price: Prisma.Decimal
       sale_off: Prisma.Decimal | null
@@ -50059,7 +50059,7 @@ export namespace Prisma {
     slug?: StringNullableFilter<"Course"> | string | null
     requirement?: StringNullableFilter<"Course"> | string | null
     description?: StringFilter<"Course"> | string
-    thumbnail?: StringFilter<"Course"> | string
+    thumbnail?: StringNullableFilter<"Course"> | string | null
     admin_note?: StringNullableFilter<"Course"> | string | null
     price?: DecimalFilter<"Course"> | Decimal | DecimalJsLike | number | string
     sale_off?: DecimalNullableFilter<"Course"> | Decimal | DecimalJsLike | number | string | null
@@ -50090,7 +50090,7 @@ export namespace Prisma {
     slug?: SortOrderInput | SortOrder
     requirement?: SortOrderInput | SortOrder
     description?: SortOrder
-    thumbnail?: SortOrder
+    thumbnail?: SortOrderInput | SortOrder
     admin_note?: SortOrderInput | SortOrder
     price?: SortOrder
     sale_off?: SortOrderInput | SortOrder
@@ -50124,7 +50124,7 @@ export namespace Prisma {
     title?: StringFilter<"Course"> | string
     requirement?: StringNullableFilter<"Course"> | string | null
     description?: StringFilter<"Course"> | string
-    thumbnail?: StringFilter<"Course"> | string
+    thumbnail?: StringNullableFilter<"Course"> | string | null
     admin_note?: StringNullableFilter<"Course"> | string | null
     price?: DecimalFilter<"Course"> | Decimal | DecimalJsLike | number | string
     sale_off?: DecimalNullableFilter<"Course"> | Decimal | DecimalJsLike | number | string | null
@@ -50155,7 +50155,7 @@ export namespace Prisma {
     slug?: SortOrderInput | SortOrder
     requirement?: SortOrderInput | SortOrder
     description?: SortOrder
-    thumbnail?: SortOrder
+    thumbnail?: SortOrderInput | SortOrder
     admin_note?: SortOrderInput | SortOrder
     price?: SortOrder
     sale_off?: SortOrderInput | SortOrder
@@ -50185,7 +50185,7 @@ export namespace Prisma {
     slug?: StringNullableWithAggregatesFilter<"Course"> | string | null
     requirement?: StringNullableWithAggregatesFilter<"Course"> | string | null
     description?: StringWithAggregatesFilter<"Course"> | string
-    thumbnail?: StringWithAggregatesFilter<"Course"> | string
+    thumbnail?: StringNullableWithAggregatesFilter<"Course"> | string | null
     admin_note?: StringNullableWithAggregatesFilter<"Course"> | string | null
     price?: DecimalWithAggregatesFilter<"Course"> | Decimal | DecimalJsLike | number | string
     sale_off?: DecimalNullableWithAggregatesFilter<"Course"> | Decimal | DecimalJsLike | number | string | null
@@ -52930,7 +52930,7 @@ export namespace Prisma {
     slug?: string | null
     requirement?: string | null
     description: string
-    thumbnail: string
+    thumbnail?: string | null
     admin_note?: string | null
     price: Decimal | DecimalJsLike | number | string
     sale_off?: Decimal | DecimalJsLike | number | string | null
@@ -52961,7 +52961,7 @@ export namespace Prisma {
     slug?: string | null
     requirement?: string | null
     description: string
-    thumbnail: string
+    thumbnail?: string | null
     admin_note?: string | null
     price: Decimal | DecimalJsLike | number | string
     sale_off?: Decimal | DecimalJsLike | number | string | null
@@ -52986,7 +52986,7 @@ export namespace Prisma {
     slug?: NullableStringFieldUpdateOperationsInput | string | null
     requirement?: NullableStringFieldUpdateOperationsInput | string | null
     description?: StringFieldUpdateOperationsInput | string
-    thumbnail?: StringFieldUpdateOperationsInput | string
+    thumbnail?: NullableStringFieldUpdateOperationsInput | string | null
     admin_note?: NullableStringFieldUpdateOperationsInput | string | null
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     sale_off?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
@@ -53017,7 +53017,7 @@ export namespace Prisma {
     slug?: NullableStringFieldUpdateOperationsInput | string | null
     requirement?: NullableStringFieldUpdateOperationsInput | string | null
     description?: StringFieldUpdateOperationsInput | string
-    thumbnail?: StringFieldUpdateOperationsInput | string
+    thumbnail?: NullableStringFieldUpdateOperationsInput | string | null
     admin_note?: NullableStringFieldUpdateOperationsInput | string | null
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     sale_off?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
@@ -53045,7 +53045,7 @@ export namespace Prisma {
     slug?: string | null
     requirement?: string | null
     description: string
-    thumbnail: string
+    thumbnail?: string | null
     admin_note?: string | null
     price: Decimal | DecimalJsLike | number | string
     sale_off?: Decimal | DecimalJsLike | number | string | null
@@ -53064,7 +53064,7 @@ export namespace Prisma {
     slug?: NullableStringFieldUpdateOperationsInput | string | null
     requirement?: NullableStringFieldUpdateOperationsInput | string | null
     description?: StringFieldUpdateOperationsInput | string
-    thumbnail?: StringFieldUpdateOperationsInput | string
+    thumbnail?: NullableStringFieldUpdateOperationsInput | string | null
     admin_note?: NullableStringFieldUpdateOperationsInput | string | null
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     sale_off?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
@@ -53086,7 +53086,7 @@ export namespace Prisma {
     slug?: NullableStringFieldUpdateOperationsInput | string | null
     requirement?: NullableStringFieldUpdateOperationsInput | string | null
     description?: StringFieldUpdateOperationsInput | string
-    thumbnail?: StringFieldUpdateOperationsInput | string
+    thumbnail?: NullableStringFieldUpdateOperationsInput | string | null
     admin_note?: NullableStringFieldUpdateOperationsInput | string | null
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     sale_off?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
@@ -61843,7 +61843,7 @@ export namespace Prisma {
     slug?: string | null
     requirement?: string | null
     description: string
-    thumbnail: string
+    thumbnail?: string | null
     admin_note?: string | null
     price: Decimal | DecimalJsLike | number | string
     sale_off?: Decimal | DecimalJsLike | number | string | null
@@ -61872,7 +61872,7 @@ export namespace Prisma {
     slug?: string | null
     requirement?: string | null
     description: string
-    thumbnail: string
+    thumbnail?: string | null
     admin_note?: string | null
     price: Decimal | DecimalJsLike | number | string
     sale_off?: Decimal | DecimalJsLike | number | string | null
@@ -62092,7 +62092,7 @@ export namespace Prisma {
     slug?: StringNullableFilter<"Course"> | string | null
     requirement?: StringNullableFilter<"Course"> | string | null
     description?: StringFilter<"Course"> | string
-    thumbnail?: StringFilter<"Course"> | string
+    thumbnail?: StringNullableFilter<"Course"> | string | null
     admin_note?: StringNullableFilter<"Course"> | string | null
     price?: DecimalFilter<"Course"> | Decimal | DecimalJsLike | number | string
     sale_off?: DecimalNullableFilter<"Course"> | Decimal | DecimalJsLike | number | string | null
@@ -63193,7 +63193,7 @@ export namespace Prisma {
     slug?: string | null
     requirement?: string | null
     description: string
-    thumbnail: string
+    thumbnail?: string | null
     admin_note?: string | null
     price: Decimal | DecimalJsLike | number | string
     sale_off?: Decimal | DecimalJsLike | number | string | null
@@ -63223,7 +63223,7 @@ export namespace Prisma {
     slug?: string | null
     requirement?: string | null
     description: string
-    thumbnail: string
+    thumbnail?: string | null
     admin_note?: string | null
     price: Decimal | DecimalJsLike | number | string
     sale_off?: Decimal | DecimalJsLike | number | string | null
@@ -63371,7 +63371,7 @@ export namespace Prisma {
     slug?: NullableStringFieldUpdateOperationsInput | string | null
     requirement?: NullableStringFieldUpdateOperationsInput | string | null
     description?: StringFieldUpdateOperationsInput | string
-    thumbnail?: StringFieldUpdateOperationsInput | string
+    thumbnail?: NullableStringFieldUpdateOperationsInput | string | null
     admin_note?: NullableStringFieldUpdateOperationsInput | string | null
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     sale_off?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
@@ -63401,7 +63401,7 @@ export namespace Prisma {
     slug?: NullableStringFieldUpdateOperationsInput | string | null
     requirement?: NullableStringFieldUpdateOperationsInput | string | null
     description?: StringFieldUpdateOperationsInput | string
-    thumbnail?: StringFieldUpdateOperationsInput | string
+    thumbnail?: NullableStringFieldUpdateOperationsInput | string | null
     admin_note?: NullableStringFieldUpdateOperationsInput | string | null
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     sale_off?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
@@ -64537,7 +64537,7 @@ export namespace Prisma {
     slug?: string | null
     requirement?: string | null
     description: string
-    thumbnail: string
+    thumbnail?: string | null
     admin_note?: string | null
     price: Decimal | DecimalJsLike | number | string
     sale_off?: Decimal | DecimalJsLike | number | string | null
@@ -64567,7 +64567,7 @@ export namespace Prisma {
     slug?: string | null
     requirement?: string | null
     description: string
-    thumbnail: string
+    thumbnail?: string | null
     admin_note?: string | null
     price: Decimal | DecimalJsLike | number | string
     sale_off?: Decimal | DecimalJsLike | number | string | null
@@ -64638,7 +64638,7 @@ export namespace Prisma {
     slug?: NullableStringFieldUpdateOperationsInput | string | null
     requirement?: NullableStringFieldUpdateOperationsInput | string | null
     description?: StringFieldUpdateOperationsInput | string
-    thumbnail?: StringFieldUpdateOperationsInput | string
+    thumbnail?: NullableStringFieldUpdateOperationsInput | string | null
     admin_note?: NullableStringFieldUpdateOperationsInput | string | null
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     sale_off?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
@@ -64668,7 +64668,7 @@ export namespace Prisma {
     slug?: NullableStringFieldUpdateOperationsInput | string | null
     requirement?: NullableStringFieldUpdateOperationsInput | string | null
     description?: StringFieldUpdateOperationsInput | string
-    thumbnail?: StringFieldUpdateOperationsInput | string
+    thumbnail?: NullableStringFieldUpdateOperationsInput | string | null
     admin_note?: NullableStringFieldUpdateOperationsInput | string | null
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     sale_off?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
@@ -65154,7 +65154,7 @@ export namespace Prisma {
     slug?: string | null
     requirement?: string | null
     description: string
-    thumbnail: string
+    thumbnail?: string | null
     admin_note?: string | null
     price: Decimal | DecimalJsLike | number | string
     sale_off?: Decimal | DecimalJsLike | number | string | null
@@ -65183,7 +65183,7 @@ export namespace Prisma {
     slug?: string | null
     requirement?: string | null
     description: string
-    thumbnail: string
+    thumbnail?: string | null
     admin_note?: string | null
     price: Decimal | DecimalJsLike | number | string
     sale_off?: Decimal | DecimalJsLike | number | string | null
@@ -65234,7 +65234,7 @@ export namespace Prisma {
     slug?: string | null
     requirement?: string | null
     description: string
-    thumbnail: string
+    thumbnail?: string | null
     admin_note?: string | null
     price: Decimal | DecimalJsLike | number | string
     sale_off?: Decimal | DecimalJsLike | number | string | null
@@ -65263,7 +65263,7 @@ export namespace Prisma {
     slug?: string | null
     requirement?: string | null
     description: string
-    thumbnail: string
+    thumbnail?: string | null
     admin_note?: string | null
     price: Decimal | DecimalJsLike | number | string
     sale_off?: Decimal | DecimalJsLike | number | string | null
@@ -65339,7 +65339,7 @@ export namespace Prisma {
     slug?: string | null
     requirement?: string | null
     description: string
-    thumbnail: string
+    thumbnail?: string | null
     admin_note?: string | null
     price: Decimal | DecimalJsLike | number | string
     sale_off?: Decimal | DecimalJsLike | number | string | null
@@ -65369,7 +65369,7 @@ export namespace Prisma {
     slug?: string | null
     requirement?: string | null
     description: string
-    thumbnail: string
+    thumbnail?: string | null
     admin_note?: string | null
     price: Decimal | DecimalJsLike | number | string
     sale_off?: Decimal | DecimalJsLike | number | string | null
@@ -65440,7 +65440,7 @@ export namespace Prisma {
     slug?: NullableStringFieldUpdateOperationsInput | string | null
     requirement?: NullableStringFieldUpdateOperationsInput | string | null
     description?: StringFieldUpdateOperationsInput | string
-    thumbnail?: StringFieldUpdateOperationsInput | string
+    thumbnail?: NullableStringFieldUpdateOperationsInput | string | null
     admin_note?: NullableStringFieldUpdateOperationsInput | string | null
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     sale_off?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
@@ -65470,7 +65470,7 @@ export namespace Prisma {
     slug?: NullableStringFieldUpdateOperationsInput | string | null
     requirement?: NullableStringFieldUpdateOperationsInput | string | null
     description?: StringFieldUpdateOperationsInput | string
-    thumbnail?: StringFieldUpdateOperationsInput | string
+    thumbnail?: NullableStringFieldUpdateOperationsInput | string | null
     admin_note?: NullableStringFieldUpdateOperationsInput | string | null
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     sale_off?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
@@ -65494,7 +65494,7 @@ export namespace Prisma {
     slug?: string | null
     requirement?: string | null
     description: string
-    thumbnail: string
+    thumbnail?: string | null
     admin_note?: string | null
     price: Decimal | DecimalJsLike | number | string
     sale_off?: Decimal | DecimalJsLike | number | string | null
@@ -65524,7 +65524,7 @@ export namespace Prisma {
     slug?: string | null
     requirement?: string | null
     description: string
-    thumbnail: string
+    thumbnail?: string | null
     admin_note?: string | null
     price: Decimal | DecimalJsLike | number | string
     sale_off?: Decimal | DecimalJsLike | number | string | null
@@ -65651,7 +65651,7 @@ export namespace Prisma {
     slug?: NullableStringFieldUpdateOperationsInput | string | null
     requirement?: NullableStringFieldUpdateOperationsInput | string | null
     description?: StringFieldUpdateOperationsInput | string
-    thumbnail?: StringFieldUpdateOperationsInput | string
+    thumbnail?: NullableStringFieldUpdateOperationsInput | string | null
     admin_note?: NullableStringFieldUpdateOperationsInput | string | null
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     sale_off?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
@@ -65681,7 +65681,7 @@ export namespace Prisma {
     slug?: NullableStringFieldUpdateOperationsInput | string | null
     requirement?: NullableStringFieldUpdateOperationsInput | string | null
     description?: StringFieldUpdateOperationsInput | string
-    thumbnail?: StringFieldUpdateOperationsInput | string
+    thumbnail?: NullableStringFieldUpdateOperationsInput | string | null
     admin_note?: NullableStringFieldUpdateOperationsInput | string | null
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     sale_off?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
@@ -66975,7 +66975,7 @@ export namespace Prisma {
     slug?: string | null
     requirement?: string | null
     description: string
-    thumbnail: string
+    thumbnail?: string | null
     admin_note?: string | null
     price: Decimal | DecimalJsLike | number | string
     sale_off?: Decimal | DecimalJsLike | number | string | null
@@ -67005,7 +67005,7 @@ export namespace Prisma {
     slug?: string | null
     requirement?: string | null
     description: string
-    thumbnail: string
+    thumbnail?: string | null
     admin_note?: string | null
     price: Decimal | DecimalJsLike | number | string
     sale_off?: Decimal | DecimalJsLike | number | string | null
@@ -67136,7 +67136,7 @@ export namespace Prisma {
     slug?: NullableStringFieldUpdateOperationsInput | string | null
     requirement?: NullableStringFieldUpdateOperationsInput | string | null
     description?: StringFieldUpdateOperationsInput | string
-    thumbnail?: StringFieldUpdateOperationsInput | string
+    thumbnail?: NullableStringFieldUpdateOperationsInput | string | null
     admin_note?: NullableStringFieldUpdateOperationsInput | string | null
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     sale_off?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
@@ -67166,7 +67166,7 @@ export namespace Prisma {
     slug?: NullableStringFieldUpdateOperationsInput | string | null
     requirement?: NullableStringFieldUpdateOperationsInput | string | null
     description?: StringFieldUpdateOperationsInput | string
-    thumbnail?: StringFieldUpdateOperationsInput | string
+    thumbnail?: NullableStringFieldUpdateOperationsInput | string | null
     admin_note?: NullableStringFieldUpdateOperationsInput | string | null
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     sale_off?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
@@ -68101,7 +68101,7 @@ export namespace Prisma {
     slug?: string | null
     requirement?: string | null
     description: string
-    thumbnail: string
+    thumbnail?: string | null
     admin_note?: string | null
     price: Decimal | DecimalJsLike | number | string
     sale_off?: Decimal | DecimalJsLike | number | string | null
@@ -68131,7 +68131,7 @@ export namespace Prisma {
     slug?: string | null
     requirement?: string | null
     description: string
-    thumbnail: string
+    thumbnail?: string | null
     admin_note?: string | null
     price: Decimal | DecimalJsLike | number | string
     sale_off?: Decimal | DecimalJsLike | number | string | null
@@ -68202,7 +68202,7 @@ export namespace Prisma {
     slug?: NullableStringFieldUpdateOperationsInput | string | null
     requirement?: NullableStringFieldUpdateOperationsInput | string | null
     description?: StringFieldUpdateOperationsInput | string
-    thumbnail?: StringFieldUpdateOperationsInput | string
+    thumbnail?: NullableStringFieldUpdateOperationsInput | string | null
     admin_note?: NullableStringFieldUpdateOperationsInput | string | null
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     sale_off?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
@@ -68232,7 +68232,7 @@ export namespace Prisma {
     slug?: NullableStringFieldUpdateOperationsInput | string | null
     requirement?: NullableStringFieldUpdateOperationsInput | string | null
     description?: StringFieldUpdateOperationsInput | string
-    thumbnail?: StringFieldUpdateOperationsInput | string
+    thumbnail?: NullableStringFieldUpdateOperationsInput | string | null
     admin_note?: NullableStringFieldUpdateOperationsInput | string | null
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     sale_off?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
@@ -69704,7 +69704,7 @@ export namespace Prisma {
     slug?: string | null
     requirement?: string | null
     description: string
-    thumbnail: string
+    thumbnail?: string | null
     admin_note?: string | null
     price: Decimal | DecimalJsLike | number | string
     sale_off?: Decimal | DecimalJsLike | number | string | null
@@ -69771,7 +69771,7 @@ export namespace Prisma {
     slug?: NullableStringFieldUpdateOperationsInput | string | null
     requirement?: NullableStringFieldUpdateOperationsInput | string | null
     description?: StringFieldUpdateOperationsInput | string
-    thumbnail?: StringFieldUpdateOperationsInput | string
+    thumbnail?: NullableStringFieldUpdateOperationsInput | string | null
     admin_note?: NullableStringFieldUpdateOperationsInput | string | null
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     sale_off?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
@@ -69800,7 +69800,7 @@ export namespace Prisma {
     slug?: NullableStringFieldUpdateOperationsInput | string | null
     requirement?: NullableStringFieldUpdateOperationsInput | string | null
     description?: StringFieldUpdateOperationsInput | string
-    thumbnail?: StringFieldUpdateOperationsInput | string
+    thumbnail?: NullableStringFieldUpdateOperationsInput | string | null
     admin_note?: NullableStringFieldUpdateOperationsInput | string | null
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     sale_off?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
@@ -69827,7 +69827,7 @@ export namespace Prisma {
     slug?: NullableStringFieldUpdateOperationsInput | string | null
     requirement?: NullableStringFieldUpdateOperationsInput | string | null
     description?: StringFieldUpdateOperationsInput | string
-    thumbnail?: StringFieldUpdateOperationsInput | string
+    thumbnail?: NullableStringFieldUpdateOperationsInput | string | null
     admin_note?: NullableStringFieldUpdateOperationsInput | string | null
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     sale_off?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
@@ -70514,7 +70514,7 @@ export namespace Prisma {
     slug?: string | null
     requirement?: string | null
     description: string
-    thumbnail: string
+    thumbnail?: string | null
     admin_note?: string | null
     price: Decimal | DecimalJsLike | number | string
     sale_off?: Decimal | DecimalJsLike | number | string | null
@@ -70533,7 +70533,7 @@ export namespace Prisma {
     slug?: NullableStringFieldUpdateOperationsInput | string | null
     requirement?: NullableStringFieldUpdateOperationsInput | string | null
     description?: StringFieldUpdateOperationsInput | string
-    thumbnail?: StringFieldUpdateOperationsInput | string
+    thumbnail?: NullableStringFieldUpdateOperationsInput | string | null
     admin_note?: NullableStringFieldUpdateOperationsInput | string | null
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     sale_off?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
@@ -70562,7 +70562,7 @@ export namespace Prisma {
     slug?: NullableStringFieldUpdateOperationsInput | string | null
     requirement?: NullableStringFieldUpdateOperationsInput | string | null
     description?: StringFieldUpdateOperationsInput | string
-    thumbnail?: StringFieldUpdateOperationsInput | string
+    thumbnail?: NullableStringFieldUpdateOperationsInput | string | null
     admin_note?: NullableStringFieldUpdateOperationsInput | string | null
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     sale_off?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
@@ -70589,7 +70589,7 @@ export namespace Prisma {
     slug?: NullableStringFieldUpdateOperationsInput | string | null
     requirement?: NullableStringFieldUpdateOperationsInput | string | null
     description?: StringFieldUpdateOperationsInput | string
-    thumbnail?: StringFieldUpdateOperationsInput | string
+    thumbnail?: NullableStringFieldUpdateOperationsInput | string | null
     admin_note?: NullableStringFieldUpdateOperationsInput | string | null
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     sale_off?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
@@ -70610,7 +70610,7 @@ export namespace Prisma {
     slug?: string | null
     requirement?: string | null
     description: string
-    thumbnail: string
+    thumbnail?: string | null
     admin_note?: string | null
     price: Decimal | DecimalJsLike | number | string
     sale_off?: Decimal | DecimalJsLike | number | string | null
@@ -70629,7 +70629,7 @@ export namespace Prisma {
     slug?: NullableStringFieldUpdateOperationsInput | string | null
     requirement?: NullableStringFieldUpdateOperationsInput | string | null
     description?: StringFieldUpdateOperationsInput | string
-    thumbnail?: StringFieldUpdateOperationsInput | string
+    thumbnail?: NullableStringFieldUpdateOperationsInput | string | null
     admin_note?: NullableStringFieldUpdateOperationsInput | string | null
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     sale_off?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
@@ -70658,7 +70658,7 @@ export namespace Prisma {
     slug?: NullableStringFieldUpdateOperationsInput | string | null
     requirement?: NullableStringFieldUpdateOperationsInput | string | null
     description?: StringFieldUpdateOperationsInput | string
-    thumbnail?: StringFieldUpdateOperationsInput | string
+    thumbnail?: NullableStringFieldUpdateOperationsInput | string | null
     admin_note?: NullableStringFieldUpdateOperationsInput | string | null
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     sale_off?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
@@ -70685,7 +70685,7 @@ export namespace Prisma {
     slug?: NullableStringFieldUpdateOperationsInput | string | null
     requirement?: NullableStringFieldUpdateOperationsInput | string | null
     description?: StringFieldUpdateOperationsInput | string
-    thumbnail?: StringFieldUpdateOperationsInput | string
+    thumbnail?: NullableStringFieldUpdateOperationsInput | string | null
     admin_note?: NullableStringFieldUpdateOperationsInput | string | null
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     sale_off?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
