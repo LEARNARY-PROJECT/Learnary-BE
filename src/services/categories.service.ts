@@ -75,6 +75,7 @@ export const getCategoryBySlug = async (category_slug: string, page: number = 1,
       select:{
         course_id:true,
         hot:true,
+        price:true,
         description:true,
         slug:true,
         title:true,
