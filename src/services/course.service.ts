@@ -90,8 +90,18 @@ export const getAllCourses = async () => {
 
 // Admin cập nhật trạng thái hot cho một khóa học bất kỳ
 export const updateCourseHotByAdmin = async (courseId: string, hot: boolean) => {
-  const course = await prisma.course.findUnique({ where: { course_id: courseId } });
+  // Lấy khóa học kèm số lượt mua
+  const course = await prisma.course.findUnique({
+    where: { course_id: courseId },
+    include: { _count: { select: { learnerCourses: true } } }
+  });
   if (!course) throw new Error('Course not found');
+  if (course.status !== 'Published') {
+    throw new Error('Chỉ có thể cập nhật hot cho khóa học đã xuất bản!');
+  }
+  if (!course._count || course._count.learnerCourses < 1) {
+    throw new Error('Khóa học phải có ít nhất 1 lượt mua mới được gắn hot!');
+  }
   return prisma.course.update({
     where: { course_id: courseId },
     data: { hot },
@@ -130,8 +140,10 @@ export const getTopSellingCourses = async () => {
       feedbacks: true,
     },
   });
+  // Chỉ lấy các khóa học có ít nhất 1 lượt mua
+  const filteredCourses = courses.filter(course => (course._count?.learnerCourses || 0) > 0);
   // Tính doanh thu, số học viên, số feedback, và điểm hot
-  const coursesWithScore = courses
+  const coursesWithScore = filteredCourses
     .map((course) => {
       const soldCount = course._count.learnerCourses || 0;
       const revenue = Number(course.price) * soldCount;
@@ -673,15 +685,15 @@ export const approveCourse = async (courseId: string) => {
     throw new Error('Course not found');
   }
 
-  // Nếu bị từ chối, chỉ cho phép duyệt lại trong 3 ngày kể từ rejectedAt
+  // Nếu bị từ chối, chỉ cho phép duyệt lại trong 7 ngày kể từ rejectedAt
   if (course.status === 'Archived') {
     if (!course.rejectedAt) throw new Error('Thiếu thông tin thời gian bị từ chối');
     const now = new Date();
     const rejectedAt = new Date(course.rejectedAt);
     const diffMs = now.getTime() - rejectedAt.getTime();
     const diffDays = diffMs / (1000 * 60 * 60 * 24);
-    if (diffDays > 3) {
-      throw new Error('Khóa học đã bị từ chối quá 3 ngày, không thể duyệt lại.');
+    if (diffDays > 7) {
+      throw new Error('Khóa học đã bị từ chối quá 7 ngày, không thể duyệt lại.');
     }
   } else if (course.status !== 'Pending') {
     throw new Error('Chỉ có thể duyệt khóa học ở trạng thái chờ duyệt hoặc vừa bị từ chối.');
